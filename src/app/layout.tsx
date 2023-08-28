@@ -2,9 +2,8 @@ import './globals.css';
 import '@hyeokjaelee/pastime-ui/style.css';
 
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+import { LogoutButton } from './_components/LogoutButton';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,7 +16,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => (
   <html lang="en">
-    <body className={inter.className}>{children}</body>
+    <body>
+      <header>
+        <LogoutButton />
+      </header>
+      {children}
+    </body>
   </html>
 );
 

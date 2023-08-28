@@ -1,8 +1,11 @@
 'use client';
 
-import * as socketIO from 'socket.io-client';
+import axios from 'axios';
 
 import React, { useState, useEffect, useRef } from 'react';
+
+import { SOCKET } from '@/constants';
+import { useSocketStore } from '@/store/socketStore';
 
 // create random user
 const user = `User_${String(new Date().getTime()).substr(-3)}`;
@@ -12,41 +15,26 @@ interface IMsg {
 }
 
 // component
-const Index: React.FC = () => {
+export const ChatList = () => {
   const inputRef = useRef(null);
 
-  // connected flag
-  const [connected, setConnected] = useState<boolean>(false);
+  const [socket, isConnected] = useSocketStore((state) => [
+    state.socket,
+    state.isConnected,
+  ]);
 
   // init chat and message
   const [chat, setChat] = useState<IMsg[]>([]);
   const [msg, setMsg] = useState<string>('');
 
   useEffect(() => {
-    // connect to socket server
-    const socket = socketIO.connect('localhost:3000', {
-      path: '/api/socket',
-    });
-
-    // log socket connection
-    socket.on('connect', () => {
-      console.log('SOCKET CONNECTED!', socket.id);
-      setConnected(true);
-    });
-
-    // update chat on new message dispatched
-    socket.on('message', (message: IMsg) => {
-      chat.push(message);
-      setChat([...chat]);
-    });
-
-    // socket disconnet onUnmount if exists
     if (socket) {
-      return () => {
-        socket.disconnect();
-      };
+      socket.on('message', (message: IMsg) => {
+        chat.push(message);
+        setChat([...chat]);
+      });
     }
-  }, []);
+  }, [socket]);
 
   const sendMessage = async () => {
     if (msg) {
@@ -57,24 +45,9 @@ const Index: React.FC = () => {
       };
 
       // dispatch message to other users
-      const resp = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-
-      const test = await fetch('/api/test', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-
+      const resp = await axios.post('/api/chat', message);
       // reset field if OK
-      if (resp.ok) setMsg('');
+      if (resp.status === 201) setMsg('');
     }
 
     // focus after click
@@ -115,7 +88,9 @@ const Index: React.FC = () => {
                 ref={inputRef}
                 type="text"
                 value={msg}
-                placeholder={connected ? 'Type a message...' : 'Connecting...'}
+                placeholder={
+                  isConnected ? 'Type a message...' : 'Connecting...'
+                }
                 className="w-full h-full rounded shadow border-gray-400 border px-2"
                 onChange={(e) => {
                   setMsg(e.target.value);
@@ -139,5 +114,3 @@ const Index: React.FC = () => {
     </div>
   );
 };
-
-export default Index;
