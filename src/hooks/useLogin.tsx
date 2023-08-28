@@ -29,7 +29,9 @@ export const useLogin = () => {
         setUserName(userName);
         setIsLogin(true);
         router.push('/private/chat');
+        return true;
       }
+      return false;
     },
   };
 };

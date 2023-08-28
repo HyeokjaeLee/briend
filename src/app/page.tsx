@@ -1,6 +1,4 @@
-import Image from 'next/image';
-
-import { KakaoLoginButton } from './_components/KakaoLoginButton';
+import { KakaoLoginButton } from '@/components';
 
 const Home = () => (
   <main className="flex min-h-screen flex-col items-center justify-between p-24">

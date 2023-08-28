@@ -11,7 +11,13 @@ interface SocketApiResponse extends NextApiResponse {
   socket: Socket & {
     server: NetServer & {
       io?: IOServer;
-      roomsMap?: Map<string, Namespace>;
+      roomsMap?: Map<
+        string,
+        {
+          room: Namespace;
+          timer: NodeJS.Timeout;
+        }
+      >;
     };
   };
 }

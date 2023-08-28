@@ -20,7 +20,7 @@ const socket: SocketApiHander = (_, res) => {
     server.roomsMap = new Map();
   }
 
-  res.end();
+  res.send('ok');
 };
 
 export default socket;

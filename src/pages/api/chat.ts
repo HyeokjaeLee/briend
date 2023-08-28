@@ -1,15 +1,27 @@
 import { SocketApiHander } from '@/types';
 
+export interface Chatting {
+  user: string;
+  message: string;
+}
+
 const chat: SocketApiHander = (req, res) => {
-  if (req.method === 'POST') {
-    // 메시지 얻기
+  try {
+    const { roomsMap } = res.socket.server;
+    const { authorization } = req.headers;
 
-    const message = req.body;
+    if (req.method === 'POST') {
+      if (roomsMap && authorization) {
+        const { room } = roomsMap.get(authorization) ?? {};
 
-    // on('message')가 메시지를 받음
-    res.socket.server.io?.emit('message', message);
-
-    res.status(201).json(message);
+        if (room) {
+          room.emit('message', req.body);
+          res.status(201).send('ok');
+        } else throw new Error("Can't find room");
+      } else throw new Error("Can't find roomMap");
+    } else throw new Error('Invalid method');
+  } catch (e) {
+    res.status(500).send(String(e));
   }
 };
 
