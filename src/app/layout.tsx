@@ -2,10 +2,8 @@ import './globals.css';
 import '@hyeokjaelee/pastime-ui/style.css';
 
 import type { Metadata } from 'next';
-import Image from 'next/image';
 
-import LogoWithText from '@/assets/LogoWithText.svg';
-import { LogoutButton, LayoutTab, PageContainer } from '@/components';
+import { GlobalProvider, LayoutHeader } from '@/components';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,18 +16,12 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => (
   <html lang="en">
-    <PageContainer>
-      <body>
-        <header className="bg-black px-5 sticky top-0 flex items-center justify-between">
-          <div className="flex items-center gap-5">
-            <Image src={LogoWithText} alt="logo" className="h-10 w-32 my-3" />
-            <LayoutTab />
-          </div>
-          <LogoutButton />
-        </header>
+    <GlobalProvider>
+      <body className="bg-slate-700">
+        <LayoutHeader />
         {children}
       </body>
-    </PageContainer>
+    </GlobalProvider>
   </html>
 );
 

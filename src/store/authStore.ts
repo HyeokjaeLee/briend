@@ -2,10 +2,10 @@ import { createWithEqualityFn } from 'zustand/traditional';
 
 interface AuthStore {
   id?: string;
-  setId: (id: string) => void;
+  setId: (id?: string) => void;
 
   userName?: string;
-  setUserName: (userName: string) => void;
+  setUserName: (userName?: string) => void;
 
   isLogin: boolean;
   setIsLogin: (isSingin: boolean) => void;

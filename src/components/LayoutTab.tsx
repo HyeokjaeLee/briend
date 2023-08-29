@@ -9,7 +9,7 @@ export const LayoutTab = () => {
   const isLogin = useAuthStore((state) => state.isLogin);
   const pathname = usePathname();
   return (
-    <Tab>
+    <Tab size="small">
       <Tab.Item disabled={!isLogin} active={pathname === '/private/chat'}>
         Chat
       </Tab.Item>

@@ -1,25 +1,32 @@
 'use client';
 
-import { useCheckLogin } from '@/hooks';
-import { Button, useToast } from '@hyeokjaelee/pastime-ui';
+import { LogOut } from 'react-feather';
 
-export const LogoutButton = () => {
-  const { isLogin, logout } = useCheckLogin();
-  const { toast } = useToast();
+import { useLogout } from '@/hooks';
+import { useAuthStore } from '@/store/authStore';
+import { Button } from '@hyeokjaelee/pastime-ui';
+
+interface LogoutButtonProps {
+  onClick?: () => void;
+}
+
+export const LogoutButton = ({ onClick }: LogoutButtonProps) => {
+  const isLogin = useAuthStore((state) => state.isLogin);
+
+  const { logout } = useLogout();
 
   return isLogin ? (
     <Button
+      icon={<LogOut />}
       onClick={() => {
         logout();
-        toast({
-          message: '로그아웃 되었습니다.',
-        });
+        onClick?.();
       }}
-      theme="secondary"
+      className="font-medium"
+      size="large"
+      theme="danger"
     >
-      로그아웃
+      Logout
     </Button>
-  ) : (
-    <></>
-  );
+  ) : null;
 };

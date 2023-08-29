@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@hyeokjaelee/pastime-ui':
-    specifier: ^1.4.19
-    version: 1.4.19(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.4.25
+    version: 1.4.25(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.5.6
     version: 20.5.6
@@ -35,6 +35,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-feather:
+    specifier: ^2.0.10
+    version: 2.0.10(react@18.2.0)
   socket.io:
     specifier: ^4.7.2
     version: 4.7.2
@@ -368,8 +371,8 @@ packages:
       - supports-color
     dev: true
 
-  /@hyeokjaelee/pastime-ui@1.4.19(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-uAt1OyxxtH3CoD+txVb7ZSO0FGO6IuL5ZMpHQQnCIdw0hSE/fgeua/VGFtxAnpjKkTHZDVFkE02jd8ar8OwI1g==}
+  /@hyeokjaelee/pastime-ui@1.4.25(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-kr3gT1rbxOL6rjE/JgFbxzDa6tiyYe5O2kAZbGmhrglgWxLy+z2oroquNTVx8FTYFFARdodcmnm5Ik4PQZ/0yA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -1040,7 +1043,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001524
-      electron-to-chromium: 1.4.503
+      electron-to-chromium: 1.4.504
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
 
@@ -1262,8 +1265,8 @@ packages:
       esutils: 2.0.3
     dev: true
 
-  /electron-to-chromium@1.4.503:
-    resolution: {integrity: sha512-LF2IQit4B0VrUHFeQkWhZm97KuJSGF2WJqq1InpY+ECpFRkXd8yTIaTtJxsO0OKDmiBYwWqcrNaXOurn2T2wiA==}
+  /electron-to-chromium@1.4.504:
+    resolution: {integrity: sha512-cSMwIAd8yUh54VwitVRVvHK66QqHWE39C3DRj8SWiXitEpVSY3wNPD9y1pxQtLIi4w3UdzF9klLsmuPshz09DQ==}
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -1731,7 +1734,7 @@ packages:
       is-core-module: 2.13.0
       is-glob: 4.0.3
       minimatch: 3.1.2
-      object.fromentries: 2.0.6
+      object.fromentries: 2.0.7
       object.groupby: 1.0.1
       object.values: 1.1.7
       semver: 6.3.1
@@ -1766,7 +1769,7 @@ packages:
       is-core-module: 2.13.0
       is-glob: 4.0.3
       minimatch: 3.1.2
-      object.fromentries: 2.0.6
+      object.fromentries: 2.0.7
       object.groupby: 1.0.1
       object.values: 1.1.7
       semver: 6.3.1
@@ -1798,7 +1801,7 @@ packages:
       language-tags: 1.0.5
       minimatch: 3.1.2
       object.entries: 1.1.7
-      object.fromentries: 2.0.6
+      object.fromentries: 2.0.7
       semver: 6.3.1
     dev: true
 
@@ -1885,13 +1888,13 @@ packages:
       jsx-ast-utils: 3.3.5
       minimatch: 3.1.2
       object.entries: 1.1.7
-      object.fromentries: 2.0.6
+      object.fromentries: 2.0.7
       object.hasown: 1.1.3
       object.values: 1.1.7
       prop-types: 15.8.1
       resolve: 2.0.0-next.4
       semver: 6.3.1
-      string.prototype.matchall: 4.0.8
+      string.prototype.matchall: 4.0.9
     dev: true
 
   /eslint-scope@5.1.1:
@@ -2792,8 +2795,8 @@ packages:
       es-abstract: 1.22.1
     dev: true
 
-  /object.fromentries@2.0.6:
-    resolution: {integrity: sha512-VciD13dswC4j1Xt5394WR4MzmAQmlgN72phd/riNp9vtD7tp4QQWJ0R4wvclXcafgcYK8veHRed2W6XeGBvcfg==}
+  /object.fromentries@2.0.7:
+    resolution: {integrity: sha512-UPbPHML6sL8PI/mOqPwsH4G6iyXcCGzLin8KvEPenOZN5lpCNBZZQ+V62vdjB1mQHrmqGQt5/OJzemUA+KJmEA==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
@@ -3006,7 +3009,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: true
 
   /proxy-from-env@1.1.0:
     resolution: {integrity: sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==}
@@ -3030,9 +3032,17 @@ packages:
       scheduler: 0.23.0
     dev: false
 
+  /react-feather@2.0.10(react@18.2.0):
+    resolution: {integrity: sha512-BLhukwJ+Z92Nmdcs+EMw6dy1Z/VLiJTzEQACDUEnWMClhYnFykJCGWQx+NmwP/qQHGX/5CzQ+TGi8ofg2+HzVQ==}
+    peerDependencies:
+      react: '>=16.8.6'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: true
 
   /react@17.0.2:
     resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
@@ -3257,8 +3267,8 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: false
 
-  /string.prototype.matchall@4.0.8:
-    resolution: {integrity: sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg==}
+  /string.prototype.matchall@4.0.9:
+    resolution: {integrity: sha512-6i5hL3MqG/K2G43mWXWgP+qizFW/QH/7kCNN13JrJS5q48FN5IKksLDscexKP3dnmB6cdm9jlNgAsWNLpSykmA==}
     dependencies:
       call-bind: 1.0.2
       define-properties: 1.2.0

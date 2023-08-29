@@ -1,37 +1,66 @@
+import { shallow } from 'zustand/shallow';
+
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { LOCAL_STORAGE_KEY } from '@/constants';
 import { useAuthStore } from '@/store/authStore';
+import { useToast } from '@hyeokjaelee/pastime-ui';
+
+interface LoginParams {
+  userName: string;
+  isSaveInfo: boolean;
+}
 
 export const useLogin = () => {
-  const { setId, id, setIsLogin, setUserName } = useAuthStore((state) => state);
+  const [setId, id, setUserName, setIsLogin] = useAuthStore(
+    (state) => [state.setId, state.id, state.setUserName, state.setIsLogin],
+    shallow,
+  );
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [isSetting, setIsSetting] = useState(true);
+  const [isIdReady, setIsIdReady] = useState(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (searchParams) {
       const code = searchParams.get('code');
       if (code) {
         setId(code);
-        router.push('/auth');
-        setIsSetting(false);
-      } else if (!id) router.push('/');
+        router.push('/');
+        setIsIdReady(true);
+      }
     }
-  }, [id, router, searchParams, setId]);
+  }, [router, searchParams, setId, toast]);
+
+  useEffect(() => {
+    if (isIdReady) {
+      toast({
+        message: '카카오 인증에 성공했습니다.',
+      });
+    }
+  }, [isIdReady, toast]);
 
   return {
-    isSetting,
-    login: (userName: string) => {
+    isIdReady,
+    login: ({ userName, isSaveInfo }: LoginParams) => {
       if (id && userName) {
-        localStorage.setItem('userName', userName);
-        localStorage.setItem('id', id);
+        if (isSaveInfo) {
+          localStorage.setItem(LOCAL_STORAGE_KEY.USER_NAME, userName);
+          localStorage.setItem(LOCAL_STORAGE_KEY.KAKAO_TOKEN, id);
+        }
+
         setUserName(userName);
         setIsLogin(true);
         router.push('/private/chat');
-        return true;
+        return toast({
+          message: '로그인 되었습니다.',
+          holdTime: 1000,
+        });
       }
-      return false;
+      return toast({
+        message: '카카오 인증 후 이름을 입력해주세요.',
+      });
     },
   };
 };

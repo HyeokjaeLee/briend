@@ -23,9 +23,18 @@ const createRoom: SocketApiHander = async (req, res) => {
                 SOCKET.TIME_TO_ROOM_LIVE,
               ),
             });
+            res.status(201).send('ok');
+          } else {
+            const room = roomsMap.get(id);
+            if (room) {
+              clearTimeout(room.timer);
+              room.timer = setTimeout(
+                () => roomsMap.delete(id),
+                SOCKET.TIME_TO_ROOM_LIVE,
+              );
+              res.status(200).send('ok');
+            } else throw new Error('room is not defined');
           }
-
-          res.status(201).send('ok');
         } else throw new Error('io is not defined');
       } else throw new Error('roomsMap is not defined');
     } else throw new Error('Method not allowed');

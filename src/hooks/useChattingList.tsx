@@ -9,7 +9,7 @@ interface ChattingInfo extends Chatting {
   isMine: boolean;
 }
 
-interface UseChattingListParams
+export interface UseChattingListParams
   extends Pick<UseConnetSocketRoomResult, 'room'> {
   user: string | undefined;
   id: string | undefined;
