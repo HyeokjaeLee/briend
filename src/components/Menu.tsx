@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu as MenuIcon, Trash2, UserPlus } from 'react-feather';
+import { Menu as MenuIcon, Trash2 } from 'react-feather';
 
 import { Button, Drawer } from '@hyeokjaelee/pastime-ui';
 
+import { AddUserMenuItem } from './AddUserMenuItem';
 import { LogoutButton } from './LogoutButton';
 import { MenuItem } from './MenuItem';
 
@@ -27,9 +28,7 @@ export const Menu = () => {
         <Drawer.Header closeButton />
         <div className="flex flex-col justify-between h-full">
           <ul className="flex flex-col gap-2">
-            <MenuItem>
-              <UserPlus className="ml-1" /> 초대 링크 생성
-            </MenuItem>
+            <AddUserMenuItem />
             <MenuItem>
               <Trash2 /> 채팅 기록 삭제
             </MenuItem>

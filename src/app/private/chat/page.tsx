@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { ChattingList, SendMessageForm } from '@/components';
+import { LANGUAGE } from '@/constants';
 import { useCreateSocketRoom, useConnetSocketRoom } from '@/hooks';
 import { useAuthStore } from '@/store/authStore';
 
@@ -17,8 +18,13 @@ const ChatPage = () => {
 
   return isConnected ? (
     <main className="relative">
-      <ChattingList id={id} user={user} room={room} />
-      <SendMessageForm id={id} user={user} />
+      <ChattingList
+        id={id}
+        user={user}
+        room={room}
+        language={LANGUAGE.KOREAN}
+      />
+      <SendMessageForm id={id} user={user} language={LANGUAGE.KOREAN} />
     </main>
   ) : null;
 };

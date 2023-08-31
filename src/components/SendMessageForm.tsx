@@ -5,14 +5,21 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Send } from 'react-feather';
 
+import type { LANGUAGE } from '@/constants';
 import { UseChattingListParams } from '@/hooks';
 import { Button, Textarea, useToast } from '@hyeokjaelee/pastime-ui';
 import type { Chatting } from '@socket-api/chat';
 
+interface SendMessageFormProps
+  extends Pick<UseChattingListParams, 'id' | 'user'> {
+  language: LANGUAGE;
+}
+
 export const SendMessageForm = ({
   id,
   user,
-}: Omit<UseChattingListParams, 'room'>) => {
+  language,
+}: SendMessageFormProps) => {
   const { toast } = useToast();
 
   const [message, setMessage] = useState('');
@@ -37,8 +44,11 @@ export const SendMessageForm = ({
             const { status } = await axios.post(
               '/api/chat',
               {
-                message,
+                message: {
+                  [language]: message,
+                },
                 user,
+                language,
               } satisfies Chatting,
               {
                 headers: {

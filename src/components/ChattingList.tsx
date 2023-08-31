@@ -2,10 +2,20 @@
 
 import React, { useEffect, useRef } from 'react';
 
+import type { LANGUAGE } from '@/constants';
 import { useChattingList } from '@/hooks';
 import type { UseChattingListParams } from '@/hooks';
 
-export const ChattingList = ({ id, user, room }: UseChattingListParams) => {
+interface ChattingListProps extends UseChattingListParams {
+  language: LANGUAGE;
+}
+
+export const ChattingList = ({
+  id,
+  user,
+  room,
+  language,
+}: ChattingListProps) => {
   const { chattingList } = useChattingList({ room, id, user });
   const ref = useRef<HTMLLIElement>(null);
 
@@ -23,7 +33,7 @@ export const ChattingList = ({ id, user, room }: UseChattingListParams) => {
               {chatting.user}
             </div>
             <div className="font-semibold whitespace-pre-wrap rounded-e-2xl rounded-es-2xl bg-slate-200 shadow-md py-2 px-4 flex-1 break-all max-w-fit mt-5">
-              {chatting.message}
+              {chatting.message?.[language]}
             </div>
           </li>
         );
