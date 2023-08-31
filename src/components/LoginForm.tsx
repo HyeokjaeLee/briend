@@ -52,7 +52,7 @@ export const LoginForm = validationObserver(() => {
         onClick={() => {
           window.location.href = KAKAO.SIGNIN_URL;
         }}
-        theme={isIdReady ? 'unset' : 'secondary'}
+        theme="secondary"
         icon={
           isIdReady ? (
             <CheckCircle />
@@ -60,9 +60,7 @@ export const LoginForm = validationObserver(() => {
             <Image src={Kakao} alt="kakao-login" className="h-6 w-6" />
           )
         }
-        className={`font-bold w-full ${
-          isIdReady ? 'bg-slate-300 text-white' : ''
-        }`}
+        className={`font-bold w-full`}
         disabled={isIdReady}
       >
         {isIdReady ? '인증 완료' : '카카오 인증'}
