@@ -1,4 +1,8 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
+
+const NAV_HEIGHT = '59px';
+
+const PAGE_HEIGHT = `calc(100vh - ${NAV_HEIGHT})`;
 
 const config: Config = {
   content: [
@@ -13,8 +17,35 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+
+      animation: {
+        'fade-in': 'fade-in 0.3s ease-in-out',
+      },
+
+      keyframes: {
+        'fade-in': {
+          '0%': {
+            opacity: '0',
+          },
+          '100%': {
+            opacity: '0',
+          },
+        },
+      },
+      minWidth: {
+        iPhoneSE: '360px',
+      },
+
+      height: {
+        nav: NAV_HEIGHT,
+        page: PAGE_HEIGHT,
+      },
+      minHeight: {
+        page: PAGE_HEIGHT,
+      },
     },
   },
   plugins: [],
-}
-export default config
+};
+
+export default config;
