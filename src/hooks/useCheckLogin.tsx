@@ -18,10 +18,14 @@ export const useCheckLogin = () => {
   useEffect(() => {
     const id = localStorage.getItem(LOCAL_STORAGE_KEY.KAKAO_TOKEN);
     const userName = localStorage.getItem(LOCAL_STORAGE_KEY.USER_NAME);
+
     if (id && userName) {
       setId(id);
       setUserName(userName);
       setIsLogin(true);
-    } else if (pathname && !['/', '/auth'].includes(pathname)) router.push('/');
+    } else {
+      const isNeedLogin = !(pathname?.split('/')[1] === 'private');
+      if (isNeedLogin) router.push('/');
+    }
   }, [pathname, router, setId, setIsLogin, setUserName]);
 };
