@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { CheckCircle } from 'react-feather';
 
-import Kakao from '@/assets/kakao.png';
+import Kakao from '@/assets/Kakao.png';
 import { KAKAO } from '@/constants';
 import { useLogin, useSaveLoginInfoState } from '@/hooks';
 import {
