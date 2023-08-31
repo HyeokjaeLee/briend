@@ -21,7 +21,7 @@ export const useCreateSocketRoom = (id: string | undefined) => {
   }, []);
 
   useEffect(() => {
-    socketIO.connect(`localhost:3000`, {
+    socketIO.connect(process.env.NEXT_PUBLIC_BASE_URL ?? '', {
       path: `${SOCKET.PATH}`,
     });
 

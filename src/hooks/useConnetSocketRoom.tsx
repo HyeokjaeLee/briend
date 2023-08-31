@@ -18,9 +18,12 @@ export const useConnetSocketRoom = ({
 
   useEffect(() => {
     if (isRoomCreated && id) {
-      const room = socketIO.connect(`localhost:3000/${id}`, {
-        path: `${SOCKET.PATH}`,
-      });
+      const room = socketIO.connect(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${id}`,
+        {
+          path: `${SOCKET.PATH}`,
+        },
+      );
 
       room.on('connect', () => {
         setRoom(room);
