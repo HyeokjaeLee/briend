@@ -1,6 +1,10 @@
 'use client';
 
-import { useCheckLogin } from '@/hooks';
+import { shallow } from 'zustand/shallow';
+
+import { useEffect } from 'react';
+
+import { useAuthStore, usePathAccessController } from '@/hooks';
 import { Toast } from '@hyeokjaelee/pastime-ui';
 
 interface GlobalProviderProps {
@@ -8,6 +12,24 @@ interface GlobalProviderProps {
 }
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
-  useCheckLogin();
+  const [bindAuthStoreFromLocalStorage, isBinded, isLogin] = useAuthStore(
+    (state) => [
+      state.bindAuthStoreFromLocalStorage,
+      state.isBinded,
+      state.isLogin,
+    ],
+    shallow,
+  );
+
+  usePathAccessController({
+    isBinded,
+    isLogin,
+  });
+
+  useEffect(
+    () => bindAuthStoreFromLocalStorage(),
+    [bindAuthStoreFromLocalStorage],
+  );
+
   return <Toast.Provider>{children}</Toast.Provider>;
 };

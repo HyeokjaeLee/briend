@@ -4,6 +4,8 @@ import { shallow } from 'zustand/shallow';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useToast } from '@hyeokjaelee/pastime-ui';
+
 import { useAuthStore } from './useAuthStore';
 
 interface KakaoAccessTokenResponse {
@@ -33,20 +35,23 @@ interface KaKaoUserResponse {
 
 export const useKakaoLogin = () => {
   const [setUserId, setUserName, setProfileImage] = useAuthStore(
-    (state) => [state.setUserId, state.setUserName, state.setProfileImage],
+    (state) => [
+      state.setUserId,
+      state.setUserName,
+      state.setProfileImage,
+      state.isSaveLogin,
+    ],
     shallow,
   );
+  const searchParams = useSearchParams();
+  const code = searchParams?.get('code');
+  const isLogout = searchParams?.get('logout');
 
-  const code = useSearchParams()?.get('code');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
-    const cleanUp = () => {
-      setIsLoading(false);
-      router.replace('/');
-    };
-
     try {
       if (code) {
         setIsLoading(true);
@@ -69,36 +74,63 @@ export const useKakaoLogin = () => {
               },
             );
 
-          const accessToken = kakaoAccessTokenResponse.data.access_token;
+          if (kakaoAccessTokenResponse) {
+            router.replace('/');
 
-          if (accessToken) {
-            const { data } = await axios.get<KaKaoUserResponse>(
-              'https://kapi.kakao.com/v2/user/me',
-              {
-                params: {
-                  access_token: accessToken,
+            const accessToken = kakaoAccessTokenResponse.data.access_token;
+
+            if (accessToken) {
+              const { data } = await axios.get<KaKaoUserResponse>(
+                'https://kapi.kakao.com/v2/user/me',
+                {
+                  params: {
+                    access_token: accessToken,
+                  },
                 },
-              },
-            );
+              );
 
-            const { id, kakao_account: account } = data;
+              const { id, kakao_account: account } = data;
 
-            if (id) {
-              setUserId(String(id));
+              if (id) {
+                const userId = String(id);
+                const userName = account.profile.nickname ?? null;
+                const profileImage = account.profile.profile_image_url ?? null;
 
-              setUserName(account.profile.nickname ?? null);
+                setUserId(userId);
 
-              setProfileImage(account.profile.profile_image_url ?? null);
+                setUserName(userName);
 
-              cleanUp();
+                setProfileImage(profileImage);
+              }
             }
+
+            setIsLoading(false);
+            toast({
+              message: '로그인 되었습니다.',
+            });
           }
         })();
       }
     } catch (e) {
-      cleanUp();
+      toast({
+        message: '로그인에 실패했습니다.',
+        type: 'fail',
+      });
+      setIsLoading(false);
     }
-  }, [code, setProfileImage, setUserId, setUserName, router]);
+  }, [code, setProfileImage, setUserId, setUserName, router, toast]);
+
+  useEffect(() => {
+    if (isLogout) {
+      setUserId(null);
+      setUserName(null);
+      setProfileImage(null);
+      router.replace('/');
+      toast({
+        message: '로그아웃 되었습니다.',
+      });
+    }
+  }, [isLogout, router, setProfileImage, setUserId, setUserName, toast]);
 
   return {
     isLoading,

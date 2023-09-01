@@ -20,7 +20,9 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@socket-api/*": ["./src/pages/api/*"]
+      "@socket-api/*": ["./src/pages/api/*"],
+      "@api/*": ["./src/app/api/*/route.ts"],
+      "@pusher": ["./src/app/api/pusher.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

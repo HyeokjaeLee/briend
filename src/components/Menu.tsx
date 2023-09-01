@@ -6,7 +6,7 @@ import { Menu as MenuIcon, Trash2 } from 'react-feather';
 import { Button, Drawer } from '@hyeokjaelee/pastime-ui';
 
 import { AddUserMenuItem } from './AddUserMenuItem';
-import { LogoutButton } from './LogoutButton';
+import { KakaoLogoutButton } from './KakaoLogoutButton';
 import { MenuItem } from './MenuItem';
 
 export const Menu = () => {
@@ -33,7 +33,7 @@ export const Menu = () => {
               <Trash2 /> 채팅 기록 삭제
             </MenuItem>
           </ul>
-          <LogoutButton onClick={() => setIsOpened(false)} />
+          <KakaoLogoutButton />
         </div>
       </Drawer>
     </>

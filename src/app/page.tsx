@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import Background from '@/assets/Background.jpeg';
 import Logo from '@/assets/Logo.svg';
-import { LoginForm } from '@/components';
+import { KakaoLoginButton, SaveLoginSwitch } from '@/components';
 
 const HomePage = () => (
   <main className="w-full">
@@ -22,7 +22,10 @@ const HomePage = () => (
               언어의 장벽없는 새로운 사람과의 대화
             </h2>
           </div>
-          <LoginForm />
+          <form className="flex flex-col gap-3">
+            <SaveLoginSwitch />
+            <KakaoLoginButton />
+          </form>
         </div>
       </section>
     </article>

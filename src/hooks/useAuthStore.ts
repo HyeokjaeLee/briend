@@ -1,6 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
-enum LOCAL_STORAGE_KEY {
+enum STORAGE_KEY {
   USER_ID = 'user-id',
   USER_NAME = 'user-name',
   PROFILE_IMAGE = 'profile-image',
@@ -8,6 +8,9 @@ enum LOCAL_STORAGE_KEY {
 }
 
 interface AuthStore {
+  isBinded: boolean;
+  bindAuthStoreFromLocalStorage: () => void;
+
   userId: string | null;
   setUserId: (userId: string | null) => void;
 
@@ -20,56 +23,85 @@ interface AuthStore {
   isSaveLogin: boolean;
   setIsSaveLogin: (isLoginInfo: boolean) => void;
 
-  isLogin: () => boolean;
+  isLogin: boolean;
 }
 
 export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
-  const userId = localStorage?.getItem(LOCAL_STORAGE_KEY.USER_ID);
-  const userName = localStorage?.getItem(LOCAL_STORAGE_KEY.USER_NAME);
-  const profileImage = localStorage?.getItem(LOCAL_STORAGE_KEY.PROFILE_IMAGE);
-  const saveLogin = localStorage?.getItem(LOCAL_STORAGE_KEY.IS_SAVE_LOGIN);
+  const saveStorageValue = (key: STORAGE_KEY, value: string | null) => {
+    const { isSaveLogin } = get();
+
+    if (isSaveLogin && value) localStorage.setItem(key, value);
+    else localStorage.removeItem(key);
+
+    if (value) {
+      if (isSaveLogin) localStorage.setItem(key, value);
+
+      document.cookie = `${key}=${value}; path=/;`;
+    } else document.cookie = `${key}=; path=/;`;
+
+    if (!value || !isSaveLogin) localStorage.removeItem(key);
+  };
 
   return {
-    userId,
-    setUserId: (userId) => {
-      const { isSaveLogin } = get();
-      if (!isSaveLogin && userId)
-        localStorage.setItem(LOCAL_STORAGE_KEY.USER_ID, userId);
-      else localStorage.removeItem(LOCAL_STORAGE_KEY.USER_ID);
-      return set({ userId });
+    isBinded: false,
+    bindAuthStoreFromLocalStorage: () => {
+      const { isBinded } = get();
+
+      if (isBinded) return;
+
+      const cookies = new Map(
+        document.cookie.split('; ').map((cookie) => {
+          const [key, value] = cookie.split('=');
+
+          return [key, value];
+        }),
+      );
+
+      const saveLogin = localStorage.getItem(STORAGE_KEY.IS_SAVE_LOGIN);
+
+      const getStorageValue = (key: STORAGE_KEY) =>
+        cookies.get(key) ?? localStorage.getItem(key);
+
+      const userId = getStorageValue(STORAGE_KEY.USER_ID);
+
+      return set({
+        userId,
+        userName: getStorageValue(STORAGE_KEY.USER_NAME),
+        profileImage: getStorageValue(STORAGE_KEY.PROFILE_IMAGE),
+        isSaveLogin: saveLogin ? JSON.parse(saveLogin) : true,
+        isBinded: true,
+        isLogin: !!userId,
+      });
     },
 
-    userName,
+    userId: null,
+    setUserId: (userId) => {
+      saveStorageValue(STORAGE_KEY.USER_ID, userId);
+
+      return set({ userId, isLogin: !!userId });
+    },
+
+    userName: null,
     setUserName: (userName) => {
-      const { isSaveLogin } = get();
-      if (!isSaveLogin && userName)
-        localStorage.setItem(LOCAL_STORAGE_KEY.USER_NAME, userName);
-      else localStorage.removeItem(LOCAL_STORAGE_KEY.USER_NAME);
+      saveStorageValue(STORAGE_KEY.USER_NAME, userName);
+
       return set({ userName });
     },
 
-    profileImage,
+    profileImage: null,
     setProfileImage: (profileImage) => {
-      const { isSaveLogin } = get();
-      if (!isSaveLogin && profileImage)
-        localStorage.setItem(LOCAL_STORAGE_KEY.PROFILE_IMAGE, profileImage);
-      else localStorage.removeItem(LOCAL_STORAGE_KEY.PROFILE_IMAGE);
+      saveStorageValue(STORAGE_KEY.PROFILE_IMAGE, profileImage);
+
       return set({ profileImage });
     },
 
-    isSaveLogin: saveLogin ? JSON.parse(saveLogin) : true,
+    isSaveLogin: true,
     setIsSaveLogin: (isSaveLogin) => {
-      localStorage.setItem(
-        LOCAL_STORAGE_KEY.IS_SAVE_LOGIN,
-        String(isSaveLogin),
-      );
+      localStorage.setItem(STORAGE_KEY.IS_SAVE_LOGIN, String(isSaveLogin));
+
       return set({ isSaveLogin });
     },
 
-    isLogin: () => {
-      const { userId, userName } = get();
-
-      return !!(userId && userName);
-    },
+    isLogin: false,
   };
 }, Object.is);

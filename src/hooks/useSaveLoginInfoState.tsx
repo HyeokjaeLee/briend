@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 
 const SAVE_INFO_KEY = 'save-login-info';

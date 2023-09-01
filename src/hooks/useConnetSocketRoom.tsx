@@ -1,3 +1,5 @@
+'use client';
+
 import * as socketIO from 'socket.io-client';
 
 import { useEffect, useState } from 'react';

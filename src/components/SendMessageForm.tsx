@@ -41,8 +41,27 @@ export const SendMessageForm = ({
         onClick={async () => {
           if (message && user) {
             setIsLoading(true);
-            const { status } = await axios.post(
+            /**
+         *     const { status } = await axios.post(
               '/api/chat',
+              {
+                message: {
+                  [language]: message,
+                },
+                user,
+                language,
+              } satisfies Chatting,
+              {                
+                headers: {
+                  Authorization: id,
+                },
+              },
+            );
+         */
+            const status = 201;
+
+            const { status: status2 } = await axios.post(
+              '/api/message',
               {
                 message: {
                   [language]: message,
@@ -52,7 +71,7 @@ export const SendMessageForm = ({
               } satisfies Chatting,
               {
                 headers: {
-                  Authorization: id,
+                  id,
                 },
               },
             );
