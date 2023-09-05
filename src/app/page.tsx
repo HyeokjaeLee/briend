@@ -2,7 +2,8 @@ import Image from 'next/image';
 
 import Background from '@/assets/Background.jpeg';
 import Logo from '@/assets/Logo.svg';
-import { KakaoLoginButton, SaveLoginSwitch } from '@/components';
+import { KakaoLoginButton } from '@/components/KakaoLoginButton';
+import { SaveLoginSwitch } from '@/components/SaveLoginSwitch';
 
 const HomePage = () => (
   <main className="w-full">

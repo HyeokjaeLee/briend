@@ -1,5 +1,7 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
+import { parseCookie } from '@/utils';
+
 enum STORAGE_KEY {
   USER_ID = 'user-id',
   USER_NAME = 'user-name',
@@ -49,13 +51,7 @@ export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
 
       if (isBinded) return;
 
-      const cookies = new Map(
-        document.cookie.split('; ').map((cookie) => {
-          const [key, value] = cookie.split('=');
-
-          return [key, value];
-        }),
-      );
+      const cookies = parseCookie(document.cookie);
 
       const saveLogin = localStorage.getItem(STORAGE_KEY.IS_SAVE_LOGIN);
 

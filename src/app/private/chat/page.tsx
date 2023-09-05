@@ -1,53 +1,54 @@
 'use client';
 
-import jwt from 'jsonwebtoken';
-import PusherJs from 'pusher-js';
 import { shallow } from 'zustand/shallow';
 
-import React, { useEffect } from 'react';
-
-import { ChattingList, SendMessageForm } from '@/components';
+import { AddChattingRoomModal } from '@/components/AddChattingRoomModal';
+import { EmptyChattingListTemplate } from '@/components/EmptyChattingListTemplate';
+import { SendMessageForm } from '@/components/SendMessageForm';
 import { LANGUAGE } from '@/constants';
-import { useCreateSocketRoom, useConnetSocketRoom } from '@/hooks';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/hooks/useAuthStore';
+import { useBindChattingRoomInfo } from '@/hooks/useBindChattingRoomInfo';
 
 const ChatPage = () => {
-  const [id, user] = useAuthStore(
-    (state) => [state.id, state.userName],
-    shallow,
-  );
-  const { isRoomCreated } = useCreateSocketRoom(id);
+  const [isLogin] = useAuthStore((state) => [state.isLogin], shallow);
 
-  const { isConnected, room } = useConnetSocketRoom({
-    isRoomCreated,
-    id,
-  });
+  const { isChattingRoomExist } = useBindChattingRoomInfo();
 
-  useEffect(() => {
-    const { NEXT_PUBLIC_PUSHER_KEY } = process.env;
-    if (id && NEXT_PUBLIC_PUSHER_KEY) {
+  /**
+   *   useEffect(() => {
+    if (hostId && userName) {
+      const { NEXT_PUBLIC_PUSHER_KEY } = process.env;
+      if (!NEXT_PUBLIC_PUSHER_KEY) return;
+
       const pusher = new PusherJs(NEXT_PUBLIC_PUSHER_KEY, {
         cluster: 'ap3',
       });
 
-      const channel = pusher.subscribe('message');
-      channel.bind(id, (data) => {
+      const receiveChannel = pusher.subscribe(`${hostId}-${userName}`);
+      receiveChannel.bind('send-message', (data) => {
         alert(JSON.stringify(data));
       });
     }
-  }, [id]);
+  }, [hostId, userName]);
+   */
 
-  return isConnected ? (
+  return isLogin ? (
     <main className="relative">
-      <ChattingList
-        id={id}
-        user={user}
-        room={room}
-        language={LANGUAGE.KOREAN}
-      />
-      <SendMessageForm id={id} user={user} language={LANGUAGE.KOREAN} />
+      {isChattingRoomExist ? <></> : <EmptyChattingListTemplate />}
+      <AddChattingRoomModal />
+      <SendMessageForm from="test" to="test2" language={LANGUAGE.KOREAN} />
     </main>
   ) : null;
 };
 
 export default ChatPage;
+
+/**
+     *    <ChattingList
+        id={id}
+        user={user}
+        room={room}
+        language={LANGUAGE.KOREAN}
+      />
+     
+     */

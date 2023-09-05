@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 
-import { useAuthStore } from '@/hooks';
+import { useAuthStore } from '@/hooks/useAuthStore';
 import { Tab } from '@hyeokjaelee/pastime-ui';
 
 export const LayoutTab = () => {

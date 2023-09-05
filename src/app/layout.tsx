@@ -3,7 +3,9 @@ import '@hyeokjaelee/pastime-ui/style.css';
 
 import type { Metadata } from 'next';
 
-import { GlobalProvider, LayoutHeader } from '@/components';
+import { GlobalMenu } from '@/components/GlobalMenu';
+import { GlobalNav } from '@/components/GlobalNav';
+import { GlobalProvider } from '@/components/GlobalProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -18,9 +20,10 @@ const Layout = ({ children }: LayoutProps) => (
   <html lang="en">
     <GlobalProvider>
       <body className="bg-slate-700">
-        <LayoutHeader />
+        <GlobalNav />
         {children}
       </body>
+      <GlobalMenu />
     </GlobalProvider>
   </html>
 );

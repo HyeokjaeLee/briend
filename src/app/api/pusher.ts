@@ -1,14 +1,15 @@
 import Pusher from 'pusher';
 
-const { PUSHER_APP_ID, PUSHER_KEY, PUSHER_SECRET } = process.env;
+const appId = process.env.PUSHER_APP_ID;
+const key = process.env.NEXT_PUBLIC_PUSHER_KEY;
+const secret = process.env.PUSHER_SECRET;
 
-if (!PUSHER_APP_ID || !PUSHER_KEY || !PUSHER_SECRET)
-  throw new Error('Missing PUSHER env variables');
+if (!appId || !key || !secret) throw new Error('Missing PUSHER env variables');
 
 export const pusher = new Pusher({
-  appId: PUSHER_APP_ID,
-  key: PUSHER_KEY,
-  secret: PUSHER_SECRET,
+  appId,
+  key,
+  secret,
   cluster: 'ap3',
   useTLS: true,
 });

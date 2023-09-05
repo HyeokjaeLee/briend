@@ -12,7 +12,12 @@ export interface Message {
 }
 
 export const POST = async (req: NextRequest) => {
-  const data: Message = await req.json();
+  console.log('message/route.ts');
+  return NextResponse.json({ message: 'hello world' });
+};
+
+/**
+ *   const data: Message = await req.json();
 
   const id = req.headers.get('id');
 
@@ -22,11 +27,10 @@ export const POST = async (req: NextRequest) => {
     });
   }
 
-  /**
- *   pusher.trigger('message', 'my-event', {
+ pusher.trigger('message', 'my-event', {
     message: 'hello world',
   });
- */
+
 
   return NextResponse.json(data);
-};
+ */

@@ -2,14 +2,17 @@
 
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { Menu } from 'react-feather';
 
 import LogoWithText from '@/assets/LogoWithText.svg';
+import { useLayoutStore } from '@/hooks/useLayoutStore';
+import { Button } from '@hyeokjaelee/pastime-ui';
 
 import { LayoutTab } from './LayoutTab';
-import { Menu } from './Menu';
 
-export const LayoutHeader = () => {
+export const GlobalNav = () => {
   const router = useRouter();
+  const setMenuOpened = useLayoutStore((state) => state.setGlobalMenuOpened);
   return (
     <header
       className={`bg-black px-5 flex items-center justify-between h-nav z-10 sticky top-0`}
@@ -23,7 +26,11 @@ export const LayoutHeader = () => {
         />
         <LayoutTab />
       </div>
-      <Menu />
+      <Button
+        theme="clear"
+        onClick={() => setMenuOpened(true)}
+        icon={<Menu />}
+      />
     </header>
   );
 };
