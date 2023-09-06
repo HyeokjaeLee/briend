@@ -2,7 +2,7 @@
 
 import { shallow } from 'zustand/shallow';
 
-import { useAuthStore } from '@/hooks';
+import { useAuthStore } from '@/hooks/useAuthStore';
 import { Switch } from '@hyeokjaelee/pastime-ui';
 
 export const SaveLoginSwitch = () => {

@@ -7,12 +7,14 @@ import { EmptyChattingListTemplate } from '@/components/EmptyChattingListTemplat
 import { SendMessageForm } from '@/components/SendMessageForm';
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/hooks/useAuthStore';
-import { useBindChattingRoomInfo } from '@/hooks/useBindChattingRoomInfo';
+import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
 
 const ChatPage = () => {
   const [isLogin] = useAuthStore((state) => [state.isLogin], shallow);
 
-  const { isChattingRoomExist } = useBindChattingRoomInfo();
+  const isChattingRoomExist = useChattingRoomStore(
+    (state) => state.chattingRoomMap.size > 0,
+  );
 
   /**
    *   useEffect(() => {

@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { CheckCircle } from 'react-feather';
 
 import Kakao from '@/assets/Kakao.png';
-import { useAuthStore, useKakaoLogin } from '@/hooks';
+import { useAuthStore } from '@/hooks/useAuthStore';
+import { useKakaoLogin } from '@/hooks/useKakaoLogin';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 export const KakaoLoginButton = () => {

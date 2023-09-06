@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { shallow } from 'zustand/shallow';
 
 import { useState } from 'react';
 
 import { LANGUAGE } from '@/constants';
 import type { Message } from '@/types';
 
-import { useChattingStore } from './useChattingStore';
+import { useChattingRoomStore } from './useChattingRoomStore';
 
 export interface UseSendMessageParams {
   from: string;
@@ -21,17 +20,13 @@ export const useSendMessage = ({
 }: UseSendMessageParams) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  const [isBinded, hostId] = useChattingStore(
-    (state) => [state.isBinded, state.hostId],
-    shallow,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
 
   return {
     sendMessage: async (message: string) => {
-      if (!isBinded) throw new Error('채팅방 정보가 바인딩이 되지 않았습니다.');
       setIsLoading(true);
 
-      await axios.post(`/api/chat/${hostId}/send`, {
+      await axios.post(`/api/chat/${chattingRoom?.hostId}/send`, {
         meta: {
           from,
           to,

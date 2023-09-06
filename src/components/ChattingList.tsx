@@ -1,10 +1,11 @@
+/*
 'use client';
 
 import React, { useEffect, useRef } from 'react';
 
 import type { LANGUAGE } from '@/constants';
 import { useChattingList } from '@/hooks';
-import type { UseChattingListParams } from '@/hooks';
+import type { UseChattingListParams } from '@/hooks/useCh';
 
 interface ChattingListProps extends UseChattingListParams {
   language: LANGUAGE;
@@ -41,3 +42,5 @@ export const ChattingList = ({
     </ul>
   );
 };
+
+*/

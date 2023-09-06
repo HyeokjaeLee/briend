@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingStore } from '@/hooks/useChattingStore';
+import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
 import { useGetChattingRoomToken } from '@/hooks/useGetChattingRoomToken';
 import { useLayoutStore } from '@/hooks/useLayoutStore';
-import { chattingChannelName } from '@/utils';
+import { decodeChattingRoomToken } from '@/utils';
 import {
   Button,
   Modal,
@@ -46,45 +46,48 @@ export const AddChattingRoomModal = () => {
     shallow,
   );
   const [guestName, setGuestName] = useState('새친구');
-  const pusher = useChattingStore((state) => state.pusher);
+
   const { toast } = useToast();
 
   const { isLoading, token, getToken, resetToken } = useGetChattingRoomToken();
 
-  const addChattingRoomToken = useChattingStore(
-    (state) => state.addChattingRoomToken,
-  );
+  const [channel, chattingRoomMap, setChattingRoomMap, setChattingRoom] =
+    useChattingRoomStore(
+      (state) => [
+        state.channel,
+        state.chattingRoomMap,
+        state.setChattingRoomMap,
+        state.setChattingRoom,
+      ],
+      shallow,
+    );
 
   useEffect(() => {
-    if (pusher && token && guestName && hostId && opened) {
-      const chattingChannel = pusher.subscribe(
-        chattingChannelName({
-          guestName,
-          hostId,
-        }),
-      );
+    if (channel) {
+      channel.bind('join-channel', (token: string) => {
+        const chattingRoom = decodeChattingRoomToken(token);
+        if (chattingRoom) {
+          chattingRoomMap.set(token, chattingRoom);
+          setChattingRoom(token);
+          setChattingRoomMap(chattingRoomMap);
+          toast({
+            message: `${guestName}님과 연결되었어요.`,
+          });
+        }
 
-      chattingChannel.bind('join-channel', (token: string) => {
         setOpened(false);
         resetToken();
-        addChattingRoomToken(token);
-        toast({
-          message: `${guestName}님과 연결되었어요.`,
-        });
       });
-
-      return () => chattingChannel.unsubscribe();
     }
   }, [
-    addChattingRoomToken,
+    channel,
+    chattingRoomMap,
     guestName,
-    hostId,
-    opened,
-    pusher,
     resetToken,
+    setChattingRoom,
+    setChattingRoomMap,
     setOpened,
     toast,
-    token,
   ]);
 
   const [guestTitle, guestDescription] = (() => {

@@ -10,7 +10,7 @@ export const LayoutTab = () => {
   const pathname = usePathname();
   const router = useRouter();
   return (
-    <Tab size="medium">
+    <Tab size="medium" fixedDarkMode="dark">
       <Tab.Item
         disabled={!isLogin}
         active={pathname === '/private/chat'}

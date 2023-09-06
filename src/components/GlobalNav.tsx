@@ -20,6 +20,7 @@ export const GlobalNav = () => {
       <div className="flex items-center gap-1">
         <Image
           src={LogoWithText}
+          priority
           alt="logo"
           className="h-8 w-28 cursor-pointer"
           onClick={() => router.push('/')}
@@ -29,6 +30,7 @@ export const GlobalNav = () => {
       <Button
         theme="clear"
         onClick={() => setMenuOpened(true)}
+        fixedDarkMode="dark"
         icon={<Menu />}
       />
     </header>

@@ -1,11 +1,8 @@
 'use client';
 
-import { shallow } from 'zustand/shallow';
-
-import { useEffect } from 'react';
-
-import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingStore } from '@/hooks/useChattingStore';
+import { useBindAuthStore } from '@/hooks/useBindAuthStore';
+import { useBindChattingRoomStore } from '@/hooks/useBindChattingRoomStore';
+import { useBindDarkMode } from '@/hooks/useBindDarkMode';
 import { usePathAccessController } from '@/hooks/usePathAccessController';
 import { Toast } from '@hyeokjaelee/pastime-ui';
 
@@ -16,34 +13,13 @@ interface GlobalProviderProps {
 }
 
 export const GlobalProvider = ({ children }: GlobalProviderProps) => {
-  const [bindAuthStoreFromLocalStorage, isBinded, isLogin] = useAuthStore(
-    (state) => [
-      state.bindAuthStoreFromLocalStorage,
-      state.isBinded,
-      state.isLogin,
-    ],
-    shallow,
-  );
+  const { isAuthBined } = useBindAuthStore();
 
-  usePathAccessController({
-    isBinded,
-    isLogin,
-  });
+  usePathAccessController(isAuthBined);
 
-  const bindChattingStoreFromLocalStorage = useChattingStore(
-    (state) => state.bindChattingStoreFromLocalStorage,
-    shallow,
-  );
+  useBindChattingRoomStore();
 
-  useEffect(
-    () => bindChattingStoreFromLocalStorage(),
-    [bindChattingStoreFromLocalStorage],
-  );
-
-  useEffect(
-    () => bindAuthStoreFromLocalStorage(),
-    [bindAuthStoreFromLocalStorage],
-  );
+  useBindDarkMode();
 
   return (
     <Toast.Provider>

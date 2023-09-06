@@ -27,5 +27,4 @@ const Layout = ({ children }: LayoutProps) => (
     </GlobalProvider>
   </html>
 );
-
 export default Layout;

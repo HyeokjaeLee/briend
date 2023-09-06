@@ -6,13 +6,11 @@ import { Clock, Lock, Trash2, UserPlus } from 'react-feather';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingRoomInfoInfoList } from '@/hooks/useChattingRoomInfoInfoList';
+import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
 import { useLayoutStore } from '@/hooks/useLayoutStore';
 import { Button, Modal } from '@hyeokjaelee/pastime-ui';
 
 export const ChattingHistoryModal = () => {
-  const chattingRoomInfoList = useChattingRoomInfoInfoList();
-
   const [opened, setOpened, setAddChattingRoomModalOpened] = useLayoutStore(
     (state) => [
       state.chattingHistoryModalOpened,
@@ -20,6 +18,12 @@ export const ChattingHistoryModal = () => {
       state.setAddChattingRoomModalOpened,
     ],
   );
+
+  const chattingRoomMap = useChattingRoomStore(
+    (state) => state.chattingRoomMap,
+  );
+
+  const chattingRoomTokenList = Object.keys(chattingRoomMap);
 
   const userId = useAuthStore((state) => state.userId);
 
@@ -40,12 +44,16 @@ export const ChattingHistoryModal = () => {
     >
       <Modal.Header closeButton>이전 대화</Modal.Header>
       <ul className="p-5 max-h-[calc(100vh-180px)] overflow-auto flex-1">
-        {chattingRoomInfoList?.map((chattingRoom, index) => {
-          const isExpired = chattingRoom.end < nowTime;
+        {chattingRoomTokenList.map((token, index) => {
+          const chattingRoom = chattingRoomMap.get(token);
+
+          if (!chattingRoom) return null;
+
+          const isExpired = chattingRoom.endAt < nowTime;
           const leftHour = `${Math.floor(
-            (chattingRoom.end.getTime() - nowTime.getTime()) / 1000 / 60 / 60,
+            (chattingRoom.endAt.getTime() - nowTime.getTime()) / 1000 / 60 / 60,
           )}`;
-          const created = dayjs(chattingRoom.start).format('YY/MM/DD HH:mm');
+          const created = dayjs(chattingRoom.startAt).format('YY/MM/DD HH:mm');
           return (
             <li
               key={index}
@@ -54,7 +62,7 @@ export const ChattingHistoryModal = () => {
                 router.push(
                   `/${
                     userId === chattingRoom.hostId ? 'private' : 'guest'
-                  }/chat?token=${chattingRoom.token}`,
+                  }/chat?token=${token}`,
                 );
                 setOpened(false);
               }}

@@ -1,20 +1,16 @@
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
-interface PathAccessControllerParams {
-  isBinded: boolean;
-  isLogin: boolean;
-}
+import { useAuthStore } from './useAuthStore';
 
-export const usePathAccessController = ({
-  isBinded,
-  isLogin,
-}: PathAccessControllerParams) => {
+export const usePathAccessController = (isAuthBined: boolean) => {
   const router = useRouter();
   const pathname = usePathname();
   const isPrivatePath = pathname?.split('/')[1] === 'private';
 
+  const isLogin = useAuthStore((state) => state.isLogin);
+
   useEffect(() => {
-    if (isBinded && !isLogin && isPrivatePath) router.replace('/');
-  }, [isBinded, isLogin, isPrivatePath, router]);
+    if (isAuthBined && !isLogin && isPrivatePath) router.replace('/');
+  }, [isLogin, isPrivatePath, router, isAuthBined]);
 };
