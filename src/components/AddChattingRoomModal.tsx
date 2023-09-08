@@ -4,11 +4,11 @@ import { shallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
-import { LANGUAGE } from '@/constants';
-import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
-import { useGetChattingRoomToken } from '@/hooks/useGetChattingRoomToken';
-import { useLayoutStore } from '@/hooks/useLayoutStore';
+import { useGetChattingRoomToken } from '@/app/invite/hooks/useGetChattingRoomToken';
+import { CHANNEL_EVENT, LANGUAGE } from '@/constants';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useGlobalStore } from '@/store/useGlobalStore';
 import { decodeChattingRoomToken } from '@/utils';
 import {
   Button,
@@ -18,7 +18,7 @@ import {
   useToast,
 } from '@hyeokjaelee/pastime-ui';
 
-import { QR } from './QR';
+import { QR } from '../app/invite/[token]/components/InviteQR';
 
 const OPTIONS = [
   {
@@ -32,7 +32,7 @@ const OPTIONS = [
 ];
 
 export const AddChattingRoomModal = () => {
-  const [opened, setOpened] = useLayoutStore(
+  const [opened, setOpened] = useGlobalStore(
     (state) => [
       state.addChattingRoomModalOpened,
       state.setAddChattingRoomModalOpened,
@@ -46,10 +46,11 @@ export const AddChattingRoomModal = () => {
     shallow,
   );
   const [guestName, setGuestName] = useState('새친구');
+  const [newToken, setNewToken] = useState<string | null>(null);
 
   const { toast } = useToast();
 
-  const { isLoading, token, getToken, resetToken } = useGetChattingRoomToken();
+  const { isLoading, getToken } = useGetChattingRoomToken();
 
   const [channel, chattingRoomMap, setChattingRoomMap, setChattingRoom] =
     useChattingRoomStore(
@@ -64,7 +65,7 @@ export const AddChattingRoomModal = () => {
 
   useEffect(() => {
     if (channel) {
-      channel.bind('join-channel', (token: string) => {
+      channel.bind(CHANNEL_EVENT.JOIN_CHANNEL, (token: string) => {
         const chattingRoom = decodeChattingRoomToken(token);
         if (chattingRoom) {
           chattingRoomMap.set(token, chattingRoom);
@@ -78,6 +79,10 @@ export const AddChattingRoomModal = () => {
         setOpened(false);
         resetToken();
       });
+
+      return () => {
+        channel.unbind(CHANNEL_EVENT.JOIN_CHANNEL);
+      };
     }
   }, [
     channel,
@@ -115,12 +120,12 @@ export const AddChattingRoomModal = () => {
       <Modal.Header closeButton />
       <section className="p-3 flex flex-col items-center">
         <h1 className="font-bold text-3xl text-left mb-16">
-          {token ? guestTitle : '친구 초대'}
+          {newToken ? guestTitle : '친구 초대'}
         </h1>
-        {token ? (
+        {newToken ? (
           <>
             <QR
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/guest/chat?token=${token}`}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}/guest/chat?token=${newToken}`}
               alt="guest-qr"
               size={350}
             />
@@ -133,12 +138,14 @@ export const AddChattingRoomModal = () => {
               e.preventDefault();
 
               if (hostId && hostName) {
-                getToken({
+                const newToken = await getToken({
                   hostId,
                   hostName,
                   guestName,
                   guestLanguage,
                 });
+
+                setNewToken(newToken);
               }
             }}
           >

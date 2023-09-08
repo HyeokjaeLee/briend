@@ -6,8 +6,8 @@ import { AddChattingRoomModal } from '@/components/AddChattingRoomModal';
 import { EmptyChattingListTemplate } from '@/components/EmptyChattingListTemplate';
 import { SendMessageForm } from '@/components/SendMessageForm';
 import { LANGUAGE } from '@/constants';
-import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 
 const ChatPage = () => {
   const [isLogin] = useAuthStore((state) => [state.isLogin], shallow);

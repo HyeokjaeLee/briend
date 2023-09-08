@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import type { DecodedChattingRoomToken } from '@api/chatting-room/join';
+import { ChattingRoom, DecodedChattingRoomToken } from '@/types';
 
 export const decodeChattingRoomToken = (token: string) => {
   const decodedToken = jwt.decode(token) as DecodedChattingRoomToken | null;
@@ -13,5 +13,5 @@ export const decodeChattingRoomToken = (token: string) => {
     ...chattingRoomInfo,
     startAt: new Date(iat * 1000),
     endAt: new Date(exp * 1000),
-  };
+  } satisfies ChattingRoom;
 };

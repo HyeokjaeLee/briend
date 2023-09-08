@@ -1,10 +1,10 @@
 import { UserPlus } from 'react-feather';
 
-import { useLayoutStore } from '@/hooks/useLayoutStore';
+import { useGlobalStore } from '@/store/useGlobalStore';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 export const EmptyChattingListTemplate = () => {
-  const setAddChattingRoomModalOpened = useLayoutStore(
+  const setAddChattingRoomModalOpened = useGlobalStore(
     (state) => state.setAddChattingRoomModalOpened,
   );
 

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { LANGUAGE } from '@/constants';
 import type { Message } from '@/types';
 
-import { useChattingRoomStore } from './useChattingRoomStore';
+import { useChattingRoomStore } from '../store/useChattingRoomStore';
 
 export interface UseSendMessageParams {
   from: string;

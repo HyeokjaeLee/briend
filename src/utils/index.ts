@@ -4,3 +4,4 @@ export * from './stringToUnicode';
 export * from './chattingChannelName';
 export * from './isSeverSide';
 export * from './decodeCattingRoomToken';
+export * from './msToTime';

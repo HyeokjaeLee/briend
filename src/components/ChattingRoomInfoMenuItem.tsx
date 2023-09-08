@@ -1,4 +1,4 @@
-import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 
 export const ChattingRoomInfoMenuItem = () => {
   const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);

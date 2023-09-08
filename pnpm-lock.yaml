@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@hyeokjaelee/pastime-ui':
-    specifier: ^1.4.32
-    version: 1.4.32(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.4.33
+    version: 1.4.33(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.5.6
     version: 20.5.6
@@ -126,7 +126,7 @@ packages:
       '@babel/helper-compilation-targets': 7.22.15
       '@babel/helper-module-transforms': 7.22.15(@babel/core@7.22.15)
       '@babel/helpers': 7.22.15
-      '@babel/parser': 7.22.15
+      '@babel/parser': 7.22.16
       '@babel/template': 7.22.15
       '@babel/traverse': 7.22.15
       '@babel/types': 7.22.15
@@ -249,8 +249,8 @@ packages:
       chalk: 2.4.2
       js-tokens: 4.0.0
 
-  /@babel/parser@7.22.15:
-    resolution: {integrity: sha512-RWmQ/sklUN9BvGGpCDgSubhHWfAx24XDTDObup4ffvxaYsptOg2P3KG0j+1eWKLxpkX0j0uHxmpq2Z1SP/VhxA==}
+  /@babel/parser@7.22.16:
+    resolution: {integrity: sha512-+gPfKv8UWeKKeJTUxe59+OobVcrYHETCsORl61EmSkmgymguYk/X5bp7GuUIXaFsc6y++v8ZxPsLSSuujqDphA==}
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
@@ -268,7 +268,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/code-frame': 7.22.13
-      '@babel/parser': 7.22.15
+      '@babel/parser': 7.22.16
       '@babel/types': 7.22.15
 
   /@babel/traverse@7.22.15:
@@ -281,7 +281,7 @@ packages:
       '@babel/helper-function-name': 7.22.5
       '@babel/helper-hoist-variables': 7.22.5
       '@babel/helper-split-export-declaration': 7.22.6
-      '@babel/parser': 7.22.15
+      '@babel/parser': 7.22.16
       '@babel/types': 7.22.15
       debug: 4.3.4
       globals: 11.12.0
@@ -386,8 +386,8 @@ packages:
       - supports-color
     dev: true
 
-  /@hyeokjaelee/pastime-ui@1.4.32(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-m9VeZ1fl2usrcqC4seDN1K5o0maNgy2I9R/Tm9KghcliBWN8adFBMj2ZPWDQN0f3IcrQjwbaAkHZFeLNq8nGFg==}
+  /@hyeokjaelee/pastime-ui@1.4.33(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-ENzpjuNoMJ8hAjUpAnwNkmzgqri0o+PNvlupyT9qf7Ym9r3ADSnX5GkE9MMj23Kj358mYymSzVl8WKCC46R2MQ==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -936,8 +936,8 @@ packages:
       get-intrinsic: 1.2.1
     dev: true
 
-  /array.prototype.flat@1.3.1:
-    resolution: {integrity: sha512-roTU0KWIOmJ4DRLmwKd19Otg0/mT3qPNt0Qb3GWW8iObuZXxrjB/pzn0R3hqpRSWg4HCwqx+0vwOnWnvlOyeIA==}
+  /array.prototype.flat@1.3.2:
+    resolution: {integrity: sha512-djYB+Zx2vLewY8RWlNCUdHjDXs2XOgm602S9E7P/UpHgfeHL00cRiIF+IN/G/aUJ7kGPb6yO/ErDI5V2s8iycA==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
@@ -946,8 +946,8 @@ packages:
       es-shim-unscopables: 1.0.0
     dev: true
 
-  /array.prototype.flatmap@1.3.1:
-    resolution: {integrity: sha512-8UGn9O1FDVvMNB0UlLv4voxRMze7+FpHyF5mSMRjWHUMlpoDViniy05870VlxhfgTnLbpuwTzvD76MTtWxB/mQ==}
+  /array.prototype.flatmap@1.3.2:
+    resolution: {integrity: sha512-Ewyx0c9PmpcsByhSW4r+9zDU7sGjFc86qf/kKtuSCRdhfbk0SNLLkaT5qvcHnRGgc5NP/ly/y+qkXkqONX54CQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
@@ -1001,7 +1001,7 @@ packages:
       postcss: ^8.1.0
     dependencies:
       browserslist: 4.21.10
-      caniuse-lite: 1.0.30001527
+      caniuse-lite: 1.0.30001528
       fraction.js: 4.3.6
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -1014,8 +1014,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /axe-core@4.7.2:
-    resolution: {integrity: sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==}
+  /axe-core@4.8.0:
+    resolution: {integrity: sha512-ZtlVZobOeDQhb/y2lMK6mznDw7TJHDNcKx5/bbBkFvArIQ5CVFhSI6hWWQnMx9I8cNmNmZ30wpDyOC2E2nvgbQ==}
     engines: {node: '>=4'}
     dev: true
 
@@ -1060,8 +1060,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001527
-      electron-to-chromium: 1.4.508
+      caniuse-lite: 1.0.30001528
+      electron-to-chromium: 1.4.510
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.10)
 
@@ -1099,8 +1099,8 @@ packages:
     engines: {node: '>= 6'}
     dev: false
 
-  /caniuse-lite@1.0.30001527:
-    resolution: {integrity: sha512-YkJi7RwPgWtXVSgK4lG9AHH57nSzvvOp9MesgXmw4Q7n0C3H04L0foHqfxcmSAm5AcWb8dW9AYj2tR7/5GnddQ==}
+  /caniuse-lite@1.0.30001528:
+    resolution: {integrity: sha512-0Db4yyjR9QMNlsxh+kKWzQtkyflkG/snYheSzkjmvdEtEXB1+jt7A2HmSEiO6XIJPIbo92lHNGNySvE5pZcs5Q==}
 
   /chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
@@ -1284,8 +1284,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /electron-to-chromium@1.4.508:
-    resolution: {integrity: sha512-FFa8QKjQK/A5QuFr2167myhMesGrhlOBD+3cYNxO9/S4XzHEXesyTD/1/xF644gC8buFPz3ca6G1LOQD0tZrrg==}
+  /electron-to-chromium@1.4.510:
+    resolution: {integrity: sha512-xPfLIPFcN/WLXBpQ/K4UgE98oUBO5Tia6BD4rkSR0wE7ep/PwBVlgvPJQrIBpmJGVAmUzwPKuDbVt9XV6+uC2g==}
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}
@@ -1703,8 +1703,8 @@ packages:
       '@typescript-eslint/parser': 5.62.0(eslint@8.47.0)(typescript@5.2.2)
       array-includes: 3.1.7
       array.prototype.findlastindex: 1.2.3
-      array.prototype.flat: 1.3.1
-      array.prototype.flatmap: 1.3.1
+      array.prototype.flat: 1.3.2
+      array.prototype.flatmap: 1.3.2
       debug: 3.2.7
       doctrine: 2.1.0
       eslint: 8.47.0
@@ -1738,8 +1738,8 @@ packages:
       '@typescript-eslint/parser': 5.62.0(eslint@8.47.0)(typescript@5.2.2)
       array-includes: 3.1.7
       array.prototype.findlastindex: 1.2.3
-      array.prototype.flat: 1.3.1
-      array.prototype.flatmap: 1.3.1
+      array.prototype.flat: 1.3.2
+      array.prototype.flatmap: 1.3.2
       debug: 3.2.7
       doctrine: 2.1.0
       eslint: 8.47.0
@@ -1769,9 +1769,9 @@ packages:
       '@babel/runtime': 7.22.15
       aria-query: 5.3.0
       array-includes: 3.1.7
-      array.prototype.flatmap: 1.3.1
+      array.prototype.flatmap: 1.3.2
       ast-types-flow: 0.0.7
-      axe-core: 4.7.2
+      axe-core: 4.8.0
       axobject-query: 3.2.1
       damerau-levenshtein: 1.0.8
       emoji-regex: 9.2.2
@@ -1859,7 +1859,7 @@ packages:
       eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
     dependencies:
       array-includes: 3.1.7
-      array.prototype.flatmap: 1.3.1
+      array.prototype.flatmap: 1.3.2
       array.prototype.tosorted: 1.1.1
       doctrine: 2.1.0
       es-iterator-helpers: 1.0.14
@@ -2586,7 +2586,7 @@ packages:
     engines: {node: '>=4.0'}
     dependencies:
       array-includes: 3.1.7
-      array.prototype.flat: 1.3.1
+      array.prototype.flat: 1.3.2
       object.assign: 4.1.4
       object.values: 1.1.7
     dev: true
@@ -2777,7 +2777,7 @@ packages:
       '@next/env': 13.4.19
       '@swc/helpers': 0.5.1
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001527
+      caniuse-lite: 1.0.30001528
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)

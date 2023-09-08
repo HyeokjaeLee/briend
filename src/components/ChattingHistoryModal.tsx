@@ -5,13 +5,13 @@ import { useEffect, useState } from 'react';
 import { Clock, Lock, Trash2, UserPlus } from 'react-feather';
 
 import { LANGUAGE } from '@/constants';
-import { useAuthStore } from '@/hooks/useAuthStore';
-import { useChattingRoomStore } from '@/hooks/useChattingRoomStore';
-import { useLayoutStore } from '@/hooks/useLayoutStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useGlobalStore } from '@/store/useGlobalStore';
 import { Button, Modal } from '@hyeokjaelee/pastime-ui';
 
 export const ChattingHistoryModal = () => {
-  const [opened, setOpened, setAddChattingRoomModalOpened] = useLayoutStore(
+  const [opened, setOpened, setAddChattingRoomModalOpened] = useGlobalStore(
     (state) => [
       state.chattingHistoryModalOpened,
       state.setChattingHistoryModalOpened,
@@ -23,7 +23,9 @@ export const ChattingHistoryModal = () => {
     (state) => state.chattingRoomMap,
   );
 
-  const chattingRoomTokenList = Object.keys(chattingRoomMap);
+  const chattingRoomTokenList = [...chattingRoomMap.keys()];
+
+  console.log(chattingRoomTokenList);
 
   const userId = useAuthStore((state) => state.userId);
 
