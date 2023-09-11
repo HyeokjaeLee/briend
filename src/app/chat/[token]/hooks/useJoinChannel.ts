@@ -1,49 +1,67 @@
 import axios from 'axios';
-import { shallow } from 'zustand/shallow';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
-import { useAuthStore } from '@/store/useAuthStore';
+import { CHANNEL_EVENT, LANGUAGE } from '@/constants';
 import { useChattingRoomStore } from '@/store/useChattingRoomStore';
-import { decodeChattingRoomToken } from '@/utils';
+import { useToast } from '@hyeokjaelee/pastime-ui';
 
-export const useJoinChannel = (token: string) => {
-  const [userId, isBinded] = useAuthStore(
-    (state) => [state.userId, state.isBinded],
-    shallow,
-  );
+import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
 
-  const [setChannel, setChattingRoom, setMessageList] = useChattingRoomStore(
-    (state) => [state.setChannel, state.setChattingRoom, state.setMessageList],
-    shallow,
-  );
-
-  const decodedChattingRoomToken = useMemo(
-    () => decodeChattingRoomToken(token),
-    [token],
-  );
-
-  if (!decodedChattingRoomToken) throw new Error('잘못된 채팅 토큰입니다.');
-
-  const { hostId, guestName } = decodedChattingRoomToken;
+export const useJoinChannel = () => {
+  const chattingRoomInfo = useChattingRoomStore((state) => state.info);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // hostId !== userId
-    if (isBinded && hostId && guestName) {
+    if (chattingRoomInfo) {
+      const { token, isHost, userLanguage, opponentName, channel } =
+        chattingRoomInfo;
+
       (async () => {
-        const { status } = await axios.post(`${token}/api/join`);
+        const { status } = await axios.post(`${token}/api/join`, {
+          isHost,
+        } satisfies JoinPostParams);
 
-        setChattingRoom(decodedChattingRoomToken);
+        if (!isHost) {
+          switch (status) {
+            case 401: {
+              return toast({
+                // TODO: Toast type 추론 개선
+                message: {
+                  [LANGUAGE.KOREAN]: `이 채팅방은 만료되었어요.\n\n${opponentName}님에게 새로운 링크를 요청해주세요!`,
+                  // TODO: 번역 필요 Toast pre line으로 변경 필요
+                  [LANGUAGE.ENGLISH]: `이 채팅방은 만료되었어요.\n\n${opponentName}님에게 새로운 링크를 요청해주세요!`,
+                  [LANGUAGE.JAPANESE]: `이 채팅방은 만료되었어요.\n\n${opponentName}님에게 새로운 링크를 요청해주세요!`,
+                }[userLanguage],
+              });
+            }
+          }
+        }
       })();
-    }
-  }, [
-    decodedChattingRoomToken,
-    guestName,
-    hostId,
-    isBinded,
-    setChattingRoom,
-    token,
-  ]);
 
-  return decodeChattingRoomToken;
+      let isFirstShow = true;
+
+      channel.bind(CHANNEL_EVENT.JOIN_CHANNEL, (data: JoinPusherResponse) => {
+        if (data.isHost !== isHost) {
+          // TODO: 언어별 대응 필요
+
+          if (isFirstShow) {
+            toast({
+              message: {
+                [LANGUAGE.KOREAN]: `${opponentName}님과 대화를 시작해보세요!\n\n일본어로 말하면 번역해드려요!`,
+                // TODO: 번역 필요 Toast pre line으로 변경 필요
+                [LANGUAGE.ENGLISH]: `${opponentName}님과 대화를 시작해보세요!\n\n일본어로 말하면 번역해드려요!`,
+                [LANGUAGE.JAPANESE]: `${opponentName}님과 대화를 시작해보세요!\n\n일본어로 말하면 번역해드려요!`,
+              }[userLanguage],
+            });
+            isFirstShow = false;
+          } else {
+            toast({
+              message: `${opponentName}님이 채팅을 보고 있어요!`,
+            });
+          }
+        }
+      });
+    }
+  }, [chattingRoomInfo, toast]);
 };

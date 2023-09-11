@@ -14,7 +14,7 @@ export const useBindChattingRoomMap = () => {
   );
 
   useEffect(() => {
-    if (!isServerSide() || !userId) return;
+    if (isServerSide() || !userId) return;
 
     const chattingRoomTokenList: string[] = JSON.parse(
       localStorage.getItem(naming.chattingTokenList(userId)) ?? '[]',

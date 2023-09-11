@@ -59,14 +59,15 @@ const InvitePage = validationObserver(() => {
           const { isValid } = validate();
           if (!isValid) {
             toast({
-              message: '입력값을 확인해주세요',
+              message: '입력하지 않은 항목이 있어요!',
               type: 'fail',
             });
           }
         }}
         onSubmit={async (e) => {
           e.preventDefault();
-          if (hostId && hostName) {
+          const { isValid } = validate();
+          if (hostId && hostName && isValid) {
             const token = await getToken({
               ...inputValues,
               hostId,
@@ -109,7 +110,7 @@ const InvitePage = validationObserver(() => {
                   ({ guestName }) => guestName === value,
                 ) === -1;
 
-              if (!isUniq) return '이미 존재하는 이름입니다';
+              if (!isUniq) return '이미 사용중인 친구 이름이에요!';
 
               if (value.length > 10) return '이름은 10자 이하여야 합니다';
             }}

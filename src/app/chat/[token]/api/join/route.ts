@@ -13,11 +13,23 @@ interface Response {
   };
 }
 
-export const POST = async (_: NextRequest, { params }: Response) => {
+export interface JoinPostParams {
+  isHost: boolean;
+}
+
+export interface JoinPusherResponse {
+  token: string;
+  isHost: boolean;
+}
+
+export const POST = async (req: NextRequest, { params }: Response) => {
   try {
+    const { isHost }: JoinPostParams = await req.json();
+
     const { token } = params;
 
     const pusherSecret = process.env.PUSHER_SECRET;
+
     if (!pusherSecret) {
       return NextResponse.json('fail', {
         status: 500,
@@ -32,7 +44,10 @@ export const POST = async (_: NextRequest, { params }: Response) => {
       decoded.guestName,
     );
 
-    pusher.trigger(chattingChannel, CHANNEL_EVENT.JOIN_CHANNEL, token);
+    pusher.trigger(chattingChannel, CHANNEL_EVENT.JOIN_CHANNEL, {
+      token,
+      isHost,
+    });
 
     return NextResponse.json('success');
   } catch (e) {
@@ -42,6 +57,8 @@ export const POST = async (_: NextRequest, { params }: Response) => {
         statusText: '토큰이 만료되었습니다.',
       });
     }
+
+    console.log(e);
 
     return NextResponse.json('fail', {
       status: 500,

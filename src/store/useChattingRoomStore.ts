@@ -1,38 +1,46 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
-import type { ChattingRoom, Message } from '@/types';
+import type { LANGUAGE } from '@/constants';
+import type { Message } from '@/types';
 
 import type { Channel } from 'pusher-js';
 
-interface ChattingRoomStore {
-  channel?: Channel;
-  setChannel: (channel: Channel) => void;
+interface ChattingRoomInfo {
+  isHost: boolean;
+  token: string;
+  userName: string;
+  userLanguage: LANGUAGE;
+  opponentName: string;
+  opponentLanguage: LANGUAGE;
+  channel: Channel;
+  startAt: Date;
+  endAt: Date;
+}
 
-  chattingRoom?: ChattingRoom;
-  setChattingRoom: (chattingRoom: ChattingRoom) => void;
+interface ChattingRoomStore {
+  info?: ChattingRoomInfo | null;
+  setInfo: (info: ChattingRoomInfo | null) => void;
 
   messageList: Message[];
   setMessageList: (
-    token: string,
-    messageList: (prevMessageList: Message[]) => Message[],
+    messageList: Message[] | ((prevMessageList: Message[]) => Message[]),
   ) => void;
 }
 
 export const useChattingRoomStore = createWithEqualityFn<ChattingRoomStore>(
   (set) => ({
-    setChannel: (channel) => set({ channel }),
-
-    setChattingRoom: (chattingRoom) =>
-      set({
-        chattingRoom,
-      }),
+    setInfo: (info) => set({ info }),
 
     messageList: [],
-    setMessageList: (token, messageList) =>
-      set((state) => {
-        const newMessageList = messageList(state.messageList);
+    setMessageList: (messageList) =>
+      set(({ messageList: prevMessageList, info }) => {
+        const { token } = info ?? {};
+        const newMessageList =
+          typeof messageList === 'function'
+            ? messageList(prevMessageList)
+            : messageList;
 
-        localStorage.setItem(token, JSON.stringify(newMessageList));
+        if (token) localStorage.setItem(token, JSON.stringify(newMessageList));
 
         return {
           messageList: newMessageList,

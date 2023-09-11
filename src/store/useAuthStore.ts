@@ -4,6 +4,7 @@ import { LOCAL_STORAGE } from '@/constants';
 import { ChattingRoom } from '@/types';
 import { naming } from '@/utils/naming';
 
+type ChattingRoomMap = Map<string, ChattingRoom>;
 interface AuthStore {
   isBinded: boolean;
   setIsBinded: (isBinded: boolean) => void;
@@ -20,8 +21,12 @@ interface AuthStore {
   isSaveLogIn: boolean;
   setIsSaveLogIn: (isLoginInfo: boolean) => void;
 
-  chattingRoomMap: Map<string, ChattingRoom>;
-  setChattingRoomMap: (chattingRoomMap: Map<string, ChattingRoom>) => void;
+  chattingRoomMap: ChattingRoomMap;
+  setChattingRoomMap: (
+    chattingRoomMap:
+      | ChattingRoomMap
+      | ((chattingRoomMap: ChattingRoomMap) => ChattingRoomMap),
+  ) => void;
 
   isLogin: boolean;
 }
@@ -72,22 +77,21 @@ export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
     },
 
     chattingRoomMap: new Map(),
-    setChattingRoomMap: (chattingRoomMap) =>
-      set(({ userId }) => {
-        if (!userId)
-          throw new Error('채팅룸들의 정보를 저장하려면 로그인이 필요합니다.');
+    setChattingRoomMap: (chattingRoomMap) => {
+      const { userId, chattingRoomMap: prevChattingRoomMap } = get();
 
-        const chattingRoomTokenList = [...chattingRoomMap.keys()];
+      const newChattingRoomMap =
+        typeof chattingRoomMap === 'function'
+          ? chattingRoomMap(prevChattingRoomMap)
+          : chattingRoomMap;
 
-        localStorage.setItem(
-          naming.chattingTokenList(userId),
-          JSON.stringify(chattingRoomTokenList),
-        );
+      localStorage.setItem(
+        naming.chattingTokenList(userId ?? 'guest'),
+        JSON.stringify([...newChattingRoomMap.keys()]),
+      );
 
-        return {
-          chattingRoomMap,
-        };
-      }),
+      return set({ chattingRoomMap: newChattingRoomMap });
+    },
 
     isLogin: false,
   };
