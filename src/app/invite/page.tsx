@@ -7,6 +7,7 @@ import { Link } from 'react-feather';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
+import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
 import {
   Button,
   Selectbox,
@@ -30,9 +31,13 @@ const OPTIONS = [
 ];
 
 const InvitePage = validationObserver(() => {
-  const [hostId, hostName, chattingRoomMap] = useAuthStore(
-    (state) => [state.userId, state.userName, state.chattingRoomMap],
+  const [hostId, hostName] = useAuthStore(
+    (state) => [state.userId, state.userName],
     shallow,
+  );
+
+  const chattingRoomList = useChattingRoomIndexDBStore(
+    (state) => state.chattingRoomList,
   );
 
   const { isLoading, getToken } = useGetChattingRoomToken();
@@ -75,6 +80,11 @@ const InvitePage = validationObserver(() => {
             });
 
             router.push(`invite/${token}`);
+          } else {
+            toast({
+              message: '상대방 이름을 다시 확인해 주세요!',
+              type: 'fail',
+            });
           }
         }}
       >
@@ -105,12 +115,11 @@ const InvitePage = validationObserver(() => {
             validation={(value) => {
               if (!value) return '이름을 입력해주세요';
 
-              const isUniq =
-                [...chattingRoomMap.values()].findIndex(
-                  ({ guestName }) => guestName === value,
-                ) === -1;
+              const isAlredyExist = !!chattingRoomList?.some(
+                (chattingRoom) => chattingRoom.opponentName === value,
+              );
 
-              if (!isUniq) return '이미 사용중인 친구 이름이에요!';
+              if (isAlredyExist) return '이미 사용중인 친구 이름이에요!';
 
               if (value.length > 10) return '이름은 10자 이하여야 합니다';
             }}

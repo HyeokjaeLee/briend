@@ -1,8 +1,6 @@
 'use client';
 
-import { decodeChattingRoomToken } from '@/utils';
-
-import { useBindChattingRoomInfo } from './hooks/useBindChattingRoomInfo';
+import { useBindChattingRoom } from './hooks/useBindChattingRoom';
 import { useJoinChannel } from './hooks/useJoinChannel';
 
 interface InviteQrPageProps {
@@ -12,7 +10,8 @@ interface InviteQrPageProps {
 }
 
 const ChatPage = ({ params: { token } }: InviteQrPageProps) => {
-  useBindChattingRoomInfo(token);
+  useBindChattingRoom(token);
+
   useJoinChannel();
 
   return <></>;

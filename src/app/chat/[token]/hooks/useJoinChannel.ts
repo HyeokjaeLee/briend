@@ -3,19 +3,21 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 import { CHANNEL_EVENT, LANGUAGE } from '@/constants';
-import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
 
 export const useJoinChannel = () => {
-  const chattingRoomInfo = useChattingRoomStore((state) => state.info);
+  const chattingRoom = useChattingRoomIndexDBStore(
+    (state) => state.chattingRoom,
+  );
   const { toast } = useToast();
 
   useEffect(() => {
-    if (chattingRoomInfo) {
+    if (chattingRoom) {
       const { token, isHost, userLanguage, opponentName, channel } =
-        chattingRoomInfo;
+        chattingRoom;
 
       (async () => {
         const { status } = await axios.post(`${token}/api/join`, {
@@ -63,5 +65,5 @@ export const useJoinChannel = () => {
         }
       });
     }
-  }, [chattingRoomInfo, toast]);
+  }, [chattingRoom, toast]);
 };

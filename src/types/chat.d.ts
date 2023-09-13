@@ -1,6 +1,15 @@
 import type { LANGUAGE } from '@/constants';
 
-import { DecodedChattingRoomToken } from './token';
+export interface ChattingRoom {
+  token: string;
+  isHost: boolean;
+  userName: string;
+  userLanguage: LANGUAGE;
+  opponentName: string;
+  opponentLanguage: LANGUAGE;
+  startAt: Date;
+  endAt: Date;
+}
 
 export interface Message {
   meta: {
@@ -13,10 +22,4 @@ export interface Message {
     [LANGUAGE.ENGLISH]?: string;
     [LANGUAGE.JAPANESE]?: string;
   };
-}
-
-export interface ChattingRoom
-  extends Omit<DecodedChattingRoomToken, 'exp' | 'iat'> {
-  startAt: Date;
-  endAt: Date;
 }

@@ -1,4 +1,4 @@
-export const stringToUnicode = (str: string) =>
+export const normalizeString = (str: string) =>
   str
     .split('')
     .map((value) => {
@@ -7,4 +7,5 @@ export const stringToUnicode = (str: string) =>
 
       return value;
     })
-    .join('');
+    .join('')
+    .replace(/[^\w\s]/gi, '');

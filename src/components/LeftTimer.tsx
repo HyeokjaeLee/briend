@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { msToTime } from '@/utils';
+import { Skeleton } from '@hyeokjaelee/pastime-ui';
 
 interface LeftTimerProps {
   endAt: Date;
@@ -15,7 +16,7 @@ export const LeftTimer = ({ endAt, className }: LeftTimerProps) => {
     [endAt],
   );
 
-  const [time, setTime] = useState(calculateTimeLeft);
+  const [time, setTime] = useState<number>();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -24,6 +25,8 @@ export const LeftTimer = ({ endAt, className }: LeftTimerProps) => {
 
     return () => clearInterval(interval);
   }, [calculateTimeLeft]);
+
+  if (!time) return <Skeleton className={`${className} h-[1.55em] w-[4em]`} />;
 
   const { hours, minutes, seconds } = msToTime(time);
 

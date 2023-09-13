@@ -1,10 +1,7 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
 import { LOCAL_STORAGE } from '@/constants';
-import { ChattingRoom } from '@/types';
-import { naming } from '@/utils/naming';
 
-type ChattingRoomMap = Map<string, ChattingRoom>;
 interface AuthStore {
   isBinded: boolean;
   setIsBinded: (isBinded: boolean) => void;
@@ -20,13 +17,6 @@ interface AuthStore {
 
   isSaveLogIn: boolean;
   setIsSaveLogIn: (isLoginInfo: boolean) => void;
-
-  chattingRoomMap: ChattingRoomMap;
-  setChattingRoomMap: (
-    chattingRoomMap:
-      | ChattingRoomMap
-      | ((chattingRoomMap: ChattingRoomMap) => ChattingRoomMap),
-  ) => void;
 
   isLogin: boolean;
 }
@@ -74,23 +64,6 @@ export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
       localStorage.setItem(LOCAL_STORAGE.IS_SAVE_LOGIN, String(isSaveLogIn));
 
       return set({ isSaveLogIn });
-    },
-
-    chattingRoomMap: new Map(),
-    setChattingRoomMap: (chattingRoomMap) => {
-      const { userId, chattingRoomMap: prevChattingRoomMap } = get();
-
-      const newChattingRoomMap =
-        typeof chattingRoomMap === 'function'
-          ? chattingRoomMap(prevChattingRoomMap)
-          : chattingRoomMap;
-
-      localStorage.setItem(
-        naming.chattingTokenList(userId ?? 'guest'),
-        JSON.stringify([...newChattingRoomMap.keys()]),
-      );
-
-      return set({ chattingRoomMap: newChattingRoomMap });
     },
 
     isLogin: false,

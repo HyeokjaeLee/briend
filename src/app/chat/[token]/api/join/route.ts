@@ -1,17 +1,14 @@
 import jwt from 'jsonwebtoken';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 import { CHANNEL_EVENT } from '@/constants';
-import type { DecodedChattingRoomToken } from '@/types';
+import type { DecodedChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 import { pusher } from '@pusher';
 
-interface Response {
-  params: {
-    token: string;
-  };
-}
+import type { ChatApiResponse } from '../route';
 
 export interface JoinPostParams {
   isHost: boolean;
@@ -22,7 +19,7 @@ export interface JoinPusherResponse {
   isHost: boolean;
 }
 
-export const POST = async (req: NextRequest, { params }: Response) => {
+export const POST = async (req: NextRequest, { params }: ChatApiResponse) => {
   try {
     const { isHost }: JoinPostParams = await req.json();
 
@@ -58,10 +55,11 @@ export const POST = async (req: NextRequest, { params }: Response) => {
       });
     }
 
-    console.log(e);
+    console.error(e);
 
     return NextResponse.json('fail', {
       status: 500,
+      statusText: String(e),
     });
   }
 };

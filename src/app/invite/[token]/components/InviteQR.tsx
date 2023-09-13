@@ -1,5 +1,3 @@
-'use client';
-
 import Image from 'next/image';
 
 import { PATH } from '@/constants';
@@ -9,7 +7,7 @@ interface QRProps {
 }
 
 export const InviteQR = ({ token }: QRProps) => {
-  const size = 400;
+  const size = 300;
   return (
     <Image
       className="rounded-3xl"

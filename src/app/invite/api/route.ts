@@ -1,14 +1,17 @@
 import jwt from 'jsonwebtoken';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-import { DecodedChattingRoomToken } from '@/types';
+import type { LANGUAGE } from '@/constants';
 import { typeGuard } from '@/utils';
 
-export type SignChattingRoomTokenParams = Omit<
-  DecodedChattingRoomToken,
-  'iat' | 'exp'
->;
+export interface SignChattingRoomTokenParams {
+  hostId: string;
+  hostName: string;
+  guestName: string;
+  guestLanguage: LANGUAGE;
+}
 
 export interface SignChattingRoomTokenRespons {
   token: string | null;

@@ -9,7 +9,6 @@ import { Drawer } from '@hyeokjaelee/pastime-ui';
 import { DarkModeSwitch } from './DarkModeSwitch';
 import { KakaoAuthButton } from './KakaoAuthButton';
 import { MenuItem } from './MenuItem';
-import { ChattingRoomInfoMenuItem } from '../../../components/ChattingRoomInfoMenuItem';
 
 export const GlobalMenu = () => {
   const [opened, setOpened] = useGlobalStore((state) => [
@@ -24,7 +23,6 @@ export const GlobalMenu = () => {
       <Drawer.Header closeButton />
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-2">
-          <ChattingRoomInfoMenuItem />
           <MenuItem>
             <Users className="ml-1" /> 이전 대화
           </MenuItem>

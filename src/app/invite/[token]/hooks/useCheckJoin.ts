@@ -4,11 +4,14 @@ import { useEffect } from 'react';
 import { JoinPusherResponse } from '@/app/chat/[token]/api/join/route';
 import { CHANNEL_EVENT, PATH } from '@/constants';
 import { useGlobalStore } from '@/store/useGlobalStore';
-import { ChattingRoom } from '@/types';
+import type { DecodedChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
-type UseCheckJoinParams = Pick<ChattingRoom, 'hostId' | 'guestName'>;
+type UseCheckJoinParams = Pick<
+  DecodedChattingRoomToken,
+  'hostId' | 'guestName'
+>;
 
 export const useCheckJoin = ({ hostId, guestName }: UseCheckJoinParams) => {
   const pusher = useGlobalStore((state) => state.pusher);
