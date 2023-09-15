@@ -10,6 +10,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       backgroundImage: {
@@ -33,7 +34,7 @@ const config: Config = {
         },
       },
       minWidth: {
-        iPhoneSE: '360px',
+        iPhoneSE: '375px',
       },
 
       height: {
@@ -42,6 +43,12 @@ const config: Config = {
       },
       minHeight: {
         page: PAGE_HEIGHT,
+      },
+      maxWidth: {
+        page: '32rem',
+      },
+      padding: {
+        page: '1.25rem',
       },
     },
   },

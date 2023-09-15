@@ -1,31 +1,22 @@
-import Image from 'next/image';
-
-import Background from '@/assets/Background.jpeg';
-import Logo from '@/assets/Logo.svg';
-import { LoginForm } from '@/components';
+import { BackgroundImage } from './components/BackgroundImage';
+import { DescriptionSection } from './components/DescriptionSection';
+import { LogInButton } from './components/LogInButton';
 
 const HomePage = () => (
-  <main className="w-full">
-    <article className="h-page relative flex flex-col">
-      <div className="absolute z-[-1] h-page w-full">
-        <Image src={Background} alt="tokyo" layout="fill" objectFit="cover" />
-        <div className="w-full h-full bg-black opacity-90 absolute" />
-      </div>
-      <section className="flex-1 flex items-center justify-center">
-        <div className="min-w-iPhoneSE max-w-lg w-full flex-col flex bg-slate-50 h-fit box-border rounded-md p-5 m-5">
-          <div className="flex flex-col w-fit items-center m-auto py-28">
-            <h1 className="flex font-bold text-4xl items-center gap-2">
-              <Image src={Logo} alt="briend" className="w-10" />
-              Be friend
-            </h1>
-            <h2 className="text-[12px] font-normal">
-              언어의 장벽없는 새로운 사람과의 대화
-            </h2>
-          </div>
-          <LoginForm />
-        </div>
-      </section>
-    </article>
+  <main className="h-page relative flex items-center justify-center flex-col gap-2">
+    <BackgroundImage />
+    <DescriptionSection />
+    <LogInButton />
+    <section className="absolute bottom-0 left-0 text-slate-200 p-5 flex flex-col gap-3">
+      <h1 className="flex font-semibold text-8xl items-center gap-2 leading-[0.8]">
+        Be
+        <br />
+        friend
+      </h1>
+      <h2 className="text-base font-normal px-2">
+        언어의 장벽없는 새로운 사람과의 대화
+      </h2>
+    </section>
   </main>
 );
 
