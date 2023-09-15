@@ -28,7 +28,7 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
 
     const { meta } = message;
 
-    pusher.trigger(
+    await pusher.trigger(
       chattingChannel,
       naming.sendingEvent(meta.from, meta.to),
       message,

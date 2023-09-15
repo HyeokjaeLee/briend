@@ -41,7 +41,7 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
       decoded.guestName,
     );
 
-    pusher.trigger(chattingChannel, CHANNEL_EVENT.JOIN_CHANNEL, {
+    await pusher.trigger(chattingChannel, CHANNEL_EVENT.JOIN_CHANNEL, {
       token,
       isHost,
     });

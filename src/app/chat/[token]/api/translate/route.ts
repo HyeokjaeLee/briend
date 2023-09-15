@@ -96,7 +96,12 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
         : message,
     };
 
-    pusher.trigger(chattingChannel, CHANNEL_EVENT.TRANSLATE, translatedMessage);
+    await pusher.trigger(
+      chattingChannel,
+      CHANNEL_EVENT.TRANSLATE,
+      translatedMessage,
+    );
+
     return NextResponse.json('success');
   } catch (e) {
     return NextResponse.json('fail', {
