@@ -16,6 +16,7 @@
     "autoprefixer": "10.4.15",
     "axios": "^1.5.0",
     "dayjs": "^1.11.9",
+    "encoding": "^0.1.13",
     "jsonwebtoken": "^9.0.2",
     "lodash-es": "^4.17.21",
     "next": "13.4.19",

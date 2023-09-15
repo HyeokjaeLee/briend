@@ -7,9 +7,13 @@ interface MessageProps {
   isMine: boolean;
   isHost: boolean;
   userName: string;
+}
+
+/**
+ * 
   createdAt?: Date;
   isLast?: boolean;
-}
+ */
 
 export const Message = ({
   translatedMessage,
@@ -17,8 +21,6 @@ export const Message = ({
   isMine,
   isHost,
   userName,
-  createdAt,
-  isLast = false,
 }: MessageProps) => (
   <li className={cleanClassName(`flex gap-2 ${isMine && 'flex-row-reverse'}`)}>
     <Tooltip>
