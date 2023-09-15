@@ -9,6 +9,9 @@ interface TempMessageStore {
       | SendingMessageMap
       | ((prevMap: SendingMessageMap) => SendingMessageMap),
   ) => void;
+
+  messageText: string;
+  setMessageText: (messageText: string) => void;
 }
 
 export const useTempMessageStore = createWithEqualityFn<TempMessageStore>(
@@ -21,6 +24,12 @@ export const useTempMessageStore = createWithEqualityFn<TempMessageStore>(
             ? sendingMessageMap(state.sendingMessageMap)
             : sendingMessageMap,
       })),
+
+    messageText: '',
+    setMessageText: (messageText) =>
+      set({
+        messageText,
+      }),
   }),
   Object.is,
 );

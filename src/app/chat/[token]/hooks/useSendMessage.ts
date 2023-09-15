@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { shallow } from 'zustand/shallow';
 
 import { useState } from 'react';
 
@@ -12,8 +13,9 @@ export const useSendMessage = () => {
     (state) => state.chattingRoom,
   );
 
-  const setSendingMessageMap = useTempMessageStore(
-    (state) => state.setSendingMessageMap,
+  const [setSendingMessageMap, setMessageText] = useTempMessageStore(
+    (state) => [state.setSendingMessageMap, state.setMessageText],
+    shallow,
   );
 
   const sendMessage = async (text: string) => {
@@ -43,6 +45,7 @@ export const useSendMessage = () => {
           newMap.set(message.meta.createdAt, text);
           return newMap;
         });
+        setMessageText('');
       }
     }
 

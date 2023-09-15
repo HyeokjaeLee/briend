@@ -90,6 +90,7 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
       meta,
       message: translatedText
         ? {
+            ...message,
             [opponentLanguage]: translatedText,
           }
         : message,

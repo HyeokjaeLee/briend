@@ -1,6 +1,6 @@
 'use client';
 
-import { ChattingList } from './components/ChattingList';
+import { MessageList } from './components/MessageList';
 import { SendMessageForm } from './components/SendMessageForm';
 import { useBindChattingRoom } from './hooks/useBindChattingRoom';
 import { useJoinChannel } from './hooks/useJoinChannel';
@@ -18,7 +18,7 @@ const ChatPage = ({ params: { token } }: InviteQrPageProps) => {
 
   return (
     <main>
-      <ChattingList />
+      <MessageList />
       <SendMessageForm />
     </main>
   );
