@@ -5,10 +5,11 @@ import axios from 'axios';
 import { useState } from 'react';
 
 import { PATH } from '@/constants';
+
 import type {
   SignChattingRoomTokenParams,
   SignChattingRoomTokenRespons,
-} from '@api/chatting-room';
+} from '../api/route';
 
 export const useGetChattingRoomToken = () => {
   const [isLoading, setIsLoading] = useState(false);
