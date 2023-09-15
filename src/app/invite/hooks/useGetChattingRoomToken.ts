@@ -9,7 +9,7 @@ import { PATH } from '@/constants';
 import type {
   SignChattingRoomTokenParams,
   SignChattingRoomTokenRespons,
-} from '../api/route';
+} from '../api/[invite]/route';
 
 export const useGetChattingRoomToken = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -19,7 +19,7 @@ export const useGetChattingRoomToken = () => {
       setIsLoading(true);
 
       const { data } = await axios.get<SignChattingRoomTokenRespons>(
-        `${PATH.INVITE}/api`,
+        `${PATH.INVITE}/api/new`,
         {
           params,
         },

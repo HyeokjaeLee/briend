@@ -12,7 +12,7 @@ export const LayoutTab = () => {
       <Tab.Item
         disabled={!isLogin}
         active={pathname === '/private/chat'}
-        onClick={() => router.push('/private/chat')}
+        onClick={() => router.push('/')}
       >
         Chat
       </Tab.Item>
