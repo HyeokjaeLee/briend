@@ -12,6 +12,7 @@ export const useJoinChannel = () => {
   const chattingRoom = useChattingRoomIndexDBStore(
     (state) => state.chattingRoom,
   );
+
   const { toast } = useToast();
 
   useEffect(() => {
@@ -59,11 +60,16 @@ export const useJoinChannel = () => {
             isFirstShow = false;
           } else {
             toast({
+              type: 'info',
               message: `${opponentName}님이 채팅을 보고 있어요!`,
             });
           }
         }
       });
+
+      return () => {
+        channel.unbind(CHANNEL_EVENT.JOIN_CHANNEL);
+      };
     }
   }, [chattingRoom, toast]);
 };

@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 import { Send } from 'react-feather';
 
-import type { UseSendMessageParams } from '@/hooks/useSendMessage';
-import { useSendMessage } from '@/hooks/useSendMessage';
 import { Button, Textarea } from '@hyeokjaelee/pastime-ui';
 
-export const SendMessageForm = (props: UseSendMessageParams) => {
+import { useSendMessage } from '../hooks/useSendMessage';
+
+export const SendMessageForm = () => {
   const [message, setMessage] = useState('');
 
-  const { sendMessage, isLoading } = useSendMessage(props);
+  const { sendMessage, isLoading } = useSendMessage();
 
   return (
     <form

@@ -8,7 +8,7 @@ import type { DecodedChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 import { pusher } from '@pusher';
 
-import type { ChatApiResponse } from '../route';
+import type { ApiResponse } from '../ApiResponse';
 
 export interface JoinPostParams {
   isHost: boolean;
@@ -19,7 +19,7 @@ export interface JoinPusherResponse {
   isHost: boolean;
 }
 
-export const POST = async (req: NextRequest, { params }: ChatApiResponse) => {
+export const POST = async (req: NextRequest, { params }: ApiResponse) => {
   try {
     const { isHost }: JoinPostParams = await req.json();
 
@@ -54,8 +54,6 @@ export const POST = async (req: NextRequest, { params }: ChatApiResponse) => {
         statusText: '토큰이 만료되었습니다.',
       });
     }
-
-    console.error(e);
 
     return NextResponse.json('fail', {
       status: 500,
