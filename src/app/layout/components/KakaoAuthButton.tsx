@@ -22,7 +22,6 @@ export const KakaoAuthButton = () => {
         window.location.href = `https://kauth.kakao.com/oauth/logout?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&logout_redirect_uri=${process.env.NEXT_PUBLIC_BASE_URL}${PATH.AUTH}?logout=true`;
       }}
       className="font-bold w-full"
-      size="large"
       theme="danger"
     >
       로그아웃
@@ -35,7 +34,6 @@ export const KakaoAuthButton = () => {
         setGlobalMenuOpened(false);
       }}
       className="font-bold w-full"
-      size="large"
     >
       로그인
     </Button>

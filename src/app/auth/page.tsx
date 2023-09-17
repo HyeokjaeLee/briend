@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import Background from '@/assets/Background.jpeg';
 import Logo from '@/assets/Logo.svg';
+import { useGuestUserOnly } from '@/hooks/useGuestUserOnly';
 
 import { KakaoLogInButton } from './components/KakaoLogInButton';
 import { SaveLogInSwitch } from './components/SaveLogInSwitch';
@@ -11,6 +12,7 @@ import { useKakaoLogOut } from './hooks/useKakaoLogOut';
 
 const AuthPage = () => {
   useKakaoLogOut();
+  useGuestUserOnly();
 
   return (
     <main className="w-full">
