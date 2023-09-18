@@ -114,7 +114,6 @@ export const useChattingRoomIndexDBStore =
               set({ lastMessageList: result });
             };
           }
-
           return { db, isAreadyStoreExist };
         };
 
@@ -178,13 +177,15 @@ export const useChattingRoomIndexDBStore =
 
         const { token, channel } = params;
 
-        const transaction = db.transaction(
-          [CHATTING_ROOM_STORE_NAME, token],
-          'readonly',
-        );
+        try {
+          const transaction = db.transaction(
+            [CHATTING_ROOM_STORE_NAME, token],
+            'readonly',
+          );
 
-        transaction.objectStore(CHATTING_ROOM_STORE_NAME).get(token).onsuccess =
-          (e) => {
+          transaction
+            .objectStore(CHATTING_ROOM_STORE_NAME)
+            .get(token).onsuccess = (e) => {
             const { result: chattingRoom } =
               e.target as IDBRequest<ChattingRoom>;
 
@@ -196,11 +197,17 @@ export const useChattingRoomIndexDBStore =
             });
           };
 
-        transaction.objectStore(token).getAll().onsuccess = (e) => {
-          const { result: messageList } = e.target as IDBRequest<Message[]>;
+          transaction.objectStore(token).getAll().onsuccess = (e) => {
+            const { result: messageList } = e.target as IDBRequest<Message[]>;
 
-          set({ messageList });
-        };
+            set({ messageList });
+          };
+        } catch {
+          const { deleteChattingRoom } = get();
+
+          deleteChattingRoom(token);
+          window.location.reload();
+        }
       },
 
       createMessage: (message) => {

@@ -10,7 +10,6 @@ export const DarkModeSwitch = () => {
 
   return (
     <Switch
-      size="large"
       value={isDarkMode}
       onChange={({ value }) => {
         if (value) {
@@ -23,9 +22,9 @@ export const DarkModeSwitch = () => {
       }}
     >
       {isDarkMode ? (
-        <Moon className="text-black" size="1em" />
+        <Moon className="text-black" size="0.8em" />
       ) : (
-        <Sun className="text-black" size="1em" />
+        <Sun className="text-black" size="0.8em" />
       )}
     </Switch>
   );

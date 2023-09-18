@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-const NAV_HEIGHT = '59px';
+const NAV_HEIGHT = '3.5rem';
 
 const PAGE_HEIGHT = `calc(100vh - ${NAV_HEIGHT})`;
 

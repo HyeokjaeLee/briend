@@ -31,7 +31,7 @@ export const GlobalNav = () => {
         theme="clear"
         onClick={() => setMenuOpened(true)}
         fixedDarkMode="dark"
-        icon={<Menu />}
+        icon={<Menu size="1.3rem" />}
       />
     </header>
   );
