@@ -13,20 +13,9 @@ export const useMountChattingRoomIndexDBStore = () => {
     shallow,
   );
 
-  const [mountDB, isMounted] = useChattingRoomIndexDBStore(
-    (state) => [state.mountDB, state.isMounted],
-    shallow,
-  );
+  const mountDB = useChattingRoomIndexDBStore((state) => state.mountDB);
 
   useEffect(() => {
-    if (isBinded && !isMounted) {
-      mountDB(userId);
-
-      const retryInterval = setInterval(() => mountDB(userId), RETRY_INTERVAL);
-
-      return () => {
-        clearInterval(retryInterval);
-      };
-    }
-  }, [mountDB, userId, isBinded, isMounted]);
+    if (isBinded) mountDB(userId);
+  }, [mountDB, userId, isBinded]);
 };

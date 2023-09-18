@@ -5,8 +5,10 @@ import { parseCookie } from '@/utils';
 const ACTIVE_WINDOW_COOKIE = 'active-windows';
 
 export const useCheckMultiWindows = () => {
-  const [isMultiWindows, setIsMultiWindows] = useState(false);
+  const [isMultiWindows, setIsMultiWindows] = useState(true);
   useEffect(() => {
+    if (process.env.NODE_ENV === 'development') return;
+
     const getActiveWindowCount = () =>
       Number(parseCookie(document.cookie).get(ACTIVE_WINDOW_COOKIE) ?? 0);
 
@@ -27,7 +29,7 @@ export const useCheckMultiWindows = () => {
         const currentCount = getActiveWindowCount();
 
         if (currentCount < 2) {
-          setIsMultiWindows(false);
+          window.location.reload();
           clearInterval(checkMultiWindowsInterval);
         }
       }, 3_000);
