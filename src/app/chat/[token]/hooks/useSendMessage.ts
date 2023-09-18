@@ -3,15 +3,13 @@ import { shallow } from 'zustand/shallow';
 
 import { useState } from 'react';
 
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
 import { Message } from '@/types';
 
 export const useSendMessage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const chattingRoom = useChattingRoomIndexDBStore(
-    (state) => state.chattingRoom,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
 
   const [setSendingMessageMap, setMessageText] = useTempMessageStore(
     (state) => [state.setSendingMessageMap, state.setMessageText],

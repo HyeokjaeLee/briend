@@ -4,18 +4,18 @@ import { useEffect } from 'react';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
 import { decodeChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 
 export const useBindChattingRoom = (token: string) => {
-  const [chattingRoomList, setChattingRoom, createChattingRoom] =
-    useChattingRoomIndexDBStore(
+  const [chattingRoomList, setChattingRoom, addChattingRoom] =
+    useChattingRoomStore(
       (state) => [
         state.chattingRoomList,
         state.setChattingRoom,
-        state.createChattingRoom,
+        state.addChattingRoom,
       ],
       shallow,
     );
@@ -26,49 +26,53 @@ export const useBindChattingRoom = (token: string) => {
 
   useEffect(() => {
     if (chattingRoomList && pusher) {
-      const decodedChattingRoomToken = decodeChattingRoomToken(token);
+      (async () => {
+        const decodedChattingRoomToken = decodeChattingRoomToken(token);
 
-      if (!decodedChattingRoomToken) throw new Error('잘못된 채팅 토큰입니다.');
-      const { hostId, guestName } = decodedChattingRoomToken;
+        if (!decodedChattingRoomToken)
+          throw new Error('잘못된 채팅 토큰입니다.');
+        const { hostId, guestName } = decodedChattingRoomToken;
 
-      const channel = pusher.subscribe(
-        naming.chattingChannel(hostId, guestName),
-      );
+        const channel = pusher.subscribe(
+          naming.chattingChannel(hostId, guestName),
+        );
 
-      const isAreadyExist = chattingRoomList.some(
-        (chattingRoom) => chattingRoom.token === token,
-      );
+        const isAreadyExist = chattingRoomList.some(
+          (chattingRoom) => chattingRoom.token === token,
+        );
 
-      if (isAreadyExist) {
-        setChattingRoom({
-          token,
-          channel,
-        });
+        if (!isAreadyExist) {
+          const { guestLanguage, hostName, iat, exp } =
+            decodedChattingRoomToken;
+          const isHost = userId === hostId;
 
-        return () => {
-          channel.unbind_all();
-          channel.unsubscribe();
-          setChattingRoom(null);
-        };
-      }
+          addChattingRoom({
+            token,
+            isHost,
+            userName: isHost ? hostName : guestName,
+            userLanguage: isHost ? LANGUAGE.KOREAN : guestLanguage,
+            opponentName: isHost ? guestName : hostName,
+            opponentLanguage: isHost ? guestLanguage : LANGUAGE.KOREAN,
+            startAt: new Date(iat * 1000),
+            endAt: new Date(exp * 1000),
+          });
+        } else {
+          setChattingRoom({
+            token,
+            channel,
+          });
 
-      const { guestLanguage, hostName, iat, exp } = decodedChattingRoomToken;
-      const isHost = userId === hostId;
-
-      createChattingRoom({
-        token,
-        isHost,
-        userName: isHost ? hostName : guestName,
-        userLanguage: isHost ? LANGUAGE.KOREAN : guestLanguage,
-        opponentName: isHost ? guestName : hostName,
-        opponentLanguage: isHost ? guestLanguage : LANGUAGE.KOREAN,
-        startAt: new Date(iat * 1000),
-        endAt: new Date(exp * 1000),
-      });
+          return () => {
+            channel.unbind_all();
+            channel.unsubscribe();
+            setChattingRoom(null);
+          };
+        }
+      })();
     }
   }, [
     chattingRoomList,
-    createChattingRoom,
+    addChattingRoom,
     pusher,
     setChattingRoom,
     token,

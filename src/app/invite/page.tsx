@@ -7,7 +7,7 @@ import { Link } from 'react-feather';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import {
   Button,
   Selectbox,
@@ -36,7 +36,7 @@ const InvitePage = validationObserver(() => {
     shallow,
   );
 
-  const chattingRoomList = useChattingRoomIndexDBStore(
+  const chattingRoomList = useChattingRoomStore(
     (state) => state.chattingRoomList,
   );
 
