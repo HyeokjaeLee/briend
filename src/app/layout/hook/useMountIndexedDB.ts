@@ -7,8 +7,6 @@ import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 
 export const RETRY_INTERVAL = 3_000;
 
-export const RETRY_INTERVAL = 3_000;
-
 export const useMountChattingRoomIndexDBStore = () => {
   const [userId, isBinded] = useAuthStore(
     (state) => [state.userId, state.isBinded],
