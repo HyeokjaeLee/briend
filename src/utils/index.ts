@@ -6,4 +6,3 @@ export * from './decodeCattingRoomToken';
 export * from './msToTime';
 export * from './hashCode';
 export * from './cleanClassName';
-export * from './getDeviceLanguage';
