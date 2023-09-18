@@ -2,14 +2,12 @@ import axios from 'axios';
 
 import { useEffect } from 'react';
 
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import type { Message } from '@/types';
 import { naming } from '@/utils/naming';
 
 export const useTranslate = () => {
-  const chattingRoom = useChattingRoomIndexDBStore(
-    (state) => state.chattingRoom,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
 
   useEffect(() => {
     if (chattingRoom) {

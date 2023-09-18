@@ -26,5 +26,5 @@ export interface Message {
 
 export interface LastMessage {
   token: string;
-  message?: string;
+  message?: Message;
 }

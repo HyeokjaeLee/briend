@@ -3,15 +3,13 @@ import axios from 'axios';
 import { useEffect } from 'react';
 
 import { CHANNEL_EVENT, LANGUAGE_PACK } from '@/constants';
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
 
 export const useJoinChannel = () => {
-  const chattingRoom = useChattingRoomIndexDBStore(
-    (state) => state.chattingRoom,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
 
   const { toast } = useToast();
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 
 import { Message } from './Message';
 import { useReceiveChatting } from '../hooks/useReceiveChatting';
@@ -13,9 +13,7 @@ export const MessageList = () => {
 
   const { messageList } = useReceiveChatting();
 
-  const chattingRoom = useChattingRoomIndexDBStore(
-    (state) => state.chattingRoom,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
 
   if (!messageList || !chattingRoom) return null;
 
@@ -45,6 +43,7 @@ export const MessageList = () => {
   );
 };
 
+// TODO:
 /**
  *  {chattingList.map((chatting, index) => {
         const isLast = index === chattingList.length - 1;

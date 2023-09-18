@@ -3,7 +3,7 @@
 import { Lock } from 'react-feather';
 
 import { LANGUAGE_PACK } from '@/constants';
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
 import { Modal } from '@hyeokjaelee/pastime-ui';
 
@@ -14,9 +14,7 @@ export const PreventMultiWindowModal = () => {
 
   const deviceLanguage = useGlobalStore((state) => state.deviceLanguage);
 
-  const chattingRoom = useChattingRoomIndexDBStore(
-    (state) => state.chattingRoom,
-  );
+  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
   const language = chattingRoom?.userLanguage ?? deviceLanguage;
 
   return (

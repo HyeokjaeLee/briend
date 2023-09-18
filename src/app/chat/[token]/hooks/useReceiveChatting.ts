@@ -3,16 +3,15 @@ import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
 import { CHANNEL_EVENT } from '@/constants';
-import { useChattingRoomIndexDBStore } from '@/store/useChattingRoomIndexDBStore';
+import { useChattingRoomStore } from '@/store/useChattingRoomStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
 import type { Message } from '@/types';
 
 export const useReceiveChatting = () => {
-  const [chattingRoom, messageList, createMessage] =
-    useChattingRoomIndexDBStore(
-      (state) => [state.chattingRoom, state.messageList, state.createMessage],
-      shallow,
-    );
+  const [chattingRoom, messageList, addMessage] = useChattingRoomStore(
+    (state) => [state.chattingRoom, state.messageList, state.addMessage],
+    shallow,
+  );
 
   const setSendingMessageMap = useTempMessageStore(
     (state) => state.setSendingMessageMap,
@@ -29,10 +28,10 @@ export const useReceiveChatting = () => {
           return newMap;
         });
 
-        createMessage(message);
+        addMessage(message);
       });
     }
-  }, [chattingRoom, createMessage, setSendingMessageMap]);
+  }, [chattingRoom, addMessage, setSendingMessageMap]);
 
   return { messageList };
 };
