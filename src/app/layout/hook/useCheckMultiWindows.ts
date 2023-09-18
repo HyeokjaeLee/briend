@@ -5,7 +5,7 @@ import { parseCookie } from '@/utils';
 const ACTIVE_WINDOW_COOKIE = 'active-windows';
 
 export const useCheckMultiWindows = () => {
-  const [isMultiWindows, setIsMultiWindows] = useState(true);
+  const [isMultiWindows, setIsMultiWindows] = useState(false);
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') return;
 
