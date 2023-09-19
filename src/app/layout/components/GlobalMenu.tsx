@@ -28,8 +28,14 @@ export const GlobalMenu = () => {
       <Drawer.Header closeButton />
       <div className="flex flex-col justify-between h-full">
         <ul className="flex flex-col gap-2">
-          <MenuItem>
-            <Users className={iconClassName} /> 이전 대화
+          <MenuItem
+            onClick={() => {
+              setOpened(false);
+              router.push('/chat/history');
+            }}
+          >
+            <Users className={iconClassName} />
+            이전 대화
           </MenuItem>
           <MenuItem
             disabled={!isLogin}

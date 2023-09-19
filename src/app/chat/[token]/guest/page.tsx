@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { MessageCircle } from 'react-feather';
 
 import { LeftTimer } from '@/components/LeftTimer';

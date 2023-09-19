@@ -1,16 +1,17 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { Clock } from 'react-feather';
+import { Clock, Lock } from 'react-feather';
 
 import { msToTime } from '@/utils';
 import { Skeleton } from '@hyeokjaelee/pastime-ui';
 
 interface LeftTimerProps {
   endAt: Date;
+  size?: 'large' | 'small';
 }
 
-export const LeftTimer = ({ endAt }: LeftTimerProps) => {
+export const LeftTimer = ({ endAt, size = 'large' }: LeftTimerProps) => {
   const calculateTimeLeft = useCallback(
     () => endAt.getTime() - new Date().getTime(),
     [endAt],
@@ -20,22 +21,61 @@ export const LeftTimer = ({ endAt }: LeftTimerProps) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTime(calculateTimeLeft);
+      const leftTime = calculateTimeLeft();
+
+      if (leftTime < 0) {
+        clearInterval(interval);
+        return setTime(-1);
+      }
+
+      setTime(leftTime);
     }, 1000);
 
     return () => clearInterval(interval);
   }, [calculateTimeLeft]);
 
-  if (!time) return <Skeleton className="h-10 w-24" />;
+  const sizeClassName = {
+    large: {
+      height: 'h-10',
+      skeletonWidth: 'w-36',
+      icon: 'w-7 h-7',
+      text: 'text-xl font-normal',
+    },
+    small: {
+      height: 'h-3',
+      skeletonWidth: 'w-20',
+      icon: 'w-3 h-3',
+      text: 'text-xs font-normal',
+    },
+  }[size];
+
+  if (!time) {
+    return (
+      <Skeleton
+        className={`${sizeClassName.height} ${sizeClassName.skeletonWidth}`}
+      />
+    );
+  }
 
   const { hours, minutes, seconds } = msToTime(time);
 
   return (
-    <div className={`flex justify-between items-center h-10 gap-2 w-fit`}>
-      <Clock />
-      <span className="text-xl">
-        {hours}:{minutes}:{seconds}
-      </span>
+    <div
+      className={`flex justify-center items-center ${sizeClassName.height} gap-2 w-fit`}
+    >
+      {time === -1 ? (
+        <>
+          <Lock className={sizeClassName.icon} />
+          <span className={sizeClassName.text}>00:00:00</span>
+        </>
+      ) : (
+        <>
+          <Clock className={sizeClassName.icon} />
+          <span className={sizeClassName.text}>
+            {hours}:{minutes}:{seconds}
+          </span>
+        </>
+      )}
     </div>
   );
 };
