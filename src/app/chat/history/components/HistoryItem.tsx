@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Trash2 } from 'react-feather';
 
 import { LeftTimer } from '@/components/LeftTimer';
@@ -19,6 +20,7 @@ export const HistoryItem = ({
 }: ChattingRoomHistory) => {
   const lastMessageText = lastMessage?.message?.KO;
   const isExpired = endAt < new Date();
+  const router = useRouter();
 
   return (
     <li
@@ -61,7 +63,15 @@ export const HistoryItem = ({
           )}
         </section>
       </Link>
-      <Button theme="danger" icon={<Trash2 />} />
+      <Button
+        theme="danger"
+        icon={<Trash2 />}
+        onClick={() => {
+          router.replace(`?delete=${token}`, {
+            scroll: false,
+          });
+        }}
+      />
     </li>
   );
 };
