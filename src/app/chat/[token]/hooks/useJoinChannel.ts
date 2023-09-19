@@ -38,24 +38,12 @@ export const useJoinChannel = () => {
         }
       })();
 
-      let isFirstShow = true;
-
       channel.bind(CHANNEL_EVENT.JOIN_CHANNEL, (data: JoinPusherResponse) => {
         if (data.isHost !== isHost) {
-          if (isFirstShow) {
-            toast({
-              message:
-                LANGUAGE_PACK.JOIN_NEW_CHATTING_ROOM_TOAST[userLanguage](
-                  opponentName,
-                ),
-            });
-            isFirstShow = false;
-          } else {
-            toast({
-              type: 'info',
-              message: `${opponentName}님이 채팅을 보고 있어요!`,
-            });
-          }
+          toast({
+            type: 'info',
+            message: `${opponentName}님이 채팅을 보고 있어요!`,
+          });
         }
       });
 

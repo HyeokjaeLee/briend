@@ -2,7 +2,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 
-export const useChattingRoomHistory = () => {
+export const useChattingRoomHistoryList = () => {
   const [isMounted, chattingRoomList, lastMessageList] = useChattingDataStore(
     (state) => [state.isMounted, state.chattingRoomList, state.lastMessageList],
     shallow,
@@ -27,3 +27,7 @@ export const useChattingRoomHistory = () => {
     })
     .sort((a, b) => b.startAt.getTime() - a.startAt.getTime());
 };
+
+export type ChattingRoomHistory = ReturnType<
+  typeof useChattingRoomHistoryList
+>[number];
