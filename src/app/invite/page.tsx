@@ -119,6 +119,9 @@ const InvitePage = validationObserver(() => {
                 (chattingRoom) => chattingRoom.opponentName === value,
               );
 
+              if (value === hostName)
+                return '초대하는 사람의 이름과 같을 수 없어요!';
+
               if (isAlredyExist) return '이미 사용중인 친구 이름이에요!';
 
               if (value.length > 10) return '이름은 10자 이하여야 합니다';

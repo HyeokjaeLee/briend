@@ -5,7 +5,7 @@ import { Toast } from '@hyeokjaelee/pastime-ui';
 import { useBindAuthStore } from '../hook/useBindAuthStore';
 import { useBindDarkMode } from '../hook/useBindDarkMode';
 import { useBindGlobalStore } from '../hook/useBindGlobalStore';
-import { useMountChattingRoomIndexDBStore } from '../hook/useMountIndexedDB';
+import { useMountChattingDataStore } from '../hook/useMountChattingDataStore';
 
 interface GlobalProviderProps {
   children: React.ReactNode;
@@ -18,7 +18,7 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
 
   useBindDarkMode();
 
-  useMountChattingRoomIndexDBStore();
+  useMountChattingDataStore();
 
   return <Toast.Provider>{children}</Toast.Provider>;
 };

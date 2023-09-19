@@ -1,7 +1,5 @@
 'use client';
 
-import { Clock } from 'react-feather';
-
 import { LeftTimer } from '@/components/LeftTimer';
 import { LANGUAGE_PACK } from '@/constants';
 import { decodeChattingRoomToken } from '@/utils';
