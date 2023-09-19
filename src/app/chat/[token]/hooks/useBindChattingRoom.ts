@@ -4,18 +4,19 @@ import { useEffect } from 'react';
 
 import { LANGUAGE } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
 import { decodeChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 
 export const useBindChattingRoom = (token: string) => {
-  const [chattingRoomList, setChattingRoom, addChattingRoom] =
-    useChattingRoomStore(
+  const [isMounted, chattingRoomList, setChattingRoom, createChattingRoom] =
+    useChattingDataStore(
       (state) => [
+        state.isMounted,
         state.chattingRoomList,
         state.setChattingRoom,
-        state.addChattingRoom,
+        state.createChattingRoom,
       ],
       shallow,
     );
@@ -25,7 +26,7 @@ export const useBindChattingRoom = (token: string) => {
   const userId = useAuthStore((state) => state.userId);
 
   useEffect(() => {
-    if (chattingRoomList && pusher) {
+    if (chattingRoomList && pusher && isMounted) {
       (async () => {
         const decodedChattingRoomToken = decodeChattingRoomToken(token);
 
@@ -41,12 +42,13 @@ export const useBindChattingRoom = (token: string) => {
           (chattingRoom) => chattingRoom.token === token,
         );
 
+        const isHost = userId === hostId;
+
         if (!isAreadyExist) {
           const { guestLanguage, hostName, iat, exp } =
             decodedChattingRoomToken;
-          const isHost = userId === hostId;
 
-          addChattingRoom({
+          createChattingRoom({
             token,
             isHost,
             userName: isHost ? hostName : guestName,
@@ -71,8 +73,9 @@ export const useBindChattingRoom = (token: string) => {
       })();
     }
   }, [
+    isMounted,
     chattingRoomList,
-    addChattingRoom,
+    createChattingRoom,
     pusher,
     setChattingRoom,
     token,

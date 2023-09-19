@@ -23,8 +23,3 @@ export interface Message {
     [LANGUAGE.JAPANESE]?: string;
   };
 }
-
-export interface LastMessage {
-  token: string;
-  message?: Message;
-}
