@@ -5,13 +5,13 @@ import { SendMessageForm } from './components/SendMessageForm';
 import { useBindChattingRoom } from './hooks/useBindChattingRoom';
 import { useJoinChannel } from './hooks/useJoinChannel';
 
-interface InviteQrPageProps {
+export interface ChatPageProps {
   params: {
     token: string;
   };
 }
 
-const ChatPage = ({ params: { token } }: InviteQrPageProps) => {
+const ChatPage = ({ params: { token } }: ChatPageProps) => {
   useBindChattingRoom(token);
 
   useJoinChannel();

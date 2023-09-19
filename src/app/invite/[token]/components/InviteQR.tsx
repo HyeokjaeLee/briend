@@ -11,7 +11,7 @@ export const InviteQR = ({ token }: QRProps) => {
   return (
     <Image
       className="rounded-3xl"
-      src={`https://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=${process.env.NEXT_PUBLIC_BASE_URL}${PATH.CHAT}/${token}`}
+      src={`https://chart.apis.google.com/chart?cht=qr&chs=250x250&chl=${process.env.NEXT_PUBLIC_BASE_URL}${PATH.CHAT}/${token}/guest`}
       alt="invite-qr"
       width={size}
       height={size}

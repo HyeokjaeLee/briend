@@ -58,4 +58,25 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.JAPANESE]: (opponentName: string) =>
       `${opponentName}とチャットを始めましょう！\n日本語で話して、私が翻訳します！`,
   },
+
+  CHATTING_ROOM_GUEST_TITLE: {
+    [LANGUAGE.KOREAN]: '채팅방에 초대 되었어요!',
+    [LANGUAGE.ENGLISH]: 'You have been invited to the chat!',
+    [LANGUAGE.JAPANESE]: 'チャットに招待されました！',
+  },
+
+  CHATTING_ROOM_GUEST_DESCRIPTION: {
+    [LANGUAGE.KOREAN]: (opponentName: string) =>
+      `${opponentName}님과 대화를 시작해보세요!\n한국어로 말하면 번역해드려요!`,
+    [LANGUAGE.ENGLISH]: (opponentName: string) =>
+      `Start chatting with ${opponentName}!\nChat English and I'll translate it!`,
+    [LANGUAGE.JAPANESE]: (opponentName: string) =>
+      `${opponentName}とチャットを始めましょう！\n日本語で話して、私が翻訳します！`,
+  },
+
+  CHATTING_ROOM_GUEST_BUTTON: {
+    [LANGUAGE.KOREAN]: '채팅방으로 이동하기',
+    [LANGUAGE.ENGLISH]: 'Go to chat room',
+    [LANGUAGE.JAPANESE]: 'チャットルームに移動する',
+  },
 };

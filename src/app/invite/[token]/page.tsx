@@ -1,7 +1,5 @@
 'use client';
 
-import { Clock } from 'react-feather';
-
 import { LeftTimer } from '@/components/LeftTimer';
 import { LANGUAGE_PACK } from '@/constants';
 import { decodeChattingRoomToken } from '@/utils';
@@ -42,11 +40,8 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
         {LANGUAGE_PACK.INVITE_CHATTING_ROOM_DESCRIPTION[guestLanguage]}
       </h2>
       <section className="flex flex-col gap-1 items-center font-medium">
+        <LeftTimer endAt={new Date(exp * 1000)} />
         {LANGUAGE_PACK.INVITE_CHATTING_ROOM_TIME_LIMIT[guestLanguage]}
-        <div className="flex gap-2 items-center">
-          <Clock />
-          <LeftTimer endAt={new Date(exp * 1000)} className="text-lg" />
-        </div>
       </section>
     </main>
   );
