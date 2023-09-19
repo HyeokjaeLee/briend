@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 import { LOCAL_STORAGE } from '@/constants';
 import { useAuthStore } from '@/store/useAuthStore';
-import { isServerSide, parseCookie } from '@/utils';
+import { parseCookie } from '@/utils';
 
 export const useBindAuthStore = () => {
   const [setIsSaveLogIn, setUserId, setUserName, setProfileImage, setIsBinded] =
@@ -20,8 +20,6 @@ export const useBindAuthStore = () => {
     );
 
   useEffect(() => {
-    if (isServerSide()) return;
-
     const cookies = parseCookie(document.cookie);
 
     const getStorageValue = (key: LOCAL_STORAGE) =>
