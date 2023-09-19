@@ -10,7 +10,9 @@ interface DevPreviewLinkProps {
 
 export const DevPreviewLink = ({ token }: DevPreviewLinkProps) =>
   process.env.NODE_ENV === 'development' ? (
-    <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}${PATH.CHAT}/${token}`}>
+    <Link
+      href={`${process.env.NEXT_PUBLIC_BASE_URL}${PATH.CHAT}/${token}/guest`}
+    >
       개발자 미리보기
     </Link>
   ) : null;

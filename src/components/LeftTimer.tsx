@@ -1,16 +1,16 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { Clock } from 'react-feather';
 
 import { msToTime } from '@/utils';
 import { Skeleton } from '@hyeokjaelee/pastime-ui';
 
 interface LeftTimerProps {
   endAt: Date;
-  className?: string;
 }
 
-export const LeftTimer = ({ endAt, className }: LeftTimerProps) => {
+export const LeftTimer = ({ endAt }: LeftTimerProps) => {
   const calculateTimeLeft = useCallback(
     () => endAt.getTime() - new Date().getTime(),
     [endAt],
@@ -26,13 +26,16 @@ export const LeftTimer = ({ endAt, className }: LeftTimerProps) => {
     return () => clearInterval(interval);
   }, [calculateTimeLeft]);
 
-  if (!time) return <Skeleton className={`${className} h-[1.55em] w-[4em]`} />;
+  if (!time) return <Skeleton className="h-10 w-24" />;
 
   const { hours, minutes, seconds } = msToTime(time);
 
   return (
-    <span className={className}>
-      {hours}:{minutes}:{seconds}
-    </span>
+    <div className={`flex justify-between items-center h-10 gap-2 w-fit`}>
+      <Clock />
+      <span className="text-xl">
+        {hours}:{minutes}:{seconds}
+      </span>
+    </div>
   );
 };
