@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useChattingDataStore } from '@/store/useChattingDataStore';
 
 import { Message } from './Message';
 import { useReceiveChatting } from '../hooks/useReceiveChatting';
@@ -13,7 +13,7 @@ export const MessageList = () => {
 
   const { messageList } = useReceiveChatting();
 
-  const chattingRoom = useChattingRoomStore((state) => state.chattingRoom);
+  const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
 
   if (!messageList || !chattingRoom) return null;
 

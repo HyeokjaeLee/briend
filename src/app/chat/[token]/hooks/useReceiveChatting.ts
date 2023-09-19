@@ -3,12 +3,12 @@ import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
 import { CHANNEL_EVENT } from '@/constants';
-import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
 import type { Message } from '@/types';
 
 export const useReceiveChatting = () => {
-  const [chattingRoom, messageList, addMessage] = useChattingRoomStore(
+  const [chattingRoom, messageList, addMessage] = useChattingDataStore(
     (state) => [state.chattingRoom, state.messageList, state.addMessage],
     shallow,
   );

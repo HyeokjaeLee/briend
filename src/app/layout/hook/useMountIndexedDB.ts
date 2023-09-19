@@ -3,7 +3,7 @@ import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
 import { useAuthStore } from '@/store/useAuthStore';
-import { useChattingRoomStore } from '@/store/useChattingRoomStore';
+import { useChattingDataStore } from '@/store/useChattingDataStore';
 
 export const RETRY_INTERVAL = 3_000;
 
@@ -13,7 +13,7 @@ export const useMountChattingRoomIndexDBStore = () => {
     shallow,
   );
 
-  const mountDB = useChattingRoomStore((state) => state.mountDB);
+  const mountDB = useChattingDataStore((state) => state.mountDB);
 
   useEffect(() => {
     if (isBinded) mountDB(userId);
