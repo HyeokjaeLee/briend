@@ -22,7 +22,7 @@ export const SendMessageForm = () => {
 
   return (
     <form
-      className="fixed w-full bottom-0 bg-zinc-600 dark:bg-zinc-900 flex items-end h-fit"
+      className="sticky w-full bottom-0 bg-zinc-600 dark:bg-zinc-900 flex items-end h-fit"
       onSubmit={(e) => {
         e.preventDefault();
         sendMessage(messageText);

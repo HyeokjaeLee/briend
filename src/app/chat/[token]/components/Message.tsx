@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { cleanClassName } from '@/utils';
-import { Tooltip } from '@hyeokjaelee/pastime-ui';
+import { Spinner, Tooltip } from '@hyeokjaelee/pastime-ui';
 
 export interface PrevMessageInfo {
   isMine: boolean;
@@ -12,9 +12,10 @@ interface MessageProps {
   translatedMessage?: string;
   originalMessage: string;
   isMine: boolean;
-  userName: string;
-  createdAt?: Date;
-  messageCount: number;
+  userName?: string;
+  createdAt: Date;
+  messageCount?: number;
+  isLoading?: boolean;
 }
 
 const DAY_FORMAT = 'YY. MM. DD. HH:mm';
@@ -27,7 +28,8 @@ export const Message = ({
   isMine,
   userName,
   createdAt,
-  messageCount,
+  messageCount = 0,
+  isLoading,
 }: MessageProps) => {
   let emojo = '🥳';
 
@@ -77,6 +79,7 @@ export const Message = ({
               `flex gap-1 ${isMine && 'flex-row-reverse '} items-start`,
             )}
           >
+            {isLoading ? <Spinner className="inline-block" /> : null}
             <div
               className={`whitespace-pre-wrap rounded-xl bg-gray-200 dark:bg-slate-600 shadow-sm dark:shadow-xl py-2 px-4 flex-1 break-all max-w-fit ${
                 !isContinuousUserMessage &&

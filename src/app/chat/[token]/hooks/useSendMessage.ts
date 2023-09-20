@@ -46,7 +46,7 @@ export const useSendMessage = () => {
       if (status === 200) {
         setSendingMessageMap((prevMap) => {
           const newMap = new Map(prevMap);
-          newMap.set(message.meta.createdAt, text);
+          newMap.set(new Date(message.meta.createdAt).getTime(), text);
           return newMap;
         });
         setMessageText('');

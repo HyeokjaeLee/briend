@@ -22,11 +22,16 @@ export const useReceiveChatting = () => {
       const { channel } = chattingRoom;
 
       channel.bind(CHANNEL_EVENT.TRANSLATE, (message: Message) => {
-        setSendingMessageMap((prevMap) => {
-          const newMap = new Map(prevMap);
-          newMap.delete(message.meta.createdAt);
-          return newMap;
-        });
+        message.meta.createdAt = new Date(message.meta.createdAt);
+        const isMine = message.meta.from === chattingRoom.userName;
+        if (isMine) {
+          setSendingMessageMap((prevMap) => {
+            const newMap = new Map(prevMap);
+
+            newMap.delete(message.meta.createdAt.getTime());
+            return newMap;
+          });
+        }
 
         addMessage(message);
       });

@@ -1,6 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 
-type SendingMessageMap = Map<Date, string>;
+type SendingMessageMap = Map<number, string>;
 
 interface TempMessageStore {
   sendingMessageMap: SendingMessageMap;
