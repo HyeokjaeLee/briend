@@ -70,4 +70,37 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.ENGLISH]: 'Go to chat room',
     [LANGUAGE.JAPANESE]: 'チャットルームに移動する',
   },
+
+  HISTORY_NEVER_CHATTED: {
+    [LANGUAGE.KOREAN]: '아직 이 친구와 나눈 대화가 없어요!',
+    [LANGUAGE.ENGLISH]: "You haven't talked to this friend yet!",
+    [LANGUAGE.JAPANESE]: 'まだこの友達と話していません！',
+  },
+
+  HISTORY_DELETE_TITLE: {
+    [LANGUAGE.KOREAN]: '대화 삭제',
+    [LANGUAGE.ENGLISH]: 'Delete chat',
+    [LANGUAGE.JAPANESE]: 'チャットを削除する',
+  },
+
+  HISTORY_ONLY_SAVE_ON_DEVICE: {
+    [LANGUAGE.KOREAN]: (opponentName?: string) =>
+      `${opponentName ?? 'unknown'}님과의 대화는 사용자 기기에만 저장되요!`,
+    [LANGUAGE.ENGLISH]: (opponentName?: string) =>
+      `Chat with ${
+        opponentName ?? 'unknown'
+      } is only saved on the user's device!`,
+    [LANGUAGE.JAPANESE]: (opponentName?: string) =>
+      `${
+        opponentName ?? 'unknown'
+      }とのチャットは、ユーザーのデバイスにのみ保存されます！`,
+  },
+
+  HISTORY_REALLY_DELETE: {
+    [LANGUAGE.KOREAN]: '삭제한다면 복구 할 수 없는데 정말로 삭제하시겠어요?',
+    [LANGUAGE.ENGLISH]:
+      'If you delete it, you cannot restore it. Really delete?',
+    [LANGUAGE.JAPANESE]:
+      '削除すると、元に戻すことはできません。本当に削除しますか？',
+  },
 };

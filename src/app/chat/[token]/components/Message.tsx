@@ -7,13 +7,8 @@ interface MessageProps {
   isMine: boolean;
   isHost: boolean;
   userName: string;
-}
-
-/**
- * 
   createdAt?: Date;
-  isLast?: boolean;
- */
+}
 
 export const Message = ({
   translatedMessage,
@@ -37,14 +32,21 @@ export const Message = ({
           {userName[0]}
         </div>
       </Tooltip.Area>
-      <Tooltip.Content>ss</Tooltip.Content>
+      <Tooltip.Content>{userName}</Tooltip.Content>
     </Tooltip>
-    <div
-      className={`font-semibold whitespace-pre-wrap rounded-2xl ${
-        isMine ? 'rounded-se-none' : 'rounded-ss-none'
-      } bg-yellow-200 dark:bg-slate-600 shadow-md dark:shadow-xl py-2 px-4 flex-1 break-all max-w-fit mt-5`}
-    >
-      {(isMine ? originalMessage : translatedMessage) ?? originalMessage}
-    </div>
+    <Tooltip>
+      <Tooltip.Area>
+        <div
+          className={`whitespace-pre-wrap rounded-2xl ${
+            isMine ? 'rounded-se-none' : 'rounded-ss-none'
+          } bg-gray-200 dark:bg-slate-600 shadow-sm dark:shadow-xl py-2 px-4 flex-1 break-all max-w-fit mt-5`}
+        >
+          {(isMine ? originalMessage : translatedMessage) ?? originalMessage}
+        </div>
+      </Tooltip.Area>
+      <Tooltip.Content className="font-light">
+        {isMine ? translatedMessage : originalMessage}
+      </Tooltip.Content>
+    </Tooltip>
   </li>
 );
