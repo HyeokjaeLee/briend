@@ -106,7 +106,6 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
   } catch (e) {
     return NextResponse.json('fail', {
       status: 500,
-      statusText: String(e),
     });
   }
 };

@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { CHANNEL_EVENT, LANGUAGE_PACK } from '@/constants';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
+import { ApiError } from '@/types';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
@@ -19,21 +20,29 @@ export const useJoinChannel = () => {
         chattingRoom;
 
       (async () => {
-        const { status } = await axios.post(`${token}/api/join`, {
-          isHost,
-        } satisfies JoinPostParams);
+        try {
+          await axios.post(`${token}/api/join`, {
+            isHost,
+          } satisfies JoinPostParams);
+        } catch (e) {
+          const { status } = (e as ApiError).response;
 
-        if (!isHost) {
           switch (status) {
             case 401: {
               return toast({
                 type: 'warning',
-                message:
-                  LANGUAGE_PACK.JOIN_EXPIRED_CHATTING_ROOM_TOAST[userLanguage](
-                    opponentName,
-                  ),
+                message: isHost
+                  ? '이 채팅방은 만료되었어요!\n 새로운 채팅방을 만들어주세요!'
+                  : LANGUAGE_PACK.JOIN_EXPIRED_CHATTING_ROOM_TOAST[
+                      userLanguage
+                    ](opponentName),
               });
             }
+            default:
+              return toast({
+                type: 'fail',
+                message: String(e),
+              });
           }
         }
       })();

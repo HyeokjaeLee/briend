@@ -36,6 +36,7 @@ export const MessageList = () => {
             isHost={chattingRoom.isHost}
             originalMessage={message[originalLanguage] ?? ''}
             translatedMessage={message[translatedLanguage]}
+            createdAt={meta.createdAt}
           />
         );
       })}
