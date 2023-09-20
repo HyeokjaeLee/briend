@@ -2,8 +2,10 @@ import { shallow } from 'zustand/shallow';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { LANGUAGE_PACK } from '@/constants';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
-import { Button, Modal, Skeleton, useToast } from '@hyeokjaelee/pastime-ui';
+import { useGlobalStore } from '@/store/useGlobalStore';
+import { Button, Modal, useToast } from '@hyeokjaelee/pastime-ui';
 
 export const HistoryDeleteModal = () => {
   const searchParams = useSearchParams();
@@ -28,6 +30,8 @@ export const HistoryDeleteModal = () => {
 
   const opponentName = chattingRoom?.opponentName;
 
+  const deviceLanguage = useGlobalStore((state) => state.deviceLanguage);
+
   return (
     <Modal
       opened={!!tokenToDelete}
@@ -35,16 +39,18 @@ export const HistoryDeleteModal = () => {
       className="flex flex-col"
     >
       <Modal.Header closeButton>
-        <h1 className="font-semibold text-xl">대화 삭제</h1>
+        <h1 className="font-bold text-2xl">
+          {LANGUAGE_PACK.HISTORY_DELETE_TITLE[deviceLanguage]}
+        </h1>
       </Modal.Header>
-      <article className="py-9 px-2">
+      <article className="pt-9 pb-4 px-2 font-medium text-sm">
         <div className="text-6xl text-center my-10">🤔</div>
-        <span className="font-bold text-sky-500">
-          {opponentName || <Skeleton className="inline-block h-3 w-20" />}
-        </span>{' '}
-        님 과의 모든 대화는 사용자 기기에만 저장되어요!
-        <br />
-        만약 삭제한다면 복구 할 수 없는데 정말로 삭제하시겠어요?
+        <p className="mb-1">
+          {LANGUAGE_PACK.HISTORY_ONLY_SAVE_ON_DEVICE[deviceLanguage](
+            opponentName,
+          )}
+        </p>
+        <p>{LANGUAGE_PACK.HISTORY_REALLY_DELETE[deviceLanguage]}</p>
       </article>
       <Button
         theme="danger"

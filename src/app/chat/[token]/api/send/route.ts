@@ -1,7 +1,9 @@
+import jwt from 'jsonwebtoken';
+
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { Message } from '@/types';
-import { decodeChattingRoomToken } from '@/utils';
+import { DecodedChattingRoomToken } from '@/utils';
 import { naming } from '@/utils/naming';
 import { pusher } from '@pusher';
 
@@ -10,14 +12,16 @@ import type { ApiResponse } from '../ApiResponse';
 export const POST = async (req: NextRequest, { params }: ApiResponse) => {
   try {
     const { token } = params;
-    const decodedToken = decodeChattingRoomToken(token);
 
-    if (!decodedToken) {
-      return NextResponse.json('fail', {
-        status: 400,
-        statusText: '잘못된 토큰입니다.',
-      });
-    }
+    const pusherSecret = process.env.PUSHER_SECRET;
+
+    if (!pusherSecret)
+      throw new Error('PUSHER_SECRET 환경변수를 찾을 수 없습니다.');
+
+    const decodedToken = jwt.verify(
+      token,
+      pusherSecret,
+    ) as DecodedChattingRoomToken;
 
     const chattingChannel = naming.chattingChannel(
       decodedToken.hostId,
@@ -36,9 +40,14 @@ export const POST = async (req: NextRequest, { params }: ApiResponse) => {
 
     return NextResponse.json('success');
   } catch (e) {
+    if (e instanceof jwt.TokenExpiredError) {
+      return NextResponse.json('fail', {
+        status: 401,
+      });
+    }
+
     return NextResponse.json('fail', {
       status: 500,
-      statusText: String(e),
     });
   }
 };

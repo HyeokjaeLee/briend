@@ -1,12 +1,14 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 
 import { Message } from './Message';
 import { useReceiveChatting } from '../hooks/useReceiveChatting';
 import { useTranslate } from '../hooks/useTranslate';
+
+import type { PrevMessageInfo } from './Message';
 
 export const MessageList = () => {
   useTranslate();
@@ -15,27 +17,49 @@ export const MessageList = () => {
 
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
 
+  const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView();
+  }, [messageList]);
+
   if (!messageList || !chattingRoom) return null;
 
+  const { userName } = chattingRoom;
+
   return (
-    <ul className="max-w-4xl m-auto w-full min-h-page flex flex-col gap-2 my-5 px-4">
+    <ul className="max-w-4xl m-auto w-full min-h-page flex flex-col gap-3 my-5 px-4">
       {messageList.map((messageData, index) => {
         const { meta, message } = messageData;
         const { from } = meta;
 
-        const isMine = from === chattingRoom?.userName;
+        const isMine = from === userName;
         const [originalLanguage, translatedLanguage] = isMine
           ? [chattingRoom.userLanguage, chattingRoom.opponentLanguage]
           : [chattingRoom.opponentLanguage, chattingRoom.userLanguage];
 
+        let prevMessageInfo: PrevMessageInfo | undefined;
+        if (index) {
+          const { meta } = messageList[index - 1];
+          prevMessageInfo = {
+            isMine: meta.from === userName,
+            createdAt: meta.createdAt,
+          };
+        }
+
+        const isLast = index === messageList.length - 1;
+
         return (
           <Message
+            ref={isLast ? ref : undefined}
+            prevMessageInfo={prevMessageInfo}
             key={index}
             userName={from}
             isMine={isMine}
-            isHost={chattingRoom.isHost}
             originalMessage={message[originalLanguage] ?? ''}
             translatedMessage={message[translatedLanguage]}
+            createdAt={meta.createdAt}
+            messageCount={messageList.length}
           />
         );
       })}

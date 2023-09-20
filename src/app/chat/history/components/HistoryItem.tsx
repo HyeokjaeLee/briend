@@ -2,10 +2,10 @@ import dayjs from 'dayjs';
 
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Trash2 } from 'react-feather';
+import { Lock, Trash2 } from 'react-feather';
 
-import { LeftTimer } from '@/components/LeftTimer';
-import { LANGUAGE } from '@/constants';
+import { LANGUAGE, LANGUAGE_PACK } from '@/constants';
+import { useGlobalStore } from '@/store/useGlobalStore';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 import type { ChattingRoomHistory } from '../hooks/useChattingRoomHistoryList';
@@ -21,20 +21,18 @@ export const HistoryItem = ({
   const lastMessageText = lastMessage?.message?.KO;
   const isExpired = endAt < new Date();
   const router = useRouter();
+  const deviceLanguage = useGlobalStore((state) => state.deviceLanguage);
 
   return (
     <li
       key={token}
-      className={`flex items-center border-zinc-300 dark:border-zinc-700 border-b-2 ${
+      className={`flex items-center gap-5 border-zinc-300 dark:border-zinc-700 border-b-2 p-4 ${
         isExpired
           ? 'text-zinc-400 dark:text-zinc-600'
           : 'text-zinc-600 dark:text-gray-50'
       } last:border-none`}
     >
-      <Link
-        href={`/chat/${token}`}
-        className="flex p-4 gap-4 items-center flex-1"
-      >
+      <Link href={`/chat/${token}`} className="flex gap-4 items-center flex-1">
         <span className="text-3xl">
           {
             {
@@ -47,11 +45,15 @@ export const HistoryItem = ({
         <section className="flex flex-col flex-1">
           <div className="flex justify-between items-center">
             <h3 className="text-lg whitespace-nowrap overflow-hidden text-ellipsis">
+              {isExpired ? (
+                <Lock className="inline-block w-4 h-4 mr-2" />
+              ) : null}
               {opponentName}
             </h3>
             <div className="flex justify-center items-center gap-2">
-              <small>{dayjs(startAt).format('YYYY. MM. DD')}</small>
-              <LeftTimer size="small" endAt={endAt} />
+              <small className="font-normal text-xs">
+                {dayjs(startAt).format('YY. MM. DD')}
+              </small>
             </div>
           </div>
           {lastMessageText ? (
@@ -59,7 +61,9 @@ export const HistoryItem = ({
               {lastMessageText}
             </small>
           ) : (
-            <small>😢 아직 이 친구와 나눈 대화가 없어요!</small>
+            <small>
+              😢 {LANGUAGE_PACK.HISTORY_NEVER_CHATTED[deviceLanguage]}
+            </small>
           )}
         </section>
       </Link>

@@ -1,50 +1,113 @@
-import { cleanClassName } from '@/utils';
-import { Tooltip } from '@hyeokjaelee/pastime-ui';
+import dayjs from 'dayjs';
 
+import { forwardRef } from 'react';
+
+import { cleanClassName } from '@/utils';
+import { Spinner, Tooltip } from '@hyeokjaelee/pastime-ui';
+
+export interface PrevMessageInfo {
+  isMine: boolean;
+  createdAt: Date;
+}
 interface MessageProps {
+  prevMessageInfo?: PrevMessageInfo;
   translatedMessage?: string;
   originalMessage: string;
   isMine: boolean;
-  isHost: boolean;
-  userName: string;
+  userName?: string;
+  createdAt: Date;
+  messageCount?: number;
+  isLoading?: boolean;
 }
 
-/**
- * 
-  createdAt?: Date;
-  isLast?: boolean;
- */
+const DAY_FORMAT = 'YY. MM. DD. HH:mm';
+const TIME_FORMAT = 'HH:mm';
 
-export const Message = ({
-  translatedMessage,
-  originalMessage,
-  isMine,
-  isHost,
-  userName,
-}: MessageProps) => (
-  <li className={cleanClassName(`flex gap-2 ${isMine && 'flex-row-reverse'}`)}>
-    <Tooltip>
-      <Tooltip.Area>
+export const Message = forwardRef<HTMLLIElement, MessageProps>(
+  (
+    {
+      prevMessageInfo,
+      translatedMessage,
+      originalMessage,
+      isMine,
+      userName,
+      createdAt,
+      messageCount = 0,
+      isLoading,
+    }: MessageProps,
+    ref,
+  ) => {
+    let emojo = '🥳';
+
+    if (messageCount > 100) emojo = '🤭';
+    else if (messageCount > 50) emojo = '😎';
+    else if (messageCount > 20) emojo = '🤩';
+    else if (messageCount > 10) emojo = '😊';
+    else if (messageCount > 5) emojo = '😀';
+
+    const isContinuousUserMessage = prevMessageInfo?.isMine === isMine;
+
+    const isOpponentNewMessage = !isMine && !isContinuousUserMessage;
+    const isOpponentContinuousMessage = !isMine && isContinuousUserMessage;
+
+    const timeText = dayjs(createdAt).format(
+      dayjs().isSame(createdAt, 'day') ? TIME_FORMAT : DAY_FORMAT,
+    );
+
+    const isSameTime = prevMessageInfo
+      ? dayjs(createdAt).isSame(prevMessageInfo.createdAt, 'minute')
+      : false;
+
+    return (
+      <li
+        className={cleanClassName(
+          `flex gap-2 last:animate-fade-in ${isMine && 'flex-row-reverse'}`,
+        )}
+        ref={ref}
+      >
+        {isOpponentNewMessage ? (
+          <div
+            className={cleanClassName(
+              `whitespace-nowrap rounded-full w-11 h-11 font-semibold flex items-center justify-center text-xl bg-slate-700`,
+            )}
+          >
+            {emojo}
+          </div>
+        ) : null}
         <div
           className={cleanClassName(
-            `whitespace-nowrap rounded-full w-11 h-11 font-semibold flex items-center justify-center text-xl ${
-              (isMine && isHost) || (!isMine && !isHost)
-                ? 'bg-sky-400'
-                : 'bg-red-400'
-            } text-white`,
+            `${isOpponentContinuousMessage && 'ml-[3.25rem]'}`,
           )}
         >
-          {userName[0]}
+          {isOpponentNewMessage ? <small>{userName}</small> : null}
+          <Tooltip>
+            <Tooltip.Area
+              className={cleanClassName(
+                `flex gap-1 ${isMine && 'flex-row-reverse '} items-start`,
+              )}
+            >
+              {isLoading ? <Spinner className="inline-block" /> : null}
+              <div
+                className={`whitespace-pre-wrap rounded-xl bg-gray-200 dark:bg-slate-600 shadow-sm dark:shadow-xl py-2 px-4 flex-1 break-all max-w-fit ${
+                  !isContinuousUserMessage &&
+                  (isMine ? 'rounded-se-none' : 'rounded-ss-none')
+                }`}
+              >
+                {(isMine ? originalMessage : translatedMessage) ??
+                  originalMessage}
+              </div>
+              {!isSameTime || !isContinuousUserMessage ? (
+                <small>{timeText}</small>
+              ) : null}
+            </Tooltip.Area>
+            <Tooltip.Content className="font-light">
+              {isMine ? translatedMessage : originalMessage}
+            </Tooltip.Content>
+          </Tooltip>
         </div>
-      </Tooltip.Area>
-      <Tooltip.Content>ss</Tooltip.Content>
-    </Tooltip>
-    <div
-      className={`font-semibold whitespace-pre-wrap rounded-2xl ${
-        isMine ? 'rounded-se-none' : 'rounded-ss-none'
-      } bg-yellow-200 dark:bg-slate-600 shadow-md dark:shadow-xl py-2 px-4 flex-1 break-all max-w-fit mt-5`}
-    >
-      {(isMine ? originalMessage : translatedMessage) ?? originalMessage}
-    </div>
-  </li>
+      </li>
+    );
+  },
 );
+
+Message.displayName = 'Message';

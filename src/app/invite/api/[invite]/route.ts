@@ -32,24 +32,20 @@ export const GET = async (req: NextRequest) => {
 
     const pusherSecret = process.env.PUSHER_SECRET;
 
-    if (!pusherSecret) {
-      return NextResponse.json(errorResponse, {
-        status: 500,
-        statusText: 'PUSHER_SECRET 환경변수를 찾을 수 없습니다.',
-      });
-    }
+    if (!pusherSecret)
+      throw new Error('PUSHER_SECRET 환경변수를 찾을 수 없습니다.');
 
     if (!hostId || !guestName || !hostName) {
       return NextResponse.json(errorResponse, {
         status: 400,
-        statusText: 'guest token 발급에 필요한 정보가 부족합니다.',
+        statusText: 'not enough params to sign token',
       });
     }
 
     if (!guestLanguage || !typeGuard.isLanguage(guestLanguage)) {
       return NextResponse.json(errorResponse, {
         status: 400,
-        statusText: 'guestLanguage가 올바르지 않습니다.',
+        statusText: 'invalid guest language',
       });
     }
 
@@ -72,7 +68,6 @@ export const GET = async (req: NextRequest) => {
   } catch (e) {
     return NextResponse.json(errorResponse, {
       status: 500,
-      statusText: 'Guest 토큰을 발급 받지 못했습니다.',
     });
   }
 };
