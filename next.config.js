@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 const nextConfig = withPWA({
   dest: 'public',
-
+  disable: !isProduction,
   runtimeCaching,
 })({
   images: {
