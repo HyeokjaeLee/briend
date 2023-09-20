@@ -28,4 +28,8 @@ export const useKakaoLogOut = () => {
       });
     }
   }, [isLogOut, router, setProfileImage, setUserId, setUserName, toast]);
+
+  return {
+    isLogOut,
+  };
 };

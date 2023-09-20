@@ -2,23 +2,26 @@
 
 import Image from 'next/image';
 
-import { useKakaoLogIn } from '@/app/auth/hooks/useKakaoLogIn';
 import Kakao from '@/assets/Kakao.png';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
-export const KakaoLogInButton = () => {
-  const { isLoading, kakaoLogIn } = useKakaoLogIn();
+interface KakaoLogInButtonProps {
+  onClick?: () => void;
+  isLoading?: boolean;
+}
 
-  return (
-    <Button
-      size="large"
-      onClick={kakaoLogIn}
-      theme="secondary"
-      icon={<Image src={Kakao} alt="kakao-login" className="h-6 w-6" />}
-      loading={isLoading}
-      className="w-full"
-    >
-      카카오 로그인
-    </Button>
-  );
-};
+export const KakaoLogInButton = ({
+  onClick,
+  isLoading,
+}: KakaoLogInButtonProps) => (
+  <Button
+    size="large"
+    onClick={onClick}
+    theme="secondary"
+    icon={<Image src={Kakao} alt="kakao-login" className="h-6 w-6" />}
+    loading={isLoading}
+    className="w-full"
+  >
+    카카오 로그인
+  </Button>
+);

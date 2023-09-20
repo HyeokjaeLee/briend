@@ -54,7 +54,7 @@ const InvitePage = validationObserver(() => {
   const { validate } = useValidate();
 
   return (
-    <main className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16 p-page">
+    <article className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16">
       <h1 className="font-bold text-3xl text-left w-full mb-12">
         👋 새로운 친구 초대
       </h1>
@@ -139,7 +139,7 @@ const InvitePage = validationObserver(() => {
           QR 코드 생성
         </Button>
       </form>
-    </main>
+    </article>
   );
 });
 
