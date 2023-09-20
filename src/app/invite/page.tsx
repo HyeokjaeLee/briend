@@ -40,7 +40,7 @@ const InvitePage = validationObserver(() => {
     (state) => state.chattingRoomList,
   );
 
-  const { isLoading, getToken } = useGetChattingRoomToken();
+  const { getChattingRoomToken, isLoading } = useGetChattingRoomToken();
 
   const inputValues = {
     guestLanguage: LANGUAGE.ENGLISH,
@@ -73,7 +73,7 @@ const InvitePage = validationObserver(() => {
           e.preventDefault();
           const { isValid } = validate();
           if (hostId && hostName && isValid) {
-            const token = await getToken({
+            const token = await getChattingRoomToken({
               ...inputValues,
               hostId,
               hostName,
@@ -131,10 +131,10 @@ const InvitePage = validationObserver(() => {
         </div>
         <Button
           loading={isLoading}
-          size="large"
           className="w-full font-bold"
           type="submit"
-          icon={<Link />}
+          size="large"
+          icon={<Link size="1.2rem" />}
         >
           QR 코드 생성
         </Button>

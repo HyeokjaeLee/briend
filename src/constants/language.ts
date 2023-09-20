@@ -103,4 +103,22 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.JAPANESE]:
       '削除すると、元に戻すことはできません。本当に削除しますか？',
   },
+
+  EXPIRED_CHATTING_ROOM_PLACEHOLDER: {
+    [LANGUAGE.KOREAN]: '만료된 채팅방이에요!',
+    [LANGUAGE.ENGLISH]: 'This chat has expired!',
+    [LANGUAGE.JAPANESE]: 'このチャットは期限切れです！',
+  },
+
+  CHATTING_HISTORY: {
+    [LANGUAGE.KOREAN]: '채팅 기록',
+    [LANGUAGE.ENGLISH]: 'Chat history',
+    [LANGUAGE.JAPANESE]: 'チャット履歴',
+  },
+
+  CREATE_CHATTING_ROOM: {
+    [LANGUAGE.KOREAN]: '채팅 개설',
+    [LANGUAGE.ENGLISH]: 'Create chat',
+    [LANGUAGE.JAPANESE]: 'チャットを開始する',
+  },
 };

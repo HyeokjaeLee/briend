@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@hyeokjaelee/pastime-ui':
-    specifier: ^1.4.39
-    version: 1.4.39(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.4.40
+    version: 1.4.40(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.5.6
     version: 20.5.6
@@ -389,8 +389,8 @@ packages:
       - supports-color
     dev: true
 
-  /@hyeokjaelee/pastime-ui@1.4.39(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-hYjNRsaA1Q/tRSHM6tp1nITr7WOueVclqbQ6lrc/AruDgwJnKs5cUJEKRdNkn5rfYdGp/djcp+DxVu0KUdYmKA==}
+  /@hyeokjaelee/pastime-ui@1.4.40(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-REeuhIgEQxRXU7O2apVNB3HOxWDrjephVdsMALJIpgcjq6bvYzkLA6di13RInRJsyHebdo2cnCudXMm8caXISA==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
