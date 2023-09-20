@@ -18,11 +18,13 @@ const ChatPage = ({ params: { token } }: ChatPageProps) => {
   useJoinChannel();
 
   return (
-    <main>
-      <MessageList />
-      <SendMessageForm />
+    <>
+      <article className="flex flex-col h-page overflow-hidden">
+        <MessageList />
+        <SendMessageForm />
+      </article>
       <SendingMessageDrawer />
-    </main>
+    </>
   );
 };
 

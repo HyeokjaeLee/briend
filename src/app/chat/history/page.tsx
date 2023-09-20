@@ -9,7 +9,7 @@ const ChatHistoryPage = () => {
 
   return (
     <>
-      <main className="max-w-3xl mx-auto">
+      <article className="max-w-3xl mx-auto">
         <ul>
           {chattingRoomHistoryList.map((chattingRoomHistory) => (
             <HistoryItem
@@ -18,7 +18,7 @@ const ChatHistoryPage = () => {
             />
           ))}
         </ul>
-      </main>
+      </article>
       <HistoryDeleteModal />
     </>
   );

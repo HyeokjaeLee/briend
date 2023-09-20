@@ -1,6 +1,6 @@
 {
   "name": "briend",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hyeokjaelee/pastime-ui": "^1.4.39",
+    "@hyeokjaelee/pastime-ui": "^1.4.40",
     "@types/node": "20.5.6",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -37,6 +37,7 @@
     "@types/lodash-es": "^4.17.9",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.19",
+    "next-pwa": "^5.6.0",
     "prettier": "^2.8.8"
   }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { LogIn } from 'react-feather';
+import { LogIn, UserPlus } from 'react-feather';
 
 import { useAuthStore } from '@/store/useAuthStore';
 import { Button } from '@hyeokjaelee/pastime-ui';
@@ -10,7 +10,15 @@ export const LogInButton = () => {
   const router = useRouter();
   const isLogin = useAuthStore(({ isLogin }) => isLogin);
 
-  return isLogin ? null : (
+  return isLogin ? (
+    <Button
+      icon={<UserPlus />}
+      theme="secondary"
+      onClick={() => router.push('/invite')}
+    >
+      채팅 개설
+    </Button>
+  ) : (
     <Button
       theme="ghost"
       icon={<LogIn />}

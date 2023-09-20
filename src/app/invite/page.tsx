@@ -40,7 +40,7 @@ const InvitePage = validationObserver(() => {
     (state) => state.chattingRoomList,
   );
 
-  const { isLoading, getToken } = useGetChattingRoomToken();
+  const { getChattingRoomToken, isLoading } = useGetChattingRoomToken();
 
   const inputValues = {
     guestLanguage: LANGUAGE.ENGLISH,
@@ -54,7 +54,7 @@ const InvitePage = validationObserver(() => {
   const { validate } = useValidate();
 
   return (
-    <main className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16 p-page">
+    <article className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16">
       <h1 className="font-bold text-3xl text-left w-full mb-12">
         👋 새로운 친구 초대
       </h1>
@@ -73,7 +73,7 @@ const InvitePage = validationObserver(() => {
           e.preventDefault();
           const { isValid } = validate();
           if (hostId && hostName && isValid) {
-            const token = await getToken({
+            const token = await getChattingRoomToken({
               ...inputValues,
               hostId,
               hostName,
@@ -131,15 +131,15 @@ const InvitePage = validationObserver(() => {
         </div>
         <Button
           loading={isLoading}
-          size="large"
           className="w-full font-bold"
           type="submit"
-          icon={<Link />}
+          size="large"
+          icon={<Link size="1.2rem" />}
         >
           QR 코드 생성
         </Button>
       </form>
-    </main>
+    </article>
   );
 });
 

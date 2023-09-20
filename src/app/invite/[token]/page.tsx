@@ -30,7 +30,7 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
   });
 
   return (
-    <main className="flex flex-col items-center max-w-3xl justify-center m-auto p-page gap-4 min-h-page">
+    <article className="flex flex-col items-center max-w-3xl justify-center m-auto gap-4 min-h-page">
       <h1 className="font-bold text-3xl mb-9">
         🙌 {LANGUAGE_PACK.INVAITE_CHATTING_ROOM_TITLE[guestLanguage]}
       </h1>
@@ -43,7 +43,7 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
         <LeftTimer endAt={new Date(exp * 1000)} />
         {LANGUAGE_PACK.INVITE_CHATTING_ROOM_TIME_LIMIT[guestLanguage]}
       </section>
-    </main>
+    </article>
   );
 };
 

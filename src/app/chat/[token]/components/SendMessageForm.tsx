@@ -3,6 +3,8 @@ import { shallow } from 'zustand/shallow';
 import React from 'react';
 import { Send } from 'react-feather';
 
+import { LANGUAGE_PACK } from '@/constants';
+import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
 import { Button, Textarea } from '@hyeokjaelee/pastime-ui';
 
@@ -16,13 +18,17 @@ export const SendMessageForm = () => {
     shallow,
   );
 
+  const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
+
+  const isExpired = chattingRoom ? chattingRoom.endAt < new Date() : false;
+
   const { sendMessage, isLoading } = useSendMessage();
 
   const messageLength = messageText.length;
 
-  return (
+  return chattingRoom ? (
     <form
-      className="sticky w-full bottom-0 bg-zinc-600 dark:bg-zinc-900 flex items-end h-fit"
+      className="w-full bottom-0 bg-zinc-600 dark:bg-zinc-900 flex items-end h-fit"
       onSubmit={(e) => {
         e.preventDefault();
         sendMessage(messageText);
@@ -30,6 +36,7 @@ export const SendMessageForm = () => {
     >
       <div className="flex-1 m-auto p-2">
         <Textarea
+          disabled={isExpired}
           label={
             messageLength
               ? `${messageLength} / ${LIMIT_MESSAGE_LENGTH}`
@@ -37,6 +44,13 @@ export const SendMessageForm = () => {
           }
           className="w-full"
           value={messageText}
+          placeholder={
+            isExpired
+              ? LANGUAGE_PACK.EXPIRED_CHATTING_ROOM_PLACEHOLDER[
+                  chattingRoom.userLanguage
+                ]
+              : undefined
+          }
           onChange={(e) => {
             e.preventInnerStateChange();
             if (e.value.length <= LIMIT_MESSAGE_LENGTH) setMessageText(e.value);
@@ -61,5 +75,5 @@ export const SendMessageForm = () => {
         }
       />
     </form>
-  );
+  ) : null;
 };

@@ -15,7 +15,7 @@ export const useGetChattingRoomToken = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   return {
-    getToken: async (params: SignChattingRoomTokenParams) => {
+    getChattingRoomToken: async (params: SignChattingRoomTokenParams) => {
       setIsLoading(true);
 
       const { data } = await axios.get<SignChattingRoomTokenRespons>(
@@ -27,7 +27,7 @@ export const useGetChattingRoomToken = () => {
 
       const { token } = data;
 
-      setIsLoading(false);
+      setTimeout(() => setIsLoading(false), 1_000);
       return token;
     },
 

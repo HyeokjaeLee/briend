@@ -10,6 +10,9 @@ import { GlobalProvider } from './layout/components/GlobalProvider';
 export const metadata: Metadata = {
   title: 'Briend',
   description: 'Talk to new people without language barriers',
+  manifest: '/manifest.json',
+  icons: '/icon.svg',
+  themeColor: '#fff',
 };
 
 interface LayoutProps {
@@ -17,11 +20,11 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => (
-  <html lang="en" className="text-sm sm:text-base">
+  <html lang="en" className="text-sm sm:text-base w-full h-full">
     <GlobalProvider>
-      <body className="bg-slate-100 dark:bg-zinc-800 text-zinc-600 dark:text-slate-300 font-pretendard break-keep font-medium">
+      <body className="bg-slate-100 dark:bg-zinc-800 text-zinc-600 dark:text-slate-300 font-pretendard break-keep font-medium w-full h-full flex flex-col">
         <GlobalNav />
-        {children}
+        <main className="flex-1 h-page overflow-auto">{children}</main>
       </body>
       <GlobalMenu />
     </GlobalProvider>

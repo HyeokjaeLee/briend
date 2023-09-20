@@ -3,7 +3,7 @@ import { DescriptionSection } from './components/DescriptionSection';
 import { LogInButton } from './components/LogInButton';
 
 const HomePage = () => (
-  <main className="h-page relative flex items-center justify-center flex-col gap-2">
+  <article className="h-full flex items-center justify-center flex-col gap-2">
     <BackgroundImage />
     <DescriptionSection />
     <LogInButton />
@@ -17,7 +17,7 @@ const HomePage = () => (
         언어의 장벽없는 새로운 사람과의 대화
       </h2>
     </section>
-  </main>
+  </article>
 );
 
 export default HomePage;
