@@ -10,6 +10,9 @@ import { GlobalProvider } from './layout/components/GlobalProvider';
 export const metadata: Metadata = {
   title: 'Briend',
   description: 'Talk to new people without language barriers',
+  manifest: '/manifest.json',
+  icons: '/icon.svg',
+  themeColor: '#fff',
 };
 
 interface LayoutProps {
