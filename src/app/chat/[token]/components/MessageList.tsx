@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 
@@ -16,6 +16,12 @@ export const MessageList = () => {
   const { messageList } = useReceiveChatting();
 
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
+
+  const ref = useRef<HTMLLIElement>(null);
+
+  useEffect(() => {
+    ref.current?.scrollIntoView();
+  }, [messageList]);
 
   if (!messageList || !chattingRoom) return null;
 
@@ -41,8 +47,11 @@ export const MessageList = () => {
           };
         }
 
+        const isLast = index === messageList.length - 1;
+
         return (
           <Message
+            ref={isLast ? ref : undefined}
             prevMessageInfo={prevMessageInfo}
             key={index}
             userName={from}
