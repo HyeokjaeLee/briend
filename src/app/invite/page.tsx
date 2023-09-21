@@ -54,7 +54,7 @@ const InvitePage = validationObserver(() => {
   const { validate } = useValidate();
 
   return (
-    <article className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16">
+    <article className="flex flex-col items-center max-w-3xl justify-center mx-auto my-16 p-4">
       <h1 className="font-bold text-3xl text-left w-full mb-12">
         👋 새로운 친구 초대
       </h1>

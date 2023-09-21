@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@hyeokjaelee/pastime-ui':
-    specifier: ^1.4.40
-    version: 1.4.40(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.4.41
+    version: 1.4.41(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: 20.5.6
     version: 20.5.6
@@ -1360,8 +1360,8 @@ packages:
       - supports-color
     dev: true
 
-  /@hyeokjaelee/pastime-ui@1.4.40(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-REeuhIgEQxRXU7O2apVNB3HOxWDrjephVdsMALJIpgcjq6bvYzkLA6di13RInRJsyHebdo2cnCudXMm8caXISA==}
+  /@hyeokjaelee/pastime-ui@1.4.41(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-EehwKoBT4ATZxbUZa0s8M+lX/7d5zspe7Cqh6jL8cM74k+cVATipGcuYbfJPWgrtrT/3rW3A38GNPtm505h78A==}
     peerDependencies:
       react: ^18.2.0
       react-dom: ^18.2.0
@@ -2358,7 +2358,7 @@ packages:
     hasBin: true
     dependencies:
       caniuse-lite: 1.0.30001538
-      electron-to-chromium: 1.4.525
+      electron-to-chromium: 1.4.526
       node-releases: 2.0.13
       update-browserslist-db: 1.0.12(browserslist@4.21.10)
 
@@ -2663,8 +2663,8 @@ packages:
       jake: 10.8.7
     dev: true
 
-  /electron-to-chromium@1.4.525:
-    resolution: {integrity: sha512-GIZ620hDK4YmIqAWkscG4W6RwY6gOx1y5J6f4JUQwctiJrqH2oxZYU4mXHi35oV32tr630UcepBzSBGJ/WYcZA==}
+  /electron-to-chromium@1.4.526:
+    resolution: {integrity: sha512-tjjTMjmZAx1g6COrintLTa2/jcafYKxKoiEkdQOrVdbLaHh2wCt2nsAF8ZHweezkrP+dl/VG9T5nabcYoo0U5Q==}
 
   /emoji-regex@9.2.2:
     resolution: {integrity: sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==}

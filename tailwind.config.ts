@@ -2,7 +2,7 @@ import type { Config } from 'tailwindcss';
 
 const NAV_HEIGHT = '3.5rem';
 
-const PAGE_HEIGHT = `calc(100vh - ${NAV_HEIGHT})`;
+const PAGE_HEIGHT = `calc(100% - ${NAV_HEIGHT})`;
 
 const config: Config = {
   content: [

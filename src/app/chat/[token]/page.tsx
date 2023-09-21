@@ -19,7 +19,7 @@ const ChatPage = ({ params: { token } }: ChatPageProps) => {
 
   return (
     <>
-      <article className="flex flex-col h-page overflow-hidden">
+      <article className="flex flex-col h-full">
         <MessageList />
         <SendMessageForm />
       </article>

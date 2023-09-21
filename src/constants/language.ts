@@ -13,11 +13,11 @@ export const LANGUAGE_PACK = {
 
   PREVENT_MULTI_WINDOW_DESCRIPTION: {
     [LANGUAGE.KOREAN]:
-      '다른 창에서 Briend를 사용하고 있다면 그 창을 닫아 주세요.\n다른 창들이 닫혀도 이 메시지가 사라지지 않는다면 새로고침 해 주세요.',
+      '다른 창에서 briend를 사용하고 있다면 그 창을 닫아 주세요.\n다른 창들이 닫혀도 이 메시지가 사라지지 않는다면 새로고침 해 주세요.',
     [LANGUAGE.ENGLISH]:
-      'If you are using Briend in another window, please close that window.\nIf this message does not disappear even if other windows are closed, please refresh.',
+      'If you are using briend in another window, please close that window.\nIf this message does not disappear even if other windows are closed, please refresh.',
     [LANGUAGE.JAPANESE]:
-      '他のウィンドウでBriendを使用している場合は、そのウィンドウを閉じてください。\n他のウィンドウを閉じてもこのメッセージが消えない場合は、リフレッシュしてください。',
+      '他のウィンドウでbriendを使用している場合は、そのウィンドウを閉じてください。\n他のウィンドウを閉じてもこのメッセージが消えない場合は、リフレッシュしてください。',
   },
 
   INVAITE_CHATTING_ROOM_TITLE: {
