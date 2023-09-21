@@ -20,12 +20,14 @@ interface ChattingDatraStore {
   chattingRoom?:
     | (ChattingRoom & {
         channel: Channel;
+        isExpired: boolean;
       })
     | null;
 
   messageList?: Message[] | null;
 
   setChattingRoom: (params: { token: string; channel: Channel } | null) => void;
+  expireChattingRoom: () => void;
 
   addMessage: (message: Message) => void;
 }
@@ -105,14 +107,21 @@ export const useChattingDataStore = createWithEqualityFn<ChattingDatraStore>(
             throw new Error('chattingDataDB가 존재하지 않습니다.');
           const { messageList } = await chattingDataDB.getMessageData(token);
 
+          const isExpired = chattingRoom.endAt < new Date();
+
           return set({
-            chattingRoom: { ...chattingRoom, channel },
+            chattingRoom: { ...chattingRoom, channel, isExpired },
             messageList,
           });
         }
 
         set({ chattingRoom: null, messageList: null });
       },
+
+      expireChattingRoom: () =>
+        set(({ chattingRoom }) => ({
+          chattingRoom: chattingRoom && { ...chattingRoom, isExpired: true },
+        })),
 
       addMessage: async (message) => {
         const {

@@ -18,14 +18,14 @@ const AuthPage = () => {
   useGuestUserOnly();
 
   return isLogOut ? null : (
-    <article>
+    <article className="h-full">
       <div className="absolute z-[-1] h-page w-full">
         <Image src={Background} alt="tokyo" layout="fill" objectFit="cover" />
         <div className="w-full h-full bg-black opacity-90 absolute" />
       </div>
       {code ? null : (
-        <section className="h-page flex items-center justify-center">
-          <div className="max-w-page flex-col flex bg-slate-50 w-full h-fit box-border rounded-md p-page m-5 text-zinc-800">
+        <section className="h-full flex items-center justify-center">
+          <div className="max-w-page flex-col flex bg-slate-50 w-full h-fit box-border rounded-md p-4 m-5 text-zinc-800">
             <div className="flex flex-col w-fit items-center m-auto py-28">
               <h1 className="flex font-bold text-4xl items-center gap-2">
                 <Image src={Logo} alt="briend" className="w-10" />

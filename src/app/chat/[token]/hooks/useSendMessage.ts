@@ -3,10 +3,10 @@ import { shallow } from 'zustand/shallow';
 
 import { useState } from 'react';
 
-import { LANGUAGE_PACK } from '@/constants';
+import { useExpiredTokenErrorToast } from '@/hooks/useExpiredTokenErrorToast';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
-import { ApiError, Message } from '@/types';
+import { Message } from '@/types';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 export const useSendMessage = () => {
@@ -20,7 +20,7 @@ export const useSendMessage = () => {
 
   const { toast } = useToast();
 
-  const isHost = chattingRoom?.isHost;
+  const { toastExpiredTokenError } = useExpiredTokenErrorToast();
 
   const sendMessage = async (text: string) => {
     if (!chattingRoom) throw new Error('채팅방 정보가 없습니다.');
@@ -54,26 +54,11 @@ export const useSendMessage = () => {
 
       setIsLoading(false);
     } catch (e) {
-      const { status } = (e as ApiError).response;
-
-      switch (status) {
-        case 401: {
-          toast({
-            type: 'warning',
-            message: isHost
-              ? '이 채팅방은 만료되었어요!\n 새로운 채팅방을 만들어주세요!'
-              : LANGUAGE_PACK.JOIN_EXPIRED_CHATTING_ROOM_TOAST[
-                  chattingRoom.userLanguage
-                ](chattingRoom.opponentName),
-          });
-          break;
-        }
-        default:
-          toast({
-            type: 'fail',
-            message: String(e),
-          });
-          break;
+      if (!toastExpiredTokenError(e)) {
+        toast({
+          type: 'fail',
+          message: String(e),
+        });
       }
 
       setIsLoading(false);
