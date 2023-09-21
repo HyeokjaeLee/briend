@@ -8,11 +8,25 @@ import { GlobalNav } from './layout/components/GlobalNav';
 import { GlobalProvider } from './layout/components/GlobalProvider';
 
 export const metadata: Metadata = {
-  title: 'Briend',
+  title: 'briend',
   description: 'Talk to new people without language barriers',
   manifest: '/manifest.json',
-  icons: '/icon.svg',
-  themeColor: '#fff',
+  viewport:
+    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0',
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://briend.vercel.app/',
+    title: 'briend',
+    description: 'Talk to new people without language barriers',
+    siteName: 'briend',
+    images: [
+      {
+        url: '/assets/Background.jpeg',
+        alt: 'briend',
+      },
+    ],
+  },
 };
 
 interface LayoutProps {
