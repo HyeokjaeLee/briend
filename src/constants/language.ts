@@ -116,6 +116,12 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.JAPANESE]: 'チャット履歴',
   },
 
+  EMPTY_HISTORY: {
+    [LANGUAGE.KOREAN]: '아직 대화 기록이 없어요!',
+    [LANGUAGE.ENGLISH]: 'There is no chat history yet!',
+    [LANGUAGE.JAPANESE]: 'まだチャット履歴がありません！',
+  },
+
   CREATE_CHATTING_ROOM: {
     [LANGUAGE.KOREAN]: '채팅 개설',
     [LANGUAGE.ENGLISH]: 'Create chat',

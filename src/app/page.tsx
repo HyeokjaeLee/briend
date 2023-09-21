@@ -1,6 +1,7 @@
+import { LogInButton } from '@/components/LogInButton';
+
 import { BackgroundImage } from './components/BackgroundImage';
 import { DescriptionSection } from './components/DescriptionSection';
-import { LogInButton } from './components/LogInButton';
 
 const HomePage = () => (
   <article className="h-full flex items-center justify-center flex-col gap-2">
