@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { useEffect } from 'react';
 
-import { CHANNEL_EVENT } from '@/constants';
+import { CHANNEL_EVENT, LANGUAGE_PACK } from '@/constants';
 import { useExpiredTokenErrorToast } from '@/hooks/useExpiredTokenErrorToast';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useToast } from '@hyeokjaelee/pastime-ui';
@@ -38,7 +38,10 @@ export const useJoinChannel = () => {
         if (data.isHost !== isHost) {
           toast({
             type: 'info',
-            message: `${opponentName}님이 채팅을 보고 있어요!`,
+            message:
+              LANGUAGE_PACK.LOOKING_CHATTING_TOAST[chattingRoom.userLanguage](
+                opponentName,
+              ),
           });
         }
       });

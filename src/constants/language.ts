@@ -121,4 +121,13 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.ENGLISH]: 'Create chat',
     [LANGUAGE.JAPANESE]: 'チャットを開始する',
   },
+
+  LOOKING_CHATTING_TOAST: {
+    [LANGUAGE.KOREAN]: (opponentName: string) =>
+      `${opponentName}님이 채팅을 보고 있어요!`,
+    [LANGUAGE.ENGLISH]: (opponentName: string) =>
+      `${opponentName} is looking at the chat!`,
+    [LANGUAGE.JAPANESE]: (opponentName: string) =>
+      `${opponentName}がチャットを見ています！`,
+  },
 };
