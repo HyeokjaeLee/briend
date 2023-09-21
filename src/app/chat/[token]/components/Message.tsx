@@ -58,11 +58,13 @@ export const Message = forwardRef<HTMLLIElement, MessageProps>(
 
     return (
       <>
-        {isSameDay ? null : (
-          <li className="text-center">
-            <span className="rounded-md bg-zinc-200 dark:bg-zinc-500 text-zinc-400 dark:text-zinc-800 py-1 px-2 text-sm">
+        {isSameDay || isLoading ? null : (
+          <li className="flex items-center gap-2 animate-fade-in">
+            <hr className="flex-1" />
+            <span className="text-sm">
               {dayjs(createdAt).format('YYYY. MM. DD')}
             </span>
+            <hr className="flex-1" />
           </li>
         )}
         <li

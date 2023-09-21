@@ -1,11 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 
+import { EmptyMessageTemplate } from './EmptyMessageTemplate';
 import { Message } from './Message';
 import { useReceiveChatting } from '../hooks/useReceiveChatting';
+import { useScrollToMessage } from '../hooks/useScrollToMessage';
+import { useSendingMessage } from '../hooks/useSendingMessage';
 import { useTranslate } from '../hooks/useTranslate';
 
 import type { PrevMessageInfo } from './Message';
@@ -17,20 +20,17 @@ export const MessageList = () => {
 
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
 
-  const ref = useRef<HTMLLIElement>(null);
+  const { isSendingMessage, sendingMessageList } = useSendingMessage();
 
-  useEffect(() => {
-    ref.current?.scrollIntoView({
-      block: 'center',
-      behavior: 'smooth',
-    });
-  }, [messageList]);
+  const { messageRef } = useScrollToMessage(messageList, sendingMessageList);
 
   if (!messageList || !chattingRoom) return null;
 
   const { userName } = chattingRoom;
 
-  return (
+  const messageCount = messageList.length;
+
+  return messageCount || isSendingMessage ? (
     <section className="flex-1 overflow-auto">
       <ul className="max-w-4xl mx-auto w-full flex flex-col gap-3 my-5 px-4">
         {messageList.map((messageData, index) => {
@@ -51,11 +51,12 @@ export const MessageList = () => {
             };
           }
 
-          const isLast = index === messageList.length - 1;
+          const isLastMessage =
+            index === messageList.length - 1 && !isSendingMessage;
 
           return (
             <Message
-              ref={isLast ? ref : undefined}
+              ref={isLastMessage ? messageRef : undefined}
               prevMessageInfo={prevMessageInfo}
               key={index}
               userName={from}
@@ -63,36 +64,28 @@ export const MessageList = () => {
               originalMessage={message[originalLanguage] ?? ''}
               translatedMessage={message[translatedLanguage]}
               createdAt={meta.createdAt}
-              messageCount={messageList.length}
+              messageCount={messageCount}
+            />
+          );
+        })}
+      </ul>
+      <ul className="max-w-4xl mx-auto w-full flex flex-col gap-3 my-5 px-4">
+        {sendingMessageList.map(([key, message], index) => {
+          const isLast = index === sendingMessageList.length - 1;
+          return (
+            <Message
+              ref={isLast ? messageRef : undefined}
+              isMine
+              originalMessage={message}
+              key={key}
+              createdAt={new Date(key)}
+              isLoading
             />
           );
         })}
       </ul>
     </section>
+  ) : (
+    <EmptyMessageTemplate />
   );
 };
-
-// TODO:
-/**
- *  {chattingList.map((chatting, index) => {
-        const isLast = index === chattingList.length - 1;
-        return (
-          <li key={index} ref={isLast ? ref : undefined} className="flex gap-2">
-            <div className="whitespace-nowrap rounded-full bg-slate-500 w-11 h-11 font-black flex items-center justify-center text-xs text-white">
-              {chatting.user}
-            </div>
-            <div className="font-semibold whitespace-pre-wrap rounded-e-2xl rounded-es-2xl bg-slate-200 shadow-md py-2 px-4 flex-1 break-all max-w-fit mt-5">
-              {chatting.message?.[language]}
-            </div>
-          </li>
-        );
-      })}
- */
-
-/**
-       *   const ref = useRef<HTMLLIElement>(null);
-
-  useEffect(() => {
-    ref.current?.scrollIntoView();
-  }, [messageList]);
-       */

@@ -2,7 +2,6 @@
 
 import { MessageList } from './components/MessageList';
 import { SendMessageForm } from './components/SendMessageForm';
-import { SendingMessageDrawer } from './components/SendingMessageDrawer';
 import { useBindChattingRoom } from './hooks/useBindChattingRoom';
 import { useJoinChannel } from './hooks/useJoinChannel';
 
@@ -23,7 +22,6 @@ const ChatPage = ({ params: { token } }: ChatPageProps) => {
         <MessageList />
         <SendMessageForm />
       </article>
-      <SendingMessageDrawer />
     </>
   );
 };

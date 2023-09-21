@@ -116,9 +116,39 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.JAPANESE]: 'チャット履歴',
   },
 
+  EMPTY_HISTORY: {
+    [LANGUAGE.KOREAN]: '아직 대화 기록이 없어요!',
+    [LANGUAGE.ENGLISH]: 'There is no chat history yet!',
+    [LANGUAGE.JAPANESE]: 'まだチャット履歴がありません！',
+  },
+
   CREATE_CHATTING_ROOM: {
     [LANGUAGE.KOREAN]: '채팅 개설',
     [LANGUAGE.ENGLISH]: 'Create chat',
     [LANGUAGE.JAPANESE]: 'チャットを開始する',
+  },
+
+  LOOKING_CHATTING_TOAST: {
+    [LANGUAGE.KOREAN]: (opponentName: string) =>
+      `${opponentName}님이 채팅을 보고 있어요!`,
+    [LANGUAGE.ENGLISH]: (opponentName: string) =>
+      `${opponentName} is looking at the chat!`,
+    [LANGUAGE.JAPANESE]: (opponentName: string) =>
+      `${opponentName}がチャットを見ています！`,
+  },
+
+  FRIEND_NOT_LOOKING_CHATTING_TOAST: {
+    [LANGUAGE.KOREAN]:
+      '친구가 채팅을 안보고 있는것 같아요!\n 친구가 채팅을 보고 있을 때만 메시지를 보낼 수 있어요!',
+    [LANGUAGE.ENGLISH]: `It seems that your friend is not looking at the chat!\nYou can only send messages when your friend is looking at the chat!`,
+    [LANGUAGE.JAPANESE]: `友達がチャットを見ていないようです！\n友達がチャットを見ているときだけメッセージを送信できます！`,
+  },
+
+  FRIEND_NOT_LOOKING_CHATTING_TOAST_PLACEHOLDER: {
+    [LANGUAGE.KOREAN]: '친구가 채팅을 보면 다시 메시지를 보낼 수 있어요!',
+    [LANGUAGE.ENGLISH]:
+      'You can send messages again when your friend looks at the chat!',
+    [LANGUAGE.JAPANESE]:
+      '友達がチャットを見ると、再びメッセージを送信できます！',
   },
 };

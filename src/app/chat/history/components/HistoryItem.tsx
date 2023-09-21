@@ -62,7 +62,7 @@ export const HistoryItem = ({
             </small>
           ) : (
             <small>
-              😢 {LANGUAGE_PACK.HISTORY_NEVER_CHATTED[deviceLanguage]}
+              😞 {LANGUAGE_PACK.HISTORY_NEVER_CHATTED[deviceLanguage]}
             </small>
           )}
         </section>
