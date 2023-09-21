@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { CHANNEL_EVENT, LANGUAGE_PACK } from '@/constants';
 import { useExpiredTokenErrorToast } from '@/hooks/useExpiredTokenErrorToast';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
+import { useTempMessageStore } from '@/store/useTempMessageStore';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
@@ -12,6 +13,9 @@ import { JoinPostParams, JoinPusherResponse } from '../api/join/route';
 export const useJoinChannel = () => {
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
   const { toastExpiredTokenError } = useExpiredTokenErrorToast();
+  const setIsOpponentLooking = useTempMessageStore(
+    (state) => state.setIsOpponentLooking,
+  );
 
   const { toast } = useToast();
 
@@ -43,6 +47,7 @@ export const useJoinChannel = () => {
                 opponentName,
               ),
           });
+          setIsOpponentLooking(true);
         }
       });
 
@@ -50,5 +55,5 @@ export const useJoinChannel = () => {
         channel.unbind(CHANNEL_EVENT.JOIN_CHANNEL);
       };
     }
-  }, [chattingRoom, toast, toastExpiredTokenError]);
+  }, [chattingRoom, toast, toastExpiredTokenError, setIsOpponentLooking]);
 };

@@ -1,12 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 
 import { EmptyMessageTemplate } from './EmptyMessageTemplate';
 import { Message } from './Message';
 import { useReceiveChatting } from '../hooks/useReceiveChatting';
+import { useScrollToMessage } from '../hooks/useScrollToMessage';
+import { useSendingMessage } from '../hooks/useSendingMessage';
 import { useTranslate } from '../hooks/useTranslate';
 
 import type { PrevMessageInfo } from './Message';
@@ -18,14 +20,9 @@ export const MessageList = () => {
 
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
 
-  const ref = useRef<HTMLLIElement>(null);
+  const { isSendingMessage, sendingMessageList } = useSendingMessage();
 
-  useEffect(() => {
-    ref.current?.scrollIntoView({
-      block: 'center',
-      behavior: 'smooth',
-    });
-  }, [messageList]);
+  const { messageRef } = useScrollToMessage(messageList, sendingMessageList);
 
   if (!messageList || !chattingRoom) return null;
 
@@ -33,7 +30,7 @@ export const MessageList = () => {
 
   const messageCount = messageList.length;
 
-  return messageCount ? (
+  return messageCount || isSendingMessage ? (
     <section className="flex-1 overflow-auto">
       <ul className="max-w-4xl mx-auto w-full flex flex-col gap-3 my-5 px-4">
         {messageList.map((messageData, index) => {
@@ -54,11 +51,12 @@ export const MessageList = () => {
             };
           }
 
-          const isLast = index === messageList.length - 1;
+          const isLastMessage =
+            index === messageList.length - 1 && !isSendingMessage;
 
           return (
             <Message
-              ref={isLast ? ref : undefined}
+              ref={isLastMessage ? messageRef : undefined}
               prevMessageInfo={prevMessageInfo}
               key={index}
               userName={from}
@@ -67,6 +65,21 @@ export const MessageList = () => {
               translatedMessage={message[translatedLanguage]}
               createdAt={meta.createdAt}
               messageCount={messageCount}
+            />
+          );
+        })}
+      </ul>
+      <ul className="max-w-4xl mx-auto w-full flex flex-col gap-3 my-5 px-4">
+        {sendingMessageList.map(([key, message], index) => {
+          const isLast = index === sendingMessageList.length - 1;
+          return (
+            <Message
+              ref={isLast ? messageRef : undefined}
+              isMine
+              originalMessage={message}
+              key={key}
+              createdAt={new Date(key)}
+              isLoading
             />
           );
         })}

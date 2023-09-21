@@ -8,7 +8,7 @@ export const EmptyHistoryTemplate = () => {
   return (
     <section className="h-full flex items-center justify-center">
       <div className="flex flex-col items-center gap-6">
-        <div className="text-6xl">🥳</div>
+        <div className="text-6xl animate-bounce">🥳</div>
         <h1 className="text-xl">
           {LANGUAGE_PACK.EMPTY_HISTORY[deviceLanguage]}
         </h1>

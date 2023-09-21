@@ -136,4 +136,19 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.JAPANESE]: (opponentName: string) =>
       `${opponentName}がチャットを見ています！`,
   },
+
+  FRIEND_NOT_LOOKING_CHATTING_TOAST: {
+    [LANGUAGE.KOREAN]:
+      '친구가 채팅을 안보고 있는것 같아요!\n 친구가 채팅을 보고 있을 때만 메시지를 보낼 수 있어요!',
+    [LANGUAGE.ENGLISH]: `It seems that your friend is not looking at the chat!\nYou can only send messages when your friend is looking at the chat!`,
+    [LANGUAGE.JAPANESE]: `友達がチャットを見ていないようです！\n友達がチャットを見ているときだけメッセージを送信できます！`,
+  },
+
+  FRIEND_NOT_LOOKING_CHATTING_TOAST_PLACEHOLDER: {
+    [LANGUAGE.KOREAN]: '친구가 채팅을 보면 다시 메시지를 보낼 수 있어요!',
+    [LANGUAGE.ENGLISH]:
+      'You can send messages again when your friend looks at the chat!',
+    [LANGUAGE.JAPANESE]:
+      '友達がチャットを見ると、再びメッセージを送信できます！',
+  },
 };

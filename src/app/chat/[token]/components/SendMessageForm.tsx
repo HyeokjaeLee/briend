@@ -22,9 +22,28 @@ export const SendMessageForm = () => {
 
   const isExpired = chattingRoom ? chattingRoom.endAt < new Date() : false;
 
+  const isOpponentLooking = useTempMessageStore(
+    (state) => state.isOpponentLooking,
+  );
+
   const { sendMessage, isLoading } = useSendMessage();
 
   const messageLength = messageText.length;
+
+  let placeholder;
+
+  if (chattingRoom) {
+    const { userLanguage } = chattingRoom;
+    if (!isOpponentLooking) {
+      placeholder =
+        LANGUAGE_PACK.FRIEND_NOT_LOOKING_CHATTING_TOAST_PLACEHOLDER[
+          userLanguage
+        ];
+    } else if (isExpired) {
+      placeholder =
+        LANGUAGE_PACK.EXPIRED_CHATTING_ROOM_PLACEHOLDER[userLanguage];
+    }
+  }
 
   return chattingRoom ? (
     <form
@@ -36,7 +55,7 @@ export const SendMessageForm = () => {
     >
       <div className="flex-1 m-auto p-2">
         <Textarea
-          disabled={isExpired}
+          disabled={!!placeholder}
           label={
             messageLength
               ? `${messageLength} / ${LIMIT_MESSAGE_LENGTH}`
@@ -44,13 +63,7 @@ export const SendMessageForm = () => {
           }
           className="w-full"
           value={messageText}
-          placeholder={
-            isExpired
-              ? LANGUAGE_PACK.EXPIRED_CHATTING_ROOM_PLACEHOLDER[
-                  chattingRoom.userLanguage
-                ]
-              : undefined
-          }
+          placeholder={placeholder}
           onChange={(e) => {
             e.preventInnerStateChange();
             if (e.value.length <= LIMIT_MESSAGE_LENGTH) setMessageText(e.value);

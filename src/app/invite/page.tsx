@@ -134,7 +134,7 @@ const InvitePage = validationObserver(() => {
           className="w-full font-bold"
           type="submit"
           size="large"
-          icon={<Link size="1.2rem" />}
+          icon={<Link size="1rem" />}
         >
           QR 코드 생성
         </Button>

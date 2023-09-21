@@ -8,7 +8,7 @@ export const EmptyMessageTemplate = () => {
   return (
     <section className="flex-1 flex justify-center items-center">
       <div className="flex flex-col items-center gap-6">
-        <div className="text-6xl">😞</div>
+        <div className="text-6xl animate-bounce">😞</div>
         <h1 className="text-xl">
           {
             LANGUAGE_PACK.HISTORY_NEVER_CHATTED[
