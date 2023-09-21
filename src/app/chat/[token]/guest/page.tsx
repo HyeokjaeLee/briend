@@ -19,7 +19,7 @@ const InviteGuestPage = ({ params: { token } }: ChatPageProps) => {
   const isExpired = new Date(decodedToken.exp * 1000) < new Date();
 
   return (
-    <main className="flex flex-col items-center max-w-3xl justify-center m-auto p-page min-h-page gap-4">
+    <article className="flex flex-col items-center max-w-3xl justify-center m-auto h-full gap-4 p-4">
       <section className="flex flex-col items-center justify-center gap-1">
         <h1 className="font-bold text-2xl">
           👋 {LANGUAGE_PACK.CHATTING_ROOM_GUEST_TITLE[guestLanguage]}
@@ -43,7 +43,7 @@ const InviteGuestPage = ({ params: { token } }: ChatPageProps) => {
       >
         {LANGUAGE_PACK.CHATTING_ROOM_GUEST_BUTTON[guestLanguage]}
       </Button>
-    </main>
+    </article>
   );
 };
 

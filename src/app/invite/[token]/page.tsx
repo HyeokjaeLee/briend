@@ -30,7 +30,7 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
   });
 
   return (
-    <article className="flex flex-col items-center max-w-3xl justify-center m-auto gap-4 min-h-page">
+    <article className="flex flex-col items-center max-w-3xl justify-center mx-auto gap-4 p-4 h-full">
       <h1 className="font-bold text-3xl mb-9">
         🙌 {LANGUAGE_PACK.INVAITE_CHATTING_ROOM_TITLE[guestLanguage]}
       </h1>
