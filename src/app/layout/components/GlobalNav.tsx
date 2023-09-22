@@ -14,7 +14,7 @@ export const GlobalNav = () => {
   const router = useRouter();
   const setMenuOpened = useGlobalStore((state) => state.setGlobalMenuOpened);
   return (
-    <header className="bg-black px-5 flex items-center justify-between h-nav z-10 top-0">
+    <header className="bg-black px-5 flex items-center justify-between z-10 top-0 h-nav">
       <div className="flex items-center gap-1">
         <Image
           src={LogoWithText}
