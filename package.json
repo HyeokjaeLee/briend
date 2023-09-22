@@ -1,6 +1,6 @@
 {
   "name": "briend",
-  "version": "0.2.0",
+  "version": "0.2.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@hyeokjaelee/pastime-ui": "^1.4.41",
+    "@hyeokjaelee/pastime-ui": "^1.4.42",
     "@types/node": "20.5.6",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",

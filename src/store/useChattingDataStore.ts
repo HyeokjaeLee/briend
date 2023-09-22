@@ -147,10 +147,10 @@ export const useChattingDataStore = createWithEqualityFn<ChattingDatraStore>(
           messageList,
           lastMessageList: prevLastMessageList.map((lastMessage) =>
             lastMessage.token === token
-              ? {
+              ? ({
                   token,
-                  lastMessage: message,
-                }
+                  message,
+                } satisfies LastMessage)
               : lastMessage,
           ),
         });
