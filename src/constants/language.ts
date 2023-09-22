@@ -1,3 +1,5 @@
+import type { TimeObject } from '@/utils';
+
 export enum LANGUAGE {
   ENGLISH = 'EN',
   JAPANESE = 'JA',
@@ -54,6 +56,15 @@ export const LANGUAGE_PACK = {
     [LANGUAGE.KOREAN]: '채팅방에 초대 되었어요!',
     [LANGUAGE.ENGLISH]: 'You have been invited to the chat!',
     [LANGUAGE.JAPANESE]: 'チャットに招待されました！',
+  },
+
+  CHATTING_EXPIRED_TIMER_PLACEHOLDER: {
+    [LANGUAGE.KOREAN]: ({ hours, minutes, seconds }: TimeObject) =>
+      `${hours}:${minutes}:${seconds} 뒤에 만료되어요!`,
+    [LANGUAGE.ENGLISH]: ({ hours, minutes, seconds }: TimeObject) =>
+      `It expires in ${hours}:${minutes}:${seconds}!`,
+    [LANGUAGE.JAPANESE]: ({ hours, minutes, seconds }: TimeObject) =>
+      `${hours}:${minutes}:${seconds}後に期限切れになります！`,
   },
 
   CHATTING_ROOM_GUEST_DESCRIPTION: {

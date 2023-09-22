@@ -8,6 +8,7 @@ import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useTempMessageStore } from '@/store/useTempMessageStore';
 import { Button, Textarea } from '@hyeokjaelee/pastime-ui';
 
+import { useExpireTimer } from '../hooks/useExpireTimer';
 import { useSendMessage } from '../hooks/useSendMessage';
 
 const LIMIT_MESSAGE_LENGTH = 100;
@@ -20,8 +21,6 @@ export const SendMessageForm = () => {
 
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
 
-  const isExpired = chattingRoom ? chattingRoom.endAt < new Date() : false;
-
   const isOpponentLooking = useTempMessageStore(
     (state) => state.isOpponentLooking,
   );
@@ -30,20 +29,10 @@ export const SendMessageForm = () => {
 
   const messageLength = messageText.length;
 
-  let placeholder;
-
-  if (chattingRoom) {
-    const { userLanguage } = chattingRoom;
-    if (!isOpponentLooking) {
-      placeholder =
-        LANGUAGE_PACK.FRIEND_NOT_LOOKING_CHATTING_TOAST_PLACEHOLDER[
-          userLanguage
-        ];
-    } else if (isExpired) {
-      placeholder =
-        LANGUAGE_PACK.EXPIRED_CHATTING_ROOM_PLACEHOLDER[userLanguage];
-    }
-  }
+  const { isExpired, placeholder } = useExpireTimer(
+    chattingRoom?.endAt,
+    chattingRoom?.userLanguage,
+  );
 
   return chattingRoom ? (
     <form
@@ -55,7 +44,7 @@ export const SendMessageForm = () => {
     >
       <div className="flex-1 m-auto p-2">
         <Textarea
-          disabled={!!placeholder}
+          disabled={!isOpponentLooking || isExpired}
           label={
             messageLength
               ? `${messageLength} / ${LIMIT_MESSAGE_LENGTH}`
@@ -63,7 +52,13 @@ export const SendMessageForm = () => {
           }
           className="w-full"
           value={messageText}
-          placeholder={placeholder}
+          placeholder={
+            !isExpired && !isOpponentLooking
+              ? LANGUAGE_PACK.FRIEND_NOT_LOOKING_CHATTING_TOAST_PLACEHOLDER[
+                  chattingRoom.userLanguage
+                ]
+              : placeholder
+          }
           onChange={(e) => {
             e.preventInnerStateChange();
             if (e.value.length <= LIMIT_MESSAGE_LENGTH) setMessageText(e.value);

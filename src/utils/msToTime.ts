@@ -11,3 +11,5 @@ export const msToTime = (ms: number) => {
     seconds: addZero(seconds),
   };
 };
+
+export type TimeObject = ReturnType<typeof msToTime>;
