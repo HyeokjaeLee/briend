@@ -21,29 +21,24 @@ export const useBindAuthStore = () => {
 
   useEffect(() => {
     const cookies = parseCookie(document.cookie);
-    console.log(1, cookies);
+
     const getStorageValue = (key: LOCAL_STORAGE) =>
       cookies.get(key) ?? localStorage.getItem(key);
 
     setIsSaveLogIn(
       localStorage.getItem(LOCAL_STORAGE.IS_SAVE_LOGIN) === 'true',
     );
+
     console.log(
-      2,
-      localStorage.getItem(LOCAL_STORAGE.IS_SAVE_LOGIN) === 'true',
+      cookies.get(LOCAL_STORAGE.USER_ID),
+      localStorage.getItem(LOCAL_STORAGE.USER_ID),
     );
 
     setUserId(getStorageValue(LOCAL_STORAGE.USER_ID));
 
-    console.log(3, getStorageValue(LOCAL_STORAGE.USER_ID));
-
     setUserName(getStorageValue(LOCAL_STORAGE.USER_NAME));
 
-    console.log(4, getStorageValue(LOCAL_STORAGE.USER_NAME));
-
     setProfileImage(getStorageValue(LOCAL_STORAGE.PROFILE_IMAGE));
-
-    console.log(5, getStorageValue(LOCAL_STORAGE.PROFILE_IMAGE));
 
     setIsBinded(true);
   }, [setIsSaveLogIn, setProfileImage, setUserId, setUserName, setIsBinded]);
