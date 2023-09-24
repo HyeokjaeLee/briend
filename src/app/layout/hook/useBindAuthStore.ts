@@ -30,7 +30,7 @@ export const useBindAuthStore = () => {
     );
 
     const userId = getStorageValue(LOCAL_STORAGE.USER_ID);
-    console.log(3, localStorage.getItem(LOCAL_STORAGE.USER_NAME));
+
     if (userId) setUserId(userId);
 
     const userName = getStorageValue(LOCAL_STORAGE.USER_NAME);

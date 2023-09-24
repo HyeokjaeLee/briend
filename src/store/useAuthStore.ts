@@ -25,17 +25,13 @@ export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
   const saveStorageValue = (key: LOCAL_STORAGE, value: string | null) => {
     const { isSaveLogIn } = get();
 
-    if (isSaveLogIn && value) localStorage.setItem(key, value);
-    else localStorage.removeItem(key);
-
     if (value) {
       if (isSaveLogIn) localStorage.setItem(key, value);
-      console.log(1, isSaveLogIn);
+
       document.cookie = `${key}=${value}; path=/;`;
     } else document.cookie = `${key}=; path=/;`;
-    console.log(2, value);
 
-    if (!value || !isSaveLogIn) localStorage.removeItem(key);
+    if (!isSaveLogIn || !value) localStorage.removeItem(key);
   };
 
   return {
