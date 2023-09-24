@@ -1,11 +1,13 @@
 import { shallow } from 'zustand/shallow';
 
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { LANGUAGE_PACK } from '@/constants';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
 import { Button, Modal, useToast } from '@hyeokjaelee/pastime-ui';
+import TurtleCurious from '@public/assets/resources/turtle-curious.png';
 
 export const HistoryDeleteModal = () => {
   const searchParams = useSearchParams();
@@ -43,8 +45,12 @@ export const HistoryDeleteModal = () => {
           {LANGUAGE_PACK.HISTORY_DELETE_TITLE[deviceLanguage]}
         </h1>
       </Modal.Header>
-      <article className="pt-9 pb-4 px-2 font-medium text-sm">
-        <div className="text-6xl text-center my-10">🤔</div>
+      <article className="pt-9 pb-4 px-2 font-medium text-sm flex flex-col items-center">
+        <Image
+          src={TurtleCurious}
+          className="w-24 h-24 my-10"
+          alt="turtle-curious"
+        />
         <p className="mb-1">
           {LANGUAGE_PACK.HISTORY_ONLY_SAVE_ON_DEVICE[deviceLanguage](
             opponentName,
