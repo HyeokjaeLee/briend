@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import TurtleStar from '@public/assets/resources/turtle-star.png';
+import TurtleStar from '@assets/resources/turtle-star.png';
 
 const AboutPage = () => (
   <article className="max-w-3xl flex flex-col gap-6 text-lg justify-center mx-auto my-24 px-8">
@@ -36,7 +36,7 @@ const AboutPage = () => (
       </p>
     </section>
     <footer className="pt-5 border-t-2">
-      It was created by Hyukjae Lee and all source code is available on{' '}
+      It was created by Hyeokjae Lee and all source code is available on{' '}
       <a
         href="https://github.com/HyeokjaeLee/briend"
         target="_blank"
