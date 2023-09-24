@@ -1,10 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { MessageCircle } from 'react-feather';
 
 import { LeftTimer } from '@/components/LeftTimer';
 import { LANGUAGE_PACK } from '@/constants';
 import { decodeChattingRoomToken } from '@/utils';
+import TurtleMessage from '@assets/resources/turtle-message.png';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 import type { ChatPageProps } from '../page';
@@ -22,7 +24,12 @@ const InviteGuestPage = ({ params: { token } }: ChatPageProps) => {
     <article className="flex flex-col items-center max-w-3xl justify-center m-auto h-full gap-4 p-4">
       <section className="flex flex-col items-center justify-center gap-1">
         <h1 className="font-bold text-2xl">
-          👋 {LANGUAGE_PACK.CHATTING_ROOM_GUEST_TITLE[guestLanguage]}
+          <Image
+            src={TurtleMessage}
+            alt="message"
+            className="h-12 w-12 inline-block mr-2 animate-bounce"
+          />
+          {LANGUAGE_PACK.CHATTING_ROOM_GUEST_TITLE[guestLanguage]}
         </h1>
         <p>
           {LANGUAGE_PACK.CHATTING_ROOM_GUEST_DESCRIPTION[guestLanguage](

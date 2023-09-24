@@ -39,13 +39,13 @@ export const LeftTimer = ({ endAt, size = 'large' }: LeftTimerProps) => {
       height: 'h-10',
       skeletonWidth: 'w-36',
       icon: 'w-7 h-7',
-      text: 'text-xl font-normal',
+      text: 'text-xl font-normal font-mono',
     },
     small: {
       height: 'h-3',
       skeletonWidth: 'w-20',
       icon: 'w-3 h-3',
-      text: 'text-xs font-normal',
+      text: 'text-xs font-normal font-mono',
     },
   }[size];
 

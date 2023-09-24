@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 
+import { BackgroundImage } from '@/components/BackgroundImage';
 import { useGuestUserOnly } from '@/hooks/useGuestUserOnly';
+import { useAuthStore } from '@/store/useAuthStore';
 import Logo from '@assets/resources/logo.svg';
-import TokyoPicture from '@assets/resources/tokyo-picture.jpeg';
 
 import { KakaoLogInButton } from './components/KakaoLogInButton';
 import { SaveLogInSwitch } from './components/SaveLogInSwitch';
@@ -13,18 +14,16 @@ import { useKakaoLogOut } from './hooks/useKakaoLogOut';
 
 const AuthPage = () => {
   const { isLogOut } = useKakaoLogOut();
+  const isBinded = useAuthStore((state) => state.isBinded);
 
   const { isLoading, kakaoLogIn, code } = useKakaoLogIn();
   useGuestUserOnly();
 
-  return isLogOut ? null : (
+  return isLogOut || !isBinded ? null : (
     <article className="h-full">
-      <div className="absolute z-[-1] h-page w-full">
-        <Image src={TokyoPicture} alt="tokyo" layout="fill" objectFit="cover" />
-        <div className="w-full h-full bg-black opacity-90 absolute" />
-      </div>
+      <BackgroundImage />
       {code ? null : (
-        <section className="h-full flex items-center justify-center">
+        <section className="h-full flex items-center justify-center animate-fade-in">
           <div className="max-w-page flex-col flex bg-slate-50 w-full h-fit box-border rounded-md p-4 m-5 text-zinc-800">
             <div className="flex flex-col w-fit items-center m-auto py-28">
               <h1 className="flex font-bold text-4xl items-center gap-2">

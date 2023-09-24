@@ -6,7 +6,7 @@ export const LayoutTab = () => {
   const router = useRouter();
   const pathname = usePathname();
   return (
-    <Tab fixedDarkMode="dark" size="small">
+    <Tab fixedDarkMode="dark">
       <Tab.Item
         active={pathname === '/about'}
         onClick={() => router.push('/about')}

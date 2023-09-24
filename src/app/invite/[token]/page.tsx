@@ -1,8 +1,11 @@
 'use client';
 
+import Image from 'next/image';
+
 import { LeftTimer } from '@/components/LeftTimer';
 import { LANGUAGE_PACK } from '@/constants';
 import { decodeChattingRoomToken } from '@/utils';
+import TurtleMessage from '@assets/resources/turtle-message.png';
 
 import { DevPreviewLink } from './components/DevPreviewLink';
 import { InviteQR } from './components/InviteQR';
@@ -32,7 +35,12 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
   return (
     <article className="flex flex-col items-center max-w-3xl justify-center mx-auto gap-4 p-4 h-full">
       <h1 className="font-bold text-3xl mb-9">
-        🙌 {LANGUAGE_PACK.INVAITE_CHATTING_ROOM_TITLE[guestLanguage]}
+        <Image
+          src={TurtleMessage}
+          alt="message"
+          className="h-12 w-12 inline-block mr-2 animate-bounce"
+        />
+        {LANGUAGE_PACK.INVAITE_CHATTING_ROOM_TITLE[guestLanguage]}
       </h1>
       <InviteQR token={token} />
       <DevPreviewLink token={token} />

@@ -108,7 +108,7 @@ export const Message = forwardRef<HTMLLIElement, MessageProps>(
                   <small>{timeText}</small>
                 ) : null}
               </Tooltip.Area>
-              <Tooltip.Content className="font-light">
+              <Tooltip.Content>
                 {isMine ? translatedMessage : originalMessage}
               </Tooltip.Content>
             </Tooltip>

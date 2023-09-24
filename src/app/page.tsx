@@ -1,6 +1,6 @@
+import { BackgroundImage } from '@/components/BackgroundImage';
 import { LogInButton } from '@/components/LogInButton';
 
-import { BackgroundImage } from './components/BackgroundImage';
 import { DescriptionSection } from './components/DescriptionSection';
 
 const HomePage = () => (
