@@ -1,7 +1,16 @@
+import Image from 'next/image';
+
+import TurtleStar from '@public/assets/resources/turtle-star.png';
+
 const AboutPage = () => (
   <article className="max-w-3xl flex flex-col gap-6 text-lg justify-center mx-auto my-24 px-8">
-    <h1 className="text-4xl text-center mb-8">
-      <div className="text-8xl animate-bounce">🤩</div>About
+    <h1 className="text-4xl mb-8 flex justify-center items-center flex-col">
+      <Image
+        className="w-28 h-28 animate-bounce"
+        src={TurtleStar}
+        alt="turtle-star"
+      />
+      About
     </h1>
     <section>
       <h2 className="text-2xl mb-2">Korean</h2>
