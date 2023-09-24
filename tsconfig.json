@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@public/*": ["./public/*"],
-      "@api/*": ["./src/app/api/*/route.ts"],
+      "@assets/*": ["./public/assets/*"],
       "@pusher": ["./src/app/api/pusher.ts"]
     }
   },

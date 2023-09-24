@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 
-import Background from '@/assets/Background.jpeg';
-import Logo from '@/assets/Logo.svg';
 import { useGuestUserOnly } from '@/hooks/useGuestUserOnly';
+import Logo from '@assets/resources/logo.svg';
+import TokyoPicture from '@assets/resources/tokyo-picture.jpeg';
 
 import { KakaoLogInButton } from './components/KakaoLogInButton';
 import { SaveLogInSwitch } from './components/SaveLogInSwitch';
@@ -20,7 +20,7 @@ const AuthPage = () => {
   return isLogOut ? null : (
     <article className="h-full">
       <div className="absolute z-[-1] h-page w-full">
-        <Image src={Background} alt="tokyo" layout="fill" objectFit="cover" />
+        <Image src={TokyoPicture} alt="tokyo" layout="fill" objectFit="cover" />
         <div className="w-full h-full bg-black opacity-90 absolute" />
       </div>
       {code ? null : (

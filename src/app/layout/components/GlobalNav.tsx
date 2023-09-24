@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Menu } from 'react-feather';
 
-import LogoWithText from '@/assets/LogoWithText.svg';
 import { useGlobalStore } from '@/store/useGlobalStore';
+import LogoWithText from '@assets/resources/logo-with-text.svg';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 import { LayoutTab } from './LayoutTab';

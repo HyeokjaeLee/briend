@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 
-import Kakao from '@/assets/Kakao.png';
+import Kakao from '@assets/resources/kakao.png';
 import { Button } from '@hyeokjaelee/pastime-ui';
 
 interface KakaoLogInButtonProps {
