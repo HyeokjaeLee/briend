@@ -1,6 +1,9 @@
+import Image from 'next/image';
+
 import { LANGUAGE_PACK } from '@/constants';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
+import TurtleGift from '@public/assets/resources/turtle-gift.png';
 
 export const EmptyMessageTemplate = () => {
   const chattingRoom = useChattingDataStore((state) => state.chattingRoom);
@@ -8,7 +11,11 @@ export const EmptyMessageTemplate = () => {
   return (
     <section className="flex-1 flex justify-center items-center">
       <div className="flex flex-col items-center gap-6">
-        <div className="text-6xl animate-bounce">😞</div>
+        <Image
+          src={TurtleGift}
+          alt="new-chatting"
+          className="w-28 h-28 animate-bounce"
+        />
         <h1 className="text-xl">
           {
             LANGUAGE_PACK.HISTORY_NEVER_CHATTED[

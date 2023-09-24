@@ -7,7 +7,7 @@ import { LANGUAGE_PACK } from '@/constants';
 import { useChattingDataStore } from '@/store/useChattingDataStore';
 import { useGlobalStore } from '@/store/useGlobalStore';
 import { Button, Modal, useToast } from '@hyeokjaelee/pastime-ui';
-import TurtleCurious from '@public/assets/resources/turtle-curious.png';
+import TurtleHole from '@public/assets/resources/turtle-hole.png';
 
 export const HistoryDeleteModal = () => {
   const searchParams = useSearchParams();
@@ -45,11 +45,12 @@ export const HistoryDeleteModal = () => {
           {LANGUAGE_PACK.HISTORY_DELETE_TITLE[deviceLanguage]}
         </h1>
       </Modal.Header>
-      <article className="pt-9 pb-4 px-2 font-medium text-sm flex flex-col items-center">
+      <article className="p-2 font-medium text-sm flex flex-col items-center">
         <Image
-          src={TurtleCurious}
-          className="w-24 h-24 my-10"
+          src={TurtleHole}
+          className="w-28 h-28 mb-10 animate-pulse"
           alt="turtle-curious"
+          priority
         />
         <p className="mb-1">
           {LANGUAGE_PACK.HISTORY_ONLY_SAVE_ON_DEVICE[deviceLanguage](

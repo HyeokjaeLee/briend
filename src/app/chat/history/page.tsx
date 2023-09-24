@@ -1,5 +1,7 @@
 'use client';
 
+import { useAuthStore } from '@/store/useAuthStore';
+
 import { EmptyHistoryTemplate } from './components/EmptyHistoryTemplate';
 import { HistoryDeleteModal } from './components/HistoryDeleteModal';
 import { HistoryItem } from './components/HistoryItem';
@@ -8,7 +10,8 @@ import { useChattingRoomHistoryList } from './hooks/useChattingRoomHistoryList';
 const ChatHistoryPage = () => {
   const chattingRoomHistoryList = useChattingRoomHistoryList();
   const isHistoryEmpty = chattingRoomHistoryList.length === 0;
-  return (
+  const isBinded = useAuthStore((state) => state.isBinded);
+  return isBinded ? (
     <>
       <article className="max-w-3xl mx-auto h-full">
         {isHistoryEmpty ? (
@@ -26,7 +29,7 @@ const ChatHistoryPage = () => {
       </article>
       <HistoryDeleteModal />
     </>
-  );
+  ) : null;
 };
 
 export default ChatHistoryPage;
