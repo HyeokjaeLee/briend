@@ -75,21 +75,6 @@ export const InviteForm = validationObserver(() => {
           router.push(`invite/${token}`);
         } else {
           toast({
-            message: String(hostId),
-            type: 'fail',
-          });
-
-          toast({
-            message: String(hostName),
-            type: 'fail',
-          });
-
-          toast({
-            message: String(isValid),
-            type: 'fail',
-          });
-
-          toast({
             message: '상대방 이름을 다시 확인해 주세요!',
             type: 'fail',
           });
