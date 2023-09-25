@@ -15,6 +15,7 @@ export const EmptyMessageTemplate = () => {
           src={TurtleGift}
           alt="new-chatting"
           className="w-28 h-28 animate-bounce"
+          priority
         />
         <h1 className="text-xl">
           {

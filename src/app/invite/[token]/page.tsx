@@ -44,7 +44,7 @@ const InviteQrPage = ({ params: { token } }: InviteQrPageProps) => {
       </h1>
       <InviteQR token={token} />
       <DevPreviewLink token={token} />
-      <h2 className="text-lg font-bold">
+      <h2 className="text-lg font-bold text-center">
         {LANGUAGE_PACK.INVITE_CHATTING_ROOM_DESCRIPTION[guestLanguage]}
       </h2>
       <section className="flex flex-col gap-1 items-center font-medium">

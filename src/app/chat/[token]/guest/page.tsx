@@ -22,8 +22,8 @@ const InviteGuestPage = ({ params: { token } }: ChatPageProps) => {
 
   return (
     <article className="flex flex-col items-center max-w-3xl justify-center m-auto h-full gap-4 p-4">
-      <section className="flex flex-col items-center justify-center gap-1">
-        <h1 className="font-bold text-2xl">
+      <section className="flex flex-col items-center justify-center gap-5">
+        <h1 className="font-bold text-2xl text-center leading-3">
           <Image
             src={TurtleMessage}
             alt="message"
@@ -31,7 +31,7 @@ const InviteGuestPage = ({ params: { token } }: ChatPageProps) => {
           />
           {LANGUAGE_PACK.CHATTING_ROOM_GUEST_TITLE[guestLanguage]}
         </h1>
-        <p>
+        <p className="text-center">
           {LANGUAGE_PACK.CHATTING_ROOM_GUEST_DESCRIPTION[guestLanguage](
             hostName,
           )}
