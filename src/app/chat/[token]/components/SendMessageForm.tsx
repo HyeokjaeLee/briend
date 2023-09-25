@@ -72,13 +72,16 @@ export const SendMessageForm = () => {
         type="submit"
         className="h-full"
         disabled={!messageLength}
-      >
-        <Send
-          className={`w-7 h-7 mt-1 mr-1 ${
-            !messageLength ? 'text-zinc-500 dark:text-zinc-800' : 'text-zinc-50'
-          }`}
-        />
-      </Button>
+        icon={
+          <Send
+            className={`w-7 h-7 mt-1 mr-1 ${
+              !messageLength
+                ? 'text-zinc-500 dark:text-zinc-800'
+                : 'text-zinc-50'
+            }`}
+          />
+        }
+      />
     </form>
   ) : null;
 };

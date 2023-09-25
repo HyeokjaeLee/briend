@@ -1,6 +1,7 @@
 import { shallow } from 'zustand/shallow';
 
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { Link } from 'react-feather';
 
 import { LANGUAGE } from '@/constants';
@@ -40,10 +41,8 @@ export const InviteForm = validationObserver(() => {
 
   const { getChattingRoomToken, isLoading } = useGetChattingRoomToken();
 
-  const inputValues = {
-    guestLanguage: LANGUAGE.ENGLISH,
-    guestName: '',
-  };
+  const [guestLanguage, setGuestLanguage] = useState(LANGUAGE.ENGLISH);
+  const [guestName, setGuestName] = useState('');
 
   const router = useRouter();
 
@@ -67,12 +66,14 @@ export const InviteForm = validationObserver(() => {
         const { isValid } = validate();
         if (hostId && hostName && isValid) {
           const token = await getChattingRoomToken({
-            ...inputValues,
+            guestLanguage,
+            guestName,
             hostId,
             hostName,
           });
 
           router.push(`invite/${token}`);
+          setGuestName('');
         } else {
           toast({
             message: '상대방 이름을 다시 확인해 주세요!',
@@ -89,9 +90,10 @@ export const InviteForm = validationObserver(() => {
           className="w-full"
           required
           options={OPTIONS}
-          value={inputValues.guestLanguage}
-          onChange={({ value }) => {
-            inputValues.guestLanguage = value;
+          value={guestLanguage}
+          onChange={(e) => {
+            e.preventInnerStateChange();
+            setGuestLanguage(e.value);
           }}
         />
         <Textbox
@@ -101,9 +103,10 @@ export const InviteForm = validationObserver(() => {
           className="w-full"
           size="large"
           required
-          value={inputValues.guestName}
-          onChange={({ value }) => {
-            inputValues.guestName = value;
+          value={guestName}
+          onChange={(e) => {
+            e.preventInnerStateChange();
+            setGuestName(e.value);
           }}
           validation={(value) => {
             if (!value) return '이름을 입력해주세요';
