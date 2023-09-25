@@ -21,7 +21,7 @@ export const useBindAuthStore = () => {
     const cookies = parseCookie(document.cookie);
 
     const getStorageValue = (key: LOCAL_STORAGE): string | null =>
-      cookies.get(key) ?? localStorage.getItem(key);
+      cookies.get(key) || localStorage.getItem(key);
 
     setIsSaveLogIn(
       localStorage.getItem(LOCAL_STORAGE.IS_SAVE_LOGIN) === 'true',
