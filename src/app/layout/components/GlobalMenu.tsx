@@ -2,7 +2,8 @@
 
 import { shallow } from 'zustand/shallow';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import { UserPlus, Users } from 'react-feather';
 
 import { LANGUAGE_PACK } from '@/constants';
@@ -29,6 +30,10 @@ export const GlobalMenu = () => {
   const router = useRouter();
 
   const iconClassName = 'ml-1 w-5 h-5';
+
+  const pathname = usePathname();
+
+  useEffect(() => setOpened(false), [pathname, setOpened]);
 
   return (
     <Drawer opened={opened} onClose={() => setOpened(false)}>
