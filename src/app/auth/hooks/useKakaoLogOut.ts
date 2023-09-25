@@ -8,8 +8,8 @@ import { useToast } from '@hyeokjaelee/pastime-ui';
 
 export const useKakaoLogOut = () => {
   const searchParams = useSearchParams();
-  const [setUserId, setUserName, setProfileImage] = useAuthStore(
-    (state) => [state.setUserId, state.setUserName, state.setProfileImage],
+  const [setUserId, setUserName] = useAuthStore(
+    (state) => [state.setUserId, state.setUserName],
     shallow,
   );
   const isLogOut = searchParams?.get('logout') === 'true';
@@ -21,13 +21,12 @@ export const useKakaoLogOut = () => {
     if (isLogOut) {
       setUserId(null);
       setUserName(null);
-      setProfileImage(null);
       router.replace('/auth');
       toast({
         message: '로그아웃 되었습니다.',
       });
     }
-  }, [isLogOut, router, setProfileImage, setUserId, setUserName, toast]);
+  }, [isLogOut, router, setUserId, setUserName, toast]);
 
   return {
     isLogOut,
