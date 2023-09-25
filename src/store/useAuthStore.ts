@@ -12,9 +12,6 @@ interface AuthStore {
   userName?: string | null;
   setUserName: (userName: string | null) => void;
 
-  profileImage?: string | null;
-  setProfileImage: (profileImage: string | null) => void;
-
   isSaveLogIn: boolean;
   setIsSaveLogIn: (isLoginInfo: boolean) => void;
 
@@ -48,12 +45,6 @@ export const useAuthStore = createWithEqualityFn<AuthStore>((set, get) => {
       saveStorageValue(LOCAL_STORAGE.USER_NAME, userName);
 
       return set({ userName });
-    },
-
-    setProfileImage: (profileImage) => {
-      saveStorageValue(LOCAL_STORAGE.PROFILE_IMAGE, profileImage);
-
-      return set({ profileImage });
     },
 
     isSaveLogIn: false,

@@ -15,6 +15,7 @@ export const InviteQR = ({ token }: QRProps) => {
       alt="invite-qr"
       width={size}
       height={size}
+      priority
     />
   );
 };

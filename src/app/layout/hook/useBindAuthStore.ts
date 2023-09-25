@@ -7,17 +7,15 @@ import { useAuthStore } from '@/store/useAuthStore';
 import { parseCookie } from '@/utils';
 
 export const useBindAuthStore = () => {
-  const [setIsSaveLogIn, setUserId, setUserName, setProfileImage, setIsBinded] =
-    useAuthStore(
-      (state) => [
-        state.setIsSaveLogIn,
-        state.setUserId,
-        state.setUserName,
-        state.setProfileImage,
-        state.setIsBinded,
-      ],
-      shallow,
-    );
+  const [setIsSaveLogIn, setUserId, setUserName, setIsBinded] = useAuthStore(
+    (state) => [
+      state.setIsSaveLogIn,
+      state.setUserId,
+      state.setUserName,
+      state.setIsBinded,
+    ],
+    shallow,
+  );
 
   useEffect(() => {
     const cookies = parseCookie(document.cookie);
@@ -37,10 +35,6 @@ export const useBindAuthStore = () => {
 
     if (userName) setUserName(userName);
 
-    const profileImage = getStorageValue(LOCAL_STORAGE.PROFILE_IMAGE);
-
-    if (profileImage) setProfileImage(profileImage);
-
     setIsBinded(true);
-  }, [setIsSaveLogIn, setProfileImage, setUserId, setUserName, setIsBinded]);
+  }, [setIsSaveLogIn, setUserId, setUserName, setIsBinded]);
 };

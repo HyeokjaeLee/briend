@@ -10,8 +10,8 @@ import { KaKaoUserResponse, KakaoAccessTokenResponse } from '@/types';
 import { useToast } from '@hyeokjaelee/pastime-ui';
 
 export const useKakaoLogIn = () => {
-  const [setUserId, setUserName, setProfileImage] = useAuthStore(
-    (state) => [state.setUserId, state.setUserName, state.setProfileImage],
+  const [setUserId, setUserName] = useAuthStore(
+    (state) => [state.setUserId, state.setUserName],
     shallow,
   );
 
@@ -65,13 +65,10 @@ export const useKakaoLogIn = () => {
               if (id) {
                 const userId = String(id);
                 const userName = account.profile.nickname ?? null;
-                const profileImage = account.profile.profile_image_url ?? null;
 
                 setUserId(userId);
 
                 setUserName(userName);
-
-                setProfileImage(profileImage);
               }
             }
 
@@ -89,7 +86,7 @@ export const useKakaoLogIn = () => {
       });
       setIsLoading(false);
     }
-  }, [code, redirectUri, setProfileImage, setUserId, setUserName, toast]);
+  }, [code, redirectUri, setUserId, setUserName, toast]);
 
   return {
     code,
