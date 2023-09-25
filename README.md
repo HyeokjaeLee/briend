@@ -5,6 +5,6 @@
 
 ## 🎨 Preview
 
-### [Link](briend.vercel.app)
+### [Link](https://briend.vercel.app)
 
 ![briend](https://github.com/HyeokjaeLee/pastime-ui/assets/71566740/b3fc87a4-ccaf-41d0-97d1-1935107ad37b)
