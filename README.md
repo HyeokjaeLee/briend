@@ -6,3 +6,4 @@
 ## [🎨 Preview](https://briend.vercel.app)
 
 ![preview](https://github.com/HyeokjaeLee/briend/assets/71566740/93f1943e-619c-4347-834b-2377ad9d7a75)
+![briend-preview](https://github.com/HyeokjaeLee/briend/assets/71566740/30907aa5-262a-4acb-9dbc-81bda1133879)
