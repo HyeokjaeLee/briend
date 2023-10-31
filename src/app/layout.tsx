@@ -12,9 +12,7 @@ export const metadata: Metadata = {
   title: 'briend',
   description: 'Talk to new people without language barriers',
   manifest: '/manifest.json',
-
-  viewport:
-    'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0',
+  metadataBase: new URL('https://briend.vercel.app/'),
   openGraph: {
     type: 'website',
     locale: 'ko_KR',
