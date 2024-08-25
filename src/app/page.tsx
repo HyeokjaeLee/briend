@@ -1,3 +1,4 @@
+import {Button} from "@radix-ui/themes";
 import Image from "next/image";
 
 export default function Home() {
@@ -12,6 +13,8 @@ export default function Home() {
           height={38}
           priority
         />
+        <Button>ss</Button>
+
         <ol className="font-mono list-inside list-decimal text-sm text-center sm:text-left">
           <li className="mb-2">
             Get started by editing{" "}
