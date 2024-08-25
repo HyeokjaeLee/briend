@@ -1,3 +1,0 @@
-{
-  "extends": ["@hyeokjaelee/eslint-config", "next/core-web-vitals"]
-}
