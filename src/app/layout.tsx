@@ -1,20 +1,11 @@
 import type { Metadata } from 'next';
 
-import localFont from 'next/font/local';
+import { Theme } from '@radix-ui/themes';
+
+import { pretendard } from './_components/layout/Font';
 
 import './globals.css';
 import '@radix-ui/themes/styles.css';
-
-import { Theme } from '@radix-ui/themes';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html className={pretendard.variable} lang="en">
+      <body className={pretendard.className}>
         <Theme>{children}</Theme>
       </body>
     </html>
