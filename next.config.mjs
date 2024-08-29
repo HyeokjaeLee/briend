@@ -1,8 +1,15 @@
-const { i18n } = import('./next-i18next.config.js');
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n,
+  experimental: {
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
+  },
 };
 
 export default nextConfig;

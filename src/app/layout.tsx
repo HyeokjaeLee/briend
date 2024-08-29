@@ -1,3 +1,6 @@
+import './globals.css';
+import '@radix-ui/themes/styles.css';
+
 import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
@@ -5,10 +8,8 @@ import { dir } from 'i18next';
 import { Theme } from '@radix-ui/themes';
 
 import { pretendard } from './_components/layout/Font';
+import { RootNavigation } from './_components/layout/RootNavigation';
 import { languages } from './i18n/settings';
-
-import './globals.css';
-import '@radix-ui/themes/styles.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -27,12 +28,19 @@ interface RootLayoutProps {
 const RootLayout = ({ children, params }: Readonly<RootLayoutProps>) => {
   return (
     <html
-      className={pretendard.variable}
+      className={`${pretendard.variable} h-dvh w-dvw bg-black`}
       dir={dir(params.lng)}
       lang={params.lng}
     >
-      <body className={pretendard.className}>
-        <Theme>{children}</Theme>
+      <body className={`${pretendard.className} size-full`}>
+        <Theme className="flex size-full">
+          <div className="flex-1" />
+          <main className="w-full max-w-xl bg-white">
+            <RootNavigation />
+            {children}
+          </main>
+          <div className="flex-1" />
+        </Theme>
       </body>
     </html>
   );

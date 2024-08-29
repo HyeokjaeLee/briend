@@ -29,7 +29,8 @@
     ".next/types/**/*.ts",
     "next-i18next.config.js",
     "next.config.mjs",
-    "next.config.mjs"
+    "next.config.mjs",
+    "src/app/_components/layout/Navigation"
   ],
   "exclude": ["node_modules"]
 }
