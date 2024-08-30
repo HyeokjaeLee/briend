@@ -30,7 +30,7 @@
     "next-i18next.config.js",
     "next.config.mjs",
     "next.config.mjs",
-    "src/app/_components/layout/Navigation"
+    "src/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
