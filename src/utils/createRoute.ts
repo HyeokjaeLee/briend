@@ -1,5 +1,5 @@
 interface RouteOptions {
-  hasBottomNav?: boolean;
+  bottomNavType?: 'root' | 'none';
 }
 
 let routeId = 0;
@@ -62,6 +62,6 @@ export const createRoute = <
 
       return url;
     },
-    hasBottomNav: options?.hasBottomNav ?? true,
+    bottomNavType: options?.bottomNavType ?? true,
   });
 };

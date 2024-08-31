@@ -10,8 +10,9 @@ import { Theme } from '@radix-ui/themes';
 
 import { languages } from '../i18n/settings';
 
+import { BottomNav } from './_components/layout/BottomNav';
 import { pretendard } from './_components/layout/Font';
-import { RootNavigation } from './_components/layout/RootNavigation';
+import { GlobalHeader } from './_components/layout/GlobalHeader';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -37,9 +38,10 @@ const RootLayout = ({ children, params }: Readonly<RootLayoutProps>) => {
       <body className={cn(pretendard.className, 'size-full bg-zinc-100')}>
         <Theme className="flex size-full">
           <div className="flex-1" />
-          <div className="w-full max-w-xl bg-zinc-800 text-gray-50">
-            <RootNavigation />
-            <main className="h-full overflow-auto bg-gray-100">{children}</main>
+          <div className="flex size-full max-w-xl flex-col bg-zinc-800 text-gray-50">
+            <GlobalHeader />
+            <main className="flex-1 overflow-auto">{children}</main>
+            <BottomNav />
           </div>
           <div className="flex-1" />
         </Theme>
