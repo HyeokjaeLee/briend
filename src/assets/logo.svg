@@ -1,11 +1,9 @@
-<svg data-v-0dd9719b="" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 245.79 62.48" preserveAspectRatio="xMidYMid meet" color-interpolation-filters="sRGB">
-  <!-- 배경과 워터마크 레이어 제거 -->
-  
-  <g data-v-0dd9719b="" fill="#f9bf4b" class="pmspacesvg" transform="translate(0, 0)">
+<svg  fill="currentcolor" version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100%" height="100%" viewBox="0 0 245.79 62.48" preserveAspectRatio="xMidYMid meet" color-interpolation-filters="sRGB">
+  <g class="pmspacesvg" transform="translate(0, 0)">
     <g>
       <g mask="url(#5982b1f8-6109-4f45-99b8-366b2732ba0f)">
         <g>
-          <rect data-gra="graph-name" fill="#f9bf4b" x="0" y="0" rx="31.24" ry="31.24" width="245.79" height="62.48"></rect>
+          <rect data-gra="graph-name" x="0" y="0" rx="31.24" ry="31.24" width="245.79" height="62.48"></rect>
         </g>
         <g data-gra="path-name" class="tp-name" transform="translate(20,10)">
           <g transform="scale(1)">

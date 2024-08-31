@@ -3,7 +3,8 @@ import Link from 'next/link';
 import type { IconType } from 'react-icons/lib';
 import { VscHome, VscEllipsis, VscCommentDiscussion } from 'react-icons/vsc';
 
-import { translation, useTranslation } from '@/app/i18n';
+import { translation } from '@/app/i18n';
+import { useTranslation } from '@/app/i18n/client';
 import { ROUTES } from '@/routes/client';
 import { findCurrentRoute } from '@/utils';
 
@@ -42,7 +43,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
         </li>
         <li>
           <Link
-            className="flex flex-col items-center justify-center gap-1 text-xs text-primary"
+            className="flex flex-col items-center justify-center gap-1 text-xs text-yellow-500"
             href={ROUTES.HOME.pathname}
           >
             <VscEllipsis className="size-6" />
