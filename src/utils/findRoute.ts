@@ -1,8 +1,6 @@
 import { ROUTES } from '@/routes/client';
 
-export const findCurrentRoute = (pathname: string | null) => {
-  if (!pathname) return;
-
+export const findCurrentRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
 
   let matchedRoute: {
@@ -11,6 +9,10 @@ export const findCurrentRoute = (pathname: string | null) => {
   } = {
     point: 0,
   };
+  const splitedCurrentPathname = pathname.split('/');
+
+  //! i18n을 위한 dynmic route 정보 제거
+  splitedCurrentPathname.splice(1, 1);
 
   for (const key in allRoutes) {
     const routeName = key as keyof typeof allRoutes;
@@ -18,15 +20,14 @@ export const findCurrentRoute = (pathname: string | null) => {
     const route = allRoutes[routeName];
 
     if (typeof route.pathname === 'string') {
-      if (route.pathname === pathname) {
+      if (
+        route.pathname === splitedCurrentPathname.join('/') ||
+        (route.pathname === '/' && splitedCurrentPathname.length === 1)
+      ) {
         return route;
       }
     } else if (typeof route.pathname === 'function') {
       const splitedRoutePathname = route.pathname({} as any).split('/');
-      const splitedCurrentPathname = pathname.split('/');
-
-      //! i18n을 위한 dynmic route 정보 제거
-      splitedCurrentPathname.shift();
 
       if (splitedRoutePathname.length !== splitedCurrentPathname.length)
         continue;
@@ -62,5 +63,11 @@ export const findCurrentRoute = (pathname: string | null) => {
     }
   }
 
-  if (matchedRoute.name) return allRoutes[matchedRoute.name];
+  if (!matchedRoute.name) throw new Error('Not found matched route');
+
+  const currentRoute = allRoutes[matchedRoute.name];
+
+  if (!currentRoute) throw new Error('Not found matched route');
+
+  return currentRoute;
 };

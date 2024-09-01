@@ -1,0 +1,81 @@
+{
+  "editor.formatOnSave": true,
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.exclude": {
+    "**/node_modules": false,
+    "**/.next": true,
+    "**/.turbo": true
+  },
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "less",
+    "postcss",
+    "typescriptreact",
+    "typescript",
+    "javascript",
+    "javascriptreact"
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "workbench.iconTheme": "material-icon-theme",
+  "material-icon-theme.files.associations": {
+    "page.tsx": "mxml",
+    "index.ts": "tree",
+    "tailwind.gen.js": "tailwindcss"
+  },
+  "material-icon-theme.folders.associations": {
+    "_components": "components",
+    "_hooks": "hook",
+    "_utils": "utils",
+    "stores": "database",
+    "query-factory": "class"
+  },
+  // tailwind intellisense
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "tailwindCSS.includeLanguages": {
+    "javascript": "javascript",
+    "javascriptreact": "javascriptreact",
+    "typescript": "typescript",
+    "typescriptreact": "typescriptreact"
+  },
+
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  "i18n-ally.localesPaths": ["src/app/i18n", "src/app/i18n/locales"],
+  "i18n-ally.sourceLanguage": "ko",
+  "i18n-ally.enabledFrameworks": ["react-i18next"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.displayLanguage": "ko",
+  "i18n-ally.namespace": true,
+  "i18n-ally.pathMatcher": "{locale}/{namespaces}.json"
+}

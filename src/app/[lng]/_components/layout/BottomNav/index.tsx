@@ -1,24 +1,25 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { VscHome, VscEllipsis, VscCommentDiscussion } from 'react-icons/vsc';
-
-import { ROUTES } from '@/routes/client';
+import { SELECTOR } from '@/constants/selector';
 import { findCurrentRoute } from '@/utils';
-import { Button } from '@radix-ui/themes';
 
 import { RootNav } from './_components/RootNav';
 
 export const BottomNav = () => {
   const pathname = usePathname();
 
-  const currentRoute = findCurrentRoute(pathname);
+  const { bottomNavType } = findCurrentRoute(pathname);
 
-  return (
-    <footer className="w-full">
-      <RootNav pathname={pathname} />
+  return bottomNavType !== 'none' ? (
+    <footer className="w-full" id={SELECTOR.BOTTOM_NAV}>
+      {
+        {
+          root: <RootNav pathname={pathname} />,
+          empty: null,
+        }[bottomNavType]
+      }
     </footer>
-  );
+  ) : null;
 };

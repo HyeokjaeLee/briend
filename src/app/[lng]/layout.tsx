@@ -30,16 +30,18 @@ interface RootLayoutProps {
 const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
   return (
     <html
-      className={cn(pretendard.variable, 'h-full w-dvw', 'dark')}
+      className={cn(pretendard.variable, 'h-full w-dvw')}
       dir={dir(params.lng)}
       lang={params.lng}
     >
-      <body className={cn(pretendard.className, 'size-full bg-zinc-100')}>
-        <Theme className="flex size-full">
+      <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
+        <Theme className="flex size-full bg-zinc-50">
           <div className="flex-1" />
-          <div className="flex size-full max-w-xl flex-col bg-zinc-800 text-gray-50">
+          <div className="flex size-full max-w-xl flex-col bg-white text-zinc-950">
             <GlobalHeader />
-            <main className="flex-1 overflow-auto">{children}</main>
+            <main className="flex flex-1 flex-col overflow-auto">
+              {children}
+            </main>
             <BottomNav />
           </div>
           <div className="flex-1" />

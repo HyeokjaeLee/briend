@@ -1,15 +1,28 @@
-import { VscBell } from 'react-icons/vsc';
+'use client';
 
-import Logo from '@/assets/logo.svg';
-import { IconButton } from '@radix-ui/themes';
+import { usePathname } from 'next/navigation';
+
+import { SELECTOR } from '@/constants/selector';
+import { findCurrentRoute } from '@/utils';
+
+import { RootHeader } from './_components/RootHeader';
 
 export const GlobalHeader = () => {
-  return (
-    <nav className="flex h-14 items-center justify-between px-5">
-      <Logo className="h-7 text-yellow-500" />
-      <IconButton className="rounded-full" color="yellow" variant="ghost">
-        <VscBell className="size-7" />
-      </IconButton>
+  const pathname = usePathname();
+
+  const { topHeaderType } = findCurrentRoute(pathname);
+
+  return topHeaderType !== 'none' ? (
+    <nav
+      className="flex h-14 items-center justify-between px-5"
+      id={SELECTOR.TOP_HEADER}
+    >
+      {
+        {
+          root: <RootHeader />,
+          empty: null,
+        }[topHeaderType]
+      }
     </nav>
-  );
+  ) : null;
 };

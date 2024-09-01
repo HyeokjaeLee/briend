@@ -1,5 +1,6 @@
 interface RouteOptions {
-  bottomNavType?: 'root' | 'none';
+  bottomNavType?: 'none' | 'root' | 'empty';
+  topHeaderType?: 'none' | 'root' | 'empty';
 }
 
 let routeId = 0;
@@ -62,6 +63,7 @@ export const createRoute = <
 
       return url;
     },
-    bottomNavType: options?.bottomNavType ?? true,
+    bottomNavType: options?.bottomNavType ?? 'none',
+    topHeaderType: options?.topHeaderType ?? 'none',
   });
 };

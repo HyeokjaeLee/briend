@@ -7,7 +7,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { useParams } from 'next/navigation';
 
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import type {
   UseTranslationOptions,
