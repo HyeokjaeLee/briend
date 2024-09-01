@@ -1,13 +1,11 @@
-import type { NextRequest } from 'next/server';
+import { NextRequest } from 'next/server';
 
 import acceptLanguage from 'accept-language';
 import { NextResponse } from 'next/server';
-import NextAuth from 'next-auth';
-
-import { fallbackLng, languages, cookieName } from './app/i18n/settings';
-import authConfig from './auth.config';
-
-acceptLanguage.languages(languages);
+import { auth } from './auth';
+import { nanoid } from 'nanoid';
+import { fallbackLng, languages } from './app/i18n/settings';
+import { COOKIES } from './constants/cookies-key';
 
 export const config = {
   matcher: [
@@ -15,37 +13,41 @@ export const config = {
   ],
 };
 
-export const middleware = (req: NextRequest) => {
-  let lng;
-  const i18nCookie = req.cookies.get(cookieName);
+acceptLanguage.languages(languages);
 
-  if (i18nCookie) lng = acceptLanguage.get(i18nCookie.value);
-  if (!lng)
-    lng = acceptLanguage.get(req.headers.get('Accept-Language')) || fallbackLng;
+export const middleware = auth((req: NextRequest) => {
+  //* 🌍 i18n redirect 🌍
+  {
+    let lng;
+    const i18nCookie = req.cookies.get(COOKIES.I18N);
 
-  //* 우선순위에 따른 언어 페이지로 리다이렉트
-  if (
-    !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
-    !req.nextUrl.pathname.startsWith('/_next')
-  ) {
-    return NextResponse.redirect(
-      new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
-    );
+    if (i18nCookie) lng = acceptLanguage.get(i18nCookie.value);
+    if (!lng)
+      lng =
+        acceptLanguage.get(req.headers.get('Accept-Language')) || fallbackLng;
+
+    if (
+      !languages.some((loc) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
+      !req.nextUrl.pathname.startsWith('/_next')
+    ) {
+      return NextResponse.redirect(
+        new URL(`/${lng}${req.nextUrl.pathname}`, req.url),
+      );
+    }
   }
 
-  const refererCookie = req.cookies.get('referer');
+  const response = NextResponse.next();
 
-  if (refererCookie) {
-    const refererUrl = new URL(refererCookie.value);
-    const lngInReferer = languages.find((lng) =>
-      refererUrl.pathname.startsWith(`/${lng}`),
-    );
+  //* 🪪 유저 아이디 발급 🪪
+  {
+    const userId = req.cookies.get(COOKIES.USER_ID);
 
-    const response = NextResponse.next();
-    if (lngInReferer) response.cookies.set(cookieName, lngInReferer);
-
-    return response;
+    if (!userId) {
+      response.cookies.set(COOKIES.USER_ID, nanoid(), {
+        expires: new Date('9999-12-31'),
+      });
+    }
   }
 
-  return NextResponse.next();
-};
+  return response;
+});

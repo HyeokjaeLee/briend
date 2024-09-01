@@ -11,9 +11,10 @@ export const ROUTES = {
   MESSAGE_ROOM: createRoute<{ dynamicPath: 'id' }>(
     ({ id }) => `/message/${id}`,
   ),
-  MORE_MENUS: createRoute('private/more', {
+  MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
   }),
 
   LOGIN: createRoute('/guest/login'),
+  TEST: createRoute('/test'),
 };

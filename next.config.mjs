@@ -1,15 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          options: { icon: true },
-          as: '*.ts',
-        },
-      },
-    },
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [{ loader: '@svgr/webpack' }],
+    });
+
+    return config;
   },
 };
 

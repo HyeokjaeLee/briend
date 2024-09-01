@@ -19,7 +19,8 @@ import {
   useTranslation as useOriginalTranslation,
 } from 'react-i18next';
 
-import { getOptions, languages, cookieName } from './settings';
+import { getOptions, languages } from './settings';
+import { COOKIES } from '@/constants/cookies-key';
 
 const isServer = typeof window === 'undefined';
 
@@ -47,7 +48,7 @@ export const useTranslation = <
   ns?: Ns,
   options?: UseTranslationOptions<KPrefix>,
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> => {
-  const [cookies, setCookie] = useCookies([cookieName]);
+  const [cookies, setCookie] = useCookies([COOKIES.I18N]);
   const translation = useOriginalTranslation(ns, options);
   const { i18n } = translation;
   const lng = useParams().lng;
@@ -72,7 +73,7 @@ export const useTranslation = <
 
   useLayoutEffect(() => {
     if (cookies.i18next === lng) return;
-    setCookie(cookieName, lng, { path: '/' });
+    setCookie(COOKIES.I18N, lng, { path: '/' });
   }, [lng, cookies.i18next, setCookie]);
 
   return translation;
