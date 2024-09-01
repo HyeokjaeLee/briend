@@ -2,8 +2,10 @@ import type { NextRequest } from 'next/server';
 
 import acceptLanguage from 'accept-language';
 import { NextResponse } from 'next/server';
+import NextAuth from 'next-auth';
 
 import { fallbackLng, languages, cookieName } from './app/i18n/settings';
+import authConfig from './auth.config';
 
 acceptLanguage.languages(languages);
 
