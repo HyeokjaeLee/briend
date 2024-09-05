@@ -1,5 +1,5 @@
 const MessagePage = () => {
-  return <></>;
+  return <>message</>;
 };
 
 export default MessagePage;

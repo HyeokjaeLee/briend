@@ -19,8 +19,9 @@ import {
   useTranslation as useOriginalTranslation,
 } from 'react-i18next';
 
-import { getOptions, languages } from './settings';
 import { COOKIES } from '@/constants/cookies-key';
+
+import { getOptions, languages } from './settings';
 
 const isServer = typeof window === 'undefined';
 

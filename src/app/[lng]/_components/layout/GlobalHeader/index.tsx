@@ -13,16 +13,13 @@ export const GlobalHeader = () => {
   const { topHeaderType } = findCurrentRoute(pathname);
 
   return topHeaderType !== 'none' ? (
-    <nav
-      className="flex h-14 items-center justify-between px-5"
-      id={SELECTOR.TOP_HEADER}
-    >
+    <header className="sticky top-0 z-10" id={SELECTOR.TOP_HEADER}>
       {
         {
           root: <RootHeader />,
           empty: null,
         }[topHeaderType]
       }
-    </nav>
+    </header>
   ) : null;
 };

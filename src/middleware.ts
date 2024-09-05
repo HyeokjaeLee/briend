@@ -1,10 +1,9 @@
-import { NextRequest } from 'next/server';
-
 import acceptLanguage from 'accept-language';
-import { NextResponse } from 'next/server';
-import { auth } from './auth';
 import { nanoid } from 'nanoid';
+import { type NextRequest, NextResponse } from 'next/server';
+
 import { fallbackLng, languages } from './app/i18n/settings';
+import { auth } from './auth';
 import { COOKIES } from './constants/cookies-key';
 
 export const config = {

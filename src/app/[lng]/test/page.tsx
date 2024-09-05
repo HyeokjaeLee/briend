@@ -6,7 +6,6 @@ const Test = () => {
   const test = useSession();
   test.status;
 
-  console.log(test);
   return <></>;
 };
 

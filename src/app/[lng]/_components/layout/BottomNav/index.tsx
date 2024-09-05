@@ -13,7 +13,7 @@ export const BottomNav = () => {
   const { bottomNavType } = findCurrentRoute(pathname);
 
   return bottomNavType !== 'none' ? (
-    <footer className="w-full" id={SELECTOR.BOTTOM_NAV}>
+    <footer className="sticky bottom-0 z-10" id={SELECTOR.BOTTOM_NAV}>
       {
         {
           root: <RootNav pathname={pathname} />,

@@ -1,5 +1,12 @@
+import Link from 'next/link';
+
 const MorePage = () => {
-  return <></>;
+  return (
+    <>
+      more
+      <Link href="?test=">test</Link>
+    </>
+  );
 };
 
 export default MorePage;
