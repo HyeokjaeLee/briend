@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
-import { shallow, useShallow } from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
@@ -27,37 +27,57 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const isEnter = !customHistory.size;
 
   useEffect(() => {
-    let navigateType: NavigateType = 'push';
+    let navigateType: NavigateType;
 
-    const lastHistoryLengthSession = sessionStorage.getItem(
+    const currentHistoryLength = history.length;
+
+    const lastHistoryLength = (() => {
+      const lastHistoryLengthSession = sessionStorage.getItem(
         SESSION.HISTORY_LENGTH,
-      ),
-      lastHistoryLength = lastHistoryLengthSession
-        ? Number(lastHistoryLengthSession)
-        : null;
+      );
 
-    const lastHistoryIndexSession = sessionStorage.getItem(
+      sessionStorage.setItem(
+        SESSION.HISTORY_LENGTH,
+        String(currentHistoryLength),
+      );
+
+      return lastHistoryLengthSession ? Number(lastHistoryLengthSession) : null;
+    })();
+
+    const lastHistoryIndex = (() => {
+      const lastHistoryIndexSession = sessionStorage.getItem(
         SESSION.HISTORY_INDEX,
-      ),
-      lastHistoryIndex = lastHistoryIndexSession
-        ? Number(lastHistoryIndexSession)
-        : null;
+      );
 
-    const lasHistorySession = sessionStorage.getItem(SESSION.HISTORY);
+      return lastHistoryIndexSession ? Number(lastHistoryIndexSession) : null;
+    })();
+
+    const lastHistorySession = sessionStorage.getItem(SESSION.HISTORY);
 
     const currentUrl = `${location.pathname}?${search}`;
 
-    if (!lastHistoryLength || !lastHistoryIndex || !lasHistorySession) {
+    if (
+      lastHistoryLength === null ||
+      lastHistoryIndex === null ||
+      !lastHistorySession
+    ) {
+      console.info('init history');
+
+      const currentHistoryIndex = 0;
+
       return setCustomHistory((prev) => {
         prev.set(history.length, currentUrl);
 
-        sessionStorage.setItem(SESSION.HISTORY_LENGTH, String(history.length));
+        history.replaceState(
+          { ...history.state, index: currentHistoryIndex },
+          '',
+        );
 
-        const index = history.length - 1;
+        sessionStorage.setItem(
+          SESSION.HISTORY_INDEX,
+          String(currentHistoryIndex),
+        );
 
-        history.replaceState({ ...history.state, index }, '');
-
-        sessionStorage.setItem(SESSION.HISTORY_INDEX, String(index));
         sessionStorage.setItem(
           SESSION.HISTORY,
           JSON.stringify(Array.from(prev.entries())),
@@ -68,36 +88,57 @@ export default function Template({ children }: { children: React.ReactNode }) {
     const hasHistoryIndex = 'index' in history.state;
 
     if (hasHistoryIndex) {
-      //! back, forward
       const index: number = history.state.index;
 
-      navigateType = index < lastHistoryIndex ? 'back' : 'forward';
+      navigateType = index <= lastHistoryIndex ? 'back' : 'forward';
+
+      console.info(navigateType);
 
       //* 히스토리 인덱스 세션 저장
       sessionStorage.setItem(SESSION.HISTORY_INDEX, String(index));
     } else {
-      //! replace, push
-      if (lastHistoryIndex <= history.length - 1) {
+      if (lastHistoryLength === currentHistoryLength) {
+        console.info('replace');
+        navigateType = 'replace';
+      } else {
+        console.info('push');
+        navigateType = 'push';
+        sessionStorage.setItem(
+          SESSION.HISTORY_INDEX,
+          String(lastHistoryIndex + 1),
+        );
       }
+
+      history.replaceState(
+        {
+          ...history.state,
+          index: {
+            push: lastHistoryIndex + 1,
+            replace: lastHistoryIndex,
+          }[navigateType],
+        },
+        '',
+      );
+
       setCustomHistory((prev) => {
         //* 이전 세션 복구
         if (!prev.size && lastHistoryIndex) {
-          if (lasHistorySession) {
+          if (lastHistorySession) {
+            console.info('refresh');
+
             const lastHistory: [number, string][] =
-              JSON.parse(lasHistorySession);
+              JSON.parse(lastHistorySession);
             lastHistory.forEach(([index, url]) => {
               prev.set(index, url);
             });
           }
         }
       });
-
-      history.replaceState({ ...history.state, index: history.length - 1 }, '');
     }
   }, [search, setCustomHistory]);
 
   return (
-    <AnimatePresence initial={isEnter} mode="wait">
+    <AnimatePresence initial={!isEnter} mode="wait">
       <motion.main
         animate="enter"
         exit="exit"
