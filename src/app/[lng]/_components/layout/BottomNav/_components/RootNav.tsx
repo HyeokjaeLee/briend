@@ -1,11 +1,10 @@
 'use client';
 
-import Link from 'next/link';
-
 import type { IconType } from 'react-icons/lib';
 import { VscHome, VscEllipsis, VscCommentDiscussion } from 'react-icons/vsc';
 
 import { useTranslation } from '@/app/i18n/client';
+import { CustomLink } from '@/components/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { findCurrentRoute } from '@/utils';
 import { Button } from '@radix-ui/themes';
@@ -61,16 +60,12 @@ export const RootNav = ({ pathname }: RootNavProps) => {
           return typeof route.pathname === 'string' ? (
             <li key={route.id}>
               <Button
-                asChild={!isActive}
+                asChild
                 className="flex flex-col items-center justify-center gap-1 text-xs"
                 color={isActive ? 'blue' : 'gray'}
                 variant="ghost"
               >
-                {isActive ? (
-                  contents
-                ) : (
-                  <Link href={route.pathname}>{contents}</Link>
-                )}
+                <CustomLink href={route.pathname}>{contents}</CustomLink>
               </Button>
             </li>
           ) : null;
