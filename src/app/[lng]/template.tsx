@@ -56,6 +56,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
     const currentUrl = `${location.pathname}?${search}`;
 
+    let currentHistoryIndex = 0;
+    const setHistoryIndex = (index: number) => {
+      history.replaceState({ ...history.state, index }, '');
+
+      sessionStorage.setItem(SESSION.HISTORY_INDEX, String(index));
+
+      currentHistoryIndex = index;
+    };
+
     if (
       lastHistoryLength === null ||
       lastHistoryIndex === null ||
@@ -63,20 +72,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
     ) {
       console.info('init history');
 
-      const currentHistoryIndex = 0;
-
       return setCustomHistory((prev) => {
         prev.set(history.length, currentUrl);
 
-        history.replaceState(
-          { ...history.state, index: currentHistoryIndex },
-          '',
-        );
-
-        sessionStorage.setItem(
-          SESSION.HISTORY_INDEX,
-          String(currentHistoryIndex),
-        );
+        setHistoryIndex(0);
 
         sessionStorage.setItem(
           SESSION.HISTORY,
@@ -90,35 +89,30 @@ export default function Template({ children }: { children: React.ReactNode }) {
     if (hasHistoryIndex) {
       const index: number = history.state.index;
 
-      navigateType = index <= lastHistoryIndex ? 'back' : 'forward';
+      navigateType = index < lastHistoryIndex ? 'back' : 'forward';
 
       console.info(navigateType);
 
       //* 히스토리 인덱스 세션 저장
       sessionStorage.setItem(SESSION.HISTORY_INDEX, String(index));
     } else {
-      if (lastHistoryLength === currentHistoryLength) {
-        console.info('replace');
+      const replacedHistoryIndexSession = sessionStorage.getItem(
+        SESSION.REPLACED_HISTORY_INDEX,
+      );
+
+      if (replacedHistoryIndexSession) {
+        sessionStorage.removeItem(SESSION.REPLACED_HISTORY_INDEX);
+
         navigateType = 'replace';
+
+        setHistoryIndex(Number(replacedHistoryIndexSession));
       } else {
-        console.info('push');
         navigateType = 'push';
-        sessionStorage.setItem(
-          SESSION.HISTORY_INDEX,
-          String(lastHistoryIndex + 1),
-        );
+
+        setHistoryIndex(lastHistoryIndex + 1);
       }
 
-      history.replaceState(
-        {
-          ...history.state,
-          index: {
-            push: lastHistoryIndex + 1,
-            replace: lastHistoryIndex,
-          }[navigateType],
-        },
-        '',
-      );
+      console.info(navigateType);
 
       setCustomHistory((prev) => {
         //* 이전 세션 복구
@@ -133,6 +127,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
             });
           }
         }
+
+        prev.set(currentHistoryIndex, currentUrl);
+
+        sessionStorage.setItem(
+          SESSION.HISTORY,
+          JSON.stringify(Array.from(prev.entries())),
+        );
       });
     }
   }, [search, setCustomHistory]);

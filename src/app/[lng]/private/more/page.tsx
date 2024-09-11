@@ -2,24 +2,29 @@
 
 import Link from 'next/link';
 
+import { CustomLink } from '@/components/CustomLink';
+import { useCustomRouter } from '@/hooks/useCustomRouter';
+
 const MorePage = () => {
+  const router = useCustomRouter();
+
   return (
     <div className="flex flex-col gap-2">
       more
-      <Link href="?test=1">push</Link>
-      <Link replace href="?test=2">
+      <CustomLink href="?test=1">push</CustomLink>
+      <CustomLink replace href="?test=2">
         replace
-      </Link>
+      </CustomLink>
       <button
         onClick={() => {
-          history.back();
+          router.back();
         }}
       >
         back
       </button>
       <button
         onClick={() => {
-          history.forward();
+          router.forward();
         }}
       >
         forward
