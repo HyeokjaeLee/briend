@@ -15,7 +15,7 @@ export const useCustomRouter = () => {
 
       const i18n = getCookie(COOKIES.I18N);
 
-      if (i18n) {
+      if (i18n && !customHref.startsWith('?')) {
         const i18nPath = `/${i18n}`;
 
         if (!customHref.startsWith(i18nPath))

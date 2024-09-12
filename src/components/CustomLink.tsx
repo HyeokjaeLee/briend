@@ -29,7 +29,7 @@ export const CustomLink = ({
   const [customHref, setCustomHref] = useState(stringHref);
 
   useEffect(() => {
-    if (!i18next || !i18nOptimize) return;
+    if (!i18next || !i18nOptimize || stringHref.startsWith('?')) return;
 
     const lngPath = `/${i18next}`;
 
