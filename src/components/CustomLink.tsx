@@ -10,6 +10,7 @@ import { SESSION } from '@/constants/storage-key';
 
 interface CustomLinkProps extends LinkProps {
   children?: React.ReactNode;
+  className?: string;
   i18nOptimize?: boolean;
 }
 
