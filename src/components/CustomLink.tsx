@@ -57,14 +57,7 @@ export const CustomLink = ({
         }
 
         if (replace) {
-          if ('index' in history.state) {
-            sessionStorage.setItem(
-              SESSION.REPLACED_HISTORY_INDEX,
-              String(history.state.index),
-            );
-          } else {
-            sessionStorage.removeItem(SESSION.HISTORY_INDEX);
-          }
+          sessionStorage.setItem(SESSION.REPLACED_MARK, 'true');
         }
 
         onClick?.(e);

@@ -42,14 +42,7 @@ export const useCustomRouter = () => {
 
       if (!customHref) return;
 
-      if ('index' in history.state) {
-        sessionStorage.setItem(
-          SESSION.REPLACED_HISTORY_INDEX,
-          String(history.state.index),
-        );
-      } else {
-        sessionStorage.removeItem(SESSION.HISTORY_INDEX);
-      }
+      sessionStorage.setItem(SESSION.REPLACED_MARK, 'true');
 
       return router.replace(customHref, options);
     };

@@ -5,8 +5,6 @@ import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
 
-import { Suspense } from 'react';
-
 import { cn } from '@/utils/cn';
 
 import { languages } from '../i18n/settings';
@@ -42,7 +40,7 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
           <div className="flex-1" />
           <div className="flex size-full max-w-xl flex-col overflow-x-hidden bg-white text-zinc-950">
             <GlobalHeader />
-            <Suspense>{children}</Suspense>
+            {children}
             <BottomNav />
           </div>
           <div className="flex-1" />
