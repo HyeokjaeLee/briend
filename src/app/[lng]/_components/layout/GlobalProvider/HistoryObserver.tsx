@@ -1,22 +1,22 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams } from 'next/navigation';
 import { shallow } from 'zustand/shallow';
 
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
 import { SESSION } from '@/constants/storage-key';
 import { getHistorySession, useHistoryStore } from '@/stores/history';
 
 export const HistoryObserver = () => {
-  const search = useSearchParams().toString();
-
   const [
     historyId,
     setHistoryIndex,
     lastRouteType,
     setIsLoading,
     setLastRouteType,
+    setHistoryId,
+    setCustomHistory,
     reset,
   ] = useHistoryStore(
     (state) => [
@@ -25,17 +25,41 @@ export const HistoryObserver = () => {
       state.lastRouteType,
       state.setIsLoading,
       state.setLastRouteType,
+      state.setHistoryId,
+      state.setCustomHistory,
       state.reset,
     ],
     shallow,
   );
 
-  useLayoutEffect(() => {
-    if (!historyId) return;
+  const pathname = usePathname();
+  const search = useSearchParams().toString();
 
+  useLayoutEffect(() => {
     const historySession = getHistorySession();
 
-    const initLoading = () => setIsLoading(true);
+    if (!historySession) return reset();
+
+    setHistoryId(historySession.id);
+    setCustomHistory((prev) =>
+      historySession.history.forEach(([index, url]) => {
+        prev.set(index, url);
+      }),
+    );
+    setHistoryIndex(historySession.index);
+  }, [setCustomHistory, setHistoryId, setHistoryIndex, reset]);
+
+  const isProcessed = useRef(false);
+
+  useLayoutEffect(() => {
+    if (!historyId || isProcessed.current) return;
+
+    isProcessed.current = true;
+    const historySession = getHistorySession();
+
+    const initLoading = () => {
+      isProcessed.current = false;
+    };
 
     if (!historySession) {
       reset();
@@ -65,6 +89,8 @@ export const HistoryObserver = () => {
     }
 
     setIsLoading(false);
+
+    return initLoading;
   }, [
     historyId,
     reset,
@@ -72,6 +98,7 @@ export const HistoryObserver = () => {
     setIsLoading,
     setLastRouteType,
     lastRouteType,
+    pathname,
     search,
   ]);
 

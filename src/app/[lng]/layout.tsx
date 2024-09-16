@@ -1,9 +1,10 @@
 import '../globals.css';
-import '@radix-ui/themes/styles.css';
 
 import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
+
+import type { ReactElement } from 'react';
 
 import { cn } from '@/utils/cn';
 
@@ -13,6 +14,7 @@ import { BottomNav } from './_components/layout/BottomNav';
 import { pretendard } from './_components/layout/Font';
 import { GlobalHeader } from './_components/layout/GlobalHeader';
 import { GlobalProvider } from './_components/layout/GlobalProvider';
+import { Main } from './_components/layout/Main';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
 export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactElement;
   params: {
     lng: string;
   };
@@ -38,9 +40,9 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
       <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
         <GlobalProvider className="flex size-full bg-zinc-50">
           <div className="flex-1" />
-          <div className="flex size-full max-w-xl flex-col overflow-x-hidden bg-white text-zinc-950">
+          <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col bg-white text-zinc-950">
             <GlobalHeader />
-            {children}
+            <Main className="flex-1 overflow-auto">{children}</Main>
             <BottomNav />
           </div>
           <div className="flex-1" />

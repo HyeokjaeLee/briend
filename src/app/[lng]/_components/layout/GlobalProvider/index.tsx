@@ -2,19 +2,21 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-import type { RefAttributes } from 'react';
+import { Suspense, type RefAttributes } from 'react';
 
 import type { ThemeProps } from '@radix-ui/themes';
 import { Theme } from '@radix-ui/themes';
 
-import { HistorySession } from './HistorySession';
+import { HistoryObserver } from './HistoryObserver';
 
 export const GlobalProvider = (
   props: ThemeProps & RefAttributes<HTMLDivElement>,
 ) => {
   return (
     <SessionProvider>
-      <HistorySession />
+      <Suspense>
+        <HistoryObserver />
+      </Suspense>
       <Theme {...props} />
     </SessionProvider>
   );

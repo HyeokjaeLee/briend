@@ -27,6 +27,8 @@ interface HistoryStore {
   isLoading: boolean;
   setIsLoading: (isLoading: boolean) => void;
 
+  url?: string;
+
   reset: () => void;
 }
 

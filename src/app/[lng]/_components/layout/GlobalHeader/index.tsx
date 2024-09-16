@@ -13,7 +13,10 @@ export const GlobalHeader = () => {
   const { topHeaderType } = findCurrentRoute(pathname);
 
   return topHeaderType !== 'none' ? (
-    <header className="sticky top-0 z-10" id={SELECTOR.TOP_HEADER}>
+    <header
+      className="relative top-0 h-fit w-full max-w-xl"
+      id={SELECTOR.TOP_HEADER}
+    >
       {
         {
           root: <RootHeader />,
