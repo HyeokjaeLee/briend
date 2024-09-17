@@ -12,9 +12,10 @@ import { languages } from '../i18n/settings';
 
 import { BottomNav } from './_components/layout/BottomNav';
 import { pretendard } from './_components/layout/Font';
+import { FrozenRoute } from './_components/layout/FrozenRoute';
 import { GlobalHeader } from './_components/layout/GlobalHeader';
 import { GlobalProvider } from './_components/layout/GlobalProvider';
-import { Main } from './_components/layout/Main';
+import { PageAnimatePresence } from './_components/layout/PageAnimatePresence';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -40,11 +41,11 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
       <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
         <GlobalProvider className="flex size-full bg-zinc-50">
           <div className="flex-1" />
-          <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col bg-white text-zinc-950">
+          <PageAnimatePresence className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col bg-white text-zinc-950">
             <GlobalHeader />
-            <Main className="flex-1 overflow-auto">{children}</Main>
+            {children}
             <BottomNav />
-          </div>
+          </PageAnimatePresence>
           <div className="flex-1" />
         </GlobalProvider>
       </body>
