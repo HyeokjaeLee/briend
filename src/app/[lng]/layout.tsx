@@ -1,4 +1,4 @@
-import '../globals.css';
+import './globals.css';
 
 import type { Metadata } from 'next';
 
@@ -12,10 +12,8 @@ import { languages } from '../i18n/settings';
 
 import { BottomNav } from './_components/layout/BottomNav';
 import { pretendard } from './_components/layout/Font';
-import { FrozenRoute } from './_components/layout/FrozenRoute';
 import { GlobalHeader } from './_components/layout/GlobalHeader';
 import { GlobalProvider } from './_components/layout/GlobalProvider';
-import { PageAnimatePresence } from './_components/layout/PageAnimatePresence';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -31,26 +29,24 @@ interface RootLayoutProps {
   };
 }
 
-const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
-  return (
-    <html
-      className={cn(pretendard.variable, 'size-full')}
-      dir={dir(params.lng)}
-      lang={params.lng}
-    >
-      <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
-        <GlobalProvider className="flex size-full bg-zinc-50">
-          <div className="flex-1" />
-          <PageAnimatePresence className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col bg-white text-zinc-950">
-            <GlobalHeader />
-            {children}
-            <BottomNav />
-          </PageAnimatePresence>
-          <div className="flex-1" />
-        </GlobalProvider>
-      </body>
-    </html>
-  );
-};
+const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => (
+  <html
+    className={cn(pretendard.variable, 'size-full')}
+    dir={dir(params.lng)}
+    lang={params.lng}
+  >
+    <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
+      <GlobalProvider className="flex size-full bg-zinc-50">
+        <div className="flex-1" />
+        <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-x-hidden bg-white text-zinc-950">
+          <GlobalHeader />
+          {children}
+          <BottomNav />
+        </div>
+        <div className="flex-1" />
+      </GlobalProvider>
+    </body>
+  </html>
+);
 
 export default RootLayout;
