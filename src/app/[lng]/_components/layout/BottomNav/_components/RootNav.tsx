@@ -4,10 +4,10 @@ import type { IconType } from 'react-icons/lib';
 import { VscHome, VscEllipsis, VscCommentDiscussion } from 'react-icons/vsc';
 
 import { useTranslation } from '@/app/i18n/client';
+import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { findCurrentRoute } from '@/utils';
-import { Button } from '@radix-ui/themes';
 
 interface RootNavProps {
   pathname: string;
@@ -59,14 +59,14 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
           return typeof route.pathname === 'string' ? (
             <li key={route.id}>
-              <Button
+              <CustomButton
                 asChild
                 className="flex flex-col items-center justify-center gap-1 text-xs"
                 color={isActive ? 'blue' : 'gray'}
                 variant="ghost"
               >
                 <CustomLink href={route.pathname}>{contents}</CustomLink>
-              </Button>
+              </CustomButton>
             </li>
           ) : null;
         })}

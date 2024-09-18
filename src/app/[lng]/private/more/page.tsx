@@ -1,7 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-
 import { CustomLink } from '@/components/CustomLink';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 

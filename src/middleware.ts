@@ -1,10 +1,11 @@
 import acceptLanguage from 'accept-language';
-import { nanoid } from 'nanoid';
+import { verify } from 'jsonwebtoken';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
 import { COOKIES } from './constants/cookies-key';
+import { SECRET_ENV } from './constants/secret-env';
 
 export const config = {
   matcher: [
@@ -39,12 +40,10 @@ export const middleware = auth((req: NextRequest) => {
 
   //* 🪪 유저 아이디 발급 🪪
   {
-    const userId = req.cookies.get(COOKIES.USER_ID);
+    const accessToken = req.cookies.get(COOKIES.ACCESS_TOKEN);
 
-    if (!userId) {
-      response.cookies.set(COOKIES.USER_ID, nanoid(), {
-        expires: new Date('9999-12-31'),
-      });
+    if (accessToken) {
+      const user = verify(accessToken.value, SECRET_ENV.AUTH_SECRET);
     }
   }
 
