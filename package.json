@@ -25,6 +25,7 @@
     "nanoid": "^5.0.7",
     "next": "15.0.0-rc.0",
     "next-auth": "^5.0.0-beta.20",
+    "node-emoji": "^2.1.3",
     "react": "19.0.0-rc-f994737d14-20240522",
     "react-cookie": "^7.2.0",
     "react-dom": "19.0.0-rc-f994737d14-20240522",

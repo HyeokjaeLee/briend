@@ -1,4 +1,4 @@
-import { VscBell } from 'react-icons/vsc';
+import { FcComments } from 'react-icons/fc';
 
 import Logo from '@/assets/logo.svg';
 import { CustomIconButton } from '@/components/CustomIconButton';
@@ -8,7 +8,7 @@ export const RootHeader = () => {
     <nav className="flex h-14 items-center justify-between bg-white px-5">
       <Logo className="h-7 text-gray-600" />
       <CustomIconButton className="rounded-full" variant="ghost">
-        <VscBell className="size-7" />
+        <FcComments className="size-7" />
       </CustomIconButton>
     </nav>
   );

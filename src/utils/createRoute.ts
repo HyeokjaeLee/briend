@@ -1,3 +1,5 @@
+import { PUBLIC_ENV } from '@/constants/public-env';
+
 interface RouteOptions {
   bottomNavType?: 'none' | 'root' | 'empty';
   topHeaderType?: 'none' | 'root' | 'empty';
@@ -6,39 +8,32 @@ interface RouteOptions {
 let routeId = 0;
 
 export const createRoute = <
-  T extends {
-    dynamicPath?: string;
-    searchParams?: string;
-  } = {
-    dynamicPath: undefined;
-    searchParams: undefined;
-  },
+  TDynamicPath extends string | undefined = undefined,
+  TSearchParams extends string | undefined = undefined,
 >(
-  pathname: T['dynamicPath'] extends undefined
+  pathname: TDynamicPath extends undefined
     ? string
-    : (
-        dynamicPath: Record<Exclude<T['dynamicPath'], undefined>, string>,
-      ) => string,
+    : (dynamicPath: Record<Exclude<TDynamicPath, undefined>, string>) => string,
   options?: RouteOptions,
 ) => {
   routeId += 1;
 
   type CustomSearchParams = Partial<
-    Record<Exclude<T['searchParams'], undefined>, string | undefined>
+    Record<Exclude<TSearchParams, undefined>, string | undefined>
   >;
 
   return Object.freeze({
     id: routeId,
     pathname,
     url: (
-      params: T['dynamicPath'] extends undefined
+      params: TDynamicPath extends undefined
         ? { searchParams?: CustomSearchParams }
         : {
-            dynamicPath: Record<Exclude<T['dynamicPath'], undefined>, string>;
+            dynamicPath: Record<Exclude<TDynamicPath, undefined>, string>;
             searchParams?: CustomSearchParams;
           },
     ) => {
-      const url = new URL('/', location.origin);
+      const url = new URL(PUBLIC_ENV.BASE_URL);
 
       if (typeof pathname === 'string') {
         url.pathname = pathname;

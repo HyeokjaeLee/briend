@@ -1,7 +1,7 @@
 'use client';
 
+import { FcInvite, FcContacts, FcMenu } from 'react-icons/fc';
 import type { IconType } from 'react-icons/lib';
-import { VscHome, VscEllipsis, VscCommentDiscussion } from 'react-icons/vsc';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
@@ -21,17 +21,17 @@ interface NavigationItem {
 
 const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    icon: VscHome,
-    routeName: 'HOME',
-    translationKey: 'home',
-  },
-  {
-    icon: VscCommentDiscussion,
+    icon: FcContacts,
     routeName: 'MESSAGE',
     translationKey: 'message',
   },
   {
-    icon: VscEllipsis,
+    icon: FcInvite,
+    routeName: 'INVITE_CHAT',
+    translationKey: 'inviteChat',
+  },
+  {
+    icon: FcMenu,
     routeName: 'MORE_MENUS',
     translationKey: 'more',
   },

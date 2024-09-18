@@ -8,11 +8,13 @@ export const ROUTES = {
   MESSAGE: createRoute('/message', {
     bottomNavType: 'root',
   }),
-  MESSAGE_ROOM: createRoute<{ dynamicPath: 'id' }>(
-    ({ id }) => `/message/${id}`,
-  ),
+  MESSAGE_ROOM: createRoute<'id'>(({ id }) => `/message/${id}`),
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
+  }),
+  INVITE_CHAT: createRoute('/private/invite-chat', {
+    bottomNavType: 'root',
+    topHeaderType: 'root',
   }),
 
   LOGIN: createRoute('/guest/login'),

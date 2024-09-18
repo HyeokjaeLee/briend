@@ -1,5 +1,14 @@
-export const fallbackLng = 'en';
-export const languages = [fallbackLng, 'ko', 'ja', 'zh', 'th', 'vi'];
+import { LANGUAGE } from '@/constants/language';
+
+export const fallbackLng = LANGUAGE.ENGLISH;
+export const languages = [
+  fallbackLng,
+  LANGUAGE.KOREAN,
+  LANGUAGE.JAPANESE,
+  LANGUAGE.CHINESE,
+  LANGUAGE.THAI,
+  LANGUAGE.VIETNAMESE,
+];
 export const defaultNS = 'layout';
 
 export const getOptions = (

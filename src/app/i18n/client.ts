@@ -1,4 +1,4 @@
-'use clinet';
+'use client';
 
 import type { FlatNamespace, KeyPrefix } from 'i18next';
 
