@@ -6,9 +6,11 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import type { FallbackNs } from 'react-i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
+import type { LANGUAGE } from '@/constants/language';
+
 import { getOptions } from './settings';
 
-const initI18next = async (lng: string, ns: string | string[]) => {
+const initI18next = async (lng: LANGUAGE, ns: string | string[]) => {
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)
@@ -27,7 +29,7 @@ export const getTranslation = async <
   Ns extends FlatNamespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
 >(
-  lng: string,
+  lng: LANGUAGE,
   ns?: Ns,
   options: { keyPrefix?: KPrefix } = {},
 ) => {

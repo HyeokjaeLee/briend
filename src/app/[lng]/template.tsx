@@ -10,7 +10,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <main
-      className={cn('flex-1 overflow-auto animate-duration-150', {
+      className={cn('flex-1 overflow-auto animate-duration-150 flex flex-col', {
         'animate-fade-right': lastRouteType === 'back',
         'animate-fade-left': ['forward', 'push'].includes(lastRouteType),
         'animate-fade': ['replace', 'reload'].includes(lastRouteType),

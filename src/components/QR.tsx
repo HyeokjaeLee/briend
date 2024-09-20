@@ -17,6 +17,7 @@ interface QRProps
 export const QR = ({ size = 160, href, alt, className }: QRProps) => {
   return (
     <img
+      key={`${size}-${href}`}
       alt={`qr-${alt}`}
       className={className}
       src={`${QR_API}/?size=${size}x${size}&data=${href}`}

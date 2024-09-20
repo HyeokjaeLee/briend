@@ -1,0 +1,14 @@
+{
+  "ko": "한국어",
+  "en": "영어",
+  "ja": "일본어",
+  "zh": "중국어",
+  "th": "태국어",
+  "vi": "베트남어",
+  "friend-language": "언어",
+  "friend-nickname": "닉네임",
+  "friend-setting-message": "친구의 언어와 닉네임을 설정 후 친구가 QR 코드를 스캔하면 번역된 내용으로 채팅할 수 있어요.",
+  "invite-title": "친구 초대",
+  "invited-message": "초대되었습니다.",
+  "invite-message": "QR 코드를 스캔하면 친구와 같은 언어로 채팅을 할 수 있어요."
+}

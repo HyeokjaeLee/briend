@@ -1,17 +1,7 @@
-import { nanoid } from 'nanoid';
-import { random } from 'node-emoji';
-
-import { QR } from '@/components/QR';
-import { Select } from '@radix-ui/themes';
-
-import { CreateQRSection } from './_components/CreateQRSection';
+import { InviteChatTemplate } from './_components/InviteChatTemplate';
 
 const CreateChatPage = () => {
-  return (
-    <article>
-      <CreateQRSection />
-    </article>
-  );
+  return <InviteChatTemplate />;
 };
 
 export default CreateChatPage;
