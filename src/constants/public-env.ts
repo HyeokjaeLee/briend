@@ -1,5 +1,6 @@
 const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
+  PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
 };
 
 for (const key in publicEnv) {

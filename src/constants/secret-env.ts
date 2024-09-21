@@ -3,6 +3,8 @@ const privateEnv = {
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
   AUTH_SECRET: process.env.AUTH_SECRET,
   DEEPL_API_KEY: process.env.DEEPL_API_KEY,
+  PUSHER_APP_ID: process.env.PUSHER_APP_ID,
+  PUSHER_SECRET: process.env.PUSHER_SECRET,
 };
 
 for (const key in privateEnv) {

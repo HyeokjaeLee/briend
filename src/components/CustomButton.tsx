@@ -15,6 +15,7 @@ export const CustomButton = ({
         className,
       )}
       color={color}
+      size="3"
       {...restProps}
     />
   );
