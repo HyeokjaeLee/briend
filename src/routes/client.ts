@@ -1,14 +1,11 @@
 import { createRoute } from '@/utils/createRoute';
 
 export const ROUTES = {
-  HOME: createRoute('/', {
+  CHATTING: createRoute('/', {
     bottomNavType: 'root',
     topHeaderType: 'root',
   }),
-  MESSAGE: createRoute('/message', {
-    bottomNavType: 'root',
-  }),
-  MESSAGE_ROOM: createRoute<'id'>(({ id }) => `/message/${id}`),
+  CHATTING_ROOM: createRoute<'id'>(({ id }) => `/message/${id}`),
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
   }),
@@ -17,7 +14,7 @@ export const ROUTES = {
     topHeaderType: 'empty',
   }),
   INVITE_CHAT_QR: createRoute('/private/invite-chat/qr', {
-    topHeaderType: 'empty',
+    topHeaderType: 'back',
   }),
 
   LOGIN: createRoute('/guest/login'),

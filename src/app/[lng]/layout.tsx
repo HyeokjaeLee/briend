@@ -6,6 +6,7 @@ import { dir } from 'i18next';
 
 import type { ReactElement } from 'react';
 
+import type { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';
 
 import { languages } from '../i18n/settings';
@@ -25,21 +26,24 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 interface RootLayoutProps {
   children: ReactElement;
   params: {
-    lng: string;
+    lng: LANGUAGE;
   };
 }
 
-const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => (
+const RootLayout = async ({
+  children,
+  params: { lng },
+}: Readonly<RootLayoutProps>) => (
   <html
     className={cn(pretendard.variable, 'size-full')}
-    dir={dir(params.lng)}
-    lang={params.lng}
+    dir={dir(lng)}
+    lang={lng}
   >
     <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
       <GlobalProvider className="flex size-full bg-zinc-50">
         <div className="flex-1" />
         <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-x-hidden bg-white text-zinc-950">
-          <GlobalHeader />
+          <GlobalHeader lng={lng} />
           {children}
           <BottomNav />
         </div>

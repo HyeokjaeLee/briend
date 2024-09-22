@@ -2,7 +2,7 @@ import { PUBLIC_ENV } from '@/constants/public-env';
 
 interface RouteOptions {
   bottomNavType?: 'none' | 'root' | 'empty';
-  topHeaderType?: 'none' | 'root' | 'empty';
+  topHeaderType?: 'none' | 'root' | 'empty' | 'back';
 }
 
 let routeId = 0;

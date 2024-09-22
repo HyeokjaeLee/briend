@@ -1,6 +1,6 @@
 'use client';
 
-import { FcInvite, FcContacts, FcMenu } from 'react-icons/fc';
+import { BiMessageSquare, BiMessageSquareAdd, BiMenu } from 'react-icons/bi';
 import type { IconType } from 'react-icons/lib';
 
 import { useTranslation } from '@/app/i18n/client';
@@ -8,7 +8,6 @@ import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { findCurrentRoute } from '@/utils';
-
 interface RootNavProps {
   pathname: string;
 }
@@ -21,17 +20,17 @@ interface NavigationItem {
 
 const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    icon: FcContacts,
+    icon: BiMessageSquare,
     routeName: 'MESSAGE',
     translationKey: 'message',
   },
   {
-    icon: FcInvite,
+    icon: BiMessageSquareAdd,
     routeName: 'INVITE_CHAT',
     translationKey: 'inviteChat',
   },
   {
-    icon: FcMenu,
+    icon: BiMenu,
     routeName: 'MORE_MENUS',
     translationKey: 'more',
   },
@@ -65,7 +64,9 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                 color={isActive ? 'blue' : 'gray'}
                 variant="ghost"
               >
-                <CustomLink href={route.pathname}>{contents}</CustomLink>
+                <CustomLink replace href={route.pathname}>
+                  {contents}
+                </CustomLink>
               </CustomButton>
             </li>
           ) : null;

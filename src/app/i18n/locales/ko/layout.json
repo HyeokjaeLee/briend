@@ -1,6 +1,8 @@
 {
-  "home": "홈",
-  "message": "메시지",
-  "inviteChat": "초대",
-  "more": "더보기"
+  "chat": "채팅",
+  "invite-chat": "초대",
+  "more": "더보기",
+  "chat-title": "채팅 목록",
+  "invite-chat-title": "채팅 초대",
+  "more-title": "모든 메뉴"
 }
