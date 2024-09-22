@@ -1,6 +1,6 @@
 import { ROUTES } from '@/routes/client';
 
-export const findCurrentRoute = (pathname: string) => {
+export const findRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
 
   let matchedRoute: {

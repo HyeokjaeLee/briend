@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
 
-import type { ReactElement } from 'react';
+import { Suspense, type ReactElement } from 'react';
 
 import type { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';
@@ -42,8 +42,8 @@ const RootLayout = async ({
     <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
       <GlobalProvider className="flex size-full bg-zinc-50">
         <div className="flex-1" />
-        <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-x-hidden bg-white text-zinc-950">
-          <GlobalHeader lng={lng} />
+        <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-white text-zinc-900">
+          <GlobalHeader />
           {children}
           <BottomNav />
         </div>

@@ -7,6 +7,8 @@ export type RouteType = 'back' | 'forward' | 'push' | 'replace' | 'reload';
 
 type CustomHistory = Map<number, string>;
 
+type RootAnimation = 'left' | 'right';
+
 interface HistoryStore {
   customHistory: CustomHistory;
   setCustomHistory: (
@@ -30,6 +32,9 @@ interface HistoryStore {
   url?: string;
 
   reset: () => void;
+
+  rootAnimation?: RootAnimation;
+  setRootAnimation: (rootAnimation?: RootAnimation) => void;
 }
 
 export const getHistorySession = () => {
@@ -126,5 +131,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
           historyId,
         };
       }),
+
+    setRootAnimation: (rootAnimation) => set({ rootAnimation }),
   };
 });

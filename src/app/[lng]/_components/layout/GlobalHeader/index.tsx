@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 
 import type { LANGUAGE } from '@/constants/language';
 import { SELECTOR } from '@/constants/selector';
-import { findCurrentRoute } from '@/utils';
+import { findRoute } from '@/utils';
 
 import { BackHeader } from './_components/BackHeader';
 import { RootHeader } from './_components/RootHeader';
@@ -12,7 +12,7 @@ import { RootHeader } from './_components/RootHeader';
 export const GlobalHeader = () => {
   const pathname = usePathname();
 
-  const { topHeaderType } = findCurrentRoute(pathname);
+  const { topHeaderType } = findRoute(pathname);
 
   return topHeaderType !== 'none' ? (
     <header
