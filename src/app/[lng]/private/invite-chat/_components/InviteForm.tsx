@@ -61,7 +61,7 @@ export const InviteForm = () => {
 
         setTimeout(() => router.push(ROUTES.INVITE_CHAT_QR.pathname), 1_000);
       }}
-      className="mx-auto flex w-full max-w-96 flex-1 flex-col items-center justify-center gap-5 p-4"
+      className="mx-auto flex w-full flex-col items-center gap-5 p-4"
     >
       <div className="flex w-full flex-col gap-2">
         <label className="font-medium">🌍 {t('friend-language')}</label>
@@ -97,7 +97,9 @@ export const InviteForm = () => {
           variant="soft"
         />
       </label>
-      <CustomButton loading={isLoading}>{t('invite-button')}</CustomButton>
+      <CustomButton className="mt-12 w-full" loading={isLoading} size="4">
+        {t('invite-button')}
+      </CustomButton>
     </form>
   );
 };

@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
 
-import { Suspense, type ReactElement } from 'react';
+import { type ReactElement } from 'react';
 
 import type { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';

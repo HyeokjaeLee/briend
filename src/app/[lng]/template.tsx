@@ -21,7 +21,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (!rootAnimation) return;
 
-    const timer = setTimeout(() => setRootAnimation(undefined), 150);
+    const timer = setTimeout(() => setRootAnimation(undefined), 300);
 
     return () => clearTimeout(timer);
   }, [rootAnimation, setRootAnimation, lastRouteType]);
@@ -29,7 +29,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
   return (
     <main
       className={cn(
-        'flex-1 animate-duration-150 flex flex-col',
+        'flex-1 animate-duration-300 flex flex-col',
         {
           'animate-fade-down': lastRouteType === 'back',
           'animate-fade-up': ['forward', 'push'].includes(lastRouteType),
