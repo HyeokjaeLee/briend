@@ -7,6 +7,7 @@ import type { IconType } from 'react-icons/lib';
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
+import { SESSION } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
 import { findRoute, isArrayItem } from '@/utils';
@@ -38,8 +39,6 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   },
 ];
 
-const SESSION_KEY = 'root-nav-animation';
-
 export const RootNav = ({ pathname }: RootNavProps) => {
   const currentRoute = findRoute(pathname);
   const currentRouteIndex = NAVIGATION_ITEMS.findIndex(
@@ -54,12 +53,12 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
   useEffect(() => {
     //! 애니메이션 정보를 저장 후 다음 라우트에서 사용
-    const animation = sessionStorage.getItem(SESSION_KEY);
+    const animation = sessionStorage.getItem(SESSION.ROOT_NAV_ANIMATION);
 
     if (isArrayItem(['left', 'right'] as const, animation)) {
       setRootAnimation(animation);
 
-      sessionStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION.ROOT_NAV_ANIMATION);
     }
   }, [pathname, setRootAnimation]);
 
@@ -88,9 +87,15 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   variant="ghost"
                   onClick={() => {
                     if (index < currentRouteIndex) {
-                      sessionStorage.setItem(SESSION_KEY, 'right');
+                      sessionStorage.setItem(
+                        SESSION.ROOT_NAV_ANIMATION,
+                        'right',
+                      );
                     } else if (index > currentRouteIndex) {
-                      sessionStorage.setItem(SESSION_KEY, 'left');
+                      sessionStorage.setItem(
+                        SESSION.ROOT_NAV_ANIMATION,
+                        'left',
+                      );
                     }
                   }}
                 >

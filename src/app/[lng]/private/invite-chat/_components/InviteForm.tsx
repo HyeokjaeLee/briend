@@ -7,7 +7,6 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
-import { SESSION } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { isEnumValue } from '@/utils';
@@ -15,12 +14,21 @@ import { Select, TextField } from '@radix-ui/themes';
 
 const NICKNAME_FIELD = 'nickname';
 
+export interface QrInfo {
+  userId: string;
+  language: LANGUAGE;
+  nickname: string;
+  emoji: string;
+  expires: Date;
+}
+
 export const InviteForm = () => {
   const [cookies, setCookies] = useCookies([
     COOKIES.LAST_FRIEND_INDEX,
     COOKIES.LAST_FRIEND_LANGUAGE,
     COOKIES.MY_EMOJI,
     COOKIES.USER_ID,
+    COOKIES.QR_INFO,
   ]);
 
   const userId = cookies[COOKIES.USER_ID];
@@ -48,16 +56,23 @@ export const InviteForm = () => {
 
         const nickname = formData.get(NICKNAME_FIELD) || defaultNickname;
 
-        if (!nickname) throw new Error('Invalid form data');
+        if (typeof nickname !== 'string') throw new Error('Invalid form data');
 
-        const qrInfo = {
+        const expires = new Date(Date.now() + 300_000); // 5 minutes
+
+        const qrInfo: QrInfo = {
           userId,
           language,
           nickname,
           emoji: cookies[COOKIES.MY_EMOJI],
+          expires,
         };
 
-        sessionStorage.setItem(SESSION.QR_INFO, JSON.stringify(qrInfo));
+        setCookies(COOKIES.QR_INFO, qrInfo, {
+          expires,
+        });
+
+        router.prefetch(ROUTES.INVITE_CHAT_QR.pathname);
 
         setTimeout(() => router.push(ROUTES.INVITE_CHAT_QR.pathname), 1_000);
       }}

@@ -4,7 +4,11 @@ export enum SESSION {
   HISTORY_INDEX = 'history-index',
   HISTORY_LENGTH = 'history-length',
   REPLACED_MARK = 'replaced-mark',
-  QR_INFO = 'qr-info',
+  /**
+   * @description Root 페이지들로 이동할 때 사용할 수 있는 애니메이션 정보
+   * @example 'left' | 'right'
+   */
+  ROOT_NAV_ANIMATION = 'root-nav-animation',
 }
 
 export enum LOCAL {}

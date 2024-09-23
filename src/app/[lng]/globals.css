@@ -6,4 +6,5 @@
 
 @layer components {
   @import '@radix-ui/themes/styles.css';
+  @import 'react-toastify/dist/ReactToastify.css';
 }

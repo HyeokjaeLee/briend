@@ -10,6 +10,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        xs: {
+          max: '480px',
+        },
+      },
       colors: {
         background: 'var(--background)',
         foreground: 'var(--foreground)',

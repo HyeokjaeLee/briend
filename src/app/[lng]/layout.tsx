@@ -42,7 +42,7 @@ const RootLayout = async ({
     <body className={cn(pretendard.className, 'size-full bg-zinc-50')}>
       <GlobalProvider className="flex size-full bg-zinc-50">
         <div className="flex-1" />
-        <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-white text-zinc-900">
+        <div className="flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-white text-zinc-900 shadow-xl">
           <GlobalHeader />
           {children}
           <BottomNav />
