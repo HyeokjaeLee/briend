@@ -19,7 +19,7 @@ export interface QrInfo {
   language: LANGUAGE;
   nickname: string;
   emoji: string;
-  expires: Date;
+  expires: string;
 }
 
 export const InviteForm = () => {
@@ -65,7 +65,7 @@ export const InviteForm = () => {
           language,
           nickname,
           emoji: cookies[COOKIES.MY_EMOJI],
-          expires,
+          expires: expires.toISOString(),
         };
 
         setCookies(COOKIES.QR_INFO, qrInfo, {
