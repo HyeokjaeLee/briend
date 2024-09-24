@@ -12,6 +12,8 @@ export interface ToastOptions {
   holdTime?: number;
 }
 
+const toastQueue = new Set<string>();
+
 export const toast = ({
   message,
   holdTime = 3_000,
@@ -23,6 +25,16 @@ export const toast = ({
     warning: WarningIcon,
     info: InfoIcon,
   }[type];
+
+  const messageId = message + type;
+
+  if (toastQueue.has(messageId)) return;
+
+  toastQueue.add(messageId);
+
+  setTimeout(() => {
+    toastQueue.delete(messageId);
+  }, holdTime);
 
   return toastifyToast(message, {
     autoClose: holdTime,

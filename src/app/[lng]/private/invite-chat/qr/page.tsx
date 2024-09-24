@@ -8,29 +8,32 @@ import { useCookies } from 'react-cookie';
 import { QR } from '@/components/QR';
 import { Timer } from '@/components/Timer';
 import { COOKIES } from '@/constants/cookies-key';
+import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { toast } from '@/utils';
 import { Spinner } from '@radix-ui/themes';
 
-const expireInvite = () => {
-  toast({
-    message: 'QR code is expired',
-  });
-
-  setTimeout(() => history.back(), 1_000);
-};
-
 const InviteChatQRPage = () => {
-  const [cookies] = useCookies([COOKIES.QR_INFO]);
+  const [cookies, , removeCookies] = useCookies([COOKIES.QR_INFO]);
 
   const qrInfo: undefined | QrInfo = cookies[COOKIES.QR_INFO];
 
   const [expires, setExpires] = useState<Date>();
 
+  const router = useCustomRouter();
+
   useEffect(() => {
-    if (!qrInfo) return expireInvite();
+    if (!qrInfo) {
+      toast({
+        message: 'QR code is expired',
+      });
+
+      const sleep = setTimeout(() => history.back(), 1_000);
+
+      return () => clearTimeout(sleep);
+    }
 
     setExpires(new Date(qrInfo.expires));
-  }, [qrInfo]);
+  }, [qrInfo, router]);
 
   if (!expires || !qrInfo)
     return (
@@ -44,11 +47,7 @@ const InviteChatQRPage = () => {
       <section>
         <Timer
           expires={expires}
-          onChangeLeftSeconds={(leftSec) => {
-            if (leftSec === 0) {
-              expireInvite();
-            }
-          }}
+          onTimeout={() => removeCookies(COOKIES.QR_INFO)}
         />
       </section>
     </article>

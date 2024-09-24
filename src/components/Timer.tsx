@@ -8,9 +8,14 @@ import { cn } from '@/utils';
 interface TimerProps {
   expires: Date;
   onChangeLeftSeconds?: (leftSeconds: number) => void;
+  onTimeout?: () => void;
 }
 
-export const Timer = ({ expires, onChangeLeftSeconds }: TimerProps) => {
+export const Timer = ({
+  expires,
+  onChangeLeftSeconds,
+  onTimeout,
+}: TimerProps) => {
   const [leftSeconds, setLeftSeconds] = useState<number>(-1);
 
   const timeoutSec = new Date(expires).getTime();
@@ -30,7 +35,11 @@ export const Timer = ({ expires, onChangeLeftSeconds }: TimerProps) => {
         return leftSec;
       };
 
-      if (nextLeftSeconds <= 0) return timerAction(0);
+      if (nextLeftSeconds <= 0) {
+        onTimeout?.();
+
+        return timerAction(0);
+      }
 
       return timerAction(nextLeftSeconds);
     };
@@ -44,14 +53,14 @@ export const Timer = ({ expires, onChangeLeftSeconds }: TimerProps) => {
     }, 1_000);
 
     return () => clearTimeout(timer);
-  }, [leftSeconds, onChangeLeftSeconds, timeoutSec]);
+  }, [leftSeconds, onChangeLeftSeconds, onTimeout, timeoutSec]);
 
   const notEnoughTime = leftSeconds < 60;
 
   return (
     <strong
       className={cn('flex items-center gap-2 text-slate-900', {
-        'text-red-600': notEnoughTime,
+        'text-red-500': notEnoughTime,
         invisible: leftSeconds <= 0,
         'animate-fade animate-reverse animate-duration-1000': leftSeconds <= 1,
       })}
