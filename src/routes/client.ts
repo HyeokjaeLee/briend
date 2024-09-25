@@ -16,6 +16,7 @@ export const ROUTES = {
   }),
   INVITE_CHAT_QR: createRoute('/private/invite-chat/qr', {
     topHeaderType: 'back',
+    bottomNavType: 'empty',
   }),
 
   LOGIN: createRoute('/guest/login'),

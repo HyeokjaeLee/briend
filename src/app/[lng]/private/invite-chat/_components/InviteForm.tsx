@@ -58,7 +58,7 @@ export const InviteForm = () => {
 
         if (typeof nickname !== 'string') throw new Error('Invalid form data');
 
-        const expires = new Date(Date.now() + 10000); // 5 minutes
+        const expires = new Date(Date.now() + 300_000); // 5 minutes
 
         const qrInfo: QrInfo = {
           userId,

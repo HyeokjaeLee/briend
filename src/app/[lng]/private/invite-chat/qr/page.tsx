@@ -5,51 +5,63 @@ import type { QrInfo } from '../_components/InviteForm';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
-import { QR } from '@/components/QR';
+import { useTranslation } from '@/app/i18n/client';
+import { CustomBottomNav } from '@/components/CustomBottomNav';
 import { Timer } from '@/components/Timer';
 import { COOKIES } from '@/constants/cookies-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { toast } from '@/utils';
 import { Spinner } from '@radix-ui/themes';
 
+import { InviteQRSection } from './_components/InviteQRSection';
+
 const InviteChatQRPage = () => {
   const [cookies, , removeCookies] = useCookies([COOKIES.QR_INFO]);
-
   const qrInfo: undefined | QrInfo = cookies[COOKIES.QR_INFO];
 
-  const [expires, setExpires] = useState<Date>();
-
   const router = useCustomRouter();
+
+  const { t } = useTranslation('invite-chat-qr');
+
+  const [expires, setExpires] = useState<Date>();
 
   useEffect(() => {
     if (!qrInfo) {
       toast({
-        message: 'QR code is expired',
+        message: t('expired-toast-message'),
       });
 
-      const sleep = setTimeout(() => history.back(), 1_000);
+      const sleep = setTimeout(() => router.back(), 1_000);
 
       return () => clearTimeout(sleep);
     }
 
     setExpires(new Date(qrInfo.expires));
-  }, [qrInfo, router]);
+  }, [qrInfo, router, t]);
 
   if (!expires || !qrInfo)
     return (
-      <article className="flex flex-1 items-center justify-center p-4">
+      <article className="flex flex-1 items-center justify-center">
         <Spinner size="3" />
       </article>
     );
 
   return (
-    <article className="flex flex-1 items-center justify-center p-4">
-      <section>
+    <article className="flex flex-1 flex-col items-center justify-end gap-4 p-4">
+      <InviteQRSection
+        expires={expires}
+        hostId={qrInfo.userId}
+        language={qrInfo.language}
+      />
+      <p className="whitespace-pre-line break-keep text-center">
+        {t('notice-message')}
+      </p>
+      <CustomBottomNav className="flex justify-center">
         <Timer
           expires={expires}
           onTimeout={() => removeCookies(COOKIES.QR_INFO)}
         />
-      </section>
+      </CustomBottomNav>
     </article>
   );
 };

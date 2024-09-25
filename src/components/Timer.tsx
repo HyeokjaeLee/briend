@@ -59,7 +59,7 @@ export const Timer = ({
 
   return (
     <strong
-      className={cn('flex items-center gap-2 text-slate-900', {
+      className={cn('flex items-center gap-2 text-slate-900 min-w-24', {
         'text-red-500': notEnoughTime,
         invisible: leftSeconds <= 0,
         'animate-fade animate-reverse animate-duration-1000': leftSeconds <= 1,
@@ -67,12 +67,13 @@ export const Timer = ({
     >
       <BiAlarm
         className={cn('size-6', {
-          'animate-wiggle-more animate-infinite': notEnoughTime,
+          'animate-wiggle-more animate-duration-500 animate-infinite':
+            notEnoughTime,
         })}
       />
       <span
         className={cn('text-lg font-semibold', {
-          'animate-pulse animate-infinite': notEnoughTime,
+          'animate-pulse animate-duration-1000 animate-infinite': notEnoughTime,
         })}
       >
         {Math.floor(leftSeconds / 60)
