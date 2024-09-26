@@ -31,12 +31,22 @@ export const middleware = auth(async (req: NextRequest) => {
         acceptLanguage.get(req.headers.get('Accept-Language')) || fallbackLng;
 
     if (
-      !languages.some((loc) => nextUrl.pathname.startsWith(`/${loc}`)) &&
+      !languages.some((loc) => {
+        const langPath = `/${loc}`;
+
+        const { pathname } = nextUrl;
+
+        return (
+          pathname.startsWith(langPath + '/') ||
+          //* root path
+          nextUrl.pathname === langPath
+        );
+      }) &&
       !nextUrl.pathname.startsWith('/_next')
     ) {
-      return NextResponse.redirect(
-        new URL(`/${lng}${nextUrl.pathname}`, req.url),
-      );
+      nextUrl.pathname = `/${lng}${nextUrl.pathname}`;
+
+      return NextResponse.redirect(nextUrl);
     }
   }
 
@@ -82,7 +92,7 @@ export const middleware = auth(async (req: NextRequest) => {
       }
 
       return NextResponse.redirect(
-        new URL(ROUTES.HOME.pathname, nextUrl.origin),
+        new URL(ROUTES.CHATTING_LIST.pathname, nextUrl.origin),
       );
     }
   }

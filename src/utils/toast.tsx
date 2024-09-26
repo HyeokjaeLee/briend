@@ -14,7 +14,7 @@ export interface ToastOptions {
 
 const toastQueue = new Set<string>();
 
-export const toast = ({
+export const toast = async ({
   message,
   holdTime = 3_000,
   type = 'success',
@@ -36,8 +36,12 @@ export const toast = ({
     toastQueue.delete(messageId);
   }, holdTime);
 
-  return toastifyToast(message, {
+  toastifyToast(message, {
     autoClose: holdTime,
     icon: <Icon className="size-5" />,
+  });
+
+  return new Promise((resolve) => {
+    setTimeout(resolve, 100);
   });
 };

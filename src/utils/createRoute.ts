@@ -5,7 +5,7 @@ interface RouteOptions {
   topHeaderType?: 'none' | 'root' | 'empty' | 'back';
 }
 
-let routeId = 0;
+let routeIndex = 0;
 
 export const createRoute = <
   TDynamicPath extends string | undefined = undefined,
@@ -16,14 +16,16 @@ export const createRoute = <
     : (dynamicPath: Record<Exclude<TDynamicPath, undefined>, string>) => string,
   options?: RouteOptions,
 ) => {
-  routeId += 1;
+  const index = routeIndex;
+
+  routeIndex += 1;
 
   type CustomSearchParams = Partial<
     Record<Exclude<TSearchParams, undefined>, string | undefined>
   >;
 
   return Object.freeze({
-    id: routeId,
+    index,
     pathname,
     url: (
       params: TDynamicPath extends undefined

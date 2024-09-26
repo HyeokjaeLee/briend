@@ -24,7 +24,7 @@ interface NavigationItem {
 const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     icon: BiMessageSquare,
-    routeName: 'CHATTING',
+    routeName: 'CHATTING_LIST',
     translationKey: 'chat',
   },
   {
@@ -69,7 +69,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
           ({ icon: Icon, routeName, translationKey }, index) => {
             const route = ROUTES[routeName];
 
-            const isActive = currentRoute?.id === route.id;
+            const isActive = currentRoute === route;
 
             const contents = (
               <>
@@ -79,7 +79,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
             );
 
             return typeof route.pathname === 'string' ? (
-              <li key={route.id}>
+              <li key={route.index}>
                 <CustomButton
                   asChild
                   className="flex flex-col items-center justify-center gap-1 text-xs"

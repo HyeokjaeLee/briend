@@ -15,18 +15,22 @@ export const GlobalHeader = () => {
 
   const { topHeaderType } = findRoute(pathname);
 
-  return topHeaderType !== 'none' ? (
-    <header
-      className="relative top-0 h-fit w-full max-w-xl"
-      id={SELECTOR.TOP_HEADER}
-    >
-      {
-        {
-          root: <RootHeader />,
-          back: <BackHeader />,
-          empty: null,
-        }[topHeaderType]
-      }
+  return (
+    <>
+      {topHeaderType !== 'none' ? (
+        <header
+          className="relative top-0 h-fit w-full max-w-xl"
+          id={SELECTOR.TOP_HEADER}
+        >
+          {
+            {
+              root: <RootHeader />,
+              back: <BackHeader />,
+              empty: null,
+            }[topHeaderType]
+          }
+        </header>
+      ) : null}
       <ToastContainer
         draggable
         bodyClassName="p-0 whitespace-pre-line flex gap-1 text-black text-lg font-medium font-pretendard"
@@ -46,6 +50,6 @@ export const GlobalHeader = () => {
         )}
         transition={Slide}
       />
-    </header>
-  ) : null;
+    </>
+  );
 };
