@@ -4,6 +4,7 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 
 import { COOKIES } from './constants/cookies-key';
+import { IS_DEV } from './constants/public-env';
 import { SECRET_ENV } from './constants/secret-env';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -21,8 +22,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         .sign(new TextEncoder().encode(SECRET_ENV.AUTH_SECRET));
 
       cookieStore.set(COOKIES.ACCESS_TOKEN, accessToken, {
-        httpOnly: true,
-        secure: true,
+        httpOnly: !IS_DEV,
+        secure: !IS_DEV,
         path: '/',
         maxAge: 172_800, // 2d
       });

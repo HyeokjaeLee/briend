@@ -1,5 +1,7 @@
 'use client';
 
+import axios from 'axios';
+
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
@@ -8,6 +10,7 @@ import { CustomButton } from '@/components/CustomButton';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
+import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { isEnumValue } from '@/utils';
 import { Select, TextField } from '@radix-ui/themes';
@@ -68,13 +71,12 @@ export const InviteForm = () => {
           expires: expires.toISOString(),
         };
 
-        setCookies(COOKIES.QR_INFO, qrInfo, {
-          expires,
+        API_ROUTES.CREATE_CHAT({
+          userId,
+          language,
+          nickname,
+          emoji: cookies[COOKIES.MY_EMOJI],
         });
-
-        router.prefetch(ROUTES.INVITE_CHAT_QR.pathname);
-
-        setTimeout(() => router.push(ROUTES.INVITE_CHAT_QR.pathname), 1_000);
       }}
       className="mx-auto flex w-full flex-col items-center gap-5 p-4"
     >

@@ -15,6 +15,7 @@ import { BottomNav } from './_components/layout/BottomNav';
 import { pretendard } from './_components/layout/Font';
 import { GlobalHeader } from './_components/layout/GlobalHeader';
 import { GlobalProvider } from './_components/layout/GlobalProvider';
+import { ToastProvider } from './_components/layout/ToastProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -44,6 +45,7 @@ const RootLayout = async ({
         <div className="flex-1" />
         <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-white text-zinc-900 shadow-xl">
           <GlobalHeader />
+          <ToastProvider />
           {children}
           <BottomNav />
         </div>

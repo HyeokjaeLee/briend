@@ -2,6 +2,7 @@ const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
   NODE_ENV: process.env.NODE_ENV,
+  PUSHER_CLUSTER: 'ap3',
 };
 
 for (const key in publicEnv) {

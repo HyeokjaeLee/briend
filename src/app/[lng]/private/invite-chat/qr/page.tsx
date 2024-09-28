@@ -1,6 +1,6 @@
-'use client';
-
 import type { QrInfo } from '../_components/InviteForm';
+
+import { cookies } from 'next/headers';
 
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
@@ -15,8 +15,47 @@ import { Spinner } from '@radix-ui/themes';
 
 import { InviteQRSection } from './_components/InviteQRSection';
 
-const InviteChatQRPage = () => {
-  const [cookies, , removeCookies] = useCookies([COOKIES.QR_INFO]);
+const getQrInfo = async () => {
+  const cookieStore = cookies();
+
+  const qrInfo = cookieStore.get(COOKIES.QR_INFO);
+
+  return qrInfo;
+};
+
+const InviteChatQRPage = async () => {
+  const cookieStore = cookies();
+
+  const qrInfo = cookieStore.get(COOKIES.QR_INFO);
+
+  if (!qrInfo) return <></>;
+
+  return <></>;
+};
+
+export default InviteChatQRPage;
+
+export const dynamic = 'force-dynamic';
+
+/**
+ *   <article className="flex flex-1 flex-col items-center justify-end gap-4 p-4">
+      <InviteQRSection
+        expires={expires}
+        hostId={qrInfo.userId}
+        language={qrInfo.language}
+      />
+      <p className="whitespace-pre-line break-keep text-center">
+        {t('notice-message')}
+      </p>
+      <CustomBottomNav className="flex justify-center">
+        <Timer
+          expires={expires}
+          onTimeout={() => removeCookies(COOKIES.QR_INFO)}
+        />
+      </CustomBottomNav>
+    </article> 
+ * 
+ *  const [cookies, , removeCookies] = useCookies([COOKIES.QR_INFO]);
   const qrInfo: undefined | QrInfo = cookies[COOKIES.QR_INFO];
 
   const router = useCustomRouter();
@@ -46,24 +85,4 @@ const InviteChatQRPage = () => {
       </article>
     );
 
-  return (
-    <article className="flex flex-1 flex-col items-center justify-end gap-4 p-4">
-      <InviteQRSection
-        expires={expires}
-        hostId={qrInfo.userId}
-        language={qrInfo.language}
-      />
-      <p className="whitespace-pre-line break-keep text-center">
-        {t('notice-message')}
-      </p>
-      <CustomBottomNav className="flex justify-center">
-        <Timer
-          expires={expires}
-          onTimeout={() => removeCookies(COOKIES.QR_INFO)}
-        />
-      </CustomBottomNav>
-    </article>
-  );
-};
-
-export default InviteChatQRPage;
+ */

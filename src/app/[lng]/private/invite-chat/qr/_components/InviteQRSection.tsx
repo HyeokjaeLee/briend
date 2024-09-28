@@ -1,4 +1,7 @@
+import { useCookies } from 'react-cookie';
+
 import { QR } from '@/components/QR';
+import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { IS_DEV } from '@/constants/public-env';
 import { ROUTES } from '@/routes/client';
@@ -35,9 +38,16 @@ export const InviteQRSection = ({
   hostId,
   language,
 }: InviteQRSectionProps) => {
+  const [cookies] = useCookies([COOKIES.ACCESS_TOKEN]);
+
+  const accessToken = cookies[COOKIES.ACCESS_TOKEN];
+
   const qrUrl = ROUTES.INVITED_CHAT_ENTER.url({
     dynamicPath: { hostId },
-    searchParams: { expires: String(expires.getTime()) },
+    searchParams: {
+      expires: String(expires.getTime()),
+      accessToken,
+    },
   });
 
   qrUrl.pathname = `/${language}${qrUrl.pathname}`;
