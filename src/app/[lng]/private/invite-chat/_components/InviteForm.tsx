@@ -32,6 +32,7 @@ export const InviteForm = () => {
     COOKIES.MY_EMOJI,
     COOKIES.USER_ID,
     COOKIES.QR_INFO,
+    COOKIES.NICKNAME,
   ]);
 
   const userId = cookies[COOKIES.USER_ID];
@@ -81,6 +82,7 @@ export const InviteForm = () => {
       className="mx-auto flex w-full flex-col items-center gap-5 p-4"
     >
       <div className="flex w-full flex-col gap-2">
+        {cookies.nickname}
         <label className="font-medium">🌍 {t('friend-language')}</label>
         <Select.Root
           size="3"

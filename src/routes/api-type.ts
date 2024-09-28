@@ -11,9 +11,6 @@ export namespace ApiParams {
 
 export namespace ApiResponse {
   export interface CREATE_CHAT {
-    userId: string;
-    language: LANGUAGE;
-    nickname: string;
-    emoji: string;
+    inviteToken: string;
   }
 }

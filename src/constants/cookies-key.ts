@@ -1,6 +1,7 @@
 export enum COOKIES {
   I18N = 'i18next',
   USER_ID = 'user-id',
+  NICKNAME = 'nickname',
   ACCESS_TOKEN = 'access-token',
   PRIVATE_REFERER = 'private-referer',
   CHANNEL_TOKEN_PREFIX = 'channel-token-',

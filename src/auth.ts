@@ -21,6 +21,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         .setExpirationTime('2d')
         .sign(new TextEncoder().encode(SECRET_ENV.AUTH_SECRET));
 
+      if (!cookieStore.get(COOKIES.NICKNAME)) {
+        cookieStore.set(COOKIES.NICKNAME, name, {
+          path: '/',
+          maxAge: 172_800, // 2d
+        });
+      }
+
       cookieStore.set(COOKIES.ACCESS_TOKEN, accessToken, {
         httpOnly: !IS_DEV,
         secure: !IS_DEV,
