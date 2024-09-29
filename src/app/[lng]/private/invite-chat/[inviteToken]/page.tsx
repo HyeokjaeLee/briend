@@ -7,6 +7,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomBottomNav } from '@/components/CustomBottomNav';
 import { Timer } from '@/components/Timer';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
+import { ROUTES } from '@/routes/client';
 import { toast } from '@/utils';
 
 import { InviteQRSection } from './_components/InviteQRSection';
@@ -38,7 +39,8 @@ const InviteChatQRPage = ({
             toast({
               message: t('expired-toast-message'),
             });
-            router.back();
+
+            router.replace(ROUTES.EXPIRED_CHAT.pathname);
           }}
         />
       </CustomBottomNav>

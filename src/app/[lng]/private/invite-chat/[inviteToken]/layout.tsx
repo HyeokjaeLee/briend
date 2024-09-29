@@ -1,4 +1,4 @@
-import { jwtVerify } from 'jose';
+import { errors, jwtVerify } from 'jose';
 import { redirect } from 'next/navigation';
 
 import type { InviteTokenPayload } from '@/app/api/chat/create/route';
@@ -35,7 +35,10 @@ const InviteChatQRLayout = async ({
         </p>
       </article>
     );
-  } catch {
+  } catch (e) {
+    if (e instanceof errors.JWTExpired)
+      return redirect(ROUTES.EXPIRED_CHAT.pathname);
+
     return redirect(ROUTES.INVITE_CHAT.pathname);
   }
 };
