@@ -15,10 +15,13 @@ export const ROUTES = {
     bottomNavType: 'root',
     topHeaderType: 'root',
   }),
-  INVITE_CHAT_QR: createRoute('/private/invite-chat/qr', {
-    topHeaderType: 'back',
-    bottomNavType: 'empty',
-  }),
+  INVITE_CHAT_QR: createRoute<'inviteToken'>(
+    ({ inviteToken }) => `/private/invite-chat/${inviteToken}`,
+    {
+      topHeaderType: 'back',
+      bottomNavType: 'empty',
+    },
+  ),
   INVITED_CHAT_ENTER: createRoute<'hostId', 'expires' | 'accessToken'>(
     ({ hostId }) => `/enter/${hostId}`,
     {
@@ -29,4 +32,6 @@ export const ROUTES = {
 
   LOGIN: createRoute('/guest/login'),
   TEST: createRoute('/test'),
+
+  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/api/join-chat'),
 };

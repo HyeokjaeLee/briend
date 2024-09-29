@@ -20,7 +20,7 @@ export const BackHeader = () => {
         onClick={() => {
           if (isReload) {
             sessionStorage.setItem(SESSION.ROOT_NAV_ANIMATION, 'left');
-            router.replace(ROUTES.CHATTING.pathname);
+            router.replace(ROUTES.CHATTING_LIST.pathname);
           } else {
             router.back();
           }

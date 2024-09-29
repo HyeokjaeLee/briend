@@ -53,7 +53,7 @@ export const InviteForm = () => {
 
   return (
     <form
-      action={(formData) => {
+      action={async (formData) => {
         setIsLoading(true);
 
         setTimeout(() => setIsLoading(false), 5_000);
@@ -62,27 +62,24 @@ export const InviteForm = () => {
 
         if (typeof nickname !== 'string') throw new Error('Invalid form data');
 
-        const expires = new Date(Date.now() + 300_000); // 5 minutes
-
-        const qrInfo: QrInfo = {
-          userId,
-          language,
-          nickname,
-          emoji: cookies[COOKIES.MY_EMOJI],
-          expires: expires.toISOString(),
-        };
-
-        API_ROUTES.CREATE_CHAT({
+        const {
+          data: { inviteToken },
+        } = await API_ROUTES.CREATE_CHAT({
           userId,
           language,
           nickname,
           emoji: cookies[COOKIES.MY_EMOJI],
         });
+
+        router.push(
+          ROUTES.INVITE_CHAT_QR.pathname({
+            inviteToken,
+          }),
+        );
       }}
       className="mx-auto flex w-full flex-col items-center gap-5 p-4"
     >
       <div className="flex w-full flex-col gap-2">
-        {cookies.nickname}
         <label className="font-medium">🌍 {t('friend-language')}</label>
         <Select.Root
           size="3"

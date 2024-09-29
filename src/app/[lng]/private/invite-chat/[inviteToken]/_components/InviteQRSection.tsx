@@ -1,7 +1,6 @@
-import { useCookies } from 'react-cookie';
+'use client';
 
 import { QR } from '@/components/QR';
-import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { IS_DEV } from '@/constants/public-env';
 import { ROUTES } from '@/routes/client';
@@ -28,31 +27,19 @@ const INVITE_MESSAGE = {
 };
 
 interface InviteQRSectionProps {
-  expires: Date;
-  hostId: string;
   language: LANGUAGE;
+  inviteToken: string;
 }
 
 export const InviteQRSection = ({
-  expires,
-  hostId,
   language,
+  inviteToken,
 }: InviteQRSectionProps) => {
-  const [cookies] = useCookies([COOKIES.ACCESS_TOKEN]);
-
-  const accessToken = cookies[COOKIES.ACCESS_TOKEN];
-
-  const qrUrl = ROUTES.INVITED_CHAT_ENTER.url({
-    dynamicPath: { hostId },
+  const { href } = ROUTES.JOIN_CHAT.url({
     searchParams: {
-      expires: String(expires.getTime()),
-      accessToken,
+      inviteToken,
     },
   });
-
-  qrUrl.pathname = `/${language}${qrUrl.pathname}`;
-
-  const { href } = qrUrl;
 
   return (
     <section className="flex flex-1 rotate-180 flex-col items-center justify-between gap-4">
@@ -64,7 +51,10 @@ export const InviteQRSection = ({
         📢 {INVITE_MESSAGE[language]}
       </p>
       {IS_DEV ? (
-        <a className="absolute top-1/2 rotate-180 text-center" href={href}>
+        <a
+          className="absolute top-1/2 z-50 rotate-180 break-words text-center"
+          href={href}
+        >
           {href}
         </a>
       ) : null}
