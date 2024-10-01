@@ -1,3 +1,5 @@
+'use client';
+
 interface HomeLayoutProps {
   children: React.ReactNode;
 }

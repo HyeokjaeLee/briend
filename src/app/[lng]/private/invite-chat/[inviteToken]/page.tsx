@@ -1,5 +1,6 @@
 'use client';
 
+import { setCookie } from 'cookies-next';
 import { decodeJwt } from 'jose';
 
 import { useEffect } from 'react';
@@ -9,6 +10,7 @@ import { pusher } from '@/app/pusher/client';
 import { CustomBottomNav } from '@/components/CustomBottomNav';
 import { Timer } from '@/components/Timer';
 import { CHANNEL } from '@/constants/channel';
+import { COOKIES } from '@/constants/cookies-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
@@ -38,14 +40,32 @@ const InviteChatQRPage = ({
   useEffect(() => {
     const channel = pusher.subscribe(CHANNEL.WAITING);
 
-    channel.bind(hostId, (data: PusherType.joinChat) => {
-      console.log(data);
-    });
-
-    return () => {
+    const unbindChannel = () => {
       channel.unbind(hostId);
     };
-  }, [hostId]);
+
+    channel.bind(hostId, ({ channelToken }: PusherType.joinChat) => {
+      const { channelId } = decodeJwt<Payload.ChannelToken>(channelToken);
+
+      toast({
+        message: t('start-chatting'),
+      });
+
+      setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
+
+      unbindChannel();
+
+      router.replace(
+        ROUTES.CHATTING_ROOM.url({
+          searchParams: {
+            channelId,
+          },
+        }),
+      );
+    });
+
+    return unbindChannel;
+  }, [hostId, router, t]);
 
   return (
     <>

@@ -2,7 +2,7 @@ import Logo from '@/assets/logo.svg';
 
 export default function Home() {
   return (
-    <div className="flex">
+    <article className="flex">
       <div
         className="size-32 bg-zinc-50"
         style={{
@@ -15,6 +15,6 @@ export default function Home() {
       >
         <Logo className="h-7 text-gray-600" />
       </div>
-    </div>
+    </article>
   );
 }

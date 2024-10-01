@@ -11,11 +11,11 @@ import { cn } from '@/utils/cn';
 
 import { languages } from '../i18n/settings';
 
-import { BottomNav } from './_components/layout/BottomNav';
-import { pretendard } from './_components/layout/Font';
-import { GlobalHeader } from './_components/layout/GlobalHeader';
-import { GlobalProvider } from './_components/layout/GlobalProvider';
-import { ToastProvider } from './_components/layout/ToastProvider';
+import { BottomNav } from './_components/BottomNav';
+import { pretendard } from './_components/Font';
+import { GlobalHeader } from './_components/GlobalHeader';
+import { GlobalProvider } from './_components/GlobalProvider';
+import { ToastProvider } from './_components/ToastProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
