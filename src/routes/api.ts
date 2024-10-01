@@ -1,4 +1,4 @@
-import type { ApiParams, ApiResponse } from './api-type';
+import type { ApiParams, ApiResponse } from '../types/api';
 
 import axios from 'axios';
 import { getCookie } from 'cookies-next';

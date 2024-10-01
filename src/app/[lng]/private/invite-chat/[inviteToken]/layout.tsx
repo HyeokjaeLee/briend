@@ -1,11 +1,11 @@
 import { errors, jwtVerify } from 'jose';
 import { redirect } from 'next/navigation';
 
-import type { InviteTokenPayload } from '@/app/api/chat/create/route';
 import { useTranslation } from '@/app/i18n/server';
 import type { LANGUAGE } from '@/constants/language';
 import { SECRET_ENV } from '@/constants/secret-env';
 import { ROUTES } from '@/routes/client';
+import type { Payload } from '@/types/jwt';
 
 interface InviteChatQRLayoutProps {
   children: React.ReactNode;
@@ -22,7 +22,7 @@ const InviteChatQRLayout = async ({
   const { t } = await useTranslation('invite-chat-qr', params.lng);
 
   try {
-    await jwtVerify<InviteTokenPayload>(
+    await jwtVerify<Payload.InviteToken>(
       params.inviteToken,
       new TextEncoder().encode(SECRET_ENV.AUTH_SECRET),
     );

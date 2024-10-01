@@ -1,4 +1,3 @@
-import type { InviteTokenPayload } from '../chat/create/route';
 import type { NextRequest } from 'next/server';
 
 import { errors, jwtVerify, SignJWT } from 'jose';
@@ -10,6 +9,8 @@ import { CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { SECRET_ENV } from '@/constants/secret-env';
 import { ROUTES } from '@/routes/client';
+import type { PusherType } from '@/types/api';
+import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/createApiRoute';
 import { setUserIdCookie } from '@/utils/setUserIdCookie';
 
@@ -23,12 +24,12 @@ export const GET = createApiRoute(async (req: NextRequest) => {
   }
 
   try {
-    const { payload } = await jwtVerify<InviteTokenPayload>(
+    const { payload } = await jwtVerify<Payload.InviteToken>(
       inviteToken,
       new TextEncoder().encode(SECRET_ENV.AUTH_SECRET),
     );
 
-    const channelId = COOKIES.CHANNEL_PREFIX + nanoid();
+    const channelId = nanoid();
 
     const redirect = NextResponse.redirect(
       ROUTES.CHATTING_ROOM.url({
@@ -42,7 +43,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
       channelId,
       hostId: payload.hostId,
       guestId,
-    })
+    } satisfies Payload.ChannelToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('1d')
@@ -50,12 +51,9 @@ export const GET = createApiRoute(async (req: NextRequest) => {
 
     await pusher.trigger(CHANNEL.WAITING, payload.hostId, {
       channelToken,
-    });
+    } satisfies PusherType.joinChat);
 
-    redirect.cookies.set(
-      `${COOKIES.CHANNEL_PREFIX}${channelId}`,
-      payload.hostId,
-    );
+    redirect.cookies.set(`${COOKIES.CHANNEL_PREFIX}${channelId}`, channelToken);
 
     return redirect;
   } catch (e) {

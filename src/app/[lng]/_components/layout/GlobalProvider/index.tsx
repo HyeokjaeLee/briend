@@ -3,7 +3,9 @@
 import { SessionProvider } from 'next-auth/react';
 
 import { Suspense, type RefAttributes } from 'react';
+import { CookiesProvider } from 'react-cookie';
 
+import { IS_DEV } from '@/constants/public-env';
 import type { ThemeProps } from '@radix-ui/themes';
 import { Theme } from '@radix-ui/themes';
 
@@ -14,10 +16,18 @@ export const GlobalProvider = (
 ) => {
   return (
     <SessionProvider>
-      <Suspense>
-        <HistoryObserver />
-      </Suspense>
-      <Theme {...props} />
+      <CookiesProvider
+        defaultSetOptions={{
+          httpOnly: !IS_DEV,
+          secure: !IS_DEV,
+          path: '/',
+        }}
+      >
+        <Suspense>
+          <HistoryObserver />
+        </Suspense>
+        <Theme {...props} />
+      </CookiesProvider>
     </SessionProvider>
   );
 };

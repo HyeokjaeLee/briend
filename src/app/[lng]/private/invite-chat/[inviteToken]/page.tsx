@@ -4,7 +4,6 @@ import { decodeJwt } from 'jose';
 
 import { useEffect } from 'react';
 
-import type { InviteTokenPayload } from '@/app/api/chat/create/route';
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { CustomBottomNav } from '@/components/CustomBottomNav';
@@ -12,6 +11,8 @@ import { Timer } from '@/components/Timer';
 import { CHANNEL } from '@/constants/channel';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
+import type { PusherType } from '@/types/api';
+import type { Payload } from '@/types/jwt';
 import { toast } from '@/utils/toast';
 
 import { InviteQRSection } from './_components/InviteQRSection';
@@ -25,7 +26,8 @@ interface InviteChatQRPageProps {
 const InviteChatQRPage = ({
   params: { inviteToken },
 }: InviteChatQRPageProps) => {
-  const payload = decodeJwt<InviteTokenPayload>(inviteToken);
+  const payload = decodeJwt<Payload.InviteToken>(inviteToken);
+  const hostId = payload.hostId;
 
   const expires = new Date((payload.exp ?? 0) * 1_000);
 
@@ -36,10 +38,14 @@ const InviteChatQRPage = ({
   useEffect(() => {
     const channel = pusher.subscribe(CHANNEL.WAITING);
 
-    channel.bind(payload.hostId, (data) => {
+    channel.bind(hostId, (data: PusherType.joinChat) => {
       console.log(data);
     });
-  }, []);
+
+    return () => {
+      channel.unbind(hostId);
+    };
+  }, [hostId]);
 
   return (
     <>

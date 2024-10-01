@@ -2,18 +2,11 @@ import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { COOKIES } from '@/constants/cookies-key';
-import type { LANGUAGE } from '@/constants/language';
 import { SECRET_ENV } from '@/constants/secret-env';
-import type { ApiParams, ApiResponse } from '@/routes/api-type';
+import type { ApiParams, ApiResponse } from '@/types/api';
+import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/createApiRoute';
 import { CustomError } from '@/utils/customError';
-
-export interface InviteTokenPayload {
-  hostId: string;
-  hostNickname: string;
-  nickname: string;
-  language: LANGUAGE;
-}
 
 export const GET = createApiRoute(
   async (req: NextRequest) => {
@@ -38,7 +31,7 @@ export const GET = createApiRoute(
       hostNickname,
       nickname: params.nickname,
       language: params.language,
-    } satisfies InviteTokenPayload)
+    } satisfies Payload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('5m')

@@ -14,3 +14,9 @@ export namespace ApiResponse {
     inviteToken: string;
   }
 }
+
+export namespace PusherType {
+  export interface joinChat {
+    channelToken: string;
+  }
+}
