@@ -5,7 +5,7 @@ import { shallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
 import { useHistoryStore } from '@/stores/history';
-import { cn } from '@/utils';
+import { cn } from '@/utils/cn';
 
 const Template = ({ children }: { children: React.ReactNode }) => {
   const [lastRouteType, rootAnimation, setRootAnimation] = useHistoryStore(

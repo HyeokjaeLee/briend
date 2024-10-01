@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 
 import { SELECTOR } from '@/constants/selector';
-import { findRoute } from '@/utils';
+import { findRoute } from '@/utils/findRoute';
 
 import { RootNav } from './_components/RootNav';
 

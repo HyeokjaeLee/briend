@@ -4,7 +4,7 @@ import { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { SELECTOR } from '@/constants/selector';
-import { cn } from '@/utils';
+import { cn } from '@/utils/cn';
 
 interface CustomBottomNavProps extends React.HTMLAttributes<HTMLDivElement> {}
 

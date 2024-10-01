@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 
 import { SELECTOR } from '@/constants/selector';
-import { findRoute } from '@/utils';
+import { findRoute } from '@/utils/findRoute';
 
 import { BackHeader } from './_components/BackHeader';
 import { RootHeader } from './_components/RootHeader';

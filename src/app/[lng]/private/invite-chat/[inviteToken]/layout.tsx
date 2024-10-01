@@ -44,3 +44,5 @@ const InviteChatQRLayout = async ({
 };
 
 export default InviteChatQRLayout;
+
+export const dynamic = 'force-dynamic';

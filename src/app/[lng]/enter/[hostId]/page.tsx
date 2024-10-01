@@ -7,7 +7,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { COOKIES } from '@/constants/cookies-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
-import { toast } from '@/utils';
+import { toast } from '@/utils/toast';
 import { Spinner } from '@radix-ui/themes';
 
 interface InvitedChatEnterPageProps {

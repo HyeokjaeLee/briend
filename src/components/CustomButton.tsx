@@ -1,4 +1,4 @@
-import { cn } from '@/utils';
+import { cn } from '@/utils/cn';
 import { Button, type ButtonProps } from '@radix-ui/themes';
 
 interface CustomButtonProps extends ButtonProps {}

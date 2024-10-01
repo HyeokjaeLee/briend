@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import Logo from '@/assets/logo.svg';
 import { ROUTES } from '@/routes/client';
-import { findRoute } from '@/utils';
 import { CustomError } from '@/utils/customError';
+import { findRoute } from '@/utils/findRoute';
 
 export const RootHeader = () => {
   const { t } = useTranslation('layout');

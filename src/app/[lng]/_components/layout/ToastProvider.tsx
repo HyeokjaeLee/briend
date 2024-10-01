@@ -2,7 +2,7 @@
 
 import { ToastContainer, Slide } from 'react-toastify';
 
-import { cn } from '@/utils';
+import { cn } from '@/utils/cn';
 
 export const ToastProvider = () => (
   <ToastContainer

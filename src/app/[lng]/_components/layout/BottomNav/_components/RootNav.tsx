@@ -10,7 +10,9 @@ import { CustomLink } from '@/components/CustomLink';
 import { SESSION } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
-import { findRoute, isArrayItem } from '@/utils';
+import { findRoute } from '@/utils/findRoute';
+import { isArrayItem } from '@/utils/isArrayItem';
+
 interface RootNavProps {
   pathname: string;
 }

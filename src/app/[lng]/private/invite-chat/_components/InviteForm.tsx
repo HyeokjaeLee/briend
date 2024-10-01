@@ -10,7 +10,7 @@ import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import { isEnumValue } from '@/utils';
+import { isEnumValue } from '@/utils/isEnumValue';
 import { Select, TextField } from '@radix-ui/themes';
 
 const NICKNAME_FIELD = 'nickname';

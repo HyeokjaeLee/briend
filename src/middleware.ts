@@ -1,6 +1,5 @@
 import acceptLanguage from 'accept-language';
 import { jwtVerify } from 'jose';
-import { nanoid } from 'nanoid';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { fallbackLng, languages } from './app/i18n/settings';
@@ -8,6 +7,7 @@ import { auth } from './auth';
 import { COOKIES } from './constants/cookies-key';
 import { SECRET_ENV } from './constants/secret-env';
 import { ROUTES } from './routes/client';
+import { setUserIdCookie } from './utils/setUserIdCookie';
 
 export const config = {
   matcher: [
@@ -99,13 +99,7 @@ export const middleware = auth(async (req: NextRequest) => {
 
   const res = NextResponse.next();
 
-  const userId = req.cookies.get(COOKIES.USER_ID);
-
-  if (!userId) {
-    res.cookies.set(COOKIES.USER_ID, nanoid(), {
-      maxAge: 3_153_600_000, // 100 years
-    });
-  }
+  setUserIdCookie(req, res);
 
   return res;
 });
