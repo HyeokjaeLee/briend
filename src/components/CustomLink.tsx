@@ -3,9 +3,7 @@
 import Link, { type LinkProps } from 'next/link';
 
 import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 
-import { COOKIES } from '@/constants/cookies-key';
 import { SESSION } from '@/constants/storage-key';
 import { useCustomHref } from '@/hooks/useCustomHref';
 import { isCurrentHref } from '@/utils/isCurrentHref';

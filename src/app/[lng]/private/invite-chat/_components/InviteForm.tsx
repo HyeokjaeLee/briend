@@ -23,6 +23,7 @@ export interface QrInfo {
   expires: string;
 }
 
+// 쿠키가 아닌 방식으로 변경해야함
 export const InviteForm = () => {
   const [cookies, setCookies] = useCookies([
     COOKIES.LAST_FRIEND_INDEX,

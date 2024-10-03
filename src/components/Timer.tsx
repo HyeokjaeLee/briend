@@ -1,8 +1,9 @@
 'use client';
 
-import { cn } from '@/utils/cn';
 import { useEffect, useState } from 'react';
 import { BiAlarm } from 'react-icons/bi';
+
+import { cn } from '@/utils/cn';
 
 interface TimerProps {
   expires: Date;
