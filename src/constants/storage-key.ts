@@ -11,4 +11,6 @@ export enum SESSION {
   ROOT_NAV_ANIMATION = 'root-nav-animation',
 }
 
-export enum LOCAL {}
+export enum LOCAL {
+  CREATE_CHATTING_INFO = 'create-chatting-info',
+}
