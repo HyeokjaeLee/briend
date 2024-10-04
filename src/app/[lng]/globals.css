@@ -1,10 +1,14 @@
 /* stylelint-disable no-invalid-position-at-import-rule */
 
+@import '@radix-ui/themes/styles.css';
+@import 'react-toastify/dist/ReactToastify.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  @import '@radix-ui/themes/styles.css';
-  @import 'react-toastify/dist/ReactToastify.css';
+@layer base {
+  p {
+    @apply break-keep whitespace-pre-line;
+  }
 }

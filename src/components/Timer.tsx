@@ -59,8 +59,8 @@ export const Timer = ({
 
   return (
     <strong
-      className={cn('flex items-center gap-2 text-slate-900 min-w-24', {
-        'text-red-500': notEnoughTime,
+      className={cn('flex items-center gap-2 text-slate-50 min-w-24', {
+        'text-red-300': notEnoughTime,
         invisible: leftSeconds <= 0,
         'animate-fade animate-reverse animate-duration-1000': leftSeconds <= 1,
       })}

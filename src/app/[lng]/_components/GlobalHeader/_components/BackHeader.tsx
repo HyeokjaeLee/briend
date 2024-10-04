@@ -22,7 +22,7 @@ export const BackHeader = () => {
   const { t } = useTranslation('layout');
 
   return (
-    <nav className="flex h-14 items-center justify-between bg-white px-5">
+    <nav className="flex h-14 items-center justify-between bg-slate-850 px-5">
       <CustomIconButton
         variant="ghost"
         onClick={() => {

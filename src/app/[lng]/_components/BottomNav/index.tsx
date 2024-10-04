@@ -12,7 +12,10 @@ export const BottomNav = () => {
   const { bottomNavType } = findRoute(pathname);
 
   return bottomNavType !== 'none' ? (
-    <footer className="w-full max-w-xl" id={SELECTOR.BOTTOM_NAV}>
+    <footer
+      className="w-full max-w-xl animate-fade-up animate-duration-150"
+      id={SELECTOR.BOTTOM_NAV}
+    >
       {
         {
           root: <RootNav pathname={pathname} />,

@@ -11,7 +11,7 @@ export const CustomButton = ({
   return (
     <Button
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer',
+        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold rounded-xl h-14',
         className,
       )}
       color={color}

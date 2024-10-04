@@ -19,7 +19,7 @@ import type { LocalStorage } from '@/types/storage';
 import { CustomError } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Select, Text, TextField } from '@radix-ui/themes';
+import { Select, TextField } from '@radix-ui/themes';
 export interface QrInfo {
   userId: string;
   language: LANGUAGE;
@@ -80,7 +80,7 @@ export const InviteForm = () => {
 
   return (
     <form
-      className="mx-auto flex w-full animate-fade-up flex-col items-center gap-5 p-4"
+      className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
         const {
           data: { inviteToken },
@@ -91,15 +91,30 @@ export const InviteForm = () => {
           emoji: cookies[COOKIES.MY_EMOJI],
         });
 
-        router.push(
-          ROUTES.INVITE_CHAT_QR.pathname({
-            inviteToken,
-          }),
-        );
+        const href = ROUTES.INVITE_CHAT_QR.pathname({
+          inviteToken,
+        });
+
+        router.prefetch(href);
+
+        await new Promise((resolve) => setTimeout(resolve, 2_000));
+
+        router.push(href);
       })}
     >
-      <label className="w-full font-medium">
-        🌍 {t('friend-language')}
+      <label className="w-full font-semibold">
+        {t('friend-nickname')}
+        <TextField.Root
+          {...register('nickname')}
+          className="mt-2 h-14 w-full rounded-xl px-1"
+          placeholder={nicknamePlaceholder}
+          size="3"
+          variant="soft"
+        />
+        <ValidationMessage message={formState.errors.nickname?.message} />
+      </label>
+      <label className="w-full font-semibold">
+        {t('friend-language')}
         <Controller
           control={control}
           name="language"
@@ -124,7 +139,10 @@ export const InviteForm = () => {
                 return field.onChange(language);
               }}
             >
-              <Select.Trigger className="mt-2 w-full" variant="soft" />
+              <Select.Trigger
+                className="mt-2 h-14 w-full rounded-xl"
+                variant="soft"
+              />
               <Select.Content>
                 {Object.values(LANGUAGE).map((language) => {
                   return (
@@ -138,20 +156,11 @@ export const InviteForm = () => {
           )}
         />
       </label>
-
-      <label className="w-full font-medium">
-        🏷️ {t('friend-nickname')}
-        <TextField.Root
-          {...register('nickname')}
-          className="w-full"
-          placeholder={nicknamePlaceholder}
-          size="3"
-          variant="soft"
-        />
-        <ValidationMessage message={formState.errors.nickname?.message} />
-      </label>
+      <p className="text-center text-sm text-slate-350">
+        {t('friend-setting-message')}
+      </p>
       <CustomButton
-        className="mt-12 w-full"
+        className="mt-8 w-full"
         loading={formState.isSubmitting}
         size="4"
       >

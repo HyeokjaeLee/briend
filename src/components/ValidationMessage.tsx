@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Transition } from 'react-transition-group';
 
 import { cn } from '@/utils/cn';
-import { Box, Text } from '@radix-ui/themes';
 
 interface ValidationMessageProps {
   message?: string;
@@ -12,7 +11,7 @@ interface ValidationMessageProps {
 
 export const ValidationMessage = ({ message }: ValidationMessageProps) => {
   const nodeRef = useRef<HTMLDivElement>(null);
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref = useRef<HTMLParagraphElement>(null);
   const [validationMessage, setValidationMessage] = useState(message);
   const [height, setHeight] = useState(0);
 
@@ -37,25 +36,28 @@ export const ValidationMessage = ({ message }: ValidationMessageProps) => {
     >
       {(state) => {
         return (
-          <Box
+          <div
             ref={nodeRef}
-            className={cn('transition-[height,margin] mt-1 overflow-hidden', {
-              'animate-fade-down animate-duration-300 duration-300':
-                state === 'entering',
-              'duration-300 animate-fade-down animate-reverse animate-duration-300 mt-0':
-                state === 'exiting',
-              'mt-0': state === 'exited',
-            })}
-            height={{
-              initial: ['entering', 'entered'].includes(state)
+            className={cn(
+              'transition-[height,margin] mt-2 px-2 overflow-hidden',
+              {
+                'animate-fade-down animate-duration-300 duration-300':
+                  state === 'entering',
+                'duration-300 animate-fade-down animate-reverse animate-duration-300 m-0':
+                  state === 'exiting',
+                'mt-0': state === 'exited',
+              },
+            )}
+            style={{
+              height: ['entering', 'entered'].includes(state)
                 ? `${height}px`
                 : '0px',
             }}
           >
-            <Text ref={ref} as="p" color="red" size="1">
+            <p ref={ref} className="text-sm text-red-300">
               {validationMessage}
-            </Text>
-          </Box>
+            </p>
+          </div>
         );
       }}
     </Transition>

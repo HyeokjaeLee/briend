@@ -24,7 +24,7 @@ export const CustomBottomNav = ({
     <div
       {...props}
       className={cn(
-        'border-t-zinc-100 bg-white px-6 py-3 border-t-2',
+        'border-t-slate-750 bg-slate-830 px-6 py-3 border-t-2',
         {
           'invisible fixed bottom-0 left-0': !bottomContainerElement,
           'animate-fade-up animate-duration-100': bottomContainerElement,

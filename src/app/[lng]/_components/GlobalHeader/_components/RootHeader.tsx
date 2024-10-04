@@ -38,10 +38,10 @@ export const RootHeader = () => {
     });
 
   return (
-    <nav className="flex h-14 items-center justify-between bg-white px-5">
-      <Logo className="h-7 text-gray-600" />
+    <nav className="flex h-14 items-center justify-between bg-slate-850 px-5">
+      <Logo className="h-7 text-slate-50" />
       <div className="flex items-center gap-3">
-        <h1 className="text-lg font-semibold text-gray-700">
+        <h1 className="text-lg font-semibold text-slate-50">
           {t(topHeaderTitle)}
         </h1>
         <span className="text-2xl">{emoji}</span>

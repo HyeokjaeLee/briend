@@ -1,7 +1,5 @@
 import type { Config } from 'tailwindcss';
 
-import type { CSSProperties } from 'react';
-
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -16,6 +14,12 @@ const config: Config = {
         },
       },
       colors: {
+        slate: {
+          350: '#93A5C8',
+          750: '#243047',
+          830: '#1A2232',
+          850: '#111722',
+        },
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         primary: '#F0C160',

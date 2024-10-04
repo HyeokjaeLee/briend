@@ -10,6 +10,7 @@ import { CustomLink } from '@/components/CustomLink';
 import { SESSION } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
+import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
 import { isArrayItem } from '@/utils/isArrayItem';
 
@@ -65,7 +66,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   }, [pathname, setRootAnimation]);
 
   return (
-    <nav className="flex justify-center border-t-2 border-t-zinc-100 bg-white px-6 py-3">
+    <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-6 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
         {NAVIGATION_ITEMS.map(
           ({ icon: Icon, routeName, translationKey }, index) => {
@@ -75,7 +76,11 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
             const contents = (
               <>
-                <Icon className="size-6" />
+                <Icon
+                  className={cn('size-6', {
+                    'animate-jump animate-duration-300': isActive,
+                  })}
+                />
                 {t(translationKey)}
               </>
             );
@@ -85,7 +90,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                 <CustomButton
                   asChild
                   className="flex flex-col items-center justify-center gap-1 text-xs"
-                  color={isActive ? 'blue' : 'gray'}
+                  color="gray"
                   variant="ghost"
                   onClick={() => {
                     if (index < currentRouteIndex) {
@@ -101,7 +106,11 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     }
                   }}
                 >
-                  <CustomLink replace href={route.pathname}>
+                  <CustomLink
+                    replace
+                    className={isActive ? 'text-slate-50' : 'text-slate-350'}
+                    href={route.pathname}
+                  >
                     {contents}
                   </CustomLink>
                 </CustomButton>
