@@ -1,5 +1,3 @@
-'use client';
-
 import { usePathname, useSearchParams } from 'next/navigation';
 import { shallow } from 'zustand/shallow';
 

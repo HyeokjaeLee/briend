@@ -1,8 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
-import { BiMessageSquare, BiMessageSquareAdd, BiMenu } from 'react-icons/bi';
 import type { IconType } from 'react-icons/lib';
+import {
+  RiAddCircleLine,
+  RiAddCircleFill,
+  RiAccountCircleLine,
+  RiAccountCircleFill,
+  RiMessage3Line,
+  RiMessage3Fill,
+} from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
@@ -20,23 +27,27 @@ interface RootNavProps {
 
 interface NavigationItem {
   icon: IconType;
+  fillIcon: IconType;
   routeName: keyof typeof ROUTES;
   translationKey: string;
 }
 
 const NAVIGATION_ITEMS: NavigationItem[] = [
   {
-    icon: BiMessageSquare,
+    icon: RiMessage3Line,
+    fillIcon: RiMessage3Fill,
     routeName: 'CHATTING_LIST',
     translationKey: 'chat',
   },
   {
-    icon: BiMessageSquareAdd,
+    icon: RiAddCircleLine,
+    fillIcon: RiAddCircleFill,
     routeName: 'INVITE_CHAT',
     translationKey: 'invite-chat',
   },
   {
-    icon: BiMenu,
+    icon: RiAccountCircleLine,
+    fillIcon: RiAccountCircleFill,
     routeName: 'MORE_MENUS',
     translationKey: 'more',
   },
@@ -69,21 +80,12 @@ export const RootNav = ({ pathname }: RootNavProps) => {
     <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-6 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
         {NAVIGATION_ITEMS.map(
-          ({ icon: Icon, routeName, translationKey }, index) => {
+          ({ icon, fillIcon, routeName, translationKey }, index) => {
             const route = ROUTES[routeName];
 
             const isActive = currentRoute === route;
 
-            const contents = (
-              <>
-                <Icon
-                  className={cn('size-6', {
-                    'animate-jump animate-duration-300': isActive,
-                  })}
-                />
-                {t(translationKey)}
-              </>
-            );
+            const Icon = isActive ? fillIcon : icon;
 
             return typeof route.pathname === 'string' ? (
               <li key={route.index}>
@@ -111,7 +113,12 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     className={isActive ? 'text-slate-50' : 'text-slate-350'}
                     href={route.pathname}
                   >
-                    {contents}
+                    <Icon
+                      className={cn('size-6', {
+                        'animate-jump animate-duration-300': isActive,
+                      })}
+                    />
+                    {t(translationKey)}
                   </CustomLink>
                 </CustomButton>
               </li>

@@ -34,11 +34,11 @@ export const BackHeader = () => {
           }
         }}
       >
-        <BackIcon className="size-6" />
+        <BackIcon className="size-6 text-slate-50" />
       </CustomIconButton>
       {topHeaderTitle ? (
         <h1 className="text-lg font-semibold text-gray-700">
-          ⏳ {t(topHeaderTitle)}
+          {t(topHeaderTitle)}
         </h1>
       ) : null}
     </nav>

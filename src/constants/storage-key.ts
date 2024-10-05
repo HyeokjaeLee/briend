@@ -13,4 +13,6 @@ export enum SESSION {
 
 export enum LOCAL {
   CREATE_CHATTING_INFO = 'create-chatting-info',
+  MY_NICKNAME = 'my-nickname',
+  MY_PROFILE_EMOJI = 'my-profile-emoji',
 }

@@ -43,4 +43,14 @@ export const ROUTES = {
     topHeaderType: 'back',
     bottomNavType: 'empty',
   }),
+
+  EDIT_PROFILE: createRoute('/private/more/edit-profile', {
+    topHeaderType: 'back',
+  }),
+
+  EDIT_INVITE_MESSAGE: createRoute('/private/more/edit-invite-message', {
+    topHeaderType: 'back',
+  }),
 };
+
+export type RouteObject = (typeof ROUTES)[keyof typeof ROUTES];

@@ -6,16 +6,20 @@ interface CustomButtonProps extends ButtonProps {}
 export const CustomButton = ({
   className,
   color = 'blue',
+  size = '4',
   ...restProps
 }: CustomButtonProps) => {
   return (
     <Button
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold rounded-xl h-14',
+        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold rounded-xl',
+        {
+          'h-14': size === '4',
+        },
         className,
       )}
       color={color}
-      size="3"
+      size={size}
       {...restProps}
     />
   );

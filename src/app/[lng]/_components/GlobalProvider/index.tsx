@@ -10,6 +10,7 @@ import type { ThemeProps } from '@radix-ui/themes';
 import { Theme } from '@radix-ui/themes';
 
 import { HistoryObserver } from './HistoryObserver';
+import { ProfileMounter } from './ProfileMounter';
 
 export const GlobalProvider = (
   props: ThemeProps & RefAttributes<HTMLDivElement>,
@@ -26,6 +27,7 @@ export const GlobalProvider = (
         <Suspense>
           <HistoryObserver />
         </Suspense>
+        <ProfileMounter />
         <Theme {...props} />
       </CookiesProvider>
     </SessionProvider>
