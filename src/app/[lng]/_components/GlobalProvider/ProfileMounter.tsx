@@ -1,16 +1,13 @@
-import { decodeJwt } from 'jose';
 import { useParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { random as randomEmoji } from 'node-emoji';
 import { shallow } from 'zustand/shallow';
 
 import { useLayoutEffect } from 'react';
-import { useCookies } from 'react-cookie';
 
-import { COOKIES } from '@/constants/cookies-key';
 import type { LANGUAGE } from '@/constants/language';
 import { LOCAL } from '@/constants/storage-key';
 import { useProfileStore } from '@/stores/profile';
-import type { Payload } from '@/types/jwt';
 
 export const ProfileMounter = () => {
   const [setNickname, setEmoji, setIsLogin] = useProfileStore(
@@ -20,21 +17,17 @@ export const ProfileMounter = () => {
 
   const { lng } = useParams<{ lng: LANGUAGE }>();
 
-  const [cookies] = useCookies([COOKIES.ACCESS_TOKEN]);
-
-  const accessToken: string | undefined = cookies[COOKIES.ACCESS_TOKEN];
+  const { data: session } = useSession();
 
   useLayoutEffect(() => {
-    if (!accessToken) return setIsLogin(false);
-
-    const payload = decodeJwt<Payload.AccessToken>(accessToken);
+    if (!session) return setIsLogin(false);
 
     setNickname((prevNickname) => {
       if (prevNickname) return prevNickname;
 
       return (
         localStorage.getItem(LOCAL.MY_NICKNAME) ||
-        payload.name.slice(0, 20) ||
+        session.user?.name?.slice(0, 20) ||
         `${lng}-friend`
       );
     });
@@ -48,7 +41,7 @@ export const ProfileMounter = () => {
     });
 
     return setIsLogin(true);
-  }, [accessToken, lng, setEmoji, setIsLogin, setNickname]);
+  }, [session, lng, setEmoji, setIsLogin, setNickname]);
 
   return null;
 };

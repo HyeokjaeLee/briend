@@ -28,4 +28,6 @@ export const API_ROUTES = {
     apiInstance.get<ApiResponse.CREATE_CHAT>('/chat/create', {
       params,
     }),
+
+  SIGN_IN: () => apiInstance.get<ApiResponse.CREATE_CHAT>('/sign-in'),
 };

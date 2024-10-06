@@ -1,36 +1,92 @@
-import { SignJWT } from 'jose';
+import { nanoid } from 'nanoid';
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies-key';
-import { SECRET_ENV } from './constants/secret-env';
+import { prisma } from './prisma';
+import { ROUTES } from './routes/client';
+import { CustomError } from './utils/customError';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
+  session: {
+    maxAge: 604_800,
+  },
   callbacks: {
-    signIn: async ({ user: { id, email, image, name } }) => {
-      const cookieStore = cookies();
+    jwt: async ({ token, user }) => {
+      if (!user) return token;
 
-      if (!id || !email || !image || !name) throw new Error('Invalid user');
+      const email = user.email;
 
-      const accessToken = await new SignJWT({ id, email, image, name })
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setExpirationTime('2d')
-        .sign(new TextEncoder().encode(SECRET_ENV.AUTH_SECRET));
+      if (!email)
+        throw new CustomError({
+          message: 'email is required',
+        });
 
-      if (!cookieStore.get(COOKIES.NICKNAME)) {
-        cookieStore.set(COOKIES.NICKNAME, name, {
-          maxAge: 172_800, // 2d
+      const existingUser = await prisma.users.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (existingUser) {
+        token.id = existingUser.id;
+        token.name = existingUser.name;
+      } else {
+        await prisma.users.create({
+          data: {
+            id: cookies().get(COOKIES.USER_ID)?.value || nanoid(),
+            email,
+            name: user.name,
+            emoji: randomEmoji().emoji,
+          },
         });
       }
 
-      cookieStore.set(COOKIES.ACCESS_TOKEN, accessToken, {
-        maxAge: 172_800, // 2d
-      });
+      return token;
+    },
+    //* 🔒 Access slug redirect 🔒
+    authorized: async ({ request, auth }) => {
+      const { nextUrl } = request;
+      const accessSlug: string | undefined = nextUrl.pathname.split('/')[2];
 
-      return true;
+      const isPrivateRoute = accessSlug === 'private';
+
+      if (isPrivateRoute) {
+        try {
+          if (!auth?.expires)
+            throw new CustomError({ message: 'Unauthorized' });
+        } catch {
+          const res = NextResponse.redirect(
+            new URL(ROUTES.LOGIN.pathname, nextUrl.origin),
+          );
+          res.cookies.delete(COOKIES.ACCESS_TOKEN);
+          res.cookies.set(COOKIES.PRIVATE_REFERER, nextUrl.href);
+
+          return res;
+        }
+      }
+
+      const isGuestRoute = accessSlug === 'guest';
+
+      if (isGuestRoute && auth) {
+        const privateReferer = request.cookies.get(COOKIES.PRIVATE_REFERER);
+
+        if (privateReferer) {
+          const res = NextResponse.redirect(privateReferer.value);
+
+          res.cookies.delete(COOKIES.PRIVATE_REFERER);
+
+          return res;
+        }
+
+        return NextResponse.redirect(
+          new URL(ROUTES.CHATTING_LIST.pathname, nextUrl.origin),
+        );
+      }
     },
   },
 });

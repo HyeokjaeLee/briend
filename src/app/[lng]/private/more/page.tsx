@@ -2,6 +2,7 @@ import { FaChevronRight } from 'react-icons/fa6';
 import { RiLogoutCircleLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/server';
+import { signOut } from '@/auth';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
 import type { LANGUAGE } from '@/constants/language';
@@ -54,13 +55,23 @@ const MorePage = async ({ params: { lng } }: MorePageProps) => {
           </li>
         ))}
         <li>
-          <CustomButton
-            className="flex w-full items-center justify-between rounded-none text-slate-50"
-            variant="ghost"
+          <form
+            action={async () => {
+              'use server';
+
+              await signOut({
+                redirectTo: `/${lng}${ROUTES.LOGIN.pathname}`,
+              });
+            }}
           >
-            {t('logout')}
-            <RiLogoutCircleLine className="size-5" />
-          </CustomButton>
+            <CustomButton
+              className="flex w-full items-center justify-between rounded-none text-slate-50"
+              variant="ghost"
+            >
+              {t('logout')}
+              <RiLogoutCircleLine className="size-5" />
+            </CustomButton>
+          </form>
         </li>
       </ul>
     </article>
