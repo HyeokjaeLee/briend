@@ -8,6 +8,7 @@ const nextConfig = {
 
     return config;
   },
+  transpilePackages: ['nanoid'],
 };
 
 export default nextConfig;
