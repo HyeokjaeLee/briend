@@ -4,8 +4,6 @@ import { nanoid } from 'nanoid';
 
 import { COOKIES } from '@/constants/cookies-key';
 
-import { CustomError } from './customError';
-
 export const setUserIdCookie = (req: NextRequest, res: NextResponse) => {
   let userId = req.cookies.get(COOKIES.USER_ID)?.value;
 
