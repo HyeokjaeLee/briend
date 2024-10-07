@@ -1,7 +1,7 @@
 import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
-import { COOKIES } from '@/constants/cookies-key';
 import { SECRET_ENV } from '@/constants/secret-env';
 import type { ApiParams, ApiResponse } from '@/types/api';
 import type { Payload } from '@/types/jwt';
@@ -12,9 +12,9 @@ export const GET = createApiRoute(
   async (req: NextRequest) => {
     const { searchParams } = req.nextUrl;
 
-    const cookies = req.cookies;
+    const token = await getToken({ req, secret: SECRET_ENV.AUTH_SECRET });
 
-    const hostNickname = cookies.get(COOKIES.NICKNAME)?.value;
+    const hostNickname = token?.name;
 
     if (!hostNickname)
       throw new CustomError({

@@ -10,16 +10,22 @@ import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
 import { CustomError } from './utils/customError';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const {
+  handlers,
+  signIn,
+  signOut,
+  auth,
+  unstable_update: update,
+} = NextAuth({
   providers: [Google],
   session: {
-    maxAge: 604_800,
+    maxAge: 604_800, // 7 days
   },
   callbacks: {
     jwt: async ({ token, user }) => {
       if (!user) return token;
 
-      const email = user.email;
+      const { email, name } = user;
 
       if (!email)
         throw new CustomError({
@@ -35,18 +41,51 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (existingUser) {
         token.id = existingUser.id;
         token.name = existingUser.name;
+        token.email = existingUser.email;
+        token.emoji = existingUser.emoji;
       } else {
+        const id = cookies().get(COOKIES.USER_ID)?.value || nanoid();
+        const emoji = randomEmoji().emoji;
+
+        token.id = id;
+        token.name = name;
+        token.email = email;
+        token.emoji = emoji;
+
         await prisma.users.create({
           data: {
-            id: cookies().get(COOKIES.USER_ID)?.value || nanoid(),
+            id,
             email,
-            name: user.name,
-            emoji: randomEmoji().emoji,
+            name,
+            emoji,
           },
         });
       }
 
       return token;
+    },
+    session: async ({ session, token }) => {
+      if (session.user) {
+        (['id', 'name', 'email', 'emoji'] as const).forEach((key) => {
+          const value = token[key];
+
+          if (typeof value !== 'string')
+            throw new CustomError({
+              message: `${key} is not string`,
+            });
+
+          switch (key) {
+            case 'emoji':
+              //! 간혹 이모지에 공백이 들어가는 경우가 있음
+              session.user.emoji = value.trim();
+              break;
+            default:
+              session.user[key] = value;
+          }
+        });
+      }
+
+      return session;
     },
     //* 🔒 Access slug redirect 🔒
     authorized: async ({ request, auth }) => {

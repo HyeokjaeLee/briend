@@ -82,9 +82,7 @@ export const InviteForm = () => {
     <form
       className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
-        const {
-          data: { inviteToken },
-        } = await API_ROUTES.CREATE_CHAT({
+        const { inviteToken } = await API_ROUTES.CREATE_CHAT({
           userId,
           language,
           nickname: nickname || nicknamePlaceholder,

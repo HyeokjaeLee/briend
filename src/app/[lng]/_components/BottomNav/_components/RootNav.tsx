@@ -77,7 +77,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   }, [pathname, setRootAnimation]);
 
   return (
-    <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-6 py-3">
+    <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-16 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
         {NAVIGATION_ITEMS.map(
           ({ icon, fillIcon, routeName, translationKey }, index) => {
@@ -93,6 +93,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   asChild
                   className="flex flex-col items-center justify-center gap-1 text-xs"
                   color="gray"
+                  size="3"
                   variant="ghost"
                   onClick={() => {
                     if (index < currentRouteIndex) {

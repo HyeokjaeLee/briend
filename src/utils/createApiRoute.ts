@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 
-import { jwtVerify } from 'jose';
 import { NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
 import { SECRET_ENV } from '@/constants/secret-env';
 
@@ -27,33 +27,13 @@ export const createApiRoute =
   async (req: NextRequest, context: { params: TParams }) => {
     try {
       if (options?.auth) {
-        const authorization = req.headers.get('Authorization');
+        const token = await getToken({ req, secret: SECRET_ENV.AUTH_SECRET });
 
-        if (!authorization)
+        if (!token)
           throw new CustomError({
-            message: 'Authorization is not found',
+            message: 'Unauthorized',
             status: 401,
           });
-
-        const [type, token] = authorization.split(' ');
-
-        if (type !== 'Bearer')
-          throw new CustomError({
-            message: 'Invalid authorization type',
-            status: 401,
-          });
-
-        try {
-          await jwtVerify(
-            token,
-            new TextEncoder().encode(SECRET_ENV.AUTH_SECRET),
-          );
-        } catch {
-          throw new CustomError({
-            message: 'Invalid token',
-            status: 401,
-          });
-        }
       }
 
       const res = await route(req, context);
