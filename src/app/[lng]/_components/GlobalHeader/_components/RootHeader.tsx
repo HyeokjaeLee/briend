@@ -3,8 +3,8 @@
 import { usePathname } from 'next/navigation';
 
 import { useTranslation } from '@/app/i18n/client';
-import Logo from '@/assets/logo.svg';
 import { ROUTES } from '@/routes/client';
+import Logo from '@/svgs/logo.svg';
 import { CustomError } from '@/utils/customError';
 import { findRoute } from '@/utils/findRoute';
 

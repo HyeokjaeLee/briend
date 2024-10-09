@@ -60,7 +60,7 @@ const MorePage = async ({ params: { lng } }: MorePageProps) => {
               'use server';
 
               await signOut({
-                redirectTo: `/${lng}${ROUTES.LOGIN.pathname}`,
+                redirectTo: `/${lng}${ROUTES.CHATTING_LIST.pathname}`,
               });
             }}
           >

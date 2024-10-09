@@ -1,5 +1,7 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
+
 import { useEffect } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
@@ -58,6 +60,9 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const currentRouteIndex = NAVIGATION_ITEMS.findIndex(
     ({ routeName }) => ROUTES[routeName] === currentRoute,
   );
+  const session = useSession();
+
+  const isAuthenticated = session.status === 'authenticated';
 
   const setRootAnimation = useHistoryStore(
     ({ setRootAnimation }) => setRootAnimation,
@@ -96,6 +101,8 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   size="3"
                   variant="ghost"
                   onClick={() => {
+                    if (!isAuthenticated) return;
+
                     if (index < currentRouteIndex) {
                       sessionStorage.setItem(
                         SESSION.ROOT_NAV_ANIMATION,
@@ -110,9 +117,10 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   }}
                 >
                   <CustomLink
-                    replace
                     className={isActive ? 'text-slate-50' : 'text-slate-350'}
                     href={route.pathname}
+                    //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
+                    replace={isAuthenticated}
                   >
                     <Icon
                       className={cn('size-6', {

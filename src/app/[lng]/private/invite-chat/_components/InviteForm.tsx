@@ -1,15 +1,14 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 
 import { useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { ValidationMessage } from '@/components/ValidationMessage';
-import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { LOCAL } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
@@ -29,12 +28,9 @@ export interface QrInfo {
 }
 
 export const InviteForm = () => {
-  const [cookies] = useCookies([COOKIES.MY_EMOJI, COOKIES.USER_ID]);
+  const session = useSession();
 
-  const userId = cookies[COOKIES.USER_ID];
-
-  if (!userId && typeof window !== 'undefined')
-    throw new Error('User is not found');
+  const user = session.data?.user;
 
   const { t } = useTranslation('invite-chat');
 
@@ -82,20 +78,18 @@ export const InviteForm = () => {
     <form
       className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
+        if (!user) throw new CustomError({ message: 'User is not found' });
+
         const { inviteToken } = await API_ROUTES.CREATE_CHAT({
-          userId,
+          userId: user.id,
           language,
           nickname: nickname || nicknamePlaceholder,
-          emoji: cookies[COOKIES.MY_EMOJI],
+          emoji: user.email,
         });
 
         const href = ROUTES.INVITE_CHAT_QR.pathname({
           inviteToken,
         });
-
-        router.prefetch(href);
-
-        await new Promise((resolve) => setTimeout(resolve, 2_000));
 
         router.push(href);
       })}
