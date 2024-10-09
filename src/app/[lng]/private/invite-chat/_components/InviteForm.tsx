@@ -155,6 +155,7 @@ export const InviteForm = () => {
         className="mt-8 w-full"
         loading={formState.isSubmitting}
         size="4"
+        type="submit"
       >
         {t('invite-button')}
       </CustomButton>

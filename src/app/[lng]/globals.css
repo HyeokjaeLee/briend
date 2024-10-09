@@ -11,4 +11,8 @@
   p {
     @apply break-keep whitespace-pre-line;
   }
+
+  button {
+    @apply font-pretendard;
+  }
 }

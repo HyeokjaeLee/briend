@@ -14,6 +14,8 @@ const config: Config = {
         },
       },
       colors: {
+        'naver-green': '#03C75A',
+        'kakao-yellow': '#FEE500',
         slate: {
           350: '#93A5C8',
           750: '#243047',
@@ -45,6 +47,11 @@ const config: Config = {
         },
         '.hide-scrollbar::-webkit-scrollbar': {
           display: 'none',
+        },
+        '.flex-center': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         },
       };
 

@@ -1,4 +1,7 @@
+import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
+
+import { isEnumValue } from './isEnumValue';
 
 interface RouteOptions {
   bottomNavType?: 'none' | 'root' | 'empty';
@@ -46,6 +49,12 @@ export const createRoute = <
         } else {
           throw new Error('dynamicPath is required.');
         }
+      }
+
+      const lngPath = location.pathname.split('/')[1];
+
+      if (isEnumValue(LANGUAGE, lngPath)) {
+        url.pathname = `/${lngPath}${url.pathname}`;
       }
 
       const { searchParams } = params;

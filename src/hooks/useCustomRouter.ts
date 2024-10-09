@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
 import { SESSION } from '@/constants/storage-key';
+import { ROUTES } from '@/routes/client';
+import { useHistoryStore } from '@/stores/history';
 import { isCurrentHref } from '@/utils/isCurrentHref';
 
 import { useCustomHref } from './useCustomHref';
@@ -26,6 +28,23 @@ export const useCustomRouter = () => {
   return useMemo((): CustomRouter => {
     return {
       ...router,
+      back: () => {
+        const { customHistory, historyIndex } = useHistoryStore.getState();
+
+        const prevIndex = historyIndex - 1;
+
+        const replaceToHome = () =>
+          router.replace(ROUTES.CHATTING_LIST.pathname);
+
+        if (prevIndex < 0) return replaceToHome();
+
+        const currentHistory = customHistory.get(prevIndex);
+
+        if (currentHistory === customHistory.get(prevIndex))
+          return replaceToHome();
+
+        return router.back();
+      },
       push: (href, options) => {
         const customHref = getCustomHref(href);
 

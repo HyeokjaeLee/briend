@@ -9,6 +9,7 @@ export enum SESSION {
    * @example 'left' | 'right'
    */
   ROOT_NAV_ANIMATION = 'root-nav-animation',
+  LOGOUT_MARK = 'logout-mark',
 }
 
 export enum LOCAL {

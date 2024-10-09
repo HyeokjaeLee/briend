@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { BiArrowBack, BiHomeCircle } from 'react-icons/bi';
+import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomIconButton } from '@/components/CustomIconButton';
@@ -15,9 +15,12 @@ import { findRoute } from '@/utils/findRoute';
 export const BackHeader = () => {
   const router = useCustomRouter();
   const isReload = useHistoryStore((state) => state.lastRouteType === 'reload');
-  const BackIcon = isReload ? BiHomeCircle : BiArrowBack;
   const pathname = usePathname();
   const currentRoute = findRoute(pathname);
+
+  const BackIcon =
+    currentRoute === ROUTES.LOGIN ? RiCloseLine : RiArrowGoBackFill;
+
   const { topHeaderTitle } = currentRoute;
   const { t } = useTranslation('layout');
 

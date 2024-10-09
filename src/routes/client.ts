@@ -35,7 +35,9 @@ export const ROUTES = {
     },
   ),
 
-  LOGIN: createRoute('/guest/login'),
+  LOGIN: createRoute('/guest/login', {
+    topHeaderType: 'back',
+  }),
   TEST: createRoute('/test'),
 
   JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/api/join-chat'),

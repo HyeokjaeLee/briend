@@ -1,5 +1,4 @@
 import { FaChevronRight } from 'react-icons/fa6';
-import { RiLogoutCircleLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/server';
 import { signOut } from '@/auth';
@@ -9,6 +8,7 @@ import type { LANGUAGE } from '@/constants/language';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
 
+import { LogoutButton } from './_components/LogoutButton';
 import { ProfileSection } from './_components/ProfileSection';
 
 interface MorePageProps {
@@ -64,13 +64,7 @@ const MorePage = async ({ params: { lng } }: MorePageProps) => {
               });
             }}
           >
-            <CustomButton
-              className="flex w-full items-center justify-between rounded-none text-slate-50"
-              variant="ghost"
-            >
-              {t('logout')}
-              <RiLogoutCircleLine className="size-5" />
-            </CustomButton>
+            <LogoutButton />
           </form>
         </li>
       </ul>
