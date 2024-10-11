@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
+import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies-key';
@@ -17,7 +18,7 @@ export const {
   auth,
   unstable_update: update,
 } = NextAuth({
-  providers: [Google],
+  providers: [Google, Naver],
   session: {
     maxAge: 604_800, // 7 days
   },

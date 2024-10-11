@@ -23,40 +23,42 @@ const LoginPage = async ({ params: { lng } }: LoginPageProps) => {
         <Logo className="w-52" />
         <h1 className="ml-2 text-xl font-semibold">{t('title')}</h1>
       </header>
-      <form
-        action={async () => {
-          'use server';
-
-          await signIn('google');
-        }}
-        className="flex flex-col gap-4"
-      >
+      <section className="flex flex-col gap-4">
         {SOCIAL_LOGIN_PROVIDERS.map((name) => (
-          <button
+          <form
             key={name}
-            className={cn(
-              'h-14 flex-center font-semibold rounded-lg px-7 text-lg',
-              {
-                google: 'bg-white text-slate-850',
-                kakao: 'bg-kakao-yellow text-slate-850',
-                apple: 'bg-zinc-950 border border-zinc-700',
-                naver: 'bg-naver-green',
-              }[name],
-            )}
-            type="submit"
+            action={async (data) => {
+              'use server';
+            }}
+            className="w-full"
           >
-            <div className="flex w-full max-w-44 items-center gap-2">
-              <Image
-                alt={`${name}-login`}
-                height={28}
-                src={`/assets/login/${name}.png`}
-                width={28}
-              />
-              {t(`${name}-login`)}
-            </div>
-          </button>
+            <button
+              className={cn(
+                'h-14 flex-center font-semibold rounded-lg px-7 text-lg',
+                {
+                  google: 'bg-white text-slate-850',
+                  kakao: 'bg-kakao-yellow text-slate-850',
+                  apple: 'bg-zinc-950 border border-zinc-700',
+                  naver: 'bg-naver-green',
+                }[name],
+              )}
+              onClick={async () => {
+                'use server';
+              }}
+            >
+              <div className="flex w-full max-w-44 items-center gap-2">
+                <Image
+                  alt={`${name}-login`}
+                  height={28}
+                  src={`/assets/login/${name}.png`}
+                  width={28}
+                />
+                {t(`${name}-login`)}
+              </div>
+            </button>
+          </form>
         ))}
-      </form>
+      </section>
     </article>
   );
 };

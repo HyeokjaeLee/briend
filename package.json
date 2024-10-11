@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "bun update:env",
+    "predev": "bun update:env & bun lint",
     "dev": "next dev",
     "prebuild": "prisma generate",
     "build": "next build",
