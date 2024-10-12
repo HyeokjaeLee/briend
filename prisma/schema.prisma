@@ -9,8 +9,12 @@ datasource db {
 }
 
 model users {
-  id    String  @id
-  email String  @unique(map: "unique_email")
-  name  String?
-  emoji String? @db.Char(4)
+  id        String  @unique(map: "users_userid_key") @db.VarChar(36)
+  email     String? @db.VarChar(100)
+  emoji     String  @db.VarChar(10)
+  name      String? @db.VarChar(80)
+  google_id String? @unique @db.VarChar(255)
+  naver_id  String? @unique @db.VarChar(255)
+  kakao_id  String? @unique @db.VarChar(255)
+  apple_id  String? @unique @db.VarChar(255)
 }

@@ -7,6 +7,7 @@ const privateEnv = {
   DEEPL_API_KEY: process.env.DEEPL_API_KEY,
   PUSHER_APP_ID: process.env.PUSHER_APP_ID,
   PUSHER_SECRET: process.env.PUSHER_SECRET,
+  AUTH_KAKAO_APP_KEY: process.env.AUTH_KAKAO_APP_KEY,
 };
 
 for (const key in privateEnv) {

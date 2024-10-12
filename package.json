@@ -72,6 +72,9 @@
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
   },
+  "overrides": {
+    "oauth4webapi": "npm:@jacobkim/oauth4webapi@^2.10.4"
+  },
   "resolutions": {
     "nanoid": "3.3.7"
   }

@@ -7,9 +7,9 @@ interface CustomErrorProps {
 export class CustomError extends Error {
   status: number;
 
-  constructor({ message, status, cause }: CustomErrorProps) {
-    super(message);
-    this.status = status ?? 500;
-    this.cause = cause;
+  constructor(props?: CustomErrorProps) {
+    super(props?.message);
+    this.status = props?.status ?? 500;
+    this.cause = props?.cause;
   }
 }
