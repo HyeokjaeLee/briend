@@ -7,6 +7,7 @@ import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies-key';
+import { SECRET_ENV } from './constants/secret-env';
 import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
 import { CustomError } from './utils/customError';
@@ -18,7 +19,13 @@ export const {
   auth,
   unstable_update: update,
 } = NextAuth({
-  providers: [Google, Naver],
+  providers: [
+    Google,
+    Naver({
+      clientId: SECRET_ENV.AUTH_NAVER_CLIENT_ID,
+      clientSecret: SECRET_ENV.AUTH_NAVER_SECRET,
+    }),
+  ],
   session: {
     maxAge: 604_800, // 7 days
   },

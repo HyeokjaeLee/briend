@@ -18,23 +18,25 @@ const LoginPage = async ({ params: { lng } }: LoginPageProps) => {
   const { t } = await useTranslation('login', lng);
 
   return (
-    <article className="flex flex-1 flex-col justify-between px-4 py-16">
+    <article className="flex flex-1 flex-col justify-between px-4 py-8">
       <header className="flex flex-1 flex-col items-center justify-center gap-2">
-        <Logo className="w-52" />
-        <h1 className="ml-2 text-xl font-semibold">{t('title')}</h1>
+        <Logo className="w-40" />
+        <h1 className="ml-2 text-lg font-semibold">{t('title')}</h1>
       </header>
       <section className="flex flex-col gap-4">
         {SOCIAL_LOGIN_PROVIDERS.map((name) => (
           <form
             key={name}
-            action={async (data) => {
+            action={async () => {
               'use server';
+
+              await signIn(name);
             }}
-            className="w-full"
+            className="h-14 w-full"
           >
             <button
               className={cn(
-                'h-14 flex-center font-semibold rounded-lg px-7 text-lg',
+                'flex-center font-semibold rounded-lg px-7 text-lg size-full',
                 {
                   google: 'bg-white text-slate-850',
                   kakao: 'bg-kakao-yellow text-slate-850',
@@ -42,9 +44,6 @@ const LoginPage = async ({ params: { lng } }: LoginPageProps) => {
                   naver: 'bg-naver-green',
                 }[name],
               )}
-              onClick={async () => {
-                'use server';
-              }}
             >
               <div className="flex w-full max-w-44 items-center gap-2">
                 <Image
