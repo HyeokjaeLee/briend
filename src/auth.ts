@@ -8,7 +8,7 @@ import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
-import { PROVIDERS } from './constants/\betc';
+import { LOGIN_PROVIDERS } from './constants/\betc';
 import { COOKIES } from './constants/cookies-key';
 import { SECRET_ENV } from './constants/secret-env';
 import { prisma } from './prisma';
@@ -43,7 +43,7 @@ export const {
 
       const { provider, providerAccountId: providerId } = account ?? {};
 
-      if (!isEnumValue(PROVIDERS, provider))
+      if (!isEnumValue(LOGIN_PROVIDERS, provider))
         throw new CustomError({
           message: 'Unknown Provider',
         });

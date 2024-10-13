@@ -1,6 +1,5 @@
-export enum PROVIDERS {
+export enum LOGIN_PROVIDERS {
   GOOGLE = 'google',
   NAVER = 'naver',
   KAKAO = 'kakao',
-  APPLE = 'apple',
 }

@@ -11,6 +11,7 @@ import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
 import { findRoute } from '@/utils/findRoute';
+import { cn } from '@/utils/cn';
 
 export const BackHeader = () => {
   const router = useCustomRouter();
@@ -18,14 +19,22 @@ export const BackHeader = () => {
   const pathname = usePathname();
   const currentRoute = findRoute(pathname);
 
-  const BackIcon =
-    currentRoute === ROUTES.LOGIN ? RiCloseLine : RiArrowGoBackFill;
+  const isLoginPage = currentRoute === ROUTES.LOGIN;
+
+  const BackIcon = isLoginPage ? RiCloseLine : RiArrowGoBackFill;
 
   const { topHeaderTitle } = currentRoute;
   const { t } = useTranslation('layout');
 
   return (
-    <nav className="flex h-14 items-center justify-between bg-slate-850 px-5">
+    <nav
+      className={cn(
+        'flex h-14 items-center justify-between bg-slate-850 px-5',
+        {
+          'justify-end': isLoginPage,
+        },
+      )}
+    >
       <CustomIconButton
         variant="ghost"
         onClick={() => {
@@ -37,7 +46,9 @@ export const BackHeader = () => {
           }
         }}
       >
-        <BackIcon className="size-6 text-slate-50" />
+        <BackIcon
+          className={cn('text-slate-50', isLoginPage ? 'size-8' : 'size-6')}
+        />
       </CustomIconButton>
       {topHeaderTitle ? (
         <h1 className="text-lg font-semibold text-gray-700">
