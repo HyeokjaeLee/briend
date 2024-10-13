@@ -255,5 +255,3 @@ export const {
     },
   },
 });
-
-export const runtime = 'nodejs';
