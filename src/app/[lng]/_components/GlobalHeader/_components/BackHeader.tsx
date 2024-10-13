@@ -10,8 +10,8 @@ import { SESSION } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
-import { findRoute } from '@/utils/findRoute';
 import { cn } from '@/utils/cn';
+import { findRoute } from '@/utils/findRoute';
 
 export const BackHeader = () => {
   const router = useCustomRouter();

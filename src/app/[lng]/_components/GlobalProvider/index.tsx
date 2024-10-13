@@ -8,13 +8,16 @@ import { CookiesProvider } from 'react-cookie';
 import { IS_DEV } from '@/constants/public-env';
 import type { ThemeProps } from '@radix-ui/themes';
 import { Theme } from '@radix-ui/themes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+import { CookiesSync } from './CookiesSync';
 import { HistoryObserver } from './HistoryObserver';
-import { ProfileMounter } from './ProfileMounter';
 
 export const GlobalProvider = (
   props: ThemeProps & RefAttributes<HTMLDivElement>,
 ) => {
+  const queryClient = new QueryClient();
+
   return (
     <SessionProvider>
       <CookiesProvider
@@ -27,8 +30,10 @@ export const GlobalProvider = (
         <Suspense>
           <HistoryObserver />
         </Suspense>
-        <ProfileMounter />
-        <Theme {...props} />
+        <CookiesSync />
+        <QueryClientProvider client={queryClient}>
+          <Theme {...props} />
+        </QueryClientProvider>
       </CookiesProvider>
     </SessionProvider>
   );

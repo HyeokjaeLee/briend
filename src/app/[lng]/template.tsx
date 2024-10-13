@@ -14,7 +14,6 @@ const Template = ({ children }: { children: React.ReactNode }) => {
       state.rootAnimation,
       state.setRootAnimation,
     ],
-
     shallow,
   );
 
@@ -29,7 +28,7 @@ const Template = ({ children }: { children: React.ReactNode }) => {
   return (
     <main
       className={cn(
-        'flex-1 animate-duration-300 flex flex-col',
+        'flex-1 animate-duration-300 flex flex-col overflow-auto',
         {
           'animate-fade-down': lastRouteType === 'back',
           'animate-fade-up': ['forward', 'push'].includes(lastRouteType),

@@ -16,5 +16,4 @@ model users {
   google_id String? @unique @db.VarChar(255)
   naver_id  String? @unique @db.VarChar(255)
   kakao_id  String? @unique @db.VarChar(255)
-  apple_id  String? @unique @db.VarChar(255)
 }

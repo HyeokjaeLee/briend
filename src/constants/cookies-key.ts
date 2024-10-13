@@ -8,4 +8,5 @@ export enum COOKIES {
   LAST_FRIEND_INDEX = 'last-friend-index',
   LAST_FRIEND_LANGUAGE = 'last-friend-language',
   MY_EMOJI = 'my-emoji',
+  PROVIDER_TO_CONNECT = 'provider-to-connect',
 }

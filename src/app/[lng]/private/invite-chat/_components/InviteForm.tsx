@@ -84,7 +84,7 @@ export const InviteForm = () => {
           userId: user.id,
           language,
           nickname: nickname || nicknamePlaceholder,
-          emoji: user.email,
+          emoji: user.emoji,
         });
 
         const href = ROUTES.INVITE_CHAT_QR.pathname({

@@ -1,3 +1,4 @@
+import type { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
 
 export namespace ApiParams {
@@ -7,11 +8,19 @@ export namespace ApiParams {
     nickname: string;
     emoji: string;
   }
+
+  export interface UNLINK_ACCOUNT {
+    provider: LOGIN_PROVIDERS;
+  }
 }
 
 export namespace ApiResponse {
   export interface CREATE_CHAT {
     inviteToken: string;
+  }
+
+  export interface UNLINK_ACCOUNT {
+    unlinkedProvider: LOGIN_PROVIDERS;
   }
 }
 

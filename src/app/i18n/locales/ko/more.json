@@ -2,5 +2,13 @@
   "edit-profile": "프로필 수정",
   "edit-invite-message": "초대 메시지 수정",
   "logout": "로그아웃",
-  "empty-email": "이메일 없음"
+  "empty-email": "Google 계정을 연동해주세요",
+  "connected-account": "연동해제",
+  "need-connect-account": "연동하기",
+  "kakao-connected": "카카오 계정이 연동되었어요",
+  "naver-connected": "네이버 계정이 연동되었어요",
+  "google-connected": "구글 계정이 연동되었어요",
+  "unlink-kakao": "카카오 계정이 연동 해제되었어요",
+  "unlink-naver": "네이버 계정이 연동 해제되었어요",
+  "unlink-google": "구글 계정이 연동 해제되었어요"
 }

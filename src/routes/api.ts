@@ -19,4 +19,10 @@ export const API_ROUTES = {
         },
       })
       .json(),
+  UNLINK_ACCOUNT: (params: ApiParams.UNLINK_ACCOUNT) =>
+    apiInstance
+      .post<ApiResponse.UNLINK_ACCOUNT>('auth/unlink-account', {
+        json: params,
+      })
+      .json(),
 };

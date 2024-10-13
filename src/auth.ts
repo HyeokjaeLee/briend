@@ -8,13 +8,17 @@ import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
-import { LOGIN_PROVIDERS } from './constants/\betc';
 import { COOKIES } from './constants/cookies-key';
+import { LOGIN_PROVIDERS } from './constants/etc';
 import { SECRET_ENV } from './constants/secret-env';
 import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
 import { CustomError } from './utils/customError';
 import { isEnumValue } from './utils/isEnumValue';
+
+export interface SessionDataToUpdate {
+  unlinkedProvider?: LOGIN_PROVIDERS;
+}
 
 export const {
   handlers,
@@ -38,7 +42,26 @@ export const {
     maxAge: 604_800, // 7 days
   },
   callbacks: {
-    jwt: async ({ token, user, account }) => {
+    jwt: async ({ token, user, account, trigger, session }) => {
+      if (trigger === 'update' && session) {
+        const sessionDataToUpdate: SessionDataToUpdate = session;
+
+        switch (sessionDataToUpdate.unlinkedProvider) {
+          case LOGIN_PROVIDERS.GOOGLE:
+            token.isGoogleConnected = false;
+            break;
+          case LOGIN_PROVIDERS.KAKAO:
+            token.isKakaoConnected = false;
+            break;
+          case LOGIN_PROVIDERS.NAVER:
+            token.isNaverConnected = false;
+            break;
+          default:
+            break;
+        }
+
+        return token;
+      }
       if (!user) return token;
 
       const { provider, providerAccountId: providerId } = account ?? {};
@@ -59,29 +82,72 @@ export const {
           where: email ? { email } : { [idKey]: providerId },
         })
         .then(async (existedAccount) => {
+          const cookieStore = cookies();
+          const clientId = cookieStore.get(COOKIES.USER_ID)?.value || nanoid();
+
+          //* 🔗 계정연동을 위한 인증 시도 시 true
+          const needToConnectAccount = !!cookieStore.get(
+            COOKIES.PROVIDER_TO_CONNECT,
+          )?.value;
+
+          const connectingBaseAccount = needToConnectAccount
+            ? await prisma.users.findUnique({
+                where: {
+                  id: clientId,
+                },
+              })
+            : null;
+
           if (existedAccount) {
-            return prisma.users.update({
-              where: { id: existedAccount.id },
+            //* 🗑️ 로그인 되어있던 계정과 연동하려는 계정이 다른 경우 연동하려는 계정을 삭제 후 연동
+            if (connectingBaseAccount && existedAccount.id !== clientId) {
+              await prisma.users.delete({
+                where: {
+                  id: existedAccount.id,
+                },
+              });
+            }
+
+            const updatedUserData = await prisma.users.update({
+              where: {
+                id: (connectingBaseAccount || existedAccount).id,
+              },
               data: {
-                [idKey]: existedAccount[idKey] ? undefined : providerId,
+                //! 연동하려는 계정에 이미 연동된 계정이 있는 경우 연동 안함
+                [idKey]: (connectingBaseAccount || existedAccount)[idKey]
+                  ? undefined
+                  : providerId,
                 email: email || undefined,
                 name: name || undefined,
               },
             });
+
+            return updatedUserData;
           }
 
           const newUserData = {
             emoji: randomEmoji().emoji,
-            id: cookies().get(COOKIES.USER_ID)?.value || nanoid(),
+            id: clientId,
             email,
             name,
             [idKey]: providerId,
           };
 
           try {
-            const user = await prisma.users.create({
-              data: newUserData,
-            });
+            const user = connectingBaseAccount
+              ? await prisma.users.update({
+                  where: {
+                    id: connectingBaseAccount.id,
+                  },
+                  data: {
+                    email: email || undefined,
+                    name: name || undefined,
+                    [idKey]: providerId,
+                  },
+                })
+              : await prisma.users.create({
+                  data: newUserData,
+                });
 
             return user;
           } catch (e) {
@@ -115,7 +181,6 @@ export const {
         isKakaoConnected: !!savedAccount.kakao_id,
         isGoogleConnected: !!savedAccount.google_id,
         isNaverConnected: !!savedAccount.naver_id,
-        isAppleConnected: !!savedAccount.apple_id,
       };
 
       return token;
@@ -137,12 +202,7 @@ export const {
       });
 
       (
-        [
-          'isKakaoConnected',
-          'isGoogleConnected',
-          'isNaverConnected',
-          'isAppleConnected',
-        ] as const
+        ['isKakaoConnected', 'isGoogleConnected', 'isNaverConnected'] as const
       ).forEach((key) => {
         const value = token[key];
 

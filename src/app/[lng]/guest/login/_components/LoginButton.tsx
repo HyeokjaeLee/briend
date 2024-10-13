@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 import { useTranslation } from '@/app/i18n/server';
 import { signIn } from '@/auth';
-import { LOGIN_PROVIDERS } from '@/constants/\betc';
+import { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';
 
