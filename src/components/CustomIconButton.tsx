@@ -5,7 +5,7 @@ interface CustomIconButtonProps extends IconButtonProps {}
 
 export const CustomIconButton = ({
   className,
-  color = 'gray',
+  color = 'blue',
   ...restProps
 }: CustomIconButtonProps) => {
   return (

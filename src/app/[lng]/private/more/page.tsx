@@ -29,10 +29,6 @@ const MENU_ITEMS = [
     title: 'edit-profile',
     route: ROUTES.EDIT_PROFILE,
   },
-  {
-    title: 'edit-invite-message',
-    route: ROUTES.EDIT_INVITE_MESSAGE,
-  },
 ] as const satisfies MenuItem[];
 
 const MorePage = async ({ params: { lng } }: MorePageProps) => {

@@ -38,7 +38,7 @@ export const useCustomRouter = () => {
 
         if (prevIndex < 0) return replaceToHome();
 
-        const currentHistory = customHistory.get(prevIndex);
+        const currentHistory = customHistory.get(historyIndex);
 
         if (currentHistory === customHistory.get(prevIndex))
           return replaceToHome();

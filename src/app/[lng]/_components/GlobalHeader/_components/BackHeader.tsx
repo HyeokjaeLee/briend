@@ -16,6 +16,7 @@ import { findRoute } from '@/utils/findRoute';
 export const BackHeader = () => {
   const router = useCustomRouter();
   const isReload = useHistoryStore((state) => state.lastRouteType === 'reload');
+
   const pathname = usePathname();
   const currentRoute = findRoute(pathname);
 
