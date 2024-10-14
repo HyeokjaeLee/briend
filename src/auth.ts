@@ -20,6 +20,17 @@ export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
 }
 
+const dataToUpdateKeys = [
+  'email',
+  'name',
+  'google_id',
+  'kakao_id',
+  'naver_id',
+] as const;
+
+type DataToUpdateKeys = (typeof dataToUpdateKeys)[number];
+type DataToUpdate = Record<DataToUpdateKeys, string | null | undefined>;
+
 export const {
   handlers,
   signIn,
@@ -86,11 +97,11 @@ export const {
           const clientId = cookieStore.get(COOKIES.USER_ID)?.value || nanoid();
 
           //* 🔗 계정연동을 위한 인증 시도 시 true
-          const needToConnectAccount = !!cookieStore.get(
+          const providerToConnect = cookieStore.get(
             COOKIES.PROVIDER_TO_CONNECT,
           )?.value;
 
-          const connectingBaseAccount = needToConnectAccount
+          const connectingBaseAccount = providerToConnect
             ? await prisma.users.findUnique({
                 where: {
                   id: clientId,
@@ -99,24 +110,44 @@ export const {
             : null;
 
           if (existedAccount) {
-            //* 🗑️ 로그인 되어있던 계정과 연동하려는 계정이 다른 경우 연동하려는 계정을 삭제 후 연동
-            if (connectingBaseAccount && existedAccount.id !== clientId) {
-              await prisma.users.delete({
+            if (connectingBaseAccount) {
+              //* 🗑️ 로그인 되어있던 계정과 연동하려는 계정이 다른 경우 연동하려는 계정을 삭제 후 연동
+              if (existedAccount.id !== clientId) {
+                await prisma.users.delete({
+                  where: {
+                    id: existedAccount.id,
+                  },
+                });
+              }
+
+              const updatedUserData = await prisma.users.update({
                 where: {
-                  id: existedAccount.id,
+                  id: connectingBaseAccount.id,
                 },
+                data: dataToUpdateKeys.reduce((acc, key) => {
+                  if (!connectingBaseAccount[key]) {
+                    //* 🔗 연동하기 위한 계정은 있지만 해당 계정에 연동할 계정의 소셜로그인 아이디가 없거나 같지 않은 경우 연동
+                    acc[key] =
+                      key === idKey && acc[key] !== providerId
+                        ? providerId
+                        : existedAccount[key] || undefined;
+                  }
+
+                  return acc;
+                }, {} as DataToUpdate),
               });
+
+              return updatedUserData;
             }
 
             const updatedUserData = await prisma.users.update({
               where: {
-                id: (connectingBaseAccount || existedAccount).id,
+                id: existedAccount.id,
               },
               data: {
                 //! 연동하려는 계정에 이미 연동된 계정이 있는 경우 연동 안함
-                [idKey]: (connectingBaseAccount || existedAccount)[idKey]
-                  ? undefined
-                  : providerId,
+                [idKey]:
+                  existedAccount[idKey] === providerId ? undefined : providerId,
                 email: email || undefined,
                 name: name || undefined,
               },
