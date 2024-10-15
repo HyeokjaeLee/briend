@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { ROUTES } from '@/routes/client';
 import Logo from '@/svgs/logo.svg';
-import { CustomError } from '@/utils/customError';
+import { ERROR } from '@/utils/customError';
 import { findRoute } from '@/utils/findRoute';
 
 export const RootHeader = () => {
@@ -31,11 +31,7 @@ export const RootHeader = () => {
 
   const { topHeaderTitle } = currentRoute;
 
-  if (!topHeaderTitle)
-    throw new CustomError({
-      message: 'topHeaderTitle is required.',
-      status: 400,
-    });
+  if (!topHeaderTitle) throw ERROR.NOT_ENOUGH_PARAMS(['topHeaderTitle']);
 
   return (
     <nav className="flex h-14 items-center justify-between bg-slate-850 px-5">

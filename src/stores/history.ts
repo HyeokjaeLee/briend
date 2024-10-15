@@ -2,6 +2,7 @@ import { nanoid } from 'nanoid';
 import { createWithEqualityFn as create } from 'zustand/traditional';
 
 import { SESSION } from '@/constants/storage-key';
+import { ERROR } from '@/utils/customError';
 
 export type RouteType = 'back' | 'forward' | 'push' | 'replace' | 'reload';
 
@@ -67,7 +68,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
   ) => {
     const historyId = sessionStorage.getItem(SESSION.HISTORY_ID);
 
-    if (!historyId) throw new Error('historyId is not found');
+    if (!historyId) throw ERROR.NOT_ENOUGH_PARAMS(['historyId']);
 
     const historyState = history.state;
 

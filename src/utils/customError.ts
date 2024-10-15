@@ -13,3 +13,21 @@ export class CustomError extends Error {
     this.cause = props?.cause;
   }
 }
+
+export const ERROR = {
+  NOT_ENOUGH_PARAMS: (requiredParams: string[]) =>
+    new CustomError({
+      message: `${requiredParams.join(', ')} is required`,
+      status: 400,
+    }),
+  UNAUTHORIZED: (message = 'Unauthorized') =>
+    new CustomError({
+      message,
+      status: 401,
+    }),
+  UNKNOWN_VALUE: (key: string = 'value') =>
+    new CustomError({
+      message: `${key} is unknown`,
+      status: 422,
+    }),
+};

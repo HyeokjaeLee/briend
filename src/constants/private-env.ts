@@ -1,3 +1,5 @@
+import { ERROR } from '@/utils/customError';
+
 const privateEnv = {
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
   AUTH_GOOGLE_SECRET: process.env.AUTH_GOOGLE_SECRET,
@@ -10,11 +12,15 @@ const privateEnv = {
   AUTH_KAKAO_APP_KEY: process.env.AUTH_KAKAO_APP_KEY,
 };
 
-for (const key in privateEnv) {
-  const _key = key as keyof typeof privateEnv;
-  if (!privateEnv[_key]) {
-    throw new Error(`${key} is not set`);
-  }
+const unsetKeys = Object.entries(privateEnv)
+  .filter(([, value]) => !value)
+  .map(([key]) => `PRIVATE_ENV.${key}`);
+
+if (unsetKeys.length) {
+  throw ERROR.NOT_ENOUGH_PARAMS(unsetKeys);
 }
 
-export const SECRET_ENV = privateEnv as Record<keyof typeof privateEnv, string>;
+export const PRIVATE_ENV = privateEnv as Record<
+  keyof typeof privateEnv,
+  string
+>;

@@ -2,25 +2,21 @@ import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-import { SECRET_ENV } from '@/constants/secret-env';
+import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams, ApiResponse } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/createApiRoute';
-import { CustomError } from '@/utils/customError';
+import { ERROR } from '@/utils/customError';
 
 export const GET = createApiRoute(
   async (req: NextRequest) => {
     const { searchParams } = req.nextUrl;
 
-    const token = await getToken({ req, secret: SECRET_ENV.AUTH_SECRET });
+    const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
 
     const hostNickname = token?.name;
 
-    if (!hostNickname)
-      throw new CustomError({
-        message: 'Nickname is not found',
-        status: 400,
-      });
+    if (!hostNickname) throw ERROR.NOT_ENOUGH_PARAMS(['hostNickname']);
 
     const params = Object.fromEntries(
       searchParams.entries(),
@@ -35,7 +31,7 @@ export const GET = createApiRoute(
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('5m')
-      .sign(new TextEncoder().encode(SECRET_ENV.AUTH_SECRET));
+      .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
 
     return NextResponse.json({
       inviteToken,

@@ -3,9 +3,9 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
-import { SECRET_ENV } from '@/constants/secret-env';
+import { PRIVATE_ENV } from '@/constants/private-env';
 
-import { CustomError } from './customError';
+import { CustomError, ERROR } from './customError';
 
 type ApiRoute<TParams extends Record<string, string> | undefined, TResponse> = (
   req: NextRequest,
@@ -27,13 +27,9 @@ export const createApiRoute =
   async (req: NextRequest, context: { params: TParams }) => {
     try {
       if (options?.auth) {
-        const token = await getToken({ req, secret: SECRET_ENV.AUTH_SECRET });
+        const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
 
-        if (!token)
-          throw new CustomError({
-            message: 'Unauthorized',
-            status: 401,
-          });
+        if (!token) throw ERROR.UNAUTHORIZED();
       }
 
       const res = await route(req, context);

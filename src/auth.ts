@@ -10,10 +10,10 @@ import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies-key';
 import { LOGIN_PROVIDERS } from './constants/etc';
-import { SECRET_ENV } from './constants/secret-env';
+import { PRIVATE_ENV } from './constants/private-env';
 import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
-import { CustomError } from './utils/customError';
+import { ERROR } from './utils/customError';
 import { isEnumValue } from './utils/isEnumValue';
 
 export interface SessionDataToUpdate {
@@ -41,12 +41,12 @@ export const {
   providers: [
     Google,
     Naver({
-      clientId: SECRET_ENV.AUTH_NAVER_CLIENT_ID,
-      clientSecret: SECRET_ENV.AUTH_NAVER_SECRET,
+      clientId: PRIVATE_ENV.AUTH_NAVER_CLIENT_ID,
+      clientSecret: PRIVATE_ENV.AUTH_NAVER_SECRET,
     }),
     Kakao({
-      clientId: SECRET_ENV.AUTH_KAKAO_APP_KEY,
-      clientSecret: SECRET_ENV.AUTH_KAKAO_APP_KEY,
+      clientId: PRIVATE_ENV.AUTH_KAKAO_APP_KEY,
+      clientSecret: PRIVATE_ENV.AUTH_KAKAO_APP_KEY,
     }),
   ],
   session: {
@@ -78,11 +78,10 @@ export const {
       const { provider, providerAccountId: providerId } = account ?? {};
 
       if (!isEnumValue(LOGIN_PROVIDERS, provider))
-        throw new CustomError({
-          message: 'Unknown Provider',
-        });
+        throw ERROR.UNKNOWN_VALUE('Provider');
 
-      if (!provider || !providerId) throw new CustomError();
+      if (!provider || !providerId)
+        throw ERROR.NOT_ENOUGH_PARAMS(['provider', 'providerId']);
 
       const idKey = `${provider}_id` as const;
 
@@ -253,8 +252,7 @@ export const {
 
       if (isPrivateRoute) {
         try {
-          if (!auth?.expires)
-            throw new CustomError({ message: 'Unauthorized' });
+          if (!auth?.expires) throw ERROR.UNAUTHORIZED();
         } catch {
           const res = NextResponse.redirect(
             new URL(ROUTES.LOGIN.pathname, nextUrl.origin),

@@ -7,7 +7,7 @@ import { NextResponse } from 'next/server';
 import { pusher } from '@/app/pusher/server';
 import { CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
-import { SECRET_ENV } from '@/constants/secret-env';
+import { PRIVATE_ENV } from '@/constants/private-env';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
@@ -26,7 +26,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
   try {
     const { payload } = await jwtVerify<Payload.InviteToken>(
       inviteToken,
-      new TextEncoder().encode(SECRET_ENV.AUTH_SECRET),
+      new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET),
     );
 
     const channelId = nanoid();
@@ -47,7 +47,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('1d')
-      .sign(new TextEncoder().encode(SECRET_ENV.AUTH_SECRET));
+      .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
 
     await pusher.trigger(CHANNEL.WAITING, payload.hostId, {
       channelToken,

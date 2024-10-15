@@ -12,6 +12,11 @@ export namespace ApiParams {
   export interface UNLINK_ACCOUNT {
     provider: LOGIN_PROVIDERS;
   }
+
+  export interface EDIT_PROFILE {
+    nickname: string;
+    emoji: string;
+  }
 }
 
 export namespace ApiResponse {
@@ -21,6 +26,11 @@ export namespace ApiResponse {
 
   export interface UNLINK_ACCOUNT {
     unlinkedProvider: LOGIN_PROVIDERS;
+  }
+
+  export interface EDIT_PROFILE {
+    nickname: string;
+    emoji: string;
   }
 }
 

@@ -1,5 +1,7 @@
 import { ROUTES } from '@/routes/client';
 
+import { ERROR } from './customError';
+
 export const findRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
 
@@ -63,11 +65,11 @@ export const findRoute = (pathname: string) => {
     }
   }
 
-  if (!matchedRoute.name) throw new Error('Not found matched route');
+  if (!matchedRoute.name) throw ERROR.NOT_ENOUGH_PARAMS(['matchedRoute.name']);
 
   const currentRoute = allRoutes[matchedRoute.name];
 
-  if (!currentRoute) throw new Error('Not found matched route');
+  if (!currentRoute) throw ERROR.NOT_ENOUGH_PARAMS(['currentRoute']);
 
   return currentRoute;
 };

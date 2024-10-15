@@ -2,7 +2,7 @@ import { errors, jwtVerify } from 'jose';
 import { redirect } from 'next/navigation';
 
 import type { LANGUAGE } from '@/constants/language';
-import { SECRET_ENV } from '@/constants/secret-env';
+import { PRIVATE_ENV } from '@/constants/private-env';
 import { ROUTES } from '@/routes/client';
 import type { Payload } from '@/types/jwt';
 
@@ -21,7 +21,7 @@ const InviteChatQRLayout = async ({
   try {
     await jwtVerify<Payload.InviteToken>(
       params.inviteToken,
-      new TextEncoder().encode(SECRET_ENV.AUTH_SECRET),
+      new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET),
     );
 
     return children;
