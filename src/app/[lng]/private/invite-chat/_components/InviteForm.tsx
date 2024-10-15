@@ -15,10 +15,11 @@ import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import type { LocalStorage } from '@/types/storage';
-import { CustomError } from '@/utils/customError';
+import { ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
+import { useMutation } from '@tanstack/react-query';
 export interface QrInfo {
   userId: string;
   language: LANGUAGE;
@@ -39,17 +40,17 @@ export const InviteForm = () => {
     nickname: z.string().max(10, t('nickname-max-length')),
   });
 
-  type FriendInfo = z.infer<typeof formSchema>;
+  type FriendSchema = z.infer<typeof formSchema>;
 
   const router = useCustomRouter();
 
   const [friendIndex, setFriendIndex] = useState(0);
 
-  const { control, handleSubmit, register, formState } = useForm<FriendInfo>({
+  const { control, handleSubmit, register, formState } = useForm<FriendSchema>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: async () => {
-      const defaultValues: FriendInfo = {
+      const defaultValues: FriendSchema = {
         language: LANGUAGE.ENGLISH,
         nickname: '',
       };
@@ -72,26 +73,31 @@ export const InviteForm = () => {
 
   const nicknamePlaceholder = `Friend ${friendIndex}`;
 
+  const createChatMutation = useMutation({
+    mutationFn: API_ROUTES.CREATE_CHAT,
+    onSuccess: ({ inviteToken }) => {
+      const href = ROUTES.INVITE_CHAT_QR.pathname({
+        inviteToken,
+      });
+
+      router.push(href);
+    },
+  });
+
   if (formState.isLoading) return null;
 
   return (
     <form
       className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
-        if (!user) throw new CustomError({ message: 'User is not found' });
+        if (!user) throw ERROR.NOT_ENOUGH_PARAMS(['user']);
 
-        const { inviteToken } = await API_ROUTES.CREATE_CHAT({
+        createChatMutation.mutate({
           userId: user.id,
           language,
           nickname: nickname || nicknamePlaceholder,
           emoji: user.emoji,
         });
-
-        const href = ROUTES.INVITE_CHAT_QR.pathname({
-          inviteToken,
-        });
-
-        router.push(href);
       })}
     >
       <label className="w-full font-semibold">
@@ -116,9 +122,7 @@ export const InviteForm = () => {
               value={field.value}
               onValueChange={(language) => {
                 if (!isEnumValue(LANGUAGE, language))
-                  throw new CustomError({
-                    message: 'Invalid language',
-                  });
+                  throw ERROR.UNKNOWN_VALUE('language');
 
                 localStorage.setItem(
                   LOCAL.CREATE_CHATTING_INFO,
@@ -153,8 +157,7 @@ export const InviteForm = () => {
       </p>
       <CustomButton
         className="mt-8 w-full"
-        loading={formState.isSubmitting}
-        size="4"
+        loading={formState.isSubmitting || createChatMutation.isPending}
         type="submit"
       >
         {t('invite-button')}

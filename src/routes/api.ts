@@ -25,4 +25,11 @@ export const API_ROUTES = {
         json: params,
       })
       .json(),
+
+  EDIT_PROFILE: (params: ApiParams.EDIT_PROFILE) =>
+    apiInstance
+      .post<ApiResponse.EDIT_PROFILE>('edit-profile', {
+        json: params,
+      })
+      .json(),
 };

@@ -34,6 +34,15 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
 
   const unlinkAccountMutation = useMutation({
     mutationFn: API_ROUTES.UNLINK_ACCOUNT,
+    onSuccess: async ({ unlinkedProvider }) => {
+      await session.update({
+        unlinkedProvider,
+      } satisfies SessionDataToUpdate);
+
+      toast({
+        message: t(`unlink-${unlinkedProvider}`),
+      });
+    },
   });
 
   const isLoading = !user || unlinkAccountMutation.isPending;
@@ -44,21 +53,7 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
       disabled={isLoading}
       type={isConnected ? 'button' : 'submit'}
       onClick={async () => {
-        if (isConnected)
-          return unlinkAccountMutation.mutate(
-            { provider },
-            {
-              onSuccess: async ({ unlinkedProvider }) => {
-                await session.update({
-                  unlinkedProvider,
-                } satisfies SessionDataToUpdate);
-
-                toast({
-                  message: t(`unlink-${unlinkedProvider}`),
-                });
-              },
-            },
-          );
+        if (isConnected) return unlinkAccountMutation.mutate({ provider });
 
         setCookie(COOKIES.PROVIDER_TO_CONNECT, provider);
       }}

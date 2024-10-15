@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
 import { COOKIES } from '@/constants/cookies-key';
-import type { ApiParams } from '@/types/api';
+import { prisma } from '@/prisma';
+import type { ApiParams, ApiResponse } from '@/types/api';
 import { createApiRoute } from '@/utils/createApiRoute';
 import { ERROR } from '@/utils/customError';
 
@@ -12,7 +13,20 @@ export const POST = createApiRoute(async (req: NextRequest) => {
 
   if (!id) throw ERROR.NOT_ENOUGH_PARAMS(['id']);
 
-  return NextResponse.json({
-    params,
+  const user = await prisma.users.update({
+    where: {
+      id,
+    },
+    data: {
+      emoji: params.emoji,
+      name: params.nickname,
+    },
+  });
+
+  if (!user.name) throw ERROR.NOT_ENOUGH_PARAMS(['user.name']);
+
+  return NextResponse.json<ApiResponse.EDIT_PROFILE>({
+    emoji: user.emoji,
+    nickname: user.name,
   });
 });

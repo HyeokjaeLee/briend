@@ -29,14 +29,18 @@ export const useCustomHref = () => {
       if (url.origin !== location.origin) return url.href;
 
       let customHref = url.href.replace(location.origin, '');
+      const [, i18nPath] = customHref.split('/');
 
-      //* 언어 쿠키가 있고, 현재 페이지가 언어 패스로 시작하지 않으면 언어 패스를 추가
-      if (i18n && !customHref.startsWith('?')) {
+      const includedI18nPath = isEnumValue(LANGUAGE, i18nPath);
+
+      //* ➕ 언어 쿠키가 있고, 현재 페이지가 언어 패스로 시작하지 않으면 언어 패스를 추가
+      if (!includedI18nPath && i18n && !customHref.startsWith('?')) {
         const i18nPath = `/${i18n}`;
 
         if (!customHref.startsWith(i18nPath))
           customHref = i18nPath + customHref;
 
+        //* 🔪 마지막에 /가 있으면 제거
         if (customHref.endsWith('/')) customHref = customHref.slice(0, -1);
       }
 

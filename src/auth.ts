@@ -18,6 +18,10 @@ import { isEnumValue } from './utils/isEnumValue';
 
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
+  updatedProfile?: {
+    emoji: string;
+    nickname: string;
+  };
 }
 
 const dataToUpdateKeys = [
@@ -69,6 +73,11 @@ export const {
             break;
           default:
             break;
+        }
+
+        if (sessionDataToUpdate.updatedProfile) {
+          token.emoji = sessionDataToUpdate.updatedProfile.emoji;
+          token.name = sessionDataToUpdate.updatedProfile.nickname;
         }
 
         return token;
@@ -147,8 +156,8 @@ export const {
                 //! 연동하려는 계정에 이미 연동된 계정이 있는 경우 연동 안함
                 [idKey]:
                   existedAccount[idKey] === providerId ? undefined : providerId,
-                email: email || undefined,
-                name: name || undefined,
+                email: existedAccount.email || email || undefined,
+                name: existedAccount.name || name || undefined,
               },
             });
 
