@@ -14,9 +14,9 @@ import { LogoutButton } from './_components/LogoutButton';
 import { ProfileSection } from './_components/ProfileSection';
 
 interface MorePageProps {
-  params: {
+  params: Promise<{
     lng: LANGUAGE;
-  };
+  }>;
 }
 
 interface MenuItem {
@@ -31,7 +31,11 @@ const MENU_ITEMS = [
   },
 ] as const satisfies MenuItem[];
 
-const MorePage = async ({ params: { lng } }: MorePageProps) => {
+const MorePage = async (props: MorePageProps) => {
+  const params = await props.params;
+
+  const { lng } = params;
+
   const { t } = await useTranslation('more', lng);
 
   return (

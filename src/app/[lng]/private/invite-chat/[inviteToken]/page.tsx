@@ -3,7 +3,7 @@
 import { setCookie } from 'cookies-next';
 import { decodeJwt } from 'jose';
 
-import { useEffect } from 'react';
+import { useEffect, use } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
@@ -19,9 +19,9 @@ import type { Payload } from '@/types/jwt';
 import { toast } from '@/utils/toast';
 
 interface InviteChatQRPageProps {
-  params: {
+  params: Promise<{
     inviteToken: string;
-  };
+  }>;
 }
 
 const INVITE_TITLE = {
@@ -45,9 +45,11 @@ const INVITE_MESSAGE = {
     'Quét mã QR để trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
 };
 
-const InviteChatQRPage = ({
-  params: { inviteToken },
-}: InviteChatQRPageProps) => {
+const InviteChatQRPage = (props: InviteChatQRPageProps) => {
+  const params = use(props.params);
+
+  const { inviteToken } = params;
+
   const payload = decodeJwt<Payload.InviteToken>(inviteToken);
   const hostId = payload.hostId;
 

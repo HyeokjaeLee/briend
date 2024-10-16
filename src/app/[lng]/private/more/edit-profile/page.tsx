@@ -4,7 +4,7 @@ import { getSession, useSession } from 'next-auth/react';
 import { random } from 'node-emoji';
 import { z } from 'zod';
 
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { BiRefresh } from 'react-icons/bi';
 
@@ -41,14 +41,18 @@ const createRandomEmojiList = () => {
 };
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     lng: LANGUAGE;
-  };
+  }>;
 }
 
 const FORM_NAME = 'edit-profile';
 
-const EditProfilePage = ({ params: { lng } }: ProfilePageProps) => {
+const EditProfilePage = (props: ProfilePageProps) => {
+  const params = use(props.params);
+
+  const { lng } = params;
+
   const [randomEmojiList, dispatchRandomEmojiList] = useReducer(
     () => createRandomEmojiList(),
     [],

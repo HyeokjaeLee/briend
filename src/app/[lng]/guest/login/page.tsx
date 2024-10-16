@@ -6,12 +6,16 @@ import Logo from '@/svgs/logo.svg';
 import { LoginButton } from './_components/LoginButton';
 
 interface LoginPageProps {
-  params: {
+  params: Promise<{
     lng: LANGUAGE;
-  };
+  }>;
 }
 
-const LoginPage = async ({ params: { lng } }: LoginPageProps) => {
+const LoginPage = async (props: LoginPageProps) => {
+  const params = await props.params;
+
+  const { lng } = params;
+
   const { t } = await useTranslation('login', lng);
 
   return (

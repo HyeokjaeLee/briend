@@ -101,7 +101,7 @@ export const {
           where: email ? { email } : { [idKey]: providerId },
         })
         .then(async (existedAccount) => {
-          const cookieStore = cookies();
+          const cookieStore = await cookies();
           const clientId = cookieStore.get(COOKIES.USER_ID)?.value || nanoid();
 
           //* 🔗 계정연동을 위한 인증 시도 시 true

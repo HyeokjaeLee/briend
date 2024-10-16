@@ -8,16 +8,17 @@ import type { Payload } from '@/types/jwt';
 
 interface InviteChatQRLayoutProps {
   children: React.ReactNode;
-  params: {
+  params: Promise<{
     lng: LANGUAGE;
     inviteToken: string;
-  };
+  }>;
 }
 
-const InviteChatQRLayout = async ({
-  children,
-  params,
-}: InviteChatQRLayoutProps) => {
+const InviteChatQRLayout = async (props: InviteChatQRLayoutProps) => {
+  const params = await props.params;
+
+  const { children } = props;
+
   try {
     await jwtVerify<Payload.InviteToken>(
       params.inviteToken,

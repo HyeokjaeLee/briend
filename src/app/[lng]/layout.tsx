@@ -4,7 +4,7 @@ import type { Metadata } from 'next';
 
 import { dir } from 'i18next';
 
-import { type ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 import type { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';
@@ -33,31 +33,32 @@ interface RootLayoutProps {
   };
 }
 
-const RootLayout = async ({
-  children,
-  params: { lng },
-}: Readonly<RootLayoutProps>) => (
-  <html
-    className={cn(pretendard.variable, 'size-full')}
-    dir={dir(lng)}
-    lang={lng}
-  >
-    <body className={cn(pretendard.className, 'size-full bg-zinc-50 dark')}>
-      <GlobalProvider className="flex size-full bg-zinc-50">
-        <div className="flex-1" />
-        <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-850 text-slate-50 shadow-xl">
-          <GlobalLoading>
-            <GlobalHeader />
-            <ToastProvider />
-            <LogoutCallback />
-            {children}
-            <BottomNav />
-          </GlobalLoading>
-        </div>
-        <div className="flex-1" />
-      </GlobalProvider>
-    </body>
-  </html>
-);
+const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
+  const { lng } = await params;
+
+  return (
+    <html
+      className={cn(pretendard.variable, 'size-full')}
+      dir={dir(lng)}
+      lang={lng}
+    >
+      <body className={cn(pretendard.className, 'size-full bg-zinc-50 dark')}>
+        <GlobalProvider className="flex size-full bg-zinc-50">
+          <div className="flex-1" />
+          <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-850 text-slate-50 shadow-xl">
+            <GlobalLoading>
+              <GlobalHeader />
+              <ToastProvider />
+              <LogoutCallback />
+              {children}
+              <BottomNav />
+            </GlobalLoading>
+          </div>
+          <div className="flex-1" />
+        </GlobalProvider>
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;

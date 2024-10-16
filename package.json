@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "bun update:env & bun lint",
+    "predev": "bun update:env & bun lint --fix",
     "dev": "next dev",
     "prebuild": "prisma generate",
     "build": "next build",
@@ -18,6 +18,7 @@
     "@radix-ui/themes": "^3.1.4",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.59.14",
+    "@vercel/functions": "^1.4.2",
     "accept-language": "^3.0.20",
     "clsx": "^2.1.1",
     "cookies-next": "^4.3.0",
@@ -28,15 +29,15 @@
     "jose": "^5.9.4",
     "ky": "^1.7.2",
     "nanoid": "3.3.7",
-    "next": "15.0.0-rc.0",
+    "next": "15.0.0-rc.1",
     "next-auth": "^5.0.0-beta.22",
     "node-emoji": "^2.1.3",
     "prisma": "^5.21.0",
     "pusher": "^5.2.0",
     "pusher-js": "^8.4.0-rc2",
-    "react": "19.0.0-rc-f994737d14-20240522",
+    "react": "19.0.0-rc-cd22717c-20241013",
     "react-cookie": "^7.2.1",
-    "react-dom": "19.0.0-rc-f994737d14-20240522",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
     "react-hook-form": "^7.53.0",
     "react-i18next": "^15.0.3",
     "react-icons": "^5.3.0",
@@ -49,8 +50,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.16.11",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@types/react-transition-group": "^4.4.11",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^6.21.0",
@@ -73,7 +74,9 @@
     "typescript": "^5.6.3"
   },
   "overrides": {
-    "oauth4webapi": "npm:@jacobkim/oauth4webapi@^2.10.4"
+    "oauth4webapi": "npm:@jacobkim/oauth4webapi@^2.10.4",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   },
   "resolutions": {
     "nanoid": "3.3.7"

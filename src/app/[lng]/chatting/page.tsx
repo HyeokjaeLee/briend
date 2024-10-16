@@ -1,14 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, use } from 'react';
 
 interface ChattingPageProps {
-  searchParams: {
+  searchParams: Promise<{
     channelId: string;
-  };
+  }>;
 }
 
-const ChattingPage = ({ searchParams: { channelId } }: ChattingPageProps) => {
+const ChattingPage = (props: ChattingPageProps) => {
+  const searchParams = use(props.searchParams);
+
+  const { channelId } = searchParams;
+
   useEffect(() => {}, []);
 
   return <article>{channelId}</article>;
