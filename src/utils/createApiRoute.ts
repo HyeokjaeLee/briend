@@ -7,24 +7,19 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 
 import { CustomError, ERROR } from './customError';
 
-type ApiRoute<TParams extends Record<string, string> | undefined, TResponse> = (
+type ApiRoute<TResponse> = (
   req: NextRequest,
-  context: {
-    params: TParams;
-  },
+  //! context: Promise<TContext>, RC 버전에서 api 라우트 두번째 파라미터에 대한 빌드 타입에러가 발생함
 ) => Promise<NextResponse<TResponse>>;
 
 export const createApiRoute =
-  <
-    TParams extends Record<string, string> | undefined = undefined,
-    TResponse = unknown,
-  >(
-    route: ApiRoute<TParams, TResponse>,
+  <TResponse>(
+    route: ApiRoute<TResponse>,
     options?: {
       auth: boolean;
     },
   ) =>
-  async (req: NextRequest, context: { params: TParams }) => {
+  async (req: NextRequest) => {
     try {
       if (options?.auth) {
         const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
@@ -32,7 +27,7 @@ export const createApiRoute =
         if (!token) throw ERROR.UNAUTHORIZED();
       }
 
-      const res = await route(req, context);
+      const res = await route(req);
 
       return res;
     } catch (e) {
