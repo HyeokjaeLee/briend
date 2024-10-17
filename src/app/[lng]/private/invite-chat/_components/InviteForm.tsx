@@ -64,7 +64,7 @@ export const InviteForm = () => {
           JSON.parse(stringifiedChattingInfo);
 
         setFriendIndex(friendIndex);
-        defaultValues.language = language;
+        defaultValues.language = language ?? LANGUAGE.ENGLISH;
       }
 
       return defaultValues;

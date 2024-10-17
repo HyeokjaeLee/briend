@@ -7,19 +7,21 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 
 import { CustomError, ERROR } from './customError';
 
-type ApiRoute<TContext, TResponse> = (
+type ApiRoute<TContext extends Record<string, unknown>, TResponse> = (
   req: NextRequest,
-  context: Promise<TContext>,
+  context: {
+    params: Promise<TContext>;
+  },
 ) => Promise<NextResponse<TResponse>>;
 
 export const createApiRoute =
-  <TContext, TResponse>(
+  <TContext extends Record<string, unknown>, TResponse>(
     route: ApiRoute<TContext, TResponse>,
     options?: {
       auth: boolean;
     },
   ) =>
-  async (req: NextRequest, context: Promise<TContext>) => {
+  async (req: NextRequest, context: { params: Promise<TContext> }) => {
     try {
       if (options?.auth) {
         const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
