@@ -12,10 +12,12 @@ import { Timer } from '@/components/Timer';
 import { CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
+import { LOCAL } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
+import type { LocalStorage } from '@/types/storage';
 import { toast } from '@/utils/toast';
 
 interface InviteChatQRPageProps {
@@ -74,6 +76,40 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
       });
 
       setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
+
+      const stringifiedChattingInfo = localStorage.getItem(
+        LOCAL.CREATE_CHATTING_INFO,
+      );
+
+      const setChattingInfo = (data: LocalStorage.CreateChattingInfo) => {
+        localStorage.setItem(LOCAL.CREATE_CHATTING_INFO, JSON.stringify(data));
+      };
+
+      if (stringifiedChattingInfo) {
+        const { friendIndex, language }: LocalStorage.CreateChattingInfo =
+          JSON.parse(stringifiedChattingInfo);
+
+        setChattingInfo({
+          friendIndex,
+          language,
+        });
+
+        localStorage.setItem(
+          LOCAL.CREATE_CHATTING_INFO,
+          JSON.stringify({
+            friendIndex,
+            language,
+          } satisfies LocalStorage.CreateChattingInfo),
+        );
+      } else {
+        localStorage.setItem(
+          LOCAL.CREATE_CHATTING_INFO,
+          JSON.stringify({
+            friendIndex: 0,
+            language: LANGUAGE.ENGLISH,
+          } satisfies LocalStorage.CreateChattingInfo),
+        );
+      }
 
       unbindChannel();
 
