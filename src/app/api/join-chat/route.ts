@@ -34,6 +34,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
     const redirect = NextResponse.redirect(
       ROUTES.CHATTING_ROOM.url({
         searchParams: { channelId },
+        lng: payload.language,
       }),
     );
 
@@ -68,6 +69,8 @@ export const GET = createApiRoute(async (req: NextRequest) => {
 
       return NextResponse.redirect(req.nextUrl);
     }
+
+    console.error(e);
 
     req.nextUrl.pathname = ROUTES.CHATTING_LIST.pathname;
 

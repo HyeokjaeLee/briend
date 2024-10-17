@@ -12,12 +12,12 @@ import { Timer } from '@/components/Timer';
 import { CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
-import { LOCAL_STORAGE } from '@/constants/storage-key';
+import { IS_DEV } from '@/constants/public-env';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores/global';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
-import type { LocalStorage } from '@/types/storage';
 import { toast } from '@/utils/toast';
 
 interface InviteChatQRPageProps {
@@ -61,6 +61,8 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
 
   const { t } = useTranslation('invite-chat-qr');
 
+  const setChattingInfo = useGlobalStore((state) => state.setChattingInfo);
+
   useEffect(() => {
     const channel = pusher.subscribe(CHANNEL.WAITING);
 
@@ -77,42 +79,11 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
 
       setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
 
-      const stringifiedChattingInfo = localStorage.getItem(
-        LOCAL_STORAGE.CREATE_CHATTING_INFO,
-      );
+      setChattingInfo((prev) => {
+        prev.index += 1;
 
-      const setChattingInfo = (data: LocalStorage.CreateChattingInfo) => {
-        localStorage.setItem(
-          LOCAL_STORAGE.CREATE_CHATTING_INFO,
-          JSON.stringify(data),
-        );
-      };
-
-      if (stringifiedChattingInfo) {
-        const { friendIndex, language }: LocalStorage.CreateChattingInfo =
-          JSON.parse(stringifiedChattingInfo);
-
-        setChattingInfo({
-          friendIndex,
-          language,
-        });
-
-        localStorage.setItem(
-          LOCAL_STORAGE.CREATE_CHATTING_INFO,
-          JSON.stringify({
-            friendIndex,
-            language,
-          } satisfies LocalStorage.CreateChattingInfo),
-        );
-      } else {
-        localStorage.setItem(
-          LOCAL_STORAGE.CREATE_CHATTING_INFO,
-          JSON.stringify({
-            friendIndex: 0,
-            language: LANGUAGE.ENGLISH,
-          } satisfies LocalStorage.CreateChattingInfo),
-        );
-      }
+        return prev;
+      });
 
       unbindChannel();
 
@@ -126,7 +97,7 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
     });
 
     return unbindChannel;
-  }, [hostId, router, t]);
+  }, [hostId, router, setChattingInfo, t]);
 
   const { href } = ROUTES.JOIN_CHAT.url({
     searchParams: {
@@ -154,7 +125,18 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
             href={href}
           />
         </section>
-        <section className="flex flex-1 items-center justify-center">
+        <section className="flex flex-1 flex-col items-center justify-center">
+          {IS_DEV ? (
+            <>
+              DEV URL
+              <a
+                className="max-w-56 text-wrap text-xs text-gray-50"
+                href={href}
+              >
+                {href}
+              </a>
+            </>
+          ) : null}
           <p className="text-center text-slate-350">{t('notice-message')}</p>
         </section>
       </div>

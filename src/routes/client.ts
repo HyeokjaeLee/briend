@@ -40,7 +40,9 @@ export const ROUTES = {
   }),
   TEST: createRoute('/test'),
 
-  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/api/join-chat'),
+  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/api/join-chat', {
+    disableI18n: true,
+  }),
   EXPIRED_CHAT: createRoute('/expired-chat', {
     topHeaderType: 'back',
     bottomNavType: 'empty',

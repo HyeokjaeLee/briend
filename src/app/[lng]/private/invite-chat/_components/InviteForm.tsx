@@ -10,6 +10,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { ValidationMessage } from '@/components/ValidationMessage';
 import { LANGUAGE } from '@/constants/language';
+import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
@@ -51,9 +52,17 @@ export const InviteForm = () => {
   const { control, handleSubmit, register, formState } = useForm<FriendSchema>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
-    values: {
-      language: chattingInfo.language,
-      nickname: '',
+    defaultValues: async () => {
+      const chattingInfo = localStorage.getItem(
+        LOCAL_STORAGE.CREATE_CHATTING_INFO,
+      );
+
+      return {
+        language: chattingInfo
+          ? JSON.parse(chattingInfo).language
+          : LANGUAGE.ENGLISH,
+        nickname: '',
+      };
     },
   });
 

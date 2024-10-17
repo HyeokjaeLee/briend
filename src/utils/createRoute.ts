@@ -5,6 +5,7 @@ import { CustomError, ERROR } from './customError';
 import { isEnumValue } from './isEnumValue';
 
 interface RouteOptions {
+  disableI18n?: boolean;
   bottomNavType?: 'none' | 'root' | 'empty';
   topHeaderType?: 'none' | 'root' | 'empty' | 'back';
   topHeaderTitle?: string;
@@ -34,10 +35,11 @@ export const createRoute = <
     pathname,
     url: (
       params: TDynamicPath extends undefined
-        ? { searchParams?: CustomSearchParams }
+        ? { searchParams?: CustomSearchParams; lng?: LANGUAGE }
         : {
             dynamicPath: Record<Exclude<TDynamicPath, undefined>, string>;
             searchParams?: CustomSearchParams;
+            lng?: LANGUAGE;
           },
     ) => {
       const url = new URL(PUBLIC_ENV.BASE_URL);
@@ -52,10 +54,14 @@ export const createRoute = <
         }
       }
 
-      const lngPath = location.pathname.split('/')[1];
+      const lng =
+        params.lng ||
+        (typeof window !== 'undefined'
+          ? location.pathname.split('/')[1]
+          : null);
 
-      if (isEnumValue(LANGUAGE, lngPath)) {
-        url.pathname = `/${lngPath}${url.pathname}`;
+      if (!options?.disableI18n && isEnumValue(LANGUAGE, lng)) {
+        url.pathname = `/${lng}${url.pathname}`;
       }
 
       const { searchParams } = params;
