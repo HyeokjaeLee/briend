@@ -1,7 +1,7 @@
 import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
 
-import { ERROR } from './customError';
+import { CustomError, ERROR } from './customError';
 import { isEnumValue } from './isEnumValue';
 
 interface RouteOptions {
@@ -48,7 +48,7 @@ export const createRoute = <
         if ('dynamicPath' in params && params.dynamicPath) {
           url.pathname = pathname(params.dynamicPath);
         } else {
-          throw ERROR.NOT_ENOUGH_PARAMS(['dynamicPath']);
+          throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['dynamicPath']));
         }
       }
 

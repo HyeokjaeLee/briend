@@ -11,6 +11,7 @@ import { Theme } from '@radix-ui/themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { CookiesSync } from './CookiesSync';
+import { GlobalStoreSync } from './GlobalStoreSync';
 import { HistoryObserver } from './HistoryObserver';
 
 export const GlobalProvider = (
@@ -31,6 +32,7 @@ export const GlobalProvider = (
           <HistoryObserver />
         </Suspense>
         <CookiesSync />
+        <GlobalStoreSync />
         <QueryClientProvider client={queryClient}>
           <Theme {...props} />
         </QueryClientProvider>

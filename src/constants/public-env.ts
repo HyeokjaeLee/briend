@@ -1,4 +1,4 @@
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -12,7 +12,7 @@ const unsetKeys = Object.entries(publicEnv)
   .map(([key]) => `PUBLIC_ENV.${key}`);
 
 if (unsetKeys.length) {
-  throw ERROR.NOT_ENOUGH_PARAMS(unsetKeys);
+  throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(unsetKeys));
 }
 
 export const PUBLIC_ENV = publicEnv as Record<keyof typeof publicEnv, string>;

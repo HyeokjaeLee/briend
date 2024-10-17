@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import { createWithEqualityFn as create } from 'zustand/traditional';
 
 import { SESSION_STORAGE } from '@/constants/storage-key';
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 export type RouteType = 'back' | 'forward' | 'push' | 'replace' | 'reload';
 
@@ -70,7 +70,8 @@ export const useHistoryStore = create<HistoryStore>((set) => {
   ) => {
     const historyId = sessionStorage.getItem(SESSION_STORAGE.HISTORY_ID);
 
-    if (!historyId) throw ERROR.NOT_ENOUGH_PARAMS(['historyId']);
+    if (!historyId)
+      throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['historyId']));
 
     const historyState = history.state;
 

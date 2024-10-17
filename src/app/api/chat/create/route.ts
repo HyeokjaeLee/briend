@@ -6,7 +6,7 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams, ApiResponse } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/createApiRoute';
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 export const GET = createApiRoute(
   async (req: NextRequest) => {
@@ -16,7 +16,8 @@ export const GET = createApiRoute(
 
     const hostNickname = token?.name;
 
-    if (!hostNickname) throw ERROR.NOT_ENOUGH_PARAMS(['hostNickname']);
+    if (!hostNickname)
+      throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['hostNickname']));
 
     const params = Object.fromEntries(
       searchParams.entries(),

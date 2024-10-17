@@ -15,19 +15,16 @@ export class CustomError extends Error {
 }
 
 export const ERROR = {
-  NOT_ENOUGH_PARAMS: (requiredParams: string[]) =>
-    new CustomError({
-      message: `${requiredParams.join(', ')} is required`,
-      status: 400,
-    }),
-  UNAUTHORIZED: (message = 'Unauthorized') =>
-    new CustomError({
-      message,
-      status: 401,
-    }),
-  UNKNOWN_VALUE: (key: string = 'value') =>
-    new CustomError({
-      message: `${key} is unknown`,
-      status: 422,
-    }),
+  NOT_ENOUGH_PARAMS: (requiredParams: string[]) => ({
+    message: `${requiredParams.join(', ')} is required`,
+    status: 400,
+  }),
+  UNAUTHORIZED: (message = 'Unauthorized') => ({
+    message,
+    status: 401,
+  }),
+  UNKNOWN_VALUE: (key: string = 'value') => ({
+    message: `${key} is unknown`,
+    status: 422,
+  }),
 };

@@ -20,7 +20,7 @@ import {
 } from 'react-i18next';
 
 import { COOKIES } from '@/constants/cookies-key';
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 import { getOptions, languages } from './settings';
 
@@ -55,7 +55,8 @@ export const useTranslation = <
   const { i18n } = translation;
   const lng = useParams().lng;
 
-  if (typeof lng !== 'string') throw ERROR.UNKNOWN_VALUE('lng');
+  if (typeof lng !== 'string')
+    throw new CustomError(ERROR.UNKNOWN_VALUE('lng'));
 
   if (isServer && lng && i18n.resolvedLanguage !== lng) {
     i18n.changeLanguage(lng);

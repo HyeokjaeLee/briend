@@ -14,6 +14,4 @@ export enum SESSION_STORAGE {
 
 export enum LOCAL_STORAGE {
   CREATE_CHATTING_INFO = 'create-chatting-info',
-  MY_NICKNAME = 'my-nickname',
-  MY_PROFILE_EMOJI = 'my-profile-emoji',
 }

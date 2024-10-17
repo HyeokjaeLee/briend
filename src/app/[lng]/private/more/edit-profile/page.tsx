@@ -19,7 +19,7 @@ import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -88,7 +88,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
       const user = session?.user;
 
-      if (!user) throw ERROR.NOT_ENOUGH_PARAMS(['user']);
+      if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
       return {
         emoji: user.emoji,
@@ -140,7 +140,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         className="flex-col gap-8 flex-center"
         id={FORM_NAME}
         onSubmit={handleSubmit(async ({ emoji, language, nickname }) => {
-          if (!user) throw ERROR.NOT_ENOUGH_PARAMS(['user']);
+          if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
           if (
             emoji === user.emoji &&
@@ -218,7 +218,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
                 value={field.value}
                 onValueChange={(language) => {
                   if (!isEnumValue(LANGUAGE, language))
-                    throw ERROR.UNKNOWN_VALUE('language');
+                    throw new CustomError(ERROR.UNKNOWN_VALUE('language'));
 
                   return field.onChange(language);
                 }}

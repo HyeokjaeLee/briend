@@ -1,4 +1,4 @@
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 const privateEnv = {
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
@@ -17,7 +17,7 @@ const unsetKeys = Object.entries(privateEnv)
   .map(([key]) => `PRIVATE_ENV.${key}`);
 
 if (unsetKeys.length) {
-  throw ERROR.NOT_ENOUGH_PARAMS(unsetKeys);
+  throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(unsetKeys));
 }
 
 export const PRIVATE_ENV = privateEnv as Record<

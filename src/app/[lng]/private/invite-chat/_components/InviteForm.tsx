@@ -2,20 +2,19 @@
 
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
+import { shallow } from 'zustand/shallow';
 
-import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { ValidationMessage } from '@/components/ValidationMessage';
 import { LANGUAGE } from '@/constants/language';
-import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import type { LocalStorage } from '@/types/storage';
-import { ERROR } from '@/utils/customError';
+import { useGlobalStore } from '@/stores/global';
+import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
@@ -44,34 +43,21 @@ export const InviteForm = () => {
 
   const router = useCustomRouter();
 
-  const [friendIndex, setFriendIndex] = useState(0);
+  const [chattingInfo, setChattingInfo] = useGlobalStore(
+    (state) => [state.chattingInfo, state.setChattingInfo],
+    shallow,
+  );
 
   const { control, handleSubmit, register, formState } = useForm<FriendSchema>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
-    defaultValues: async () => {
-      const defaultValues: FriendSchema = {
-        language: LANGUAGE.ENGLISH,
-        nickname: '',
-      };
-
-      const stringifiedChattingInfo = localStorage.getItem(
-        LOCAL_STORAGE.CREATE_CHATTING_INFO,
-      );
-
-      if (stringifiedChattingInfo) {
-        const { friendIndex, language }: LocalStorage.CreateChattingInfo =
-          JSON.parse(stringifiedChattingInfo);
-
-        setFriendIndex(friendIndex);
-        defaultValues.language = language ?? LANGUAGE.ENGLISH;
-      }
-
-      return defaultValues;
+    values: {
+      language: chattingInfo.language,
+      nickname: '',
     },
   });
 
-  const nicknamePlaceholder = `Friend ${friendIndex}`;
+  const nicknamePlaceholder = `Friend ${chattingInfo.index}`;
 
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT,
@@ -90,7 +76,7 @@ export const InviteForm = () => {
     <form
       className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
-        if (!user) throw ERROR.NOT_ENOUGH_PARAMS(['user']);
+        if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
         createChatMutation.mutate({
           userId: user.id,
@@ -122,15 +108,13 @@ export const InviteForm = () => {
               value={field.value}
               onValueChange={(language) => {
                 if (!isEnumValue(LANGUAGE, language))
-                  throw ERROR.UNKNOWN_VALUE('language');
+                  throw new CustomError(ERROR.UNKNOWN_VALUE('language'));
 
-                localStorage.setItem(
-                  LOCAL_STORAGE.CREATE_CHATTING_INFO,
-                  JSON.stringify({
-                    friendIndex,
-                    language,
-                  } satisfies LocalStorage.CreateChattingInfo),
-                );
+                setChattingInfo((prev) => {
+                  prev.language = language;
+
+                  return prev;
+                });
 
                 return field.onChange(language);
               }}

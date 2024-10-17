@@ -4,7 +4,7 @@ import { COOKIES } from '@/constants/cookies-key';
 import { prisma } from '@/prisma';
 import type { ApiParams, ApiResponse } from '@/types/api';
 import { createApiRoute } from '@/utils/createApiRoute';
-import { ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 
 export const POST = createApiRoute(
   async (req: NextRequest) => {
@@ -12,7 +12,7 @@ export const POST = createApiRoute(
 
     const id = req.cookies.get(COOKIES.USER_ID)?.value;
 
-    if (!id) throw ERROR.NOT_ENOUGH_PARAMS(['id']);
+    if (!id) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['id']));
 
     const providerIdKey = `${params.provider}_id` as const;
 
