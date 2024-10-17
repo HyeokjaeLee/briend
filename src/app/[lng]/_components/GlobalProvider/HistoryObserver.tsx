@@ -3,7 +3,7 @@ import { shallow } from 'zustand/shallow';
 
 import { useLayoutEffect, useRef } from 'react';
 
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { getHistorySession, useHistoryStore } from '@/stores/history';
 
 export const HistoryObserver = () => {
@@ -77,8 +77,10 @@ export const HistoryObserver = () => {
       }
 
       setHistoryIndex(indexedHistory);
-    } else if (sessionStorage.getItem(SESSION.REPLACED_MARK) === 'true') {
-      sessionStorage.removeItem(SESSION.REPLACED_MARK);
+    } else if (
+      sessionStorage.getItem(SESSION_STORAGE.REPLACED_MARK) === 'true'
+    ) {
+      sessionStorage.removeItem(SESSION_STORAGE.REPLACED_MARK);
       setLastRouteType('replace');
       setHistoryIndex(historySession.index);
     } else {

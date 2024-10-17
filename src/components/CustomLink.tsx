@@ -4,7 +4,7 @@ import Link, { type LinkProps } from 'next/link';
 
 import { useEffect, useState } from 'react';
 
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useCustomHref } from '@/hooks/useCustomHref';
 import { isCurrentHref } from '@/utils/isCurrentHref';
 
@@ -50,7 +50,7 @@ export const CustomLink = ({
         }
 
         if (replace) {
-          sessionStorage.setItem(SESSION.REPLACED_MARK, 'true');
+          sessionStorage.setItem(SESSION_STORAGE.REPLACED_MARK, 'true');
         }
 
         onClick?.(e);

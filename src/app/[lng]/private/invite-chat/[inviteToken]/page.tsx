@@ -12,7 +12,7 @@ import { Timer } from '@/components/Timer';
 import { CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
-import { LOCAL } from '@/constants/storage-key';
+import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
@@ -78,11 +78,14 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
       setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
 
       const stringifiedChattingInfo = localStorage.getItem(
-        LOCAL.CREATE_CHATTING_INFO,
+        LOCAL_STORAGE.CREATE_CHATTING_INFO,
       );
 
       const setChattingInfo = (data: LocalStorage.CreateChattingInfo) => {
-        localStorage.setItem(LOCAL.CREATE_CHATTING_INFO, JSON.stringify(data));
+        localStorage.setItem(
+          LOCAL_STORAGE.CREATE_CHATTING_INFO,
+          JSON.stringify(data),
+        );
       };
 
       if (stringifiedChattingInfo) {
@@ -95,7 +98,7 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
         });
 
         localStorage.setItem(
-          LOCAL.CREATE_CHATTING_INFO,
+          LOCAL_STORAGE.CREATE_CHATTING_INFO,
           JSON.stringify({
             friendIndex,
             language,
@@ -103,7 +106,7 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
         );
       } else {
         localStorage.setItem(
-          LOCAL.CREATE_CHATTING_INFO,
+          LOCAL_STORAGE.CREATE_CHATTING_INFO,
           JSON.stringify({
             friendIndex: 0,
             language: LANGUAGE.ENGLISH,

@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import { useMemo } from 'react';
 
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
 import { isCurrentHref } from '@/utils/isCurrentHref';
@@ -57,7 +57,7 @@ export const useCustomRouter = () => {
 
         if (isCurrentHref(customHref)) return;
 
-        sessionStorage.setItem(SESSION.REPLACED_MARK, 'true');
+        sessionStorage.setItem(SESSION_STORAGE.REPLACED_MARK, 'true');
 
         return router.replace(customHref, options);
       },

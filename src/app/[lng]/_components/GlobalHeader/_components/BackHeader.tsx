@@ -6,7 +6,7 @@ import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomIconButton } from '@/components/CustomIconButton';
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
@@ -40,7 +40,7 @@ export const BackHeader = () => {
         variant="ghost"
         onClick={() => {
           if (isReload) {
-            sessionStorage.setItem(SESSION.ROOT_NAV_ANIMATION, 'left');
+            sessionStorage.setItem(SESSION_STORAGE.ROOT_NAV_ANIMATION, 'left');
             router.replace(ROUTES.CHATTING_LIST.pathname);
           } else {
             router.back();

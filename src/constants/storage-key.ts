@@ -1,4 +1,4 @@
-export enum SESSION {
+export enum SESSION_STORAGE {
   HISTORY_ID = 'history-id',
   HISTORY = 'history',
   HISTORY_INDEX = 'history-index',
@@ -12,7 +12,7 @@ export enum SESSION {
   LOGOUT_MARK = 'logout-mark',
 }
 
-export enum LOCAL {
+export enum LOCAL_STORAGE {
   CREATE_CHATTING_INFO = 'create-chatting-info',
   MY_NICKNAME = 'my-nickname',
   MY_PROFILE_EMOJI = 'my-profile-emoji',

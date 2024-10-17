@@ -5,7 +5,7 @@ import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useGlobalStore } from '@/stores/global';
 
 export const LogoutButton = () => {
@@ -17,7 +17,7 @@ export const LogoutButton = () => {
   useEffect(() => {
     if (!isLogouting) return;
 
-    sessionStorage.setItem(SESSION.LOGOUT_MARK, 'true');
+    sessionStorage.setItem(SESSION_STORAGE.LOGOUT_MARK, 'true');
 
     return () => {
       //! next auth 자체 redirect는 새로 고치기 전까지 세션을 초기화 하지 못하는 버그가 있음

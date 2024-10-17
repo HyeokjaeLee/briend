@@ -16,7 +16,7 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
 import { cn } from '@/utils/cn';
@@ -72,12 +72,14 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
   useEffect(() => {
     //! 애니메이션 정보를 저장 후 다음 라우트에서 사용
-    const animation = sessionStorage.getItem(SESSION.ROOT_NAV_ANIMATION);
+    const animation = sessionStorage.getItem(
+      SESSION_STORAGE.ROOT_NAV_ANIMATION,
+    );
 
     if (isArrayItem(['left', 'right'] as const, animation)) {
       setRootAnimation(animation);
 
-      sessionStorage.removeItem(SESSION.ROOT_NAV_ANIMATION);
+      sessionStorage.removeItem(SESSION_STORAGE.ROOT_NAV_ANIMATION);
     }
   }, [pathname, setRootAnimation]);
 
@@ -105,12 +107,12 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
                     if (index < currentRouteIndex) {
                       sessionStorage.setItem(
-                        SESSION.ROOT_NAV_ANIMATION,
+                        SESSION_STORAGE.ROOT_NAV_ANIMATION,
                         'right',
                       );
                     } else if (index > currentRouteIndex) {
                       sessionStorage.setItem(
-                        SESSION.ROOT_NAV_ANIMATION,
+                        SESSION_STORAGE.ROOT_NAV_ANIMATION,
                         'left',
                       );
                     }

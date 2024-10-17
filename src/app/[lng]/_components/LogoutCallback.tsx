@@ -3,17 +3,18 @@
 import { useEffect } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { toast } from '@/utils/toast';
 
 export const LogoutCallback = () => {
   const { t } = useTranslation('layout');
 
   useEffect(() => {
-    const isLogouted = sessionStorage.getItem(SESSION.LOGOUT_MARK) === 'true';
+    const isLogouted =
+      sessionStorage.getItem(SESSION_STORAGE.LOGOUT_MARK) === 'true';
 
     if (isLogouted) {
-      sessionStorage.removeItem(SESSION.LOGOUT_MARK);
+      sessionStorage.removeItem(SESSION_STORAGE.LOGOUT_MARK);
 
       toast({
         message: t('logout-toast-message'),

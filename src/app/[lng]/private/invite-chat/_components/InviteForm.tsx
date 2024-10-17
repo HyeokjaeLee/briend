@@ -10,7 +10,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { ValidationMessage } from '@/components/ValidationMessage';
 import { LANGUAGE } from '@/constants/language';
-import { LOCAL } from '@/constants/storage-key';
+import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
@@ -56,7 +56,7 @@ export const InviteForm = () => {
       };
 
       const stringifiedChattingInfo = localStorage.getItem(
-        LOCAL.CREATE_CHATTING_INFO,
+        LOCAL_STORAGE.CREATE_CHATTING_INFO,
       );
 
       if (stringifiedChattingInfo) {
@@ -125,7 +125,7 @@ export const InviteForm = () => {
                   throw ERROR.UNKNOWN_VALUE('language');
 
                 localStorage.setItem(
-                  LOCAL.CREATE_CHATTING_INFO,
+                  LOCAL_STORAGE.CREATE_CHATTING_INFO,
                   JSON.stringify({
                     friendIndex,
                     language,

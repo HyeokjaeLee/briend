@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { createWithEqualityFn as create } from 'zustand/traditional';
 
-import { SESSION } from '@/constants/storage-key';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ERROR } from '@/utils/customError';
 
 export type RouteType = 'back' | 'forward' | 'push' | 'replace' | 'reload';
@@ -39,9 +39,11 @@ interface HistoryStore {
 }
 
 export const getHistorySession = () => {
-  const historyIdSession = sessionStorage.getItem(SESSION.HISTORY_ID);
-  const historyIndexSession = sessionStorage.getItem(SESSION.HISTORY_INDEX);
-  const historySession = sessionStorage.getItem(SESSION.HISTORY);
+  const historyIdSession = sessionStorage.getItem(SESSION_STORAGE.HISTORY_ID);
+  const historyIndexSession = sessionStorage.getItem(
+    SESSION_STORAGE.HISTORY_INDEX,
+  );
+  const historySession = sessionStorage.getItem(SESSION_STORAGE.HISTORY);
 
   if (!historyIdSession || !historyIndexSession || !historySession) return null;
 
@@ -57,7 +59,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
     customHistory: HistoryStore['customHistory'],
   ) => {
     sessionStorage.setItem(
-      SESSION.HISTORY,
+      SESSION_STORAGE.HISTORY,
       JSON.stringify(Array.from(customHistory.entries())),
     );
   };
@@ -66,7 +68,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
     historyIndex: number,
     customHistory: HistoryStore['customHistory'],
   ) => {
-    const historyId = sessionStorage.getItem(SESSION.HISTORY_ID);
+    const historyId = sessionStorage.getItem(SESSION_STORAGE.HISTORY_ID);
 
     if (!historyId) throw ERROR.NOT_ENOUGH_PARAMS(['historyId']);
 
@@ -76,7 +78,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
 
     history.replaceState(historyState, '');
 
-    sessionStorage.setItem(SESSION.HISTORY_INDEX, String(historyIndex));
+    sessionStorage.setItem(SESSION_STORAGE.HISTORY_INDEX, String(historyIndex));
 
     customHistory.set(historyIndex, location.pathname + location.search);
 
@@ -84,7 +86,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
   };
 
   const setHistoryIdSession = (historyId: string) => {
-    sessionStorage.setItem(SESSION.HISTORY_ID, historyId);
+    sessionStorage.setItem(SESSION_STORAGE.HISTORY_ID, historyId);
   };
 
   return {
