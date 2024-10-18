@@ -11,6 +11,8 @@ export class CustomError extends Error {
     super(props?.message);
     this.status = props?.status ?? 500;
     this.cause = props?.cause;
+
+    console.error(this);
   }
 }
 

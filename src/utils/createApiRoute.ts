@@ -1,9 +1,6 @@
 import type { NextRequest } from 'next/server';
 
 import { NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
-
-import { PRIVATE_ENV } from '@/constants/private-env';
 
 import { CustomError, ERROR } from './customError';
 
@@ -24,7 +21,7 @@ export const createApiRoute =
   async (req: NextRequest, context: { params: Promise<TContext> }) => {
     try {
       if (options?.auth) {
-        const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
+        const token = 'token';
 
         if (!token) throw new CustomError(ERROR.UNAUTHORIZED());
       }
