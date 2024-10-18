@@ -42,14 +42,3 @@ export const GET = createApiRoute(
     auth: true,
   },
 );
-
-export const POST = (
-  req: NextRequest,
-  { params }: { params: Promise<{ test: string }> },
-) => {
-  console.info(params, req);
-
-  return NextResponse.json({
-    test: 1,
-  });
-};
