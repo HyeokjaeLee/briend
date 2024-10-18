@@ -14,22 +14,23 @@ export const POST = createApiRoute(async (req: NextRequest) => {
   if (!id) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['id']));
 
   const user = await prisma.users.update({
-    where: {
-      id,
-    },
-    data: {
-      emoji: params.emoji,
-      name: params.nickname,
-    },
-  });
+      where: {
+        id,
+      },
+      data: {
+        emoji: params.emoji,
+        name: params.nickname,
+      },
+    });
 
-  if (!user.name) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user.name']));
+    if (!user.name) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user.name']));
 
-  return NextResponse.json<ApiResponse.EDIT_PROFILE>({
-    emoji: user.emoji,
-    nickname: user.name,
-  }),
+    return NextResponse.json<ApiResponse.EDIT_PROFILE>({
+      emoji: user.emoji,
+      nickname: user.name,
+    });
+  },
   {
     auth: true,
   },
-});
+);
