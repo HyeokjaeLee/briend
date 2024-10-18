@@ -28,5 +28,8 @@ export const POST = createApiRoute(async (req: NextRequest) => {
   return NextResponse.json<ApiResponse.EDIT_PROFILE>({
     emoji: user.emoji,
     nickname: user.name,
-  });
+  }),
+  {
+    auth: true,
+  },
 });
