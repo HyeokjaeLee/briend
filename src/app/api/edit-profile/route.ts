@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { COOKIES } from '@/constants/cookies-key';
 import { prisma } from '@/prisma';
 import type { ApiParams, ApiResponse } from '@/types/api';
-import { createApiRoute } from '@/utils/createApiRoute';
+import { createApiRoute } from '@/utils/api/createApiRoute';
 import { CustomError, ERROR } from '@/utils/customError';
 
 export const POST = createApiRoute(

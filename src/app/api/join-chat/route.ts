@@ -11,8 +11,8 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
-import { createApiRoute } from '@/utils/createApiRoute';
-import { setUserIdCookie } from '@/utils/setUserIdCookie';
+import { createApiRoute } from '@/utils/api/createApiRoute';
+import { setUserIdCookie } from '@/utils/api/setUserIdCookie';
 
 export const GET = createApiRoute(async (req: NextRequest) => {
   const inviteToken = req.nextUrl.searchParams.get('inviteToken');

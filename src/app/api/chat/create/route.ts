@@ -1,18 +1,18 @@
 import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt';
 
 import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams, ApiResponse } from '@/types/api';
 import type { Payload } from '@/types/jwt';
-import { createApiRoute } from '@/utils/createApiRoute';
+import { createApiRoute } from '@/utils/api/createApiRoute';
+import { getAuthToken } from '@/utils/api/getAuthToken';
 import { CustomError, ERROR } from '@/utils/customError';
 
 export const GET = createApiRoute(
   async (req: NextRequest) => {
     const { searchParams } = req.nextUrl;
 
-    const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
+    const token = await getAuthToken({ req });
 
     const hostNickname = token?.name;
 

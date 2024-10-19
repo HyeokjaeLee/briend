@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
 import { COOKIES } from './constants/cookies-key';
-import { setUserIdCookie } from './utils/setUserIdCookie';
+import { setUserIdCookie } from './utils/api/setUserIdCookie';
 
 export const config = {
   matcher: [
