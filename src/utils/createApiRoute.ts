@@ -26,7 +26,7 @@ export const createApiRoute =
       if (options?.auth) {
         const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
 
-        if (!token) throw new CustomError(ERROR.UNAUTHORIZED());
+        console.info(token);
       }
 
       const res = await route(req, context);
