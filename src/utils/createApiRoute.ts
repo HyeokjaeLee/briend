@@ -24,7 +24,11 @@ export const createApiRoute =
   async (req: NextRequest, context: { params: Promise<TContext> }) => {
     try {
       if (options?.auth) {
-        const token = await getToken({ req, secret: PRIVATE_ENV.AUTH_SECRET });
+        const token = await getToken({
+          req,
+          secret: PRIVATE_ENV.AUTH_SECRET,
+          secureCookie: true,
+        });
 
         console.info(token);
       }
