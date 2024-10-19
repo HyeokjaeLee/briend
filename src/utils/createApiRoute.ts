@@ -5,7 +5,7 @@ import { getToken } from 'next-auth/jwt';
 
 import { PRIVATE_ENV } from '@/constants/private-env';
 
-import { CustomError, ERROR } from './customError';
+import { CustomError } from './customError';
 
 type ApiRoute<TContext extends Record<string, unknown>, TResponse> = (
   req: NextRequest,
