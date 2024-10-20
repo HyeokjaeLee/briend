@@ -19,7 +19,9 @@ interface ChattingPageProps {
 const ChattingPage = async (props: ChattingPageProps) => {
   const searchParams = await props.searchParams;
 
-  const channelToken = (await cookies()).get(
+  const cookieStore = await cookies();
+
+  const channelToken = cookieStore.get(
     `${COOKIES.CHANNEL_PREFIX}${searchParams.channelId}`,
   )?.value;
 
