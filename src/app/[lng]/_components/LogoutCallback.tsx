@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
-
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { toast } from '@/utils/toast';
 
@@ -21,7 +20,7 @@ export const LogoutCallback = () => {
         message: t('logout-toast-message'),
       });
     }
-  }, [t, setCookie]);
+  }, [t]);
 
   return <></>;
 };
