@@ -2,6 +2,8 @@
 
 import { useEffect, use } from 'react';
 
+import { ChattingBottomTextfield } from './_components/ChattingBottomTextfield';
+
 interface ChattingPageProps {
   searchParams: Promise<{
     channelId: string;
@@ -15,7 +17,12 @@ const ChattingPage = (props: ChattingPageProps) => {
 
   useEffect(() => {}, []);
 
-  return <article>{channelId}</article>;
+  return (
+    <article>
+      {channelId}
+      <ChattingBottomTextfield />
+    </article>
+  );
 };
 
 export default ChattingPage;

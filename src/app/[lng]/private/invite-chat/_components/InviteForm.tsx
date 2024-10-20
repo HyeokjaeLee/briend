@@ -40,8 +40,6 @@ export const InviteForm = () => {
     nickname: z.string().max(10, t('nickname-max-length')),
   });
 
-  type FriendSchema = z.infer<typeof formSchema>;
-
   const router = useCustomRouter();
 
   const [chattingInfo, setChattingInfo] = useGlobalStore(
@@ -49,7 +47,9 @@ export const InviteForm = () => {
     shallow,
   );
 
-  const { control, handleSubmit, register, formState } = useForm<FriendSchema>({
+  const { control, handleSubmit, register, formState } = useForm<
+    z.infer<typeof formSchema>
+  >({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: async () => {

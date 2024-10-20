@@ -1,13 +1,18 @@
 import { createRoute } from '@/utils/createRoute';
 
 export const ROUTES = {
-  CHATTING_LIST: createRoute('/', {
+  HOME: createRoute('/', {
+    bottomNavType: 'root',
+    topHeaderType: 'root',
+  }),
+  CHATTING_LIST: createRoute('/my-chattings', {
     bottomNavType: 'root',
     topHeaderType: 'root',
     topHeaderTitle: 'chat-title',
   }),
   CHATTING_ROOM: createRoute<undefined, 'channelId'>('/chatting', {
     topHeaderType: 'back',
+    bottomNavType: 'empty',
   }),
 
   MORE_MENUS: createRoute('/private/more', {

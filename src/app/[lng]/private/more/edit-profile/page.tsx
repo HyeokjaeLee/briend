@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { useEffect, useReducer, use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { BiRefresh } from 'react-icons/bi';
+import { RiRefreshLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
@@ -160,7 +160,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
       >
         <section className="w-full flex-col gap-8 flex-center">
           <Skeleton className="size-36 rounded-full" loading={!selectedEmoji}>
-            <div className="flex size-36 select-none items-center justify-center rounded-full bg-slate-350 text-8xl">
+            <div className="flex size-36 select-none items-center justify-center rounded-full bg-slate-350 text-7xl">
               {selectedEmoji}
             </div>
           </Skeleton>
@@ -193,7 +193,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             dispatchRandomEmojiList();
           }}
         >
-          <BiRefresh className="size-7" />
+          <RiRefreshLine className="size-7" />
           {t('change-random-emoji')}
         </CustomButton>
         <label className="w-full">

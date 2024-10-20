@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { BiAlarm } from 'react-icons/bi';
+import { RiAlarmLine } from 'react-icons/ri';
 
 import { cn } from '@/utils/cn';
 
@@ -65,7 +65,7 @@ export const Timer = ({
         'animate-fade animate-reverse animate-duration-1000': leftSeconds <= 1,
       })}
     >
-      <BiAlarm
+      <RiAlarmLine
         className={cn('size-6', {
           'animate-wiggle-more animate-duration-500 animate-infinite':
             notEnoughTime,
