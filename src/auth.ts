@@ -266,7 +266,7 @@ export const {
           const res = NextResponse.redirect(
             new URL(ROUTES.LOGIN.pathname, nextUrl.origin),
           );
-          res.cookies.delete(COOKIES.ACCESS_TOKEN);
+
           res.cookies.set(COOKIES.PRIVATE_REFERER, nextUrl.href);
 
           return res;
