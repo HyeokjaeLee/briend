@@ -16,7 +16,6 @@ import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalProvider } from './_components/GlobalProvider';
-import { LogoutCallback } from './_components/LogoutCallback';
 import { ToastProvider } from './_components/ToastProvider';
 
 export const metadata: Metadata = {
@@ -49,7 +48,7 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
             <GlobalLoading>
               <GlobalHeader />
               <ToastProvider />
-              <LogoutCallback />
+
               {children}
               <BottomNav />
             </GlobalLoading>

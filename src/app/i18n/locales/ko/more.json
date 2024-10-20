@@ -3,6 +3,7 @@
   "edit-invite-message": "초대 메시지 수정",
   "logout": "로그아웃",
   "empty-email": "Google 계정을 연동해주세요",
+  "logout-toast-message": "로그아웃 되었습니다.",
   "connected-account": "연동해제",
   "need-connect-account": "연동하기",
   "kakao-connected": "카카오 계정이 연동되었어요",

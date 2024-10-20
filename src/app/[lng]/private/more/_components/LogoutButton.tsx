@@ -1,29 +1,33 @@
 'use client';
 
+import { nanoid } from 'nanoid';
+
 import { useEffect, useState } from 'react';
+import { useCookies } from 'react-cookie';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { useGlobalStore } from '@/stores/global';
+import { COOKIES } from '@/constants/cookies-key';
+import { toast } from '@/utils/toast';
 
 export const LogoutButton = () => {
   const { t } = useTranslation('more');
-  const [isLogouting, setIsLogouting] = useState(false);
+  const [, setCookie] = useCookies([COOKIES.USER_ID]);
 
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const [isLogouting, setIsLogouting] = useState(false);
 
   useEffect(() => {
     if (!isLogouting) return;
 
-    sessionStorage.setItem(SESSION_STORAGE.LOGOUT_MARK, 'true');
-
     return () => {
-      //! next auth 자체 redirect는 새로 고치기 전까지 세션을 초기화 하지 못하는 버그가 있음
-      location.reload();
+      setIsLogouting(false);
+      setCookie(COOKIES.USER_ID, nanoid());
+      toast({
+        message: t('logout-toast-message'),
+      });
     };
-  }, [isLogouting]);
+  }, [isLogouting, setCookie, t]);
 
   return (
     <CustomButton
@@ -32,7 +36,6 @@ export const LogoutButton = () => {
       variant="ghost"
       onClick={() => {
         setIsLogouting(true);
-        setIsLoading(true);
       }}
     >
       {t('logout')}
