@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
-import { COOKIES } from '@/constants/cookies-key';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useGlobalStore } from '@/stores/global';
 
@@ -27,8 +25,6 @@ export const LogoutButton = () => {
     };
   }, [isLogouting]);
 
-  const [, , removeCookie] = useCookies([COOKIES.USER_ID]);
-
   return (
     <CustomButton
       className="flex w-full items-center justify-between rounded-none text-slate-50"
@@ -37,7 +33,6 @@ export const LogoutButton = () => {
       onClick={() => {
         setIsLogouting(true);
         setIsLoading(true);
-        removeCookie(COOKIES.USER_ID);
       }}
     >
       {t('logout')}
