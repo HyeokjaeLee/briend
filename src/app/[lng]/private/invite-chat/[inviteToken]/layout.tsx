@@ -1,10 +1,9 @@
-import { errors, jwtVerify } from 'jose';
-import { redirect } from 'next/navigation';
+import { errors } from 'jose';
 
 import type { LANGUAGE } from '@/constants/language';
-import { PRIVATE_ENV } from '@/constants/private-env';
-import { ROUTES } from '@/routes/client';
 import type { Payload } from '@/types/jwt';
+import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
+import { CustomError, ERROR_STATUS } from '@/utils/customError';
 
 interface InviteChatQRLayoutProps {
   children: React.ReactNode;
@@ -20,17 +19,16 @@ const InviteChatQRLayout = async (props: InviteChatQRLayoutProps) => {
   const { children } = props;
 
   try {
-    await jwtVerify<Payload.InviteToken>(
-      params.inviteToken,
-      new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET),
-    );
+    await jwtSecretVerify<Payload.InviteToken>(params.inviteToken);
 
     return children;
   } catch (e) {
     if (e instanceof errors.JWTExpired)
-      return redirect(ROUTES.EXPIRED_CHAT.pathname);
+      throw new CustomError({
+        status: ERROR_STATUS.EXPIRED_CHAT,
+      });
 
-    return redirect(ROUTES.INVITE_CHAT.pathname);
+    throw e;
   }
 };
 

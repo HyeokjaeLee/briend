@@ -90,7 +90,7 @@ export const InviteForm = () => {
         createChatMutation.mutate({
           userId: user.id,
           language,
-          nickname: nickname || nicknamePlaceholder,
+          guestNickName: nickname || nicknamePlaceholder,
           emoji: user.emoji,
         });
       })}

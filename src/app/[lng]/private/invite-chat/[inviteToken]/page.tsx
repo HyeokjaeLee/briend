@@ -18,6 +18,7 @@ import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores/global';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
+import { ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
 
 interface InviteChatQRPageProps {
@@ -148,7 +149,13 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
               message: t('expired-toast-message'),
             });
 
-            router.replace(ROUTES.EXPIRED_CHAT.pathname);
+            router.replace(
+              ROUTES.ERROR_TO.url({
+                searchParams: {
+                  status: ERROR_STATUS.EXPIRED_CHAT.toString(),
+                },
+              }),
+            );
           }}
         />
       </div>

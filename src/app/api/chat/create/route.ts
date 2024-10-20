@@ -26,7 +26,7 @@ export const GET = createApiRoute(
     const inviteToken = await new SignJWT({
       hostId: params.userId,
       hostNickname,
-      nickname: params.nickname,
+      guestNickname: params.guestNickName,
       language: params.language,
     } satisfies Payload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })

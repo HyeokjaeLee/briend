@@ -1,0 +1,7 @@
+{
+  "unknown-error": "일시적인 오류입니다.\n잠시 후 다시 시도해주세요.",
+  "expired-chat": "이 채팅은 만료된 채팅이에요.\n초대 QR코드를 다시 생성해주세요.",
+  "not-allowed": "잘못된 접근입니다.",
+  "home-button-text": "홈으로 돌아가기",
+  "create-chat-button-text": "채팅 생성하기"
+}

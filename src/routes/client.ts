@@ -11,7 +11,7 @@ export const ROUTES = {
     topHeaderTitle: 'chat-title',
   }),
   CHATTING_ROOM: createRoute<undefined, 'channelId'>('/chatting', {
-    topHeaderType: 'back',
+    topHeaderType: 'empty',
     bottomNavType: 'empty',
   }),
 
@@ -57,6 +57,8 @@ export const ROUTES = {
     topHeaderType: 'back',
     bottomNavType: 'empty',
   }),
+
+  ERROR_TO: createRoute<undefined, 'status'>('/error-to'),
 };
 
 export type RouteObject = (typeof ROUTES)[keyof typeof ROUTES];

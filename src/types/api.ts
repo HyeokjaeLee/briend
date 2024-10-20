@@ -5,7 +5,7 @@ export namespace ApiParams {
   export interface CREATE_CHAT {
     userId: string;
     language: LANGUAGE;
-    nickname: string;
+    guestNickName: string;
     emoji: string;
   }
 

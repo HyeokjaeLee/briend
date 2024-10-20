@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 
-import { errors, jwtVerify, SignJWT } from 'jose';
+import { errors, SignJWT } from 'jose';
 import { nanoid } from 'nanoid';
 import { NextResponse } from 'next/server';
 
@@ -12,7 +12,9 @@ import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
+import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { setUserIdCookie } from '@/utils/api/setUserIdCookie';
+import { ERROR_STATUS } from '@/utils/customError';
 
 export const GET = createApiRoute(async (req: NextRequest) => {
   const inviteToken = req.nextUrl.searchParams.get('inviteToken');
@@ -24,10 +26,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
   }
 
   try {
-    const { payload } = await jwtVerify<Payload.InviteToken>(
-      inviteToken,
-      new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET),
-    );
+    const { payload } = await jwtSecretVerify<Payload.InviteToken>(inviteToken);
 
     const channelId = nanoid();
 
@@ -40,10 +39,20 @@ export const GET = createApiRoute(async (req: NextRequest) => {
 
     const guestId = setUserIdCookie(req, redirect);
 
+    if (guestId === payload.hostId) {
+      return NextResponse.redirect(
+        ROUTES.ERROR_TO.url({
+          searchParams: { status: ERROR_STATUS.UNAUTHORIZED.toString() },
+        }),
+      );
+    }
+
     const channelToken = await new SignJWT({
       channelId,
       hostId: payload.hostId,
+      hostNickname: payload.hostNickname,
       guestId,
+      guestNickname: payload.guestNickname,
     } satisfies Payload.ChannelToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
@@ -61,16 +70,19 @@ export const GET = createApiRoute(async (req: NextRequest) => {
     if (e instanceof errors.JWTExpired) {
       const { payload } = e;
 
-      req.nextUrl.pathname = ROUTES.EXPIRED_CHAT.pathname;
+      req.nextUrl.pathname = ROUTES.ERROR_TO.pathname;
 
       if ('language' in payload && typeof payload.language === 'string') {
         req.nextUrl.pathname = `/${payload.language}` + req.nextUrl.pathname;
       }
 
+      req.nextUrl.searchParams.set(
+        'status',
+        ERROR_STATUS.EXPIRED_CHAT.toString(),
+      );
+
       return NextResponse.redirect(req.nextUrl);
     }
-
-    console.error(e);
 
     req.nextUrl.pathname = ROUTES.CHATTING_LIST.pathname;
 

@@ -11,7 +11,7 @@ export const CustomIconButton = ({
   return (
     <IconButton
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer',
+        'disabled:cursor-not-allowed enabled:cursor-pointer outline-none',
         className,
       )}
       color={color}

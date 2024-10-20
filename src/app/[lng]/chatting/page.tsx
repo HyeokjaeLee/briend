@@ -1,8 +1,14 @@
-'use client';
+import { pick } from 'es-toolkit';
+import { decodeJwt, errors } from 'jose';
+import { cookies } from 'next/headers';
 
-import { useEffect, use } from 'react';
+import { COOKIES } from '@/constants/cookies-key';
+import type { Payload } from '@/types/jwt';
+import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
+import { CustomError, ERROR } from '@/utils/customError';
 
 import { ChattingBottomTextfield } from './_components/ChattingBottomTextfield';
+import { ChattingTopNav } from './_components/ChattingTopNav';
 
 interface ChattingPageProps {
   searchParams: Promise<{
@@ -10,17 +16,30 @@ interface ChattingPageProps {
   }>;
 }
 
-const ChattingPage = (props: ChattingPageProps) => {
-  const searchParams = use(props.searchParams);
+const ChattingPage = async (props: ChattingPageProps) => {
+  const searchParams = await props.searchParams;
 
-  const { channelId } = searchParams;
+  const channelToken = (await cookies()).get(
+    `${COOKIES.CHANNEL_PREFIX}${searchParams.channelId}`,
+  )?.value;
 
-  useEffect(() => {}, []);
+  if (!channelToken) throw new CustomError(ERROR.UNAUTHORIZED());
+
+  try {
+    await jwtSecretVerify<Payload.ChannelToken>(channelToken);
+  } catch (e) {
+    if (!(e instanceof errors.JWTExpired))
+      throw new CustomError(ERROR.UNAUTHORIZED());
+  }
+
+  const channelInfo = decodeJwt<Payload.ChannelToken>(channelToken);
 
   return (
-    <article>
-      {channelId}
-      <ChattingBottomTextfield />
+    <article className="relative flex flex-1 flex-col">
+      <ChattingTopNav
+        {...pick(channelInfo, ['guestNickname', 'hostId', 'hostNickname'])}
+      />
+      <ChattingBottomTextfield exp={channelInfo.exp} />
     </article>
   );
 };

@@ -13,7 +13,7 @@ export const CustomButton = ({
   return (
     <Button
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold',
+        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-none',
         {
           'h-14': size === '4',
         },

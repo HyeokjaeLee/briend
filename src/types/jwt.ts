@@ -10,13 +10,15 @@ export namespace Payload {
   export interface InviteToken {
     hostId: string;
     hostNickname: string;
-    nickname: string;
+    guestNickname: string;
     language: LANGUAGE;
   }
 
   export interface ChannelToken {
     channelId: string;
     hostId: string;
+    hostNickname: string;
     guestId: string;
+    guestNickname: string;
   }
 }

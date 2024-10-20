@@ -8,10 +8,20 @@ export class CustomError extends Error {
   status: number;
 
   constructor(props?: CustomErrorProps) {
-    super(props?.message);
-    this.status = props?.status ?? 500;
+    const status = props?.status ?? 500;
+    const message = `<${status}> ${props?.message ?? 'Unknown Error'}`;
+
+    super(message);
+    this.status = status;
     this.cause = props?.cause;
   }
+}
+
+export enum ERROR_STATUS {
+  NOT_FOUND = 404,
+  UNAUTHORIZED = 401,
+  EXPIRED_CHAT = 403,
+  UNKNOWN_VALUE = 422,
 }
 
 export const ERROR = {
@@ -22,6 +32,10 @@ export const ERROR = {
   UNAUTHORIZED: (message = 'Unauthorized') => ({
     message,
     status: 401,
+  }),
+  EXPIRED_CHAT: (message = 'Expired Chat') => ({
+    message,
+    status: 403,
   }),
   UNKNOWN_VALUE: (key: string = 'value') => ({
     message: `${key} is unknown`,

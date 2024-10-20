@@ -25,6 +25,8 @@ const Template = ({ children }: { children: React.ReactNode }) => {
     return () => clearTimeout(timer);
   }, [rootAnimation, setRootAnimation, lastRouteType]);
 
+  console.info(rootAnimation);
+
   return (
     <main
       className={cn(
