@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import { NextResponse } from 'next/server';
 
 import { pusher } from '@/app/pusher/server';
-import { CHANNEL } from '@/constants/channel';
+import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { ROUTES } from '@/routes/client';
@@ -59,9 +59,13 @@ export const GET = createApiRoute(async (req: NextRequest) => {
       .setExpirationTime('1d')
       .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
 
-    await pusher.trigger(CHANNEL.WAITING, payload.hostId, {
-      channelToken,
-    } satisfies PusherType.joinChat);
+    await pusher.trigger(
+      PUSHER_CHANNEL.WAITING,
+      PUSHER_EVENT.WAITING(payload.hostId),
+      {
+        channelToken,
+      } satisfies PusherType.joinChat,
+    );
 
     redirect.cookies.set(`${COOKIES.CHANNEL_PREFIX}${channelId}`, channelToken);
 

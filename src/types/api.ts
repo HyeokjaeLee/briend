@@ -17,6 +17,18 @@ export namespace ApiParams {
     nickname: string;
     emoji: string;
   }
+
+  export interface SEND_MESSAGE {
+    channelToken: string;
+    message: string;
+    toUserId: string;
+  }
+
+  export interface RECEIVE_MESSAGE {
+    id: string;
+    channelToken: string;
+    message: string;
+  }
 }
 
 export namespace ApiResponse {
@@ -32,10 +44,29 @@ export namespace ApiResponse {
     nickname: string;
     emoji: string;
   }
+
+  export interface SEND_MESSAGE {
+    id: string;
+  }
+
+  export interface RECEIVE_MESSAGE {
+    id: string;
+  }
 }
 
 export namespace PusherType {
   export interface joinChat {
     channelToken: string;
+  }
+
+  export interface sendMessage {
+    id: string;
+    message: string;
+  }
+
+  export interface receiveMessage {
+    id: string;
+    userId: string;
+    translatedMessage: string;
   }
 }

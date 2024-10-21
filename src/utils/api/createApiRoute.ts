@@ -6,7 +6,10 @@ import { CustomError, ERROR } from '../customError';
 
 import { getAuthToken } from './getAuthToken';
 
-type ApiRoute<TContext extends Record<string, unknown>, TResponse> = (
+type ApiRoute<
+  TResponse,
+  TContext extends Record<string, unknown> = Record<string, never>,
+> = (
   req: NextRequest,
   context: {
     params: Promise<TContext>;
@@ -14,8 +17,8 @@ type ApiRoute<TContext extends Record<string, unknown>, TResponse> = (
 ) => Promise<NextResponse<TResponse>>;
 
 export const createApiRoute =
-  <TContext extends Record<string, unknown>, TResponse>(
-    route: ApiRoute<TContext, TResponse>,
+  <TResponse, TContext extends Record<string, unknown> = Record<string, never>>(
+    route: ApiRoute<TResponse, TContext>,
     options?: {
       auth: boolean;
     },

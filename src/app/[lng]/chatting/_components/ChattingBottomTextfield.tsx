@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 
 import { useEffect, useRef, useState } from 'react';
@@ -9,22 +10,32 @@ import { RiLock2Fill, RiSendPlane2Fill } from 'react-icons/ri';
 import { useTranslation } from '@/app/i18n/client';
 import { CustomBottomNav } from '@/components/CustomBottomNav';
 import { CustomIconButton } from '@/components/CustomIconButton';
+import { API_ROUTES } from '@/routes/api';
+import type { Payload } from '@/types/jwt';
 import { cn } from '@/utils/cn';
 import { CustomError, ERROR } from '@/utils/customError';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DropdownMenu, TextArea } from '@radix-ui/themes';
+import { useMutation } from '@tanstack/react-query';
 
 const MAX_MESSAGE_LENGTH = 1000;
 const DEFAULT_HEIGHT = 3.5;
 
-interface ChattingBottomTextfieldProps {
+interface ChattingBottomTextfieldProps
+  extends Pick<Payload.ChannelToken, 'guestId' | 'hostId'> {
   exp?: number;
+  channelToken: string;
 }
 
 export const ChattingBottomTextfield = ({
   exp,
+  channelToken,
+  hostId,
+  guestId,
 }: ChattingBottomTextfieldProps) => {
   if (!exp) throw new CustomError(ERROR.EXPIRED_CHAT());
+
+  const session = useSession();
 
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -59,6 +70,10 @@ export const ChattingBottomTextfield = ({
 
   const { t } = useTranslation('chatting');
 
+  const sendMessageMutation = useMutation({
+    mutationFn: API_ROUTES.SEND_MESSAGE,
+  });
+
   return isExpired ? (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="absolute bottom-4 right-4">
@@ -73,7 +88,19 @@ export const ChattingBottomTextfield = ({
     </DropdownMenu.Root>
   ) : (
     <CustomBottomNav className="pl-4 pr-3">
-      <form className="flex gap-2 flex-center">
+      <form
+        className="flex gap-2 flex-center"
+        onSubmit={form.handleSubmit(
+          ({ message }) => {
+            sendMessageMutation.mutate({
+              channelToken,
+              message,
+              toUserId: session.data?.user.id === hostId ? guestId : hostId,
+            });
+          },
+          () => {},
+        )}
+      >
         <div className="relative flex-1">
           <TextArea
             {...form.register('message')}

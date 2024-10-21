@@ -31,7 +31,7 @@ export const ChattingTopNav = ({
         </Link>
       </CustomIconButton>
       <h1 className="text-lg font-semibold">
-        {session.data?.user.id === hostId ? hostNickname : guestNickname}
+        {session.data?.user.id === hostId ? guestNickname : hostNickname}
       </h1>
     </CustomTopHeader>
   );

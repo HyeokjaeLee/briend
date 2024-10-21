@@ -9,7 +9,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { QR } from '@/components/QR';
 import { Timer } from '@/components/Timer';
-import { CHANNEL } from '@/constants/channel';
+import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { IS_DEV } from '@/constants/public-env';
@@ -65,37 +65,42 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
   const setChattingInfo = useGlobalStore((state) => state.setChattingInfo);
 
   useEffect(() => {
-    const channel = pusher.subscribe(CHANNEL.WAITING);
+    const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
+    const pusherWaitingEvent = PUSHER_EVENT.WAITING(hostId);
 
     const unbindChannel = () => {
-      channel.unbind(hostId);
+      channel.unbind(pusherWaitingEvent);
+      channel.unsubscribe();
     };
 
-    channel.bind(hostId, ({ channelToken }: PusherType.joinChat) => {
-      const { channelId } = decodeJwt<Payload.ChannelToken>(channelToken);
+    channel.bind(
+      pusherWaitingEvent,
+      ({ channelToken }: PusherType.joinChat) => {
+        const { channelId } = decodeJwt<Payload.ChannelToken>(channelToken);
 
-      toast({
-        message: t('start-chatting'),
-      });
+        toast({
+          message: t('start-chatting'),
+        });
 
-      setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
+        setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
 
-      setChattingInfo((prev) => {
-        prev.index += 1;
+        setChattingInfo((prev) => {
+          prev.index += 1;
 
-        return prev;
-      });
+          return prev;
+        });
 
-      unbindChannel();
+        unbindChannel();
 
-      router.replace(
-        ROUTES.CHATTING_ROOM.url({
-          searchParams: {
-            channelId,
-          },
-        }),
-      );
-    });
+        return router.replace(
+          ROUTES.CHATTING_ROOM.url({
+            searchParams: {
+              channelId,
+            },
+          }),
+        );
+      },
+    );
 
     return unbindChannel;
   }, [hostId, router, setChattingInfo, t]);

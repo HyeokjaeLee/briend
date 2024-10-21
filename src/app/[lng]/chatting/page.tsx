@@ -8,6 +8,7 @@ import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { CustomError, ERROR } from '@/utils/customError';
 
 import { ChattingBottomTextfield } from './_components/ChattingBottomTextfield';
+import { ChattingList } from './_components/ChattingList';
 import { ChattingTopNav } from './_components/ChattingTopNav';
 
 interface ChattingPageProps {
@@ -41,7 +42,14 @@ const ChattingPage = async (props: ChattingPageProps) => {
       <ChattingTopNav
         {...pick(channelInfo, ['guestNickname', 'hostId', 'hostNickname'])}
       />
-      <ChattingBottomTextfield exp={channelInfo.exp} />
+      <ChattingList
+        {...pick(channelInfo, ['hostId', 'channelId'])}
+        channelToken={channelToken}
+      />
+      <ChattingBottomTextfield
+        {...pick(channelInfo, ['hostId', 'guestId', 'exp'])}
+        channelToken={channelToken}
+      />
     </article>
   );
 };

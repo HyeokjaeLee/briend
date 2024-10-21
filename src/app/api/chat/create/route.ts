@@ -8,7 +8,7 @@ import { createApiRoute } from '@/utils/api/createApiRoute';
 import { getAuthToken } from '@/utils/api/getAuthToken';
 import { CustomError, ERROR } from '@/utils/customError';
 
-export const GET = createApiRoute(
+export const GET = createApiRoute<ApiResponse.CREATE_CHAT>(
   async (req: NextRequest) => {
     const { searchParams } = req.nextUrl;
 
@@ -36,7 +36,7 @@ export const GET = createApiRoute(
 
     return NextResponse.json({
       inviteToken,
-    } satisfies ApiResponse.CREATE_CHAT);
+    });
   },
   {
     auth: true,
