@@ -189,7 +189,7 @@ export const {
                 });
 
             return user;
-          } catch (e) {
+          } catch {
             //! 중복된 id를 가진 경우 새로운 id를 생성하여 유저 생성
             const createUserWithNewId = async () => {
               newUserData.id = nanoid();

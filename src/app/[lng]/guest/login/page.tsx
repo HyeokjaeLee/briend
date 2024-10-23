@@ -25,7 +25,7 @@ const LoginPage = async (props: LoginPageProps) => {
         <h1 className="ml-2 text-lg font-semibold">{t('title')}</h1>
       </header>
       <section>
-        <LoginButton fullSize lng={lng} provider={LOGIN_PROVIDERS.GOOGLE} />
+        <LoginButton fullSize provider={LOGIN_PROVIDERS.GOOGLE} />
       </section>
       <div className="m-4 gap-2 text-slate-350 flex-center">
         <hr className="flex-1 border-slate-350" />

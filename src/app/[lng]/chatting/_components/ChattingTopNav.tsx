@@ -10,11 +10,10 @@ import { CustomTopHeader } from '@/components/CustomTopHeader';
 import { ROUTES } from '@/routes/client';
 import type { Payload } from '@/types/jwt';
 
-interface ChattingTopNavProps
-  extends Pick<
-    Payload.ChannelToken,
-    'guestNickname' | 'hostId' | 'hostNickname'
-  > {}
+type ChattingTopNavProps = Pick<
+  Payload.ChannelToken,
+  'guestNickname' | 'hostId' | 'hostNickname'
+>;
 
 export const ChattingTopNav = ({
   hostId,

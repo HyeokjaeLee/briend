@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Transition } from 'react-transition-group';
 
 import { cn } from '@/utils/cn';
-
 interface ValidationMessageProps {
   message?: string;
 }

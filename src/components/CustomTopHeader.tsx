@@ -6,12 +6,10 @@ import { createPortal } from 'react-dom';
 import { SELECTOR } from '@/constants/selector';
 import { cn } from '@/utils/cn';
 
-interface CustomTopHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export const CustomTopHeader = ({
   className,
   ...props
-}: CustomTopHeaderProps) => {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const [headerContainerElement, setHeaderContainerElement] =
     useState<HTMLElement | null>(null);
 

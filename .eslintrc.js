@@ -9,12 +9,11 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended', // 해당 플러그인의 권장 규칙을 사용합니다.
-    'plugin:react/recommended',
     'plugin:import/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended', // plugin과 eslint-config-prettier 설정을 한번에 합니다.
     'plugin:tailwindcss/recommended',
+    'next/typescript',
     'next/core-web-vitals',
   ],
   parser: '@typescript-eslint/parser', // ESLint 파서를 지정합니다.
@@ -25,17 +24,14 @@ module.exports = {
     ecmaVersion: 'latest', // Modern ECMAScript를 파싱할 수 있습니다.
     sourceType: 'module', // import, export를 사용할 수 있습니다.
   },
-  plugins: ['react', '@typescript-eslint', 'import', 'jsx-a11y'],
+  plugins: ['@typescript-eslint', 'import', 'jsx-a11y'],
   rules: {
-    // ESLint 규칙을 지정합니다. extends에서 지정된 규칙을 덮어 쓸수도 있습니다.
-    'react/react-in-jsx-scope': 'off',
     'import/no-duplicates': 'error',
     'react/jsx-curly-brace-presence': [
       'error',
       { props: 'never', children: 'never' },
     ],
     '@typescript-eslint/no-explicit-any': 'off',
-    'react/prop-types': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/ban-types': 'off',
     '@typescript-eslint/no-empty-interface': 'off',
@@ -121,7 +117,7 @@ module.exports = {
     'import/resolver': {
       typescript: {
         // this loads <rootdir>/tsconfig.json to eslint
-        project: './packages/wello/tsconfig.json',
+        project: './tsconfig.json',
       },
     },
   },

@@ -1,13 +1,11 @@
 import { cn } from '@/utils/cn';
 import { IconButton, type IconButtonProps } from '@radix-ui/themes';
 
-interface CustomIconButtonProps extends IconButtonProps {}
-
 export const CustomIconButton = ({
   className,
   color = 'blue',
   ...restProps
-}: CustomIconButtonProps) => {
+}: IconButtonProps) => {
   return (
     <IconButton
       className={cn(

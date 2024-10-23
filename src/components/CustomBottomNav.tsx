@@ -6,12 +6,10 @@ import { createPortal } from 'react-dom';
 import { SELECTOR } from '@/constants/selector';
 import { cn } from '@/utils/cn';
 
-interface CustomBottomNavProps extends React.HTMLAttributes<HTMLDivElement> {}
-
 export const CustomBottomNav = ({
   className,
   ...props
-}: CustomBottomNavProps) => {
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const [bottomContainerElement, setBottomContainerElement] =
     useState<HTMLElement | null>(null);
 
