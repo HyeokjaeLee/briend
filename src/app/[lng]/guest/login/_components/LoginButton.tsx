@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { useTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/app/i18n/server';
 import { signIn } from '@/auth';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
@@ -17,7 +17,7 @@ export const LoginButton = async ({
   fullSize = false,
   lng,
 }: LoginButtonProps) => {
-  const { t } = await useTranslation('login', lng);
+  const { t } = await getTranslation('login', lng);
 
   return (
     <form

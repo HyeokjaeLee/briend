@@ -1,4 +1,4 @@
-import { useTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/app/i18n/server';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
 import Logo from '@/svgs/logo.svg';
@@ -16,7 +16,7 @@ const LoginPage = async (props: LoginPageProps) => {
 
   const { lng } = params;
 
-  const { t } = await useTranslation('login', lng);
+  const { t } = await getTranslation('login', lng);
 
   return (
     <article className="flex flex-1 flex-col justify-between px-4 py-8">

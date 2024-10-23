@@ -25,7 +25,7 @@ const initI18next = async (lng: LANGUAGE, ns: string | string[]) => {
   return i18nInstance;
 };
 
-export const useTranslation = async <
+export const getTranslation = async <
   Ns extends FlatNamespace,
   KPrefix extends KeyPrefix<FallbackNs<Ns>> = undefined,
 >(

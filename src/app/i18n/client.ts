@@ -2,7 +2,7 @@
 
 import type { FlatNamespace, KeyPrefix } from 'i18next';
 
-import { use } from 'i18next';
+import { use as i18next } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import { useParams } from 'next/navigation';
@@ -26,7 +26,7 @@ import { getOptions, languages } from './settings';
 
 const isServer = typeof window === 'undefined';
 
-use(initReactI18next)
+i18next(initReactI18next)
   .use(LanguageDetector)
   .use(
     resourcesToBackend(

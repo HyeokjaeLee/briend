@@ -1,6 +1,6 @@
 import { FaChevronRight } from 'react-icons/fa6';
 
-import { useTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/app/i18n/server';
 import { signIn, signOut } from '@/auth';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
@@ -36,7 +36,7 @@ const MorePage = async (props: MorePageProps) => {
 
   const { lng } = params;
 
-  const { t } = await useTranslation('more', lng);
+  const { t } = await getTranslation('more', lng);
 
   return (
     <article className="mx-4 mt-8 flex flex-col">
