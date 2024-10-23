@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/shallow';
 
 import { Controller, useForm } from 'react-hook-form';
 
@@ -43,8 +43,7 @@ export const InviteForm = () => {
   const router = useCustomRouter();
 
   const [chattingInfo, setChattingInfo] = useGlobalStore(
-    (state) => [state.chattingInfo, state.setChattingInfo],
-    shallow,
+    useShallow((state) => [state.chattingInfo, state.setChattingInfo]),
   );
 
   const { control, handleSubmit, register, formState } = useForm<

@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { createWithEqualityFn as create } from 'zustand/traditional';
+import { create } from 'zustand';
 
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { CustomError, ERROR } from '@/utils/customError';

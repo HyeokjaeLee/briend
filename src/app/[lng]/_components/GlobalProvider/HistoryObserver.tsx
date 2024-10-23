@@ -1,5 +1,5 @@
 import { usePathname, useSearchParams } from 'next/navigation';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/shallow';
 
 import { useLayoutEffect, useRef } from 'react';
 
@@ -17,7 +17,7 @@ export const HistoryObserver = () => {
     setCustomHistory,
     reset,
   ] = useHistoryStore(
-    (state) => [
+    useShallow((state) => [
       state.historyId,
       state.setHistoryIndex,
       state.lastRouteType,
@@ -26,8 +26,7 @@ export const HistoryObserver = () => {
       state.setHistoryId,
       state.setCustomHistory,
       state.reset,
-    ],
-    shallow,
+    ]),
   );
 
   const pathname = usePathname();

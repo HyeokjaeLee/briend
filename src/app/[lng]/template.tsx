@@ -1,6 +1,6 @@
 'use client';
 
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
@@ -9,12 +9,11 @@ import { cn } from '@/utils/cn';
 
 const Template = ({ children }: { children: React.ReactNode }) => {
   const [lastRouteType, rootAnimation, setRootAnimation] = useHistoryStore(
-    (state) => [
+    useShallow((state) => [
       state.lastRouteType ?? 'reload',
       state.rootAnimation,
       state.setRootAnimation,
-    ],
-    shallow,
+    ]),
   );
 
   useEffect(() => {
