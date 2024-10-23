@@ -10,12 +10,12 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended', // 해당 플러그인의 권장 규칙을 사용합니다.
     'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
     'plugin:import/recommended',
+    'plugin:react-hooks/recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended', // plugin과 eslint-config-prettier 설정을 한번에 합니다.
     'plugin:tailwindcss/recommended',
-    "next/core-web-vitals"
+    'next/core-web-vitals',
   ],
   parser: '@typescript-eslint/parser', // ESLint 파서를 지정합니다.
   parserOptions: {
