@@ -4,6 +4,7 @@ import Image from 'next/image';
 
 import { useTranslation } from '@/app/i18n/client';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
+import { useGlobalStore } from '@/stores/global';
 import { cn } from '@/utils/cn';
 
 export interface LoginButtonContentsProps {
@@ -16,6 +17,7 @@ export const LoginButtonContents = ({
   fullSize,
 }: LoginButtonContentsProps) => {
   const { t } = useTranslation('login');
+  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
 
   return (
     <button
@@ -30,9 +32,7 @@ export const LoginButtonContents = ({
           [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
         }[provider],
       )}
-      onClick={() => {
-        console.info('clicked');
-      }}
+      onClick={() => setIsLoading(true)}
     >
       <div
         className={

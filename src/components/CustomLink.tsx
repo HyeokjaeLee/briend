@@ -1,8 +1,6 @@
 'use client';
 
 import Link, { type LinkProps } from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
@@ -33,9 +31,7 @@ export const CustomLink = ({
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const [isLoading, setIsLoading] = useGlobalStore(
-    useShallow((state) => [state.isLoading, state.setIsLoading]),
-  );
+  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -44,18 +40,6 @@ export const CustomLink = ({
 
     setCustomHref(customHref);
   }, [getCustomHref, i18nOptimize, stringHref]);
-
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-
-  useEffect(() => {
-    if (!routingLoading) return;
-
-    if (!isLoading) return;
-
-    return () => setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, pathname, isLoading]);
 
   return (
     <Link

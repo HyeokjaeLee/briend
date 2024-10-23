@@ -10,14 +10,18 @@ import { useMemo } from 'react';
 
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores/global';
 import { useHistoryStore } from '@/stores/history';
 import { isCurrentHref } from '@/utils/isCurrentHref';
 
 import { useCustomHref } from './useCustomHref';
 
+interface CustomNavigation extends NavigateOptions {
+  routingLoading?: boolean;
+}
 interface CustomRouter extends AppRouterInstance {
-  push: (href: string | URL, options?: NavigateOptions) => void;
-  replace: (href: string | URL, options?: NavigateOptions) => void;
+  push: (href: string | URL, options?: CustomNavigation) => void;
+  replace: (href: string | URL, options?: CustomNavigation) => void;
   prefetch: (href: string | URL, options?: PrefetchOptions) => void;
 }
 
@@ -26,6 +30,8 @@ export const useCustomRouter = () => {
   const getCustomHref = useCustomHref();
 
   return useMemo((): CustomRouter => {
+    const { setIsLoading } = useGlobalStore.getState();
+
     return {
       ...router,
       back: () => {
@@ -46,6 +52,8 @@ export const useCustomRouter = () => {
         return router.back();
       },
       push: (href, options) => {
+        if (options?.routingLoading ?? true) setIsLoading(true);
+
         const customHref = getCustomHref(href);
 
         if (isCurrentHref(customHref)) return;
@@ -53,6 +61,7 @@ export const useCustomRouter = () => {
         return router.push(customHref, options);
       },
       replace: (href, options) => {
+        if (options?.routingLoading ?? true) setIsLoading(true);
         const customHref = getCustomHref(href);
 
         if (isCurrentHref(customHref)) return;

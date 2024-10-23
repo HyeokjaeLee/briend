@@ -14,9 +14,7 @@ interface LoginPageProps {
 const LoginPage = async (props: LoginPageProps) => {
   const params = await props.params;
 
-  const { lng } = params;
-
-  const { t } = await getTranslation('login', lng);
+  const { t } = await getTranslation('login', params.lng);
 
   return (
     <article className="flex flex-1 flex-col justify-between px-4 py-8">
@@ -33,8 +31,8 @@ const LoginPage = async (props: LoginPageProps) => {
         <hr className="flex-1 border-slate-350" />
       </div>
       <section className="gap-4 flex-center">
-        <LoginButton lng={lng} provider={LOGIN_PROVIDERS.KAKAO} />
-        <LoginButton lng={lng} provider={LOGIN_PROVIDERS.NAVER} />
+        <LoginButton provider={LOGIN_PROVIDERS.KAKAO} />
+        <LoginButton provider={LOGIN_PROVIDERS.NAVER} />
       </section>
     </article>
   );

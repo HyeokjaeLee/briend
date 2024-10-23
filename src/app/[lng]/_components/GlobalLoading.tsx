@@ -1,22 +1,33 @@
 'use client';
 
-import type { PropsWithChildren } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
+import { useShallow } from 'zustand/shallow';
 
+import { useEffect, type PropsWithChildren } from 'react';
+
+import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
 import { useGlobalStore } from '@/stores/global';
-import Logo from '@/svgs/logo.svg';
-import { Spinner } from '@radix-ui/themes';
 
 export const GlobalLoading = ({ children }: PropsWithChildren) => {
-  const isLoading = useGlobalStore((state) => state.isLoading);
+  const [isLoading, setIsLoading] = useGlobalStore(
+    useShallow((state) => [state.isLoading, state.setIsLoading]),
+  );
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!isLoading) return;
+
+    return () => setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, pathname, isLoading]);
 
   return (
     <>
       {children}
       {isLoading ? (
-        <article className="absolute size-full flex-1 animate-fade flex-col gap-4 bg-slate-850/80 backdrop-blur-xl flex-center animate-delay-100 animate-duration-150">
-          <Logo className="w-24" />
-          <Spinner className="text-zinc-50" size="3" />
-        </article>
+        <LoadingTemplate className="absolute animate-fade bg-slate-850/80 backdrop-blur-xl animate-delay-100 animate-duration-150" />
       ) : null}
     </>
   );
