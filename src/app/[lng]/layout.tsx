@@ -27,9 +27,9 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps {
   children: ReactElement;
-  params: {
+  params: Promise<{
     lng: LANGUAGE;
-  };
+  }>;
 }
 
 const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
@@ -45,13 +45,11 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
         <GlobalProvider className="flex size-full bg-zinc-50">
           <div className="flex-1" />
           <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-850 text-slate-50 shadow-xl">
-            <GlobalLoading>
-              <GlobalHeader />
-              <ToastProvider />
-
-              {children}
-              <BottomNav />
-            </GlobalLoading>
+            <GlobalHeader />
+            <ToastProvider />
+            {children}
+            <BottomNav />
+            <GlobalLoading />
           </div>
           <div className="flex-1" />
         </GlobalProvider>
