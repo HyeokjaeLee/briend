@@ -8,7 +8,7 @@ export type RouteType = 'back' | 'forward' | 'push' | 'replace' | 'reload';
 
 type CustomHistory = Map<number, string>;
 
-type RootAnimation = 'left' | 'right';
+type RootAnimation = 'left' | 'right' | 'left-out' | 'right-out';
 
 interface HistoryStore {
   customHistory: CustomHistory;

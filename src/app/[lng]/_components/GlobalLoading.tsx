@@ -24,7 +24,7 @@ const GlobalLoadingController = () => {
   }, [searchParams, pathname, isLoading]);
 
   return isLoading ? (
-    <LoadingTemplate className="absolute animate-fade bg-slate-850/80 backdrop-blur-xl animate-delay-100 animate-duration-150" />
+    <LoadingTemplate className="absolute animate-fade bg-slate-850/80 backdrop-blur-xl animate-delay-150 animate-duration-150" />
   ) : null;
 };
 

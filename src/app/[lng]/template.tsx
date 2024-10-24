@@ -1,8 +1,9 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useHistoryStore } from '@/stores/history';
 import { cn } from '@/utils/cn';
@@ -16,15 +17,34 @@ const Template = ({ children }: { children: React.ReactNode }) => {
     ]),
   );
 
+  const pathname = usePathname();
+
+  const [isAnimatedOut, setIsAnimatedOut] = useState(false);
+
   useEffect(() => {
-    if (!rootAnimation) return;
+    const { rootAnimation } = useHistoryStore.getState();
 
-    const timer = setTimeout(() => setRootAnimation(undefined), 300);
+    setIsAnimatedOut(!!rootAnimation?.includes('out'));
+  }, [pathname]);
 
-    return () => clearTimeout(timer);
-  }, [rootAnimation, setRootAnimation, lastRouteType]);
+  useEffect(() => {
+    if (!isAnimatedOut) return;
 
-  console.info(rootAnimation);
+    setIsAnimatedOut(false);
+    if (rootAnimation === 'left-out') {
+      setRootAnimation('left');
+    } else if (rootAnimation === 'right-out') {
+      setRootAnimation('right');
+    }
+  }, [isAnimatedOut, rootAnimation, setRootAnimation]);
+
+  useEffect(() => {
+    if (rootAnimation === 'left' || rootAnimation === 'right') {
+      setTimeout(() => {
+        setRootAnimation(undefined);
+      }, 300);
+    }
+  }, [rootAnimation, setIsAnimatedOut, setRootAnimation]);
 
   return (
     <main
@@ -35,9 +55,19 @@ const Template = ({ children }: { children: React.ReactNode }) => {
           'animate-fade-up': ['forward', 'push'].includes(lastRouteType),
         },
         {
-          'animate-fade-left': rootAnimation === 'left',
-          'animate-fade-right': rootAnimation === 'right',
+          'animate-fade-right animate-reverse animate-duration-75':
+            rootAnimation === 'left-out',
+          'animate-fade-lett animate-reverse animate-duration-75':
+            rootAnimation === 'right-out',
         },
+        isAnimatedOut
+          ? 'invisible'
+          : {
+              'animate-fade-left animate-duration-200':
+                rootAnimation === 'left',
+              'animate-fade-right animate-duration-200':
+                rootAnimation === 'right',
+            },
       )}
     >
       {children}

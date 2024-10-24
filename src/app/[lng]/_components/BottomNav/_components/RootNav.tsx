@@ -2,7 +2,6 @@
 
 import { useSession } from 'next-auth/react';
 
-import { useEffect } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
   RiAddCircleLine,
@@ -16,12 +15,10 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
-import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useHistoryStore } from '@/stores/history';
 import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
-import { isArrayItem } from '@/utils/isArrayItem';
 
 interface RootNavProps {
   pathname: string;
@@ -70,19 +67,6 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
   const { t } = useTranslation('layout');
 
-  useEffect(() => {
-    //! 애니메이션 정보를 저장 후 다음 라우트에서 사용
-    const animation = sessionStorage.getItem(
-      SESSION_STORAGE.ROOT_NAV_ANIMATION,
-    );
-
-    if (isArrayItem(['left', 'right'] as const, animation)) {
-      setRootAnimation(animation);
-
-      sessionStorage.removeItem(SESSION_STORAGE.ROOT_NAV_ANIMATION);
-    }
-  }, [pathname, setRootAnimation]);
-
   return (
     <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-16 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
@@ -106,15 +90,9 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     if (!isAuthenticated) return;
 
                     if (index < currentRouteIndex) {
-                      sessionStorage.setItem(
-                        SESSION_STORAGE.ROOT_NAV_ANIMATION,
-                        'right',
-                      );
+                      setRootAnimation('right-out');
                     } else if (index > currentRouteIndex) {
-                      sessionStorage.setItem(
-                        SESSION_STORAGE.ROOT_NAV_ANIMATION,
-                        'left',
-                      );
+                      setRootAnimation('left-out');
                     }
                   }}
                 >
