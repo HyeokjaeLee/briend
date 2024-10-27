@@ -6,6 +6,7 @@ import { useShallow } from 'zustand/shallow';
 import { useEffect, useState } from 'react';
 
 import { NAVIGATION_ANIMATION } from '@/constants/etc';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useCustomHref } from '@/hooks/useCustomHref';
 import { useGlobalStore } from '@/stores/global';
 import { isCurrentHref } from '@/utils/isCurrentHref';
@@ -25,7 +26,7 @@ export const CustomLink = ({
   i18nOptimize = true,
   replace,
   withLoading = true,
-  withAnimation = NAVIGATION_ANIMATION.FROM_LEFT,
+  withAnimation = NAVIGATION_ANIMATION.FROM_BOTTOM,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
@@ -61,6 +62,9 @@ export const CustomLink = ({
         if (withLoading) setIsLoading(true);
 
         if (withAnimation) setNavigationAnimation(withAnimation);
+
+        if (replace)
+          sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
 
         onClick?.(e);
       }}

@@ -5,6 +5,7 @@ import type { HTMLMotionProps } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { usePathname } from 'next/navigation';
+import { useShallow } from 'zustand/shallow';
 
 import type { PropsWithChildren } from 'react';
 import { useContext, useEffect, useRef } from 'react';
@@ -48,19 +49,37 @@ const ANIMATION_GROUP: Record<NAVIGATION_ANIMATION, HTMLMotionProps<'main'>> = {
     initial: { x: -300, opacity: 1 },
     animate: { x: 0, opacity: 1 },
     exit: { x: 300, opacity: 0 },
+    transition: { duration: 0.075 },
   },
   [NAVIGATION_ANIMATION.FROM_RIGHT]: {
     initial: { x: 300, opacity: 1 },
     animate: { x: 0, opacity: 1 },
     exit: { x: -300, opacity: 0 },
+    transition: { duration: 0.075 },
   },
+  [NAVIGATION_ANIMATION.FROM_TOP]: {
+    initial: { y: -500, opacity: 1 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: 500, opacity: 0 },
+    transition: { duration: 0.1 },
+  },
+  [NAVIGATION_ANIMATION.FROM_BOTTOM]: {
+    initial: { y: 500, opacity: 1 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: -500, opacity: 0 },
+    transition: { duration: 0.1 },
+  },
+  [NAVIGATION_ANIMATION.NONE]: {},
 };
 
 export const Main = ({ children }: PropsWithChildren) => {
   const segment = usePathname();
 
-  const navigationAnimation = useGlobalStore(
-    (state) => state.navigationAnimation,
+  const [navigationAnimation, setNavigationAnimation] = useGlobalStore(
+    useShallow((state) => [
+      state.navigationAnimation,
+      state.setNavigationAnimation,
+    ]),
   );
 
   const animation = navigationAnimation
@@ -73,7 +92,10 @@ export const Main = ({ children }: PropsWithChildren) => {
         {...animation}
         key={segment}
         className="flex flex-1 flex-col overflow-auto"
-        transition={{ duration: 0.15 }}
+        transition={{ duration: 0.075 }}
+        onAnimationEnd={() => {
+          setNavigationAnimation(null);
+        }}
       >
         <FrozenRouter>{children}</FrozenRouter>
       </motion.main>

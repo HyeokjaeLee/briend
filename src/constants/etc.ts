@@ -7,4 +7,7 @@ export enum LOGIN_PROVIDERS {
 export enum NAVIGATION_ANIMATION {
   FROM_LEFT = 'from-left',
   FROM_RIGHT = 'from-right',
+  FROM_TOP = 'from-top',
+  FROM_BOTTOM = 'from-bottom',
+  NONE = 'none',
 }

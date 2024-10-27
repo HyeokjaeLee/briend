@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand';
 
 import type { Dispatch, SetStateAction } from 'react';
@@ -16,8 +18,10 @@ interface GlobalStore {
   };
   setChattingInfo: Dispatch<SetStateAction<GlobalStore['chattingInfo']>>;
 
-  navigationAnimation?: NAVIGATION_ANIMATION;
-  setNavigationAnimation: (navigationAnimation: NAVIGATION_ANIMATION) => void;
+  navigationAnimation: NAVIGATION_ANIMATION | null;
+  setNavigationAnimation: (
+    navigationAnimation: NAVIGATION_ANIMATION | null,
+  ) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -43,5 +47,6 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
       return { chattingInfo };
     }),
 
+  navigationAnimation: null,
   setNavigationAnimation: (navigationAnimation) => set({ navigationAnimation }),
 }));

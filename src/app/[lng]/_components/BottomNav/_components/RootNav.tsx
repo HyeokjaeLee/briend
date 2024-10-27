@@ -17,7 +17,6 @@ import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
 import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores/global';
 import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
 
@@ -66,10 +65,6 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
   const { t } = useTranslation('layout');
 
-  const setNavigationAnimation = useGlobalStore(
-    (state) => state.setNavigationAnimation,
-  );
-
   return (
     <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-16 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
@@ -89,15 +84,6 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   color="gray"
                   size="3"
                   variant="ghost"
-                  onClick={() => {
-                    if (!isAuthenticated) return;
-
-                    if (index < currentRouteIndex) {
-                      setNavigationAnimation(NAVIGATION_ANIMATION.FROM_LEFT);
-                    } else if (index > currentRouteIndex) {
-                      setNavigationAnimation(NAVIGATION_ANIMATION.FROM_RIGHT);
-                    }
-                  }}
                 >
                   <CustomLink
                     className={
@@ -106,6 +92,11 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     href={route.pathname}
                     //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
                     replace={isAuthenticated}
+                    withAnimation={
+                      index < currentRouteIndex
+                        ? NAVIGATION_ANIMATION.FROM_LEFT
+                        : NAVIGATION_ANIMATION.FROM_RIGHT
+                    }
                   >
                     <Icon
                       className={cn('size-6', {

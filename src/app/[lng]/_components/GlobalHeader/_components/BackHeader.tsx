@@ -33,7 +33,7 @@ export const BackHeader = () => {
         },
       )}
     >
-      <CustomIconButton variant="ghost" onClick={router.back}>
+      <CustomIconButton variant="ghost" onClick={() => router.back()}>
         <BackIcon
           className={cn('text-slate-50', isLoginPage ? 'size-8' : 'size-6')}
         />

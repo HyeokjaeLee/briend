@@ -78,11 +78,9 @@ export const InviteForm = () => {
     },
   });
 
-  if (formState.isLoading) return null;
-
   return (
     <form
-      className="mx-auto flex w-full animate-fade flex-col items-center gap-4"
+      className="mx-auto flex w-full flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
         if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
