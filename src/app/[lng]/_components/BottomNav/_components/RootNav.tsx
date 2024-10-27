@@ -15,8 +15,9 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
+import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { ROUTES } from '@/routes/client';
-import { useHistoryStore } from '@/stores/history';
+import { useGlobalStore } from '@/stores/global';
 import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
 
@@ -54,18 +55,20 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
 
 export const RootNav = ({ pathname }: RootNavProps) => {
   const currentRoute = findRoute(pathname);
+
   const currentRouteIndex = NAVIGATION_ITEMS.findIndex(
     ({ routeName }) => ROUTES[routeName] === currentRoute,
   );
+
   const session = useSession();
 
   const isAuthenticated = session.status === 'authenticated';
 
-  const setRootAnimation = useHistoryStore(
-    ({ setRootAnimation }) => setRootAnimation,
-  );
-
   const { t } = useTranslation('layout');
+
+  const setNavigationAnimation = useGlobalStore(
+    (state) => state.setNavigationAnimation,
+  );
 
   return (
     <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-16 py-3">
@@ -90,9 +93,9 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     if (!isAuthenticated) return;
 
                     if (index < currentRouteIndex) {
-                      setRootAnimation('right-out');
+                      setNavigationAnimation(NAVIGATION_ANIMATION.FROM_LEFT);
                     } else if (index > currentRouteIndex) {
-                      setRootAnimation('left-out');
+                      setNavigationAnimation(NAVIGATION_ANIMATION.FROM_RIGHT);
                     }
                   }}
                 >

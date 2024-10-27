@@ -5,19 +5,19 @@ import type {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { useRouter } from 'next/navigation';
+import { useShallow } from 'zustand/shallow';
 
 import { useMemo } from 'react';
 
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { ROUTES } from '@/routes/client';
+import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { useGlobalStore } from '@/stores/global';
-import { useHistoryStore } from '@/stores/history';
 import { isCurrentHref } from '@/utils/isCurrentHref';
 
 import { useCustomHref } from './useCustomHref';
 
 interface CustomNavigation extends NavigateOptions {
-  routingLoading?: boolean;
+  withLoading?: boolean;
+  withAnimation?: NAVIGATION_ANIMATION;
 }
 interface CustomRouter extends AppRouterInstance {
   push: (href: string | URL, options?: CustomNavigation) => void;
@@ -28,45 +28,46 @@ interface CustomRouter extends AppRouterInstance {
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
+  const [setIsLoading, setNavigationAnimation] = useGlobalStore(
+    useShallow((state) => [state.setIsLoading, state.setNavigationAnimation]),
+  );
 
-  return useMemo((): CustomRouter => {
-    const { setIsLoading } = useGlobalStore.getState();
-
-    return {
-      ...router,
+  return useMemo(
+    (): CustomRouter => ({
+      forward: () => {
+        return router.forward();
+      },
+      refresh: () => {
+        return router.refresh();
+      },
       back: () => {
-        const { customHistory, historyIndex } = useHistoryStore.getState();
-
-        const prevIndex = historyIndex - 1;
-
-        const replaceToHome = () =>
-          router.replace(ROUTES.CHATTING_LIST.pathname);
-
-        if (prevIndex < 0) return replaceToHome();
-
-        const currentHistory = customHistory.get(historyIndex);
-
-        if (currentHistory === customHistory.get(prevIndex))
-          return replaceToHome();
-
         return router.back();
       },
       push: (href, options) => {
-        if (options?.routingLoading ?? true) setIsLoading(true);
-
         const customHref = getCustomHref(href);
 
         if (isCurrentHref(customHref)) return;
+
+        const withLoading = options?.withLoading ?? true;
+        const withAnimation =
+          options?.withAnimation ?? NAVIGATION_ANIMATION.FROM_LEFT;
+
+        if (withLoading) setIsLoading(true);
+        if (withAnimation) setNavigationAnimation(withAnimation);
 
         return router.push(customHref, options);
       },
       replace: (href, options) => {
-        if (options?.routingLoading ?? true) setIsLoading(true);
         const customHref = getCustomHref(href);
 
         if (isCurrentHref(customHref)) return;
 
-        sessionStorage.setItem(SESSION_STORAGE.REPLACED_MARK, 'true');
+        const withLoading = options?.withLoading ?? true;
+        const withAnimation =
+          options?.withAnimation ?? NAVIGATION_ANIMATION.FROM_LEFT;
+
+        if (withLoading) setIsLoading(true);
+        if (withAnimation) setNavigationAnimation(withAnimation);
 
         return router.replace(customHref, options);
       },
@@ -77,6 +78,7 @@ export const useCustomRouter = () => {
 
         return router.prefetch(customHref, options);
       },
-    };
-  }, [getCustomHref, router]);
+    }),
+    [getCustomHref, router, setIsLoading, setNavigationAnimation],
+  );
 };

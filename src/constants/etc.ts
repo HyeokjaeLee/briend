@@ -3,3 +3,8 @@ export enum LOGIN_PROVIDERS {
   NAVER = 'naver',
   KAKAO = 'kakao',
 }
+
+export enum NAVIGATION_ANIMATION {
+  FROM_LEFT = 'from-left',
+  FROM_RIGHT = 'from-right',
+}

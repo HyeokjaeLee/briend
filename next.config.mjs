@@ -18,6 +18,7 @@ const nextConfig = {
       test: /\.svg$/,
       use: [{ loader: '@svgr/webpack' }],
     });
+
     return config;
   },
 };

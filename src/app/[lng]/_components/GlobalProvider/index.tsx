@@ -2,7 +2,7 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-import { Suspense, type RefAttributes } from 'react';
+import { type RefAttributes } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
 import { IS_DEV } from '@/constants/public-env';
@@ -12,7 +12,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { CookiesSync } from './CookiesSync';
 import { GlobalStoreSync } from './GlobalStoreSync';
-import { HistoryObserver } from './HistoryObserver';
 
 export const GlobalProvider = (
   props: ThemeProps & RefAttributes<HTMLDivElement>,
@@ -28,9 +27,6 @@ export const GlobalProvider = (
           path: '/',
         }}
       >
-        <Suspense>
-          <HistoryObserver />
-        </Suspense>
         <CookiesSync />
         <GlobalStoreSync />
         <QueryClientProvider client={queryClient}>

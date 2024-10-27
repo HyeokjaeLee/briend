@@ -1,10 +1,11 @@
 'use client';
 
 import Link, { type LinkProps } from 'next/link';
+import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
-import { SESSION_STORAGE } from '@/constants/storage-key';
+import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { useCustomHref } from '@/hooks/useCustomHref';
 import { useGlobalStore } from '@/stores/global';
 import { isCurrentHref } from '@/utils/isCurrentHref';
@@ -13,7 +14,8 @@ interface CustomLinkProps extends LinkProps {
   children?: React.ReactNode;
   className?: string;
   i18nOptimize?: boolean;
-  routingLoading?: boolean;
+  withLoading?: boolean;
+  withAnimation?: NAVIGATION_ANIMATION;
 }
 
 export const CustomLink = ({
@@ -22,7 +24,8 @@ export const CustomLink = ({
   onClick,
   i18nOptimize = true,
   replace,
-  routingLoading = true,
+  withLoading = true,
+  withAnimation = NAVIGATION_ANIMATION.FROM_LEFT,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
@@ -31,7 +34,9 @@ export const CustomLink = ({
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const [setIsLoading, setNavigationAnimation] = useGlobalStore(
+    useShallow((state) => [state.setIsLoading, state.setNavigationAnimation]),
+  );
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -53,13 +58,9 @@ export const CustomLink = ({
           return e.preventDefault();
         }
 
-        if (replace) {
-          sessionStorage.setItem(SESSION_STORAGE.REPLACED_MARK, 'true');
-        }
+        if (withLoading) setIsLoading(true);
 
-        if (routingLoading) {
-          setIsLoading(true);
-        }
+        if (withAnimation) setNavigationAnimation(withAnimation);
 
         onClick?.(e);
       }}
