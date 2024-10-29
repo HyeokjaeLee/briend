@@ -17,7 +17,8 @@ export const GlobalHeader = () => {
     <>
       {topHeaderType !== 'none' ? (
         <header
-          className="relative top-0 h-fit w-full max-w-xl"
+          key={topHeaderType}
+          className="relative top-0 h-fit w-full max-w-xl animate-fade-down animate-duration-75"
           id={SELECTOR.TOP_HEADER}
         >
           {

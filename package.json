@@ -13,7 +13,7 @@
     "update:prisma": "dotenv -e .env.local -- prisma db pull && prisma generate"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
+    "@hookform/resolvers": "^3.9.1",
     "@prisma/client": "^5.21.1",
     "@radix-ui/themes": "^3.1.4",
     "@svgr/webpack": "^8.1.0",
@@ -54,12 +54,12 @@
     "zustand": "^5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.17.1",
+    "@types/node": "^20.17.2",
     "@types/react": "npm:types-react@rc",
     "@types/react-dom": "npm:types-react-dom@rc",
     "@types/react-transition-group": "^4.4.11",
-    "@typescript-eslint/eslint-plugin": "^8.11.0",
-    "@typescript-eslint/parser": "^8.11.0",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/parser": "^8.12.2",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.1",
