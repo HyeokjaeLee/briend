@@ -6,6 +6,13 @@ import { Suspense, useEffect } from 'react';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { useHistoryStore } from '@/stores/history';
 
+const setHistoryExpire = () => {
+  sessionStorage.setItem(
+    SESSION_STORAGE.HISTORY_EXPIRE,
+    (Date.now() + 5_000).toString(),
+  );
+};
+
 const HistoryObserverController = () => {
   const searchParams = useSearchParams().toString();
   const pathname = usePathname();
@@ -47,17 +54,9 @@ const HistoryObserverController = () => {
     setHistoryIndex(historyState.historyIndex);
     setCustomHistory(customHistory);
 
-    const setHistoryExpire = () => {
-      sessionStorage.setItem(
-        SESSION_STORAGE.HISTORY_EXPIRE,
-        (Date.now() + 5_000).toString(),
-      );
-    };
-
     window.addEventListener('beforeunload', setHistoryExpire);
 
     return () => {
-      setHistoryExpire();
       window.removeEventListener('beforeunload', setHistoryExpire);
     };
   }, [url, setCustomHistory, setHistoryIndex]);

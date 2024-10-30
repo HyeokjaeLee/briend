@@ -16,7 +16,7 @@ import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalProvider } from './_components/GlobalProvider';
-import { Main } from './_components/MainContainer';
+import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
 
 export const metadata: Metadata = {
@@ -48,7 +48,7 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
           <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-850 text-slate-50 shadow-xl">
             <GlobalHeader />
             <ToastProvider />
-            <Main>{children}</Main>
+            <MainContainer>{children}</MainContainer>
             <BottomNav />
             <GlobalLoading />
           </div>

@@ -5,7 +5,7 @@ import type { HTMLMotionProps } from 'framer-motion';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect, useRef, type PropsWithChildren } from 'react';
+import { useRef, type PropsWithChildren } from 'react';
 
 import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { useUrl } from '@/hooks/useUrl';
@@ -13,12 +13,12 @@ import { useGlobalStore } from '@/stores/global';
 import { useHistoryStore } from '@/stores/history';
 
 const transitionX = {
-  duration: 0.1,
+  duration: 0.05,
   ease: 'easeIn',
 };
 
 const transitionY = {
-  duration: 0.15,
+  duration: 0.075,
   ease: 'easeIn',
 };
 
@@ -47,14 +47,23 @@ const ANIMATION_GROUP: Record<NAVIGATION_ANIMATION, HTMLMotionProps<'main'>> = {
     exit: { y: '-50vh', opacity: 0 },
     transition: transitionY,
   },
+  [NAVIGATION_ANIMATION.FROM_TOP_AUTO]: {
+    initial: { y: '-50vh', opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: '-50vh', opacity: 0 },
+    transition: transitionY,
+  },
+  [NAVIGATION_ANIMATION.FROM_BOTTOM_AUTO]: {
+    initial: { y: '50vh', opacity: 0 },
+    animate: { y: 0, opacity: 1 },
+    exit: { y: '50vh', opacity: 0 },
+    transition: transitionY,
+  },
   [NAVIGATION_ANIMATION.NONE]: {},
 };
 
 export const AnimationMain = ({ children }: PropsWithChildren) => {
   const url = useUrl();
-
-  const historyIndex = useHistoryStore((state) => state.historyIndex);
-  const prevHistoryIndex = useRef(0);
 
   const [navigationAnimation, setNavigationAnimation] = useGlobalStore(
     useShallow((state) => {
@@ -62,15 +71,28 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
     }),
   );
 
-  useEffect(() => {
-    const savedHistoryIndex = historyIndex;
+  const animationKey = (() => {
+    if (typeof window === 'undefined') return navigationAnimation;
 
-    return () => {
-      prevHistoryIndex.current = savedHistoryIndex;
-    };
-  }, [historyIndex]);
+    if (navigationAnimation !== NAVIGATION_ANIMATION.NONE)
+      return navigationAnimation;
 
-  const animation = ANIMATION_GROUP[navigationAnimation];
+    const { historyIndex: prevHistoryIndex } = useHistoryStore.getState();
+
+    const historyIndex: number | undefined = history.state.historyIndex;
+
+    if (historyIndex === undefined) return navigationAnimation;
+
+    if (historyIndex < prevHistoryIndex)
+      return NAVIGATION_ANIMATION.FROM_TOP_AUTO;
+
+    if (historyIndex > prevHistoryIndex)
+      return NAVIGATION_ANIMATION.FROM_BOTTOM_AUTO;
+
+    return navigationAnimation;
+  })();
+
+  const animation = ANIMATION_GROUP[animationKey];
 
   const initTimeout = useRef<NodeJS.Timeout | null>(null);
 
