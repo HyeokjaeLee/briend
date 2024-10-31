@@ -5,11 +5,10 @@ import type {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { useRouter } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
 
 import { useMemo } from 'react';
 
-import { NAVIGATION_ANIMATION } from '@/constants/etc';
+import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores/global';
@@ -20,7 +19,7 @@ import { useCustomHref } from './useCustomHref';
 
 interface CustomNavigationOptions {
   withLoading?: boolean;
-  withAnimation?: NAVIGATION_ANIMATION;
+  withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
 }
 
 interface CustomRouter extends AppRouterInstance {
@@ -40,9 +39,7 @@ interface CustomRouter extends AppRouterInstance {
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const [setIsLoading, setNavigationAnimation] = useGlobalStore(
-    useShallow((state) => [state.setIsLoading, state.setNavigationAnimation]),
-  );
+  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
 
   return useMemo((): CustomRouter => {
     const replace: CustomRouter['replace'] = (href, options) => {
@@ -53,10 +50,14 @@ export const useCustomRouter = () => {
       sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
 
       const withLoading = options?.withLoading ?? true;
-      const withAnimation = options?.withAnimation ?? NAVIGATION_ANIMATION.NONE;
+      const withAnimation = options?.withAnimation;
 
       if (withLoading) setIsLoading(true);
-      if (withAnimation) setNavigationAnimation(withAnimation);
+      if (withAnimation)
+        sessionStorage.setItem(
+          SESSION_STORAGE.NAVIGATION_ANIMATION,
+          withAnimation,
+        );
 
       return router.replace(customHref, options);
     };
@@ -64,11 +65,14 @@ export const useCustomRouter = () => {
     return {
       forward: (options) => {
         const withLoading = options?.withLoading;
-        const withAnimation =
-          options?.withAnimation ?? NAVIGATION_ANIMATION.FROM_BOTTOM;
+        const withAnimation = options?.withAnimation ?? 'FR';
 
         if (withLoading) setIsLoading(true);
-        if (withAnimation) setNavigationAnimation(withAnimation);
+        if (withAnimation)
+          sessionStorage.setItem(
+            SESSION_STORAGE.NAVIGATION_ANIMATION,
+            withAnimation,
+          );
 
         return router.forward();
       },
@@ -77,8 +81,7 @@ export const useCustomRouter = () => {
       },
       back: (options) => {
         const withLoading = options?.withLoading;
-        const withAnimation =
-          options?.withAnimation ?? NAVIGATION_ANIMATION.FROM_TOP;
+        const withAnimation = options?.withAnimation;
         const { historyIndex } = useHistoryStore.getState();
 
         const hasBack = 0 < historyIndex;
@@ -90,7 +93,11 @@ export const useCustomRouter = () => {
           });
 
         if (withLoading) setIsLoading(true);
-        if (withAnimation) setNavigationAnimation(withAnimation);
+        if (withAnimation)
+          sessionStorage.setItem(
+            SESSION_STORAGE.NAVIGATION_ANIMATION,
+            withAnimation,
+          );
 
         return router.back();
       },
@@ -100,11 +107,14 @@ export const useCustomRouter = () => {
         if (isCurrentHref(customHref)) return;
 
         const withLoading = options?.withLoading ?? true;
-        const withAnimation =
-          options?.withAnimation ?? NAVIGATION_ANIMATION.FROM_BOTTOM;
+        const withAnimation = options?.withAnimation;
 
         if (withLoading) setIsLoading(true);
-        if (withAnimation) setNavigationAnimation(withAnimation);
+        if (withAnimation)
+          sessionStorage.setItem(
+            SESSION_STORAGE.NAVIGATION_ANIMATION,
+            withAnimation,
+          );
 
         return router.push(customHref, options);
       },
@@ -117,5 +127,5 @@ export const useCustomRouter = () => {
         return router.prefetch(customHref, options);
       },
     };
-  }, [getCustomHref, router, setIsLoading, setNavigationAnimation]);
+  }, [getCustomHref, router, setIsLoading]);
 };

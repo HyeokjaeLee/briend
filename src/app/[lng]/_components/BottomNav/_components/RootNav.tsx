@@ -15,7 +15,6 @@ import {
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
 import { CustomLink } from '@/components/CustomLink';
-import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
@@ -93,9 +92,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
                     replace={isAuthenticated}
                     withAnimation={
-                      index < currentRouteIndex
-                        ? NAVIGATION_ANIMATION.FROM_LEFT
-                        : NAVIGATION_ANIMATION.FROM_RIGHT
+                      index < currentRouteIndex ? 'FROM_LEFT' : 'FROM_RIGHT'
                     }
                   >
                     <Icon

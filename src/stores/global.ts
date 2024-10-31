@@ -4,7 +4,6 @@ import { create } from 'zustand';
 
 import type { Dispatch, SetStateAction } from 'react';
 
-import { NAVIGATION_ANIMATION } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
 
@@ -17,9 +16,6 @@ interface GlobalStore {
     language: LANGUAGE;
   };
   setChattingInfo: Dispatch<SetStateAction<GlobalStore['chattingInfo']>>;
-
-  navigationAnimation: NAVIGATION_ANIMATION;
-  setNavigationAnimation: (navigationAnimation: NAVIGATION_ANIMATION) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -44,7 +40,4 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
 
       return { chattingInfo };
     }),
-
-  navigationAnimation: NAVIGATION_ANIMATION.NONE,
-  setNavigationAnimation: (navigationAnimation) => set({ navigationAnimation }),
 }));
