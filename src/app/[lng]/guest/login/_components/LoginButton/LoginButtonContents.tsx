@@ -27,7 +27,8 @@ export const LoginButtonContents = ({
           ? 'font-semibold rounded-lg px-7 text-lg size-full'
           : 'h-full w-14 rounded-full',
         {
-          [LOGIN_PROVIDERS.GOOGLE]: 'bg-white text-slate-850',
+          [LOGIN_PROVIDERS.GOOGLE]:
+            'bg-white text-slate-850 border-slate-200 border',
           [LOGIN_PROVIDERS.KAKAO]: 'bg-kakao-yellow text-slate-850',
           [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
         }[provider],

@@ -1,4 +1,7 @@
 import type { Config } from 'tailwindcss';
+import type { PluginAPI } from 'tailwindcss/types/config';
+
+import tailwindcssAnimated from 'tailwindcss-animated';
 
 const config: Config = {
   content: [
@@ -32,14 +35,7 @@ const config: Config = {
     },
   },
   plugins: [
-    ({
-      addUtilities,
-    }: {
-      addUtilities: (
-        utilities: Record<string, Record<string, string>>,
-        options?: string[],
-      ) => void;
-    }) => {
+    ({ addUtilities }: PluginAPI) => {
       const utilities = {
         '.hide-scrollbar': {
           'scrollbar-width': 'none',
@@ -55,9 +51,13 @@ const config: Config = {
         },
       };
 
-      addUtilities(utilities, ['responsive', 'hover']);
+      addUtilities(utilities, {
+        respectPrefix: true,
+        respectImportant: true,
+      });
     },
-    require('tailwindcss-animated'),
+
+    tailwindcssAnimated,
   ],
 };
 export default config;

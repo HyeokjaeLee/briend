@@ -2,6 +2,8 @@
 
 import type { ImgHTMLAttributes, DetailedHTMLProps } from 'react';
 
+import { Skeleton } from '@radix-ui/themes';
+
 const QR_API = 'https://api.qrserver.com/v1/create-qr-code';
 
 interface QRProps
@@ -13,19 +15,21 @@ interface QRProps
   href: string;
 }
 
-export const QR = ({ size = 160, href, alt, className }: QRProps) => {
+export const QR = ({ size = 160, href, alt = 'qr', className }: QRProps) => {
   const url = new URL(QR_API);
   url.searchParams.set('size', `${size}x${size}`);
   url.searchParams.set('data', href);
 
   return (
-    <img
-      key={`${size}-${href}`}
-      alt={alt}
-      className={className}
-      height={size}
-      src={url.href}
-      width={size}
-    />
+    <Skeleton height={`${size}px`} width={`${size}px`}>
+      <img
+        key={`${size}-${href}`}
+        alt={alt}
+        className={className}
+        height={size}
+        src={url.href}
+        width={size}
+      />
+    </Skeleton>
   );
 };

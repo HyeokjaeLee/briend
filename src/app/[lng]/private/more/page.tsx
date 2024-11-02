@@ -58,10 +58,10 @@ const MorePage = async (props: MorePageProps) => {
       </ul>
       <ul className="mt-8">
         {MENU_ITEMS.map(({ title, route }) => (
-          <li key={title}>
+          <li key={title} className="p-5">
             <CustomButton
               asChild
-              className="flex items-center justify-between rounded-none text-slate-50"
+              className="flex items-center justify-between text-slate-900"
               variant="ghost"
             >
               <CustomLink href={route.pathname}>
@@ -71,7 +71,7 @@ const MorePage = async (props: MorePageProps) => {
             </CustomButton>
           </li>
         ))}
-        <li>
+        <li className="p-5">
           <form
             action={async () => {
               'use server';

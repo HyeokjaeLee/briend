@@ -29,7 +29,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton className="size-36 rounded-full" loading={!user}>
-        <div className="flex size-36 select-none items-center justify-center rounded-full bg-slate-350 text-7xl">
+        <div className="flex size-36 select-none items-center justify-center rounded-full bg-slate-200 text-7xl">
           {user?.emoji}
         </div>
       </Skeleton>
@@ -42,7 +42,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
         </Badge>
       </div>
       <Skeleton className="h-6 w-32" loading={!user}>
-        <p className="text-slate-350">{user?.email || t('empty-email')}</p>
+        <p className="text-slate-400">{user?.email || t('empty-email')}</p>
       </Skeleton>
     </section>
   );

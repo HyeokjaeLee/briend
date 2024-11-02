@@ -62,7 +62,8 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
         className={cn(
           'size-14 flex-center rounded-full',
           {
-            [LOGIN_PROVIDERS.GOOGLE]: 'bg-white text-slate-850',
+            [LOGIN_PROVIDERS.GOOGLE]:
+              'bg-white text-slate-850 border-slate-200 border',
             [LOGIN_PROVIDERS.KAKAO]: 'bg-kakao-yellow text-slate-850',
             [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
           }[provider],

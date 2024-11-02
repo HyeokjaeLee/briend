@@ -26,16 +26,13 @@ export const BackHeader = () => {
 
   return (
     <nav
-      className={cn(
-        'flex h-14 items-center justify-between bg-slate-850 px-5',
-        {
-          'justify-end': isLoginPage,
-        },
-      )}
+      className={cn('flex h-14 items-center justify-between bg-slate-50 px-5', {
+        'justify-end': isLoginPage,
+      })}
     >
       <CustomIconButton variant="ghost" onClick={() => router.back()}>
         <BackIcon
-          className={cn('text-slate-50', isLoginPage ? 'size-8' : 'size-6')}
+          className={cn('text-slate-900', isLoginPage ? 'size-8' : 'size-6')}
         />
       </CustomIconButton>
       {topHeaderTitle ? (

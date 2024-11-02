@@ -65,7 +65,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const { t } = useTranslation('layout');
 
   return (
-    <nav className="flex justify-center border-t border-t-slate-750 bg-slate-830 px-16 py-3">
+    <nav className="flex justify-center border-t border-t-slate-200 bg-slate-100 px-16 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
         {NAVIGATION_ITEMS.map(
           ({ icon, fillIcon, routeName, translationKey }, index) => {
@@ -86,13 +86,17 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                 >
                   <CustomLink
                     className={
-                      isActive ? 'font-bold text-slate-50' : 'text-slate-350'
+                      isActive ? 'font-bold text-slate-900' : 'text-slate-700'
                     }
                     href={route.pathname}
                     //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
                     replace={isAuthenticated}
                     withAnimation={
-                      index < currentRouteIndex ? 'FROM_LEFT' : 'FROM_RIGHT'
+                      isAuthenticated
+                        ? index < currentRouteIndex
+                          ? 'FROM_LEFT'
+                          : 'FROM_RIGHT'
+                        : 'FROM_BOTTOM'
                     }
                   >
                     <Icon

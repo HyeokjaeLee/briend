@@ -12,7 +12,7 @@ export const LogoutButton = () => {
 
   return (
     <CustomButton
-      className="flex w-full items-center justify-between rounded-none text-slate-50"
+      className="flex w-full items-center justify-between text-slate-900"
       type="submit"
       variant="ghost"
       onClick={() => {
@@ -23,7 +23,7 @@ export const LogoutButton = () => {
       }}
     >
       {t('logout')}
-      <RiLogoutBoxRLine className="size-5" />
+      <RiLogoutBoxRLine className="size-6" />
     </CustomButton>
   );
 };

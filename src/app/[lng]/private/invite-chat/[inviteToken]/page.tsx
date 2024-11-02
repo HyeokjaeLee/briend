@@ -120,33 +120,26 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
           <h1 className="break-keep text-center text-2xl font-bold">
             📨 {INVITE_TITLE[language]}
           </h1>
-          <p className="px-4 py-2 text-center text-slate-350">
+          <p className="px-4 py-2 text-center text-slate-500">
             {INVITE_MESSAGE[language]}
           </p>
         </section>
         <section className="flex w-full flex-1 rotate-180 items-center justify-center bg-white p-4">
-          <QR
-            alt="invite-qr"
-            className="max-h-56 max-w-56 flex-1"
-            href={href}
-          />
+          <QR alt="invite-qr" href={href} size={180} />
         </section>
         <section className="flex flex-1 flex-col items-center justify-center">
           {IS_DEV ? (
             <>
               DEV URL
-              <a
-                className="max-w-56 text-wrap text-xs text-gray-50"
-                href={href}
-              >
+              <a className="max-w-56 text-wrap text-xs" href={href}>
                 {href}
               </a>
             </>
           ) : null}
-          <p className="text-center text-slate-350">{t('notice-message')}</p>
+          <p className="text-center text-slate-500">{t('notice-message')}</p>
         </section>
       </div>
-      <div className="flex h-14 items-center justify-center border-t border-slate-750 bg-slate-830">
+      <div className="flex h-14 items-center justify-center border-t border-t-slate-200 bg-slate-100">
         <Timer
           expires={expires}
           onTimeout={() => {

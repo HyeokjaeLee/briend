@@ -42,10 +42,10 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
       dir={dir(lng)}
       lang={lng}
     >
-      <body className={cn(pretendard.className, 'size-full bg-zinc-50 dark')}>
-        <GlobalProvider className="flex size-full bg-zinc-50">
+      <body className={cn(pretendard.className, 'size-full bg-white')}>
+        <GlobalProvider className="flex size-full bg-slate-100">
           <div className="flex-1" />
-          <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-850 text-slate-50 shadow-xl">
+          <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-50 text-slate-900 shadow-xl">
             <GlobalHeader />
             <ToastProvider />
             <MainContainer>{children}</MainContainer>

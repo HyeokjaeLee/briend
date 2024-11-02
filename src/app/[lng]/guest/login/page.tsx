@@ -25,10 +25,10 @@ const LoginPage = async (props: LoginPageProps) => {
       <section>
         <LoginButton fullSize provider={LOGIN_PROVIDERS.GOOGLE} />
       </section>
-      <div className="m-4 gap-2 text-slate-350 flex-center">
-        <hr className="flex-1 border-slate-350" />
+      <div className="m-4 gap-2 text-slate-300 flex-center">
+        <hr className="flex-1 border-slate-300" />
         또는
-        <hr className="flex-1 border-slate-350" />
+        <hr className="flex-1 border-slate-300" />
       </div>
       <section className="gap-4 flex-center">
         <LoginButton provider={LOGIN_PROVIDERS.KAKAO} />

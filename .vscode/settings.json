@@ -68,6 +68,7 @@
     "typescriptreact": "typescriptreact"
   },
 
+  "tailwindCSS.rootFontSize": 14,
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],

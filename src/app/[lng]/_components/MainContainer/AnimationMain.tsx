@@ -15,12 +15,12 @@ import { useHistoryStore } from '@/stores/history';
 
 const transitionX = {
   duration: 0.05,
-  ease: 'easeIn',
+  ease: 'linear',
 };
 
 const transitionY = {
-  duration: 0.1,
-  ease: 'easeIn',
+  duration: 0.05,
+  ease: 'linear',
 };
 
 const ANIMATION_GROUP: Record<
@@ -28,30 +28,35 @@ const ANIMATION_GROUP: Record<
   HTMLMotionProps<'main'>
 > = {
   FROM_LEFT: {
-    initial: { x: -100, opacity: 0 },
+    initial: { x: -200, opacity: 0 },
     animate: { x: 0, opacity: 1 },
-    exit: { x: 100, opacity: 0 },
+    exit: { x: 200, opacity: 0 },
     transition: transitionX,
   },
   FROM_RIGHT: {
-    initial: { x: 100, opacity: 0 },
+    initial: { x: 200, opacity: 0 },
     animate: { x: 0, opacity: 1 },
-    exit: { x: -100, opacity: 0 },
+    exit: { x: -200, opacity: 0 },
     transition: transitionX,
   },
   FROM_TOP: {
-    initial: { y: '-50vh', opacity: 0 },
+    initial: { y: '-50dvh', opacity: 0 },
     animate: { y: 0, opacity: 1 },
-    exit: { y: '50vh', opacity: 0 },
+    exit: { y: '50dvh', opacity: 0 },
     transition: transitionY,
   },
   FROM_BOTTOM: {
-    initial: { y: '50vh', opacity: 0 },
+    initial: { y: '50dvh', opacity: 0 },
     animate: { y: 0, opacity: 1 },
-    exit: { y: '-50vh', opacity: 0 },
+    exit: { y: '-50dvh', opacity: 0 },
     transition: transitionY,
   },
-  NONE: {},
+  NONE: {
+    initial: { opacity: 1 },
+    animate: { opacity: 1 },
+    exit: { opacity: 1 },
+    transition: { duration: 0 },
+  },
 };
 
 export const AnimationMain = ({ children }: PropsWithChildren) => {
@@ -84,6 +89,8 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
       if (historyIndex < prevHistoryIndex) return setAnimation('FROM_TOP');
 
       if (historyIndex > prevHistoryIndex) return setAnimation('FROM_BOTTOM');
+
+      if (historyIndex === prevHistoryIndex) return setAnimation(undefined);
     }
 
     setAnimation('FROM_BOTTOM');

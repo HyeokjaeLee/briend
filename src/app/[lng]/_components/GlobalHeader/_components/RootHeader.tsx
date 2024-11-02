@@ -31,13 +31,11 @@ export const RootHeader = () => {
   const { topHeaderTitle } = currentRoute;
 
   return (
-    <nav className="flex h-14 items-center justify-between bg-slate-850 px-5">
-      <Logo className="h-7 text-slate-50" />
+    <nav className="flex h-14 items-center justify-between bg-slate-50 px-5">
+      <Logo className="h-7 text-slate-900" />
       <div className="flex items-center gap-3">
         {topHeaderTitle ? (
-          <h1 className="text-lg font-semibold text-slate-50">
-            {t(topHeaderTitle)}
-          </h1>
+          <h1 className="text-lg font-semibold">{t(topHeaderTitle)}</h1>
         ) : null}
         {emoji ? <span className="text-2xl">{emoji}</span> : null}
       </div>
