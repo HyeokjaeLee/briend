@@ -17,7 +17,7 @@ export const RootHeader = () => {
   let emoji = '';
 
   switch (currentRoute) {
-    case ROUTES.CHATTING_LIST:
+    case ROUTES.HOME:
       emoji = '💬';
       break;
     case ROUTES.INVITE_CHAT:

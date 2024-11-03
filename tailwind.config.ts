@@ -19,11 +19,9 @@ const config: Config = {
       colors: {
         'naver-green': '#03C75A',
         'kakao-yellow': '#FEE500',
-        slate: {
-          350: '#93A5C8',
-          750: '#243047',
-          830: '#1A2232',
-          850: '#111722',
+        sky: {
+          50: '#E6EDFB',
+          500: '#0090FF',
         },
         background: 'var(--background)',
         foreground: 'var(--foreground)',
@@ -31,6 +29,11 @@ const config: Config = {
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
+        bmdohyeon: ['var(--font-bmdohyeon)'],
+      },
+      spacing: {
+        '14.4': '3.6rem',
+        cdvh: 'var(--viewport-height)',
       },
     },
   },

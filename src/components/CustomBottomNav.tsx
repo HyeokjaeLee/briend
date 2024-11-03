@@ -22,9 +22,9 @@ export const CustomBottomNav = ({
     <div
       {...props}
       className={cn(
-        'border-t-slate-750 bg-slate-830 px-6 py-3 border-t-2',
+        'border-t border-t-slate-200 bg-slate-100 animate-fade-up animate-duration-100',
         {
-          'fixed bottom-0 left-0': !bottomContainerElement,
+          'sticky bottom-0 w-full left-0': !bottomContainerElement,
         },
         className,
       )}

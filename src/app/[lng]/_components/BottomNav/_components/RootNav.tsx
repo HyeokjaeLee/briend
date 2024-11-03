@@ -34,7 +34,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     icon: RiMessage3Line,
     fillIcon: RiMessage3Fill,
-    routeName: 'CHATTING_LIST',
+    routeName: 'HOME',
     translationKey: 'chat',
   },
   {
@@ -86,7 +86,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                 >
                   <CustomLink
                     className={
-                      isActive ? 'font-bold text-slate-900' : 'text-slate-700'
+                      isActive ? 'font-bold text-sky-500' : 'text-slate-400'
                     }
                     href={route.pathname}
                     //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지

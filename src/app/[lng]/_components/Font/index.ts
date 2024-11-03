@@ -3,6 +3,6 @@ import localFont from 'next/font/local';
 export const pretendard = localFont({
   src: './PretendardVariable.ttf',
   display: 'swap',
-  weight: '45 920',
+  weight: '100 900',
   variable: '--font-pretendard',
 });

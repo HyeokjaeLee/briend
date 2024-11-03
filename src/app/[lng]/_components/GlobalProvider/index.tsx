@@ -1,8 +1,9 @@
 'use client';
 
+import { throttle } from 'es-toolkit';
 import { SessionProvider } from 'next-auth/react';
 
-import type { RefAttributes } from 'react';
+import { useLayoutEffect, type RefAttributes } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
 import { IS_DEV } from '@/constants/public-env';
@@ -21,6 +22,27 @@ export const GlobalProvider = (
   const queryClient = new QueryClient();
 
   useHistoryStore();
+
+  useLayoutEffect(() => {
+    const updateHeight = throttle(() => {
+      const height = window.visualViewport?.height || window.innerHeight;
+
+      document.documentElement.style.setProperty(
+        '--viewport-height',
+        `${height}px`,
+      );
+    }, 33);
+
+    updateHeight();
+
+    window.addEventListener('resize', updateHeight);
+    window.visualViewport?.addEventListener('resize', updateHeight);
+
+    return () => {
+      window.removeEventListener('resize', updateHeight);
+      window.visualViewport?.removeEventListener('resize', updateHeight);
+    };
+  }, []);
 
   return (
     <SessionProvider>

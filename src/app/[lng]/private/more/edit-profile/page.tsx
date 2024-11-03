@@ -160,17 +160,17 @@ const EditProfilePage = (props: ProfilePageProps) => {
       >
         <section className="w-full flex-col gap-8 flex-center">
           <Skeleton className="size-36 rounded-full" loading={!selectedEmoji}>
-            <div className="flex size-36 select-none items-center justify-center rounded-full bg-slate-350 text-7xl">
+            <div className="flex size-36 select-none items-center justify-center rounded-full bg-blue-100 text-7xl">
               {selectedEmoji}
             </div>
           </Skeleton>
           <Skeleton className="h-32 w-full" loading={!randomEmojiList.length}>
-            <ul className="w-full flex-wrap gap-5 rounded-xl bg-slate-830 p-5 flex-center">
+            <ul className="w-full flex-wrap gap-5 rounded-xl bg-sky-50 p-5 flex-center">
               {randomEmojiList.map((emoji) => (
                 <li key={emoji} className="relative">
                   <CustomIconButton
                     className={cn('text-3xl', {
-                      'bg-slate-350': selectedEmoji === emoji,
+                      'bg-sky-500': selectedEmoji === emoji,
                     })}
                     variant="ghost"
                     onClick={(e) => {
@@ -243,9 +243,10 @@ const EditProfilePage = (props: ProfilePageProps) => {
       </form>
       <CustomBottomNav>
         <CustomButton
-          className="w-full"
+          className="w-full rounded-none"
           form={FORM_NAME}
           loading={formState.isSubmitting || editProfileMutation.isPending}
+          size="5"
           type="submit"
         >
           저장하기

@@ -287,7 +287,7 @@ export const {
         }
 
         return NextResponse.redirect(
-          new URL(ROUTES.CHATTING_LIST.pathname, nextUrl.origin),
+          new URL(ROUTES.HOME.pathname, nextUrl.origin),
         );
       }
     },

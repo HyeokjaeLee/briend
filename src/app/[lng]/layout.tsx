@@ -38,14 +38,14 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
 
   return (
     <html
-      className={cn(pretendard.variable, 'size-full')}
+      className={cn(pretendard.className, pretendard.variable, 'h-cdvh w-full')}
       dir={dir(lng)}
       lang={lng}
     >
-      <body className={cn(pretendard.className, 'size-full bg-white')}>
-        <GlobalProvider className="flex size-full bg-slate-100">
+      <body className={cn('size-full bg-white')}>
+        <GlobalProvider className="flex size-full bg-blue-100" scaling="90%">
           <div className="flex-1" />
-          <div className="relative flex h-fit max-h-dvh min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-50 text-slate-900 shadow-xl">
+          <div className="relative flex h-fit max-h-full min-h-full w-full max-w-xl flex-col overflow-hidden bg-slate-50 text-slate-900 shadow-xl">
             <GlobalHeader />
             <ToastProvider />
             <MainContainer>{children}</MainContainer>

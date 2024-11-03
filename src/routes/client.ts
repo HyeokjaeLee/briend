@@ -4,10 +4,6 @@ export const ROUTES = {
   HOME: createRoute('/', {
     bottomNavType: 'root',
     topHeaderType: 'root',
-  }),
-  CHATTING_LIST: createRoute('/my-chattings', {
-    bottomNavType: 'root',
-    topHeaderType: 'root',
     topHeaderTitle: 'chat-title',
   }),
   CHATTING_ROOM: createRoute<undefined, 'channelId'>('/chatting', {

@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RiLock2Fill, RiSendPlane2Fill } from 'react-icons/ri';
 
@@ -12,7 +12,6 @@ import { CustomBottomNav } from '@/components/CustomBottomNav';
 import { CustomIconButton } from '@/components/CustomIconButton';
 import { API_ROUTES } from '@/routes/api';
 import type { Payload } from '@/types/jwt';
-import { cn } from '@/utils/cn';
 import { CustomError, ERROR } from '@/utils/customError';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DropdownMenu, TextArea } from '@radix-ui/themes';
@@ -54,11 +53,11 @@ export const ChattingBottomTextfield = ({
 
   const message = form.watch('message');
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ref.current) {
       const { scrollHeight } = ref.current;
 
-      let height = scrollHeight / 16 + 1;
+      let height = scrollHeight / 14 + 1;
 
       if (height !== DEFAULT_HEIGHT) {
         height += 0.125;
@@ -87,7 +86,7 @@ export const ChattingBottomTextfield = ({
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ) : (
-    <CustomBottomNav className="pl-4 pr-3">
+    <CustomBottomNav className="border-none bg-slate-50 pb-3 pl-4 pr-3">
       <form
         className="flex gap-2 flex-center"
         onSubmit={form.handleSubmit(
@@ -104,8 +103,7 @@ export const ChattingBottomTextfield = ({
         <div className="relative flex-1">
           <TextArea
             {...form.register('message')}
-            className={cn('rounded-xl px-1 min-h-14 py-2 size-full max-h-48')}
-            color="gray"
+            className="h-14.4 max-h-32 min-h-14.4 w-full px-1 pb-2 pt-2.5"
             placeholder="메시지 입력"
             size="3"
             style={{
@@ -118,13 +116,15 @@ export const ChattingBottomTextfield = ({
           />
           <TextArea
             ref={ref}
-            className="invisible absolute bottom-0 -z-50 h-14 min-h-14 w-full px-1 py-2"
+            readOnly
+            className="invisible fixed left-0 top-0 -z-50 h-14.4 min-h-14.4 w-full px-1 pb-2 pt-2.5"
             size="3"
             value={message}
+            variant="soft"
           />
         </div>
         <div className="mt-auto h-14 flex-center">
-          <CustomIconButton className="rounded-full" color="cyan" size="4">
+          <CustomIconButton className="rounded-full" size="4">
             <RiSendPlane2Fill className="ml-1 size-6" />
           </CustomIconButton>
         </div>

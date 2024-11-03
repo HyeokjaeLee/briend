@@ -142,7 +142,7 @@ export const InviteForm = () => {
           )}
         />
       </label>
-      <p className="text-center text-sm text-slate-350">
+      <p className="text-center text-sm text-slate-500">
         {t('friend-setting-message')}
       </p>
       <CustomButton

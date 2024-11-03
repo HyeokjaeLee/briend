@@ -14,8 +14,18 @@
   p {
     @apply break-keep whitespace-pre-line;
   }
+}
 
-  button {
-    @apply font-pretendard;
-  }
+.radix-themes {
+  --default-font-family: inherit;
+  --font-family-untitled: inherit;
+}
+
+.rt-TextFieldRoot,
+.rt-TextAreaRoot {
+  outline-width: 1px;
+}
+
+:root {
+  --viewport-height: 100dvh;
 }

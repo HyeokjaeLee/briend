@@ -20,7 +20,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
   const inviteToken = req.nextUrl.searchParams.get('inviteToken');
 
   if (!inviteToken) {
-    req.nextUrl.pathname = ROUTES.CHATTING_LIST.pathname;
+    req.nextUrl.pathname = ROUTES.HOME.pathname;
 
     return NextResponse.redirect(req.nextUrl);
   }
@@ -88,7 +88,7 @@ export const GET = createApiRoute(async (req: NextRequest) => {
       return NextResponse.redirect(req.nextUrl);
     }
 
-    req.nextUrl.pathname = ROUTES.CHATTING_LIST.pathname;
+    req.nextUrl.pathname = ROUTES.HOME.pathname;
 
     return NextResponse.redirect(req.nextUrl);
   }

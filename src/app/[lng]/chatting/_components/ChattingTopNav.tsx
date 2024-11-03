@@ -25,8 +25,8 @@ export const ChattingTopNav = ({
   return (
     <CustomTopHeader className="flex items-center gap-8">
       <CustomIconButton asChild variant="ghost">
-        <Link href={ROUTES.CHATTING_LIST.pathname}>
-          <RiArrowGoBackFill className="size-6 text-slate-50" />
+        <Link href={ROUTES.HOME.pathname}>
+          <RiArrowGoBackFill className="size-6 text-slate-900" />
         </Link>
       </CustomIconButton>
       <h1 className="text-lg font-semibold">
