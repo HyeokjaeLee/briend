@@ -18,36 +18,38 @@ export const middleware = auth(async (req: NextRequest) => {
   const { nextUrl } = req;
 
   //* 🌍 i18n redirect 🌍
-  {
-    let lng;
-    const i18nCookie = req.cookies.get(COOKIES.I18N);
+  let lng;
+  const i18nCookie = req.cookies.get(COOKIES.I18N);
 
-    if (i18nCookie) lng = acceptLanguage.get(i18nCookie.value);
-    if (!lng)
-      lng =
-        acceptLanguage.get(req.headers.get('Accept-Language')) || fallbackLng;
+  if (i18nCookie) lng = acceptLanguage.get(i18nCookie.value);
+  if (!lng)
+    lng = acceptLanguage.get(req.headers.get('Accept-Language')) || fallbackLng;
 
-    if (
-      !languages.some((loc) => {
-        const langPath = `/${loc}`;
+  if (
+    !languages.some((loc) => {
+      const langPath = `/${loc}`;
 
-        const { pathname } = nextUrl;
+      const { pathname } = nextUrl;
 
-        return (
-          pathname.startsWith(langPath + '/') ||
-          //* root path
-          nextUrl.pathname === langPath
-        );
-      }) &&
-      !nextUrl.pathname.startsWith('/_next')
-    ) {
-      nextUrl.pathname = `/${lng}${nextUrl.pathname}`;
+      return (
+        pathname.startsWith(langPath + '/') ||
+        //* root path
+        nextUrl.pathname === langPath
+      );
+    }) &&
+    !nextUrl.pathname.startsWith('/_next')
+  ) {
+    nextUrl.pathname = `/${lng}${nextUrl.pathname}`;
 
-      return NextResponse.redirect(nextUrl);
-    }
+    return NextResponse.redirect(nextUrl);
   }
-
   const res = NextResponse.next();
+
+  const purePath = nextUrl.pathname.replace(`/${lng}`, '');
+
+  console.log(purePath);
+
+  res.headers.set('pure-path', purePath);
 
   setUserIdCookie(req, res);
 
