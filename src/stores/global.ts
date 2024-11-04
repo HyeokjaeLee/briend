@@ -7,9 +7,19 @@ import type { Dispatch, SetStateAction } from 'react';
 import { LANGUAGE } from '@/constants/language';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
 
+interface GlobalLoadingOptions {
+  delay?: 0 | 100 | 200 | 300;
+}
+
 interface GlobalStore {
-  isLoading: boolean;
-  setIsLoading: (isLoading: boolean) => void;
+  globalLoading: {
+    value: boolean;
+    options?: GlobalLoadingOptions;
+  };
+  setGlobalLoading: (
+    isLoading: boolean,
+    options?: GlobalLoadingOptions,
+  ) => void;
 
   chattingInfo: {
     index: number;
@@ -19,8 +29,16 @@ interface GlobalStore {
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
-  isLoading: false,
-  setIsLoading: (isLoading) => set({ isLoading }),
+  globalLoading: {
+    value: false,
+  },
+  setGlobalLoading: (isLoading, options) =>
+    set({
+      globalLoading: {
+        value: isLoading,
+        options,
+      },
+    }),
 
   chattingInfo: {
     index: 0,

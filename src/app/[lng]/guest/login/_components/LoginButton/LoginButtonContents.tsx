@@ -17,7 +17,7 @@ export const LoginButtonContents = ({
   fullSize,
 }: LoginButtonContentsProps) => {
   const { t } = useTranslation('login');
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
 
   return (
     <button
@@ -33,7 +33,11 @@ export const LoginButtonContents = ({
           [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
         }[provider],
       )}
-      onClick={() => setIsLoading(true)}
+      onClick={() =>
+        setGlobalLoading(true, {
+          delay: 0,
+        })
+      }
     >
       <div
         className={

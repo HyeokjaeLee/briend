@@ -34,7 +34,7 @@ export const CustomLink = ({
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -56,7 +56,7 @@ export const CustomLink = ({
           return e.preventDefault();
         }
 
-        if (withLoading) setIsLoading(true);
+        if (withLoading) setGlobalLoading(true);
 
         if (withAnimation) {
           sessionStorage.setItem(

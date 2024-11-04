@@ -76,12 +76,10 @@ const MorePage = async (props: MorePageProps) => {
             action={async () => {
               'use server';
 
-              await signOut({
-                redirectTo: `/${lng}${ROUTES.HOME.pathname}`,
-              });
+              await signOut();
             }}
           >
-            <LogoutButton />
+            <LogoutButton lng={lng} />
           </form>
         </li>
       </ul>

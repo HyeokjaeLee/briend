@@ -39,7 +39,7 @@ interface CustomRouter extends AppRouterInstance {
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
 
   return useMemo((): CustomRouter => {
     const replace: CustomRouter['replace'] = (href, options) => {
@@ -52,7 +52,7 @@ export const useCustomRouter = () => {
       const withLoading = options?.withLoading ?? true;
       const withAnimation = options?.withAnimation;
 
-      if (withLoading) setIsLoading(true);
+      if (withLoading) setGlobalLoading(true);
       if (withAnimation)
         sessionStorage.setItem(
           SESSION_STORAGE.NAVIGATION_ANIMATION,
@@ -67,7 +67,7 @@ export const useCustomRouter = () => {
         const withLoading = options?.withLoading;
         const withAnimation = options?.withAnimation ?? 'FR';
 
-        if (withLoading) setIsLoading(true);
+        if (withLoading) setGlobalLoading(true);
         if (withAnimation)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
@@ -92,7 +92,7 @@ export const useCustomRouter = () => {
             withLoading,
           });
 
-        if (withLoading) setIsLoading(true);
+        if (withLoading) setGlobalLoading(true);
         if (withAnimation)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
@@ -109,7 +109,7 @@ export const useCustomRouter = () => {
         const withLoading = options?.withLoading ?? true;
         const withAnimation = options?.withAnimation;
 
-        if (withLoading) setIsLoading(true);
+        if (withLoading) setGlobalLoading(true);
         if (withAnimation)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
@@ -127,5 +127,5 @@ export const useCustomRouter = () => {
         return router.prefetch(customHref, options);
       },
     };
-  }, [getCustomHref, router, setIsLoading]);
+  }, [getCustomHref, router, setGlobalLoading]);
 };

@@ -1,16 +1,36 @@
 'use client';
 
+import { getSession } from 'next-auth/react';
+
+import { useEffect } from 'react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/CustomButton';
+import type { LANGUAGE } from '@/constants/language';
 import { SESSION_STORAGE } from '@/constants/storage-key';
+import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores/global';
-import { toast } from '@/utils/toast';
 
-export const LogoutButton = () => {
+interface LogoutButtonProps {
+  lng: LANGUAGE;
+}
+
+export const LogoutButton = ({ lng }: LogoutButtonProps) => {
   const { t } = useTranslation('more');
-  const setIsLoading = useGlobalStore((state) => state.setIsLoading);
+  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
+
+  useEffect(
+    //! next auth 자체 리다이렉트 시 새로고침 전까지 세션이 삭제된것을 감지하지 못함
+    () => () => {
+      getSession().then((session) => {
+        if (session) return;
+
+        window.location.replace(`/${lng}${ROUTES.HOME.pathname}`);
+      });
+    },
+    [lng],
+  );
 
   return (
     <CustomButton
@@ -18,11 +38,14 @@ export const LogoutButton = () => {
       type="submit"
       variant="ghost"
       onClick={() => {
-        setIsLoading(true);
-        sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
-        toast({
-          message: t('logout-toast-message'),
+        setGlobalLoading(true, {
+          delay: 0,
         });
+        sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
+        sessionStorage.setItem(
+          SESSION_STORAGE.REFRESH_TOAST,
+          t('logout-toast-message'),
+        );
       }}
     >
       {t('logout')}

@@ -4,6 +4,7 @@ export enum SESSION_STORAGE {
   HISTORY = 'custom-history',
   NAVIGATION_ANIMATION = 'session-animation',
   REPLACE_MARK = 'replace-mark',
+  REFRESH_TOAST = 'refresh-toast',
 }
 
 export namespace SESSION_STORAGE_TYPE {

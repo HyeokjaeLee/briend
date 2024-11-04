@@ -7,23 +7,37 @@ import { Suspense, useEffect } from 'react';
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
 import { useUrl } from '@/hooks/useUrl';
 import { useGlobalStore } from '@/stores/global';
+import { cn } from '@/utils/cn';
 
 const GlobalLoadingController = () => {
-  const [isLoading, setIsLoading] = useGlobalStore(
-    useShallow((state) => [state.isLoading, state.setIsLoading]),
+  const [globalLoading, setGlobalLoading] = useGlobalStore(
+    useShallow((state) => [state.globalLoading, state.setGlobalLoading]),
   );
+
+  const { value: isLoading, options } = globalLoading;
+
+  const delay = options?.delay ?? 300;
 
   const url = useUrl();
 
   useEffect(() => {
     if (!isLoading) return;
 
-    return () => setIsLoading(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, isLoading]);
+    return () => setGlobalLoading(false);
+  }, [url, isLoading, setGlobalLoading]);
 
   return isLoading ? (
-    <LoadingTemplate className="absolute animate-fade bg-slate-850/80 backdrop-blur-xl animate-delay-300 animate-duration-150" />
+    <LoadingTemplate
+      className={cn(
+        'absolute animate-fade bg-slate-200/50 backdrop-blur-xl animate-duration-150',
+        {
+          0: 'animate-delay-0',
+          100: 'animate-delay-100',
+          200: 'animate-delay-200',
+          300: 'animate-delay-300',
+        }[delay],
+      )}
+    />
   ) : null;
 };
 
