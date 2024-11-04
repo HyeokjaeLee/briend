@@ -26,7 +26,11 @@
 
 .rt-TextFieldInput,
 .rt-TextAreaInput {
-  @apply outline-none;
+  @supports (-moz-appearance: none) {
+    &:focus {
+      outline: none;
+    }
+  }
 }
 
 :root {
