@@ -57,7 +57,7 @@ export const ChattingBottomTextfield = ({
     if (ref.current) {
       const { scrollHeight } = ref.current;
 
-      let height = scrollHeight / 14 + 1;
+      let height = scrollHeight + 16;
 
       if (height !== DEFAULT_HEIGHT) {
         height += 0.125;
@@ -107,7 +107,7 @@ export const ChattingBottomTextfield = ({
             placeholder="메시지 입력"
             size="3"
             style={{
-              height: `${height}rem`,
+              height,
             }}
             variant="soft"
             onChange={(e) => {

@@ -1,7 +1,5 @@
-/* stylelint-disable no-invalid-position-at-import-rule */
-
-@import '@radix-ui/themes/styles.css';
 @import 'react-toastify/dist/ReactToastify.css';
+@import '@radix-ui/themes/styles.css';
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +21,12 @@
 
 .rt-TextFieldRoot,
 .rt-TextAreaRoot {
-  outline-width: 1px;
+  @apply outline-1;
+}
+
+.rt-TextFieldInput,
+.rt-TextAreaInput {
+  @apply outline-none;
 }
 
 :root {
