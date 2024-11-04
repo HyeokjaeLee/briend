@@ -47,8 +47,6 @@ export const middleware = auth(async (req: NextRequest) => {
 
   const purePath = nextUrl.pathname.replace(`/${lng}`, '');
 
-  console.log(purePath);
-
   res.headers.set('pure-path', purePath);
 
   setUserIdCookie(req, res);

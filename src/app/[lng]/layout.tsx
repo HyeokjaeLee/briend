@@ -1,7 +1,6 @@
 import './globals.css';
 
 import type { Metadata } from 'next';
-import type { AlternateLinkDescriptor } from 'next/dist/lib/metadata/types/alternative-urls-types';
 
 import { dir } from 'i18next';
 import { headers } from 'next/headers';
