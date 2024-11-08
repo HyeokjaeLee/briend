@@ -11,7 +11,7 @@ import {
   RiMessage2Line,
 } from 'react-icons/ri';
 
-import { CustomButton } from '@/components/CustomButton';
+import { CustomButton } from '@/components/atoms/CustomButton';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
 import { ERROR_STATUS } from '@/utils/customError';

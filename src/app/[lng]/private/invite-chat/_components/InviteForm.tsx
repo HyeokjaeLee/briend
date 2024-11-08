@@ -7,8 +7,8 @@ import { useShallow } from 'zustand/shallow';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/CustomButton';
-import { ValidationMessage } from '@/components/ValidationMessage';
+import { CustomButton } from '@/components/atoms/CustomButton';
+import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE } from '@/constants/language';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { useCustomRouter } from '@/hooks/useCustomRouter';

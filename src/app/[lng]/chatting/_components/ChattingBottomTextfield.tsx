@@ -8,8 +8,8 @@ import { useForm } from 'react-hook-form';
 import { RiLock2Fill, RiSendPlane2Fill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomBottomNav } from '@/components/CustomBottomNav';
-import { CustomIconButton } from '@/components/CustomIconButton';
+import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
+import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { API_ROUTES } from '@/routes/api';
 import type { Payload } from '@/types/jwt';
 import { CustomError, ERROR } from '@/utils/customError';

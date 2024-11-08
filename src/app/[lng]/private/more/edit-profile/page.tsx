@@ -10,10 +10,10 @@ import { RiRefreshLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
-import { CustomBottomNav } from '@/components/CustomBottomNav';
-import { CustomButton } from '@/components/CustomButton';
-import { CustomIconButton } from '@/components/CustomIconButton';
-import { ValidationMessage } from '@/components/ValidationMessage';
+import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
+import { CustomButton } from '@/components/atoms/CustomButton';
+import { CustomIconButton } from '@/components/atoms/CustomIconButton';
+import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';

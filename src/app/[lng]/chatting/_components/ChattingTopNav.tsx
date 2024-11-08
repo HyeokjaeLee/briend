@@ -5,8 +5,8 @@ import { useSession } from 'next-auth/react';
 
 import { RiArrowGoBackFill } from 'react-icons/ri';
 
-import { CustomIconButton } from '@/components/CustomIconButton';
-import { CustomTopHeader } from '@/components/CustomTopHeader';
+import { CustomIconButton } from '@/components/atoms/CustomIconButton';
+import { CustomTopHeader } from '@/components/atoms/CustomTopHeader';
 import { ROUTES } from '@/routes/client';
 import type { Payload } from '@/types/jwt';
 

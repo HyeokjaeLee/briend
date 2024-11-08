@@ -8,7 +8,7 @@ import { useEffect, use } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { QR } from '@/components/QR';
-import { Timer } from '@/components/Timer';
+import { Timer } from '@/components/molecules/Timer';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
@@ -66,15 +66,9 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
 
   useEffect(() => {
     const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
-    const pusherWaitingEvent = PUSHER_EVENT.WAITING(hostId);
-
-    const unbindChannel = () => {
-      channel.unbind(pusherWaitingEvent);
-      channel.unsubscribe();
-    };
 
     channel.bind(
-      pusherWaitingEvent,
+      PUSHER_EVENT.WAITING(hostId),
       ({ channelToken }: PusherType.joinChat) => {
         const { channelId } = decodeJwt<Payload.ChannelToken>(channelToken);
 
@@ -90,9 +84,7 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
           return prev;
         });
 
-        unbindChannel();
-
-        return router.replace(
+        router.replace(
           ROUTES.CHATTING_ROOM.url({
             searchParams: {
               channelId,
@@ -102,7 +94,11 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
       },
     );
 
-    return unbindChannel;
+    return () => {
+      if (channel.subscribed) {
+        channel.unsubscribe();
+      }
+    };
   }, [hostId, router, setChattingInfo, t]);
 
   const { href } = ROUTES.JOIN_CHAT.url({

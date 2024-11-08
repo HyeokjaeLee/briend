@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomIconButton } from '@/components/CustomIconButton';
+import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';

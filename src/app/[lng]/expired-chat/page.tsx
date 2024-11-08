@@ -1,9 +1,9 @@
 'use client';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomBottomNav } from '@/components/CustomBottomNav';
-import { CustomButton } from '@/components/CustomButton';
-import { CustomLink } from '@/components/CustomLink';
+import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
+import { CustomButton } from '@/components/atoms/CustomButton';
+import { CustomLink } from '@/components/atoms/CustomLink';
 import { ROUTES } from '@/routes/client';
 
 const ExpiredChatPage = () => {

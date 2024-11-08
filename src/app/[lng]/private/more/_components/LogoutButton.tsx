@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/CustomButton';
+import { CustomButton } from '@/components/atoms/CustomButton';
 import type { LANGUAGE } from '@/constants/language';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';

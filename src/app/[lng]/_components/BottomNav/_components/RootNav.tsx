@@ -13,8 +13,8 @@ import {
 } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/CustomButton';
-import { CustomLink } from '@/components/CustomLink';
+import { CustomButton } from '@/components/atoms/CustomButton';
+import { CustomLink } from '@/components/atoms/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
 import { findRoute } from '@/utils/findRoute';
