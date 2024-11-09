@@ -7,6 +7,7 @@ import { NextResponse } from 'next/server';
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
+import { LANGUAGE } from '@/constants/language';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { ROUTES } from '@/routes/client';
 import type { PusherType } from '@/types/api';
@@ -15,6 +16,7 @@ import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { setUserIdCookie } from '@/utils/api/setUserIdCookie';
 import { ERROR_STATUS } from '@/utils/customError';
+import { isEnumValue } from '@/utils/isEnumValue';
 
 export const GET = createApiRoute(async (req: NextRequest) => {
   const inviteToken = req.nextUrl.searchParams.get('inviteToken');
@@ -74,18 +76,21 @@ export const GET = createApiRoute(async (req: NextRequest) => {
     if (e instanceof errors.JWTExpired) {
       const { payload } = e;
 
-      req.nextUrl.pathname = ROUTES.ERROR_TO.pathname;
+      const lng =
+        'language' in payload &&
+        typeof payload.language === 'string' &&
+        isEnumValue(LANGUAGE, payload.language)
+          ? payload.language
+          : undefined;
 
-      if ('language' in payload && typeof payload.language === 'string') {
-        req.nextUrl.pathname = `/${payload.language}` + req.nextUrl.pathname;
-      }
+      const url = ROUTES.ERROR_TO.url({
+        lng,
+        searchParams: {
+          status: ERROR_STATUS.EXPIRED_CHAT.toString(),
+        },
+      });
 
-      req.nextUrl.searchParams.set(
-        'status',
-        ERROR_STATUS.EXPIRED_CHAT.toString(),
-      );
-
-      return NextResponse.redirect(req.nextUrl);
+      return NextResponse.redirect(url);
     }
 
     req.nextUrl.pathname = ROUTES.HOME.pathname;

@@ -28,6 +28,7 @@ export const ROUTES = {
       bottomNavType: 'empty',
     },
   ),
+  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/chatting/join'),
   INVITED_CHAT_ENTER: createRoute<'hostId', 'expires' | 'accessToken'>(
     ({ hostId }) => `/enter/${hostId}`,
     {
@@ -41,7 +42,7 @@ export const ROUTES = {
   }),
   TEST: createRoute('/test'),
 
-  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/api/join-chat', {
+  JOIN_CHAT2: createRoute<undefined, 'inviteToken'>('/api/join-chat', {
     disableI18n: true,
   }),
   EXPIRED_CHAT: createRoute('/expired-chat', {

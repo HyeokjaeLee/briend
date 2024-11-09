@@ -78,11 +78,10 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
 
         setCookie(COOKIES.CHANNEL_PREFIX + channelId, channelToken);
 
-        setChattingInfo((prev) => {
-          prev.index += 1;
-
-          return prev;
-        });
+        setChattingInfo((prev) => ({
+          ...prev,
+          index: prev.index + 1,
+        }));
 
         router.replace(
           ROUTES.CHATTING_ROOM.url({
@@ -102,6 +101,7 @@ const InviteChatQRPage = (props: InviteChatQRPageProps) => {
   }, [hostId, router, setChattingInfo, t]);
 
   const { href } = ROUTES.JOIN_CHAT.url({
+    lng: payload.language,
     searchParams: {
       inviteToken,
     },

@@ -1,3 +1,5 @@
+import type { LANGUAGE } from './language';
+
 export enum SESSION_STORAGE {
   HISTORY_INDEX = 'custom-history-index',
   HISTORY_EXPIRE = 'custom-history-expire',
@@ -19,4 +21,11 @@ export namespace SESSION_STORAGE_TYPE {
 
 export enum LOCAL_STORAGE {
   CREATE_CHATTING_INFO = 'create-chatting-info',
+}
+
+export namespace LOCAL_STORAGE_TYPE {
+  export interface CHATTING_INFO {
+    index: number;
+    language: LANGUAGE;
+  }
 }
