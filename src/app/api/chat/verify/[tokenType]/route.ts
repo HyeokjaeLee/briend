@@ -19,13 +19,12 @@ export const GET = createApiRoute<
 
   const { tokenType } = await params;
 
-  const inviteToken = searchParams.get('inviteToken');
+  const token = searchParams.get('token');
 
-  if (!inviteToken)
-    throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken']));
+  if (!token) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['token']));
 
   try {
-    const { payload } = await jwtSecretVerify<ChatTokenPayload>(inviteToken);
+    const { payload } = await jwtSecretVerify<ChatTokenPayload>(token);
 
     return NextResponse.json({
       isExpired: false,
@@ -34,7 +33,7 @@ export const GET = createApiRoute<
     });
   } catch (e) {
     if (e instanceof errors.JWTExpired) {
-      const payload = decodeJwt<ChatTokenPayload>(inviteToken);
+      const payload = decodeJwt<ChatTokenPayload>(token);
 
       return NextResponse.json({
         isExpired: true,

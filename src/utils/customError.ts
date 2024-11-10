@@ -20,7 +20,7 @@ export class CustomError extends Error {
 export enum ERROR_STATUS {
   NOT_FOUND = 404,
   UNAUTHORIZED = 401,
-  EXPIRED_CHAT = 403,
+  EXPIRED_CHAT = 4011,
   UNKNOWN_VALUE = 422,
 }
 

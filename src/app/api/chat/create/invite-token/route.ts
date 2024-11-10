@@ -8,9 +8,13 @@ import { createApiRoute } from '@/utils/api/createApiRoute';
 import { getAuthToken } from '@/utils/api/getAuthToken';
 import { CustomError, ERROR } from '@/utils/customError';
 
-export const GET = createApiRoute<ApiResponse.CREATE_CHAT>(
+export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
   async (req: NextRequest) => {
-    const { searchParams } = req.nextUrl;
+    const {
+      guestNickname,
+      language,
+      userId,
+    }: ApiParams.CREATE_CHAT_INVITE_TOKEN = await req.json();
 
     const token = await getAuthToken({ req });
 
@@ -19,15 +23,11 @@ export const GET = createApiRoute<ApiResponse.CREATE_CHAT>(
     if (!hostNickname)
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['hostNickname']));
 
-    const params = Object.fromEntries(
-      searchParams.entries(),
-    ) as unknown as ApiParams.CREATE_CHAT;
-
     const inviteToken = await new SignJWT({
-      hostId: params.userId,
+      hostId: userId,
       hostNickname,
-      guestNickname: params.guestNickName,
-      language: params.language,
+      guestNickname,
+      language,
     } satisfies Payload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()

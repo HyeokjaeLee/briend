@@ -20,14 +20,14 @@ export const Timer = ({
 
   const timeoutSec = new Date(expires).getTime();
 
+  const [error, setError] = useState<Error>();
+
+  if (error) throw error;
+
   useEffect(() => {
     if (leftSeconds === 0) return;
 
     const handleNextLeftSeconds = () => {
-      const nextLeftSeconds = Math.floor(
-        (timeoutSec - new Date().getTime()) / 1_000,
-      );
-
       const timerAction = (leftSec: number) => {
         onChangeLeftSeconds?.(leftSec);
         setLeftSeconds(leftSec);
@@ -35,8 +35,17 @@ export const Timer = ({
         return leftSec;
       };
 
+      const nextLeftSeconds = Math.floor(
+        (timeoutSec - new Date().getTime()) / 1_000,
+      );
+
       if (nextLeftSeconds <= 0) {
-        onTimeout?.();
+        //! setTimeout에서 발생한 error를 전역 error boundary에서 처리
+        try {
+          onTimeout?.();
+        } catch (e) {
+          if (e instanceof Error) setError(e);
+        }
 
         return timerAction(0);
       }

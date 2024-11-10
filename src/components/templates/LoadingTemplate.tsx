@@ -10,7 +10,7 @@ export const LoadingTemplate = ({ className }: LoadingTemplateProps) => {
   return (
     <div
       className={cn(
-        'z-50 size-full flex-1 flex-col gap-4 bg-slate-300 flex-center',
+        'z-50 size-full flex-1 flex-col gap-4 bg-slate-50 flex-center',
         className,
       )}
     >

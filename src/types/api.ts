@@ -1,13 +1,19 @@
+import type { JWTPayload } from 'jose';
+
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
 import type { Payload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
-  export interface CREATE_CHAT {
+  export interface CREATE_CHAT_INVITE_TOKEN {
     userId: string;
     language: LANGUAGE;
-    guestNickName: string;
-    emoji: string;
+    guestNickname: string;
+  }
+
+  export interface CREATE_CHAT_CHANNEL_TOKEN {
+    guestId: string;
+    inviteToken: string;
   }
 
   export interface UNLINK_ACCOUNT {
@@ -38,9 +44,18 @@ export namespace ApiParams {
 }
 
 export namespace ApiResponse {
-  export interface CREATE_CHAT {
+  export interface CREATE_CHAT_INVITE_TOKEN {
     inviteToken: string;
   }
+
+  export type CREATE_CHAT_CHANNEL_TOKEN =
+    | {
+        channelToken: string;
+        channelId: string;
+      }
+    | {
+        error: 'expired' | 'invalid';
+      };
 
   export interface UNLINK_ACCOUNT {
     unlinkedProvider: LOGIN_PROVIDERS;
@@ -62,9 +77,10 @@ export namespace ApiResponse {
   export interface VERIFY_CHAT_TOKEN<TTokenType extends TOKEN_TYPE> {
     isExpired: boolean;
     tokenType: TOKEN_TYPE;
-    payload: TTokenType extends TOKEN_TYPE.INVITE
+    payload: (TTokenType extends TOKEN_TYPE.INVITE
       ? Payload.InviteToken
-      : Payload.ChannelToken;
+      : Payload.ChannelToken) &
+      JWTPayload;
   }
 }
 

@@ -2,29 +2,34 @@ import { pick } from 'es-toolkit';
 import { decodeJwt, errors } from 'jose';
 import { cookies } from 'next/headers';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { API_ROUTES } from '@/routes/api';
 import type { Payload } from '@/types/jwt';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { CustomError, ERROR } from '@/utils/customError';
 
 import { ChattingBottomTextfield } from './_components/ChattingBottomTextfield';
 import { ChattingList } from './_components/ChattingList';
+import { ChattingRoomTemplate } from './_components/ChattingRoomTemplate';
 import { ChattingTopNav } from './_components/ChattingTopNav';
 
 interface ChattingPageProps {
-  searchParams: Promise<{
+  params: Promise<{
     channelId: string;
   }>;
 }
 
 const ChattingPage = async (props: ChattingPageProps) => {
-  const searchParams = await props.searchParams;
+  const { channelId } = await props.params;
+
+  return <ChattingRoomTemplate channelId={channelId} />;
+};
+
+export default ChattingPage;
+
+/**
+ *  const { channelId } = await props.params;
 
   const cookieStore = await cookies();
-
-  const channelToken = cookieStore.get(
-    `${COOKIES.CHANNEL_PREFIX}${searchParams.channelId}`,
-  )?.value;
 
   if (!channelToken) throw new CustomError(ERROR.UNAUTHORIZED());
 
@@ -52,6 +57,4 @@ const ChattingPage = async (props: ChattingPageProps) => {
       />
     </article>
   );
-};
-
-export default ChattingPage;
+ */

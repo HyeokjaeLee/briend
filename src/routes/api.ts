@@ -2,10 +2,11 @@ import type { ApiParams, ApiResponse } from '../types/api';
 
 import ky from 'ky';
 
+import { PUBLIC_ENV } from '@/constants/public-env';
 import type { TOKEN_TYPE } from '@/types/jwt';
 
 const apiInstance = ky.create({
-  prefixUrl: '/api',
+  prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
@@ -13,14 +14,23 @@ const apiInstance = ky.create({
 });
 
 export const API_ROUTES = {
-  CREATE_CHAT: (params: ApiParams.CREATE_CHAT) =>
+  CREATE_CHAT_INVITE_TOKEN: (params: ApiParams.CREATE_CHAT_INVITE_TOKEN) =>
     apiInstance
-      .get<ApiResponse.CREATE_CHAT>('chat/create', {
-        searchParams: {
-          ...params,
-        },
+      .post<ApiResponse.CREATE_CHAT_INVITE_TOKEN>('chat/create/invite-token', {
+        json: params,
       })
       .json(),
+
+  CREATE_CHAT_CHANNEL_TOKEN: (params: ApiParams.CREATE_CHAT_CHANNEL_TOKEN) =>
+    apiInstance
+      .post<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
+        'chat/create/channel-token',
+        {
+          json: params,
+        },
+      )
+      .json(),
+
   UNLINK_ACCOUNT: (params: ApiParams.UNLINK_ACCOUNT) =>
     apiInstance
       .post<ApiResponse.UNLINK_ACCOUNT>('auth/unlink-account', {
@@ -51,7 +61,7 @@ export const API_ROUTES = {
 
   VERIFY_CHAT_TOKEN: <TTokenType extends TOKEN_TYPE>(
     params: ApiParams.VERIFY_CHAT_TOKEN<TTokenType>,
-  ) => {
+  ) =>
     apiInstance
       .get<ApiResponse.VERIFY_CHAT_TOKEN<TTokenType>>(
         `chat/verify/${params.tokenType}`,
@@ -61,6 +71,5 @@ export const API_ROUTES = {
           },
         },
       )
-      .json();
-  },
+      .json(),
 };

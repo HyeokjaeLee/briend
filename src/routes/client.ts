@@ -6,10 +6,13 @@ export const ROUTES = {
     topHeaderType: 'root',
     topHeaderTitle: 'chat-title',
   }),
-  CHATTING_ROOM: createRoute<undefined, 'channelId'>('/chatting', {
-    topHeaderType: 'empty',
-    bottomNavType: 'empty',
-  }),
+  CHATTING_ROOM: createRoute<'channelId'>(
+    ({ channelId }) => `/chatting/${channelId}`,
+    {
+      topHeaderType: 'empty',
+      bottomNavType: 'empty',
+    },
+  ),
 
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',

@@ -68,10 +68,12 @@ export const InviteForm = () => {
   const nicknamePlaceholder = `Friend ${chattingInfo.index}`;
 
   const createChatMutation = useMutation({
-    mutationFn: API_ROUTES.CREATE_CHAT,
+    mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
     onSuccess: ({ inviteToken }) => {
-      const href = ROUTES.INVITE_CHAT_QR.pathname({
-        inviteToken,
+      const href = ROUTES.INVITE_CHAT_QR.url({
+        searchParams: {
+          inviteToken,
+        },
       });
 
       router.push(href);
