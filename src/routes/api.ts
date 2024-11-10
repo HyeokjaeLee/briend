@@ -2,6 +2,8 @@ import type { ApiParams, ApiResponse } from '../types/api';
 
 import ky from 'ky';
 
+import type { TOKEN_TYPE } from '@/types/jwt';
+
 const apiInstance = ky.create({
   prefixUrl: '/api',
   headers: {
@@ -46,4 +48,19 @@ export const API_ROUTES = {
         json: params,
       })
       .json(),
+
+  VERIFY_CHAT_TOKEN: <TTokenType extends TOKEN_TYPE>(
+    params: ApiParams.VERIFY_CHAT_TOKEN<TTokenType>,
+  ) => {
+    apiInstance
+      .get<ApiResponse.VERIFY_CHAT_TOKEN<TTokenType>>(
+        `chat/verify/${params.tokenType}`,
+        {
+          searchParams: {
+            token: params.token,
+          },
+        },
+      )
+      .json();
+  },
 };

@@ -1,5 +1,10 @@
 import type { LANGUAGE } from '@/constants/language';
 
+export enum TOKEN_TYPE {
+  INVITE = 'invite',
+  CHANNEL = 'channel',
+}
+
 export namespace Payload {
   export interface AccessToken {
     id: string;

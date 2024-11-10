@@ -1,5 +1,6 @@
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
 import type { LANGUAGE } from '@/constants/language';
+import type { Payload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
   export interface CREATE_CHAT {
@@ -29,6 +30,11 @@ export namespace ApiParams {
     channelToken: string;
     message: string;
   }
+
+  export interface VERIFY_CHAT_TOKEN<TTokenType extends TOKEN_TYPE> {
+    tokenType: TTokenType;
+    token: string;
+  }
 }
 
 export namespace ApiResponse {
@@ -51,6 +57,14 @@ export namespace ApiResponse {
 
   export interface RECEIVE_MESSAGE {
     id: string;
+  }
+
+  export interface VERIFY_CHAT_TOKEN<TTokenType extends TOKEN_TYPE> {
+    isExpired: boolean;
+    tokenType: TOKEN_TYPE;
+    payload: TTokenType extends TOKEN_TYPE.INVITE
+      ? Payload.InviteToken
+      : Payload.ChannelToken;
   }
 }
 
