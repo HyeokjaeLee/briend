@@ -49,6 +49,8 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
         } satisfies PusherType.joinChat,
       );
 
+      console.log(channelId);
+
       return NextResponse.json({
         channelId,
         channelToken,

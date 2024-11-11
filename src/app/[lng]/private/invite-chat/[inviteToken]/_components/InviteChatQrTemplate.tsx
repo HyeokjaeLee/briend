@@ -67,7 +67,9 @@ export const InviteChatQRTemplate = ({
 
   const { t } = useTranslation('invite-chat-qr');
 
-  const setChattingInfo = useGlobalStore((state) => state.setChattingInfo);
+  const setLastInviteLanguage = useGlobalStore(
+    (state) => state.setLastInviteLanguage,
+  );
 
   const handleExpiredToken = () => {
     toast({
@@ -98,21 +100,17 @@ export const InviteChatQRTemplate = ({
           message: t('start-chatting'),
         });
 
-        setChattingInfo((prev) => ({
-          ...prev,
-          index: prev.index + 1,
-        }));
-
         router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId }));
       },
     );
 
     return () => {
       if (channel.subscribed) {
+        channel.unbind(PUSHER_EVENT.WAITING(hostId));
         channel.unsubscribe();
       }
     };
-  }, [hostId, router, setChattingInfo, t]);
+  }, [hostId, payload.language, router, setLastInviteLanguage, t]);
 
   const { href } = ROUTES.JOIN_CHAT.url({
     lng: payload.language,

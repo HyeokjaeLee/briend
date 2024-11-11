@@ -3,12 +3,11 @@
 import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
-import type { Dispatch, SetStateAction } from 'react';
-
 import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
-import type { LOCAL_STORAGE_TYPE } from '@/constants/storage-key';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
+import { CustomError } from '@/utils/customError';
+import { isEnumValue } from '@/utils/isEnumValue';
 
 interface GlobalLoadingOptions {
   delay?: 0 | 100 | 200 | 300;
@@ -24,26 +23,22 @@ interface GlobalStore {
     options?: GlobalLoadingOptions,
   ) => void;
 
-  chattingInfo: LOCAL_STORAGE_TYPE.CHATTING_INFO;
-  setChattingInfo: Dispatch<SetStateAction<LOCAL_STORAGE_TYPE.CHATTING_INFO>>;
+  lastInviteLanguage: LANGUAGE;
+  setLastInviteLanguage: (language: LANGUAGE) => void;
 
   pusher: Pusher;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => {
-  let chattingInfo = {
-    index: 0,
-    language: LANGUAGE.ENGLISH,
-  };
+  const lastInviteLanguage =
+    (typeof window !== 'undefined' &&
+      localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
+    LANGUAGE.ENGLISH;
 
-  if (typeof window !== 'undefined') {
-    const localChattingInfo = localStorage.getItem(
-      LOCAL_STORAGE.CREATE_CHATTING_INFO,
-    );
+  if (!isEnumValue(LANGUAGE, lastInviteLanguage)) {
+    localStorage.removeItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE);
 
-    if (localChattingInfo) {
-      chattingInfo = JSON.parse(localChattingInfo);
-    }
+    throw new CustomError();
   }
 
   return {
@@ -58,21 +53,12 @@ export const useGlobalStore = create<GlobalStore>((set) => {
         },
       }),
 
-    chattingInfo,
-    setChattingInfo: (setChattingInfoAction) =>
-      set((state) => {
-        const chattingInfo =
-          typeof setChattingInfoAction === 'function'
-            ? setChattingInfoAction(state.chattingInfo)
-            : setChattingInfoAction;
+    lastInviteLanguage,
+    setLastInviteLanguage: (language) => {
+      localStorage.setItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE, language);
 
-        localStorage.setItem(
-          LOCAL_STORAGE.CREATE_CHATTING_INFO,
-          JSON.stringify(chattingInfo),
-        );
-
-        return { chattingInfo };
-      }),
+      return set({ lastInviteLanguage: language });
+    },
 
     pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {
       cluster: PUBLIC_ENV.PUSHER_CLUSTER,

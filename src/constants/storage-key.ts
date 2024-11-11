@@ -20,12 +20,7 @@ export namespace SESSION_STORAGE_TYPE {
 }
 
 export enum LOCAL_STORAGE {
-  CREATE_CHATTING_INFO = 'create-chatting-info',
+  LAST_INVITE_LANGUAGE = 'last-invite-language',
 }
 
-export namespace LOCAL_STORAGE_TYPE {
-  export interface CHATTING_INFO {
-    index: number;
-    language: LANGUAGE;
-  }
-}
+export namespace LOCAL_STORAGE_TYPE {}

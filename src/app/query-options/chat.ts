@@ -41,5 +41,6 @@ export const ChatQueryOptions = {
         params.inviteToken,
       ],
       queryFn: () => API_ROUTES.CREATE_CHAT_CHANNEL_TOKEN(params),
+      staleTime: 120_000,
     }),
 };

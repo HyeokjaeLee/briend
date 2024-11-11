@@ -7,10 +7,10 @@ import type { Payload } from '@/types/jwt';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { CustomError, ERROR } from '@/utils/customError';
 
-import { ChattingBottomTextfield } from './_components/ChattingBottomTextfield';
-import { ChattingList } from './_components/ChattingList';
 import { ChattingRoomTemplate } from './_components/ChattingRoomTemplate';
-import { ChattingTopNav } from './_components/ChattingTopNav';
+import { ChattingBottomTextfield } from './_components/ChattingRoomTemplate/ChattingBottomTextfield';
+import { ChattingList } from './_components/ChattingRoomTemplate/ChattingList';
+import { ChattingTopNav } from './_components/ChattingRoomTemplate/ChattingTopNav';
 
 interface ChattingPageProps {
   params: Promise<{
