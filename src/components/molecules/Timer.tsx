@@ -5,7 +5,7 @@ import { RiAlarmLine } from 'react-icons/ri';
 
 import { cn } from '@/utils/cn';
 
-interface TimerProps {
+export interface TimerProps {
   expires: Date;
   onChangeLeftSeconds?: (leftSeconds: number) => void;
   onTimeout?: () => void;
@@ -66,6 +66,12 @@ export const Timer = ({
 
   const notEnoughTime = leftSeconds < 60;
 
+  const hours = Math.floor(leftSeconds / 3_600);
+  const minutes = Math.floor((leftSeconds % 3_600) / 60)
+    .toString()
+    .padStart(2, '0');
+  const seconds = (leftSeconds % 60).toString().padStart(2, '0');
+
   return (
     <strong
       className={cn('flex items-center gap-2 text-slate-900 min-w-24', {
@@ -85,10 +91,8 @@ export const Timer = ({
           'animate-pulse animate-duration-1000 animate-infinite': notEnoughTime,
         })}
       >
-        {Math.floor(leftSeconds / 60)
-          .toString()
-          .padStart(2, '0')}
-        :{(leftSeconds % 60).toString().padStart(2, '0')}
+        {hours ? `${hours.toString().padStart(2, '0')}:` : ''}
+        {minutes}:{seconds}
       </span>
     </strong>
   );

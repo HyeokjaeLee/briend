@@ -84,6 +84,7 @@ export const InviteForm = () => {
           userId: user.id,
           language,
           guestNickname: nickname || nicknamePlaceholder,
+          hostEmoji: user.emoji,
         });
       })}
     >

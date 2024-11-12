@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import { errors, SignJWT } from 'jose';
 import { nanoid } from 'nanoid';
 import { NextResponse } from 'next/server';
+import { random } from 'node-emoji';
 
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
@@ -19,7 +20,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
 
     try {
       const { payload } =
-        await jwtSecretVerify<Payload.ChannelToken>(inviteToken);
+        await jwtSecretVerify<Payload.InviteToken>(inviteToken);
 
       if (guestId === payload.hostId) {
         return NextResponse.json({
@@ -35,6 +36,8 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
         hostNickname: payload.hostNickname,
         guestId,
         guestNickname: payload.guestNickname,
+        guestEmoji: random().emoji,
+        hostEmoji: payload.hostEmoji,
       } satisfies Payload.ChannelToken)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()
@@ -48,8 +51,6 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
           channelToken,
         } satisfies PusherType.joinChat,
       );
-
-      console.log(channelId);
 
       return NextResponse.json({
         channelId,

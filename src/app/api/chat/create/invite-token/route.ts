@@ -14,6 +14,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
       guestNickname,
       language,
       userId,
+      hostEmoji,
     }: ApiParams.CREATE_CHAT_INVITE_TOKEN = await req.json();
 
     const token = await getAuthToken({ req });
@@ -28,6 +29,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
       hostNickname,
       guestNickname,
       language,
+      hostEmoji,
     } satisfies Payload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()

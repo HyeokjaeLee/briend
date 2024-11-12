@@ -4,17 +4,6 @@ import type { TOKEN_TYPE } from '@/types/jwt';
 import { createQueryKeys } from '@/utils/createQueryKeys';
 import { queryOptions } from '@tanstack/react-query';
 
-export namespace ChatQueryOptionsParams {
-  export interface VerifyToken<TTokenType extends TOKEN_TYPE> {
-    tokenType: TTokenType;
-    token: string;
-  }
-
-  export interface CreateChannelToken {
-    guestId: string;
-  }
-}
-
 export const ChatQueryKey = createQueryKeys('chat', [
   'verifyToken',
   'createChannelToken',
@@ -24,7 +13,7 @@ export const ChatQueryOptions = {
   verifyToken: <TTokenType extends TOKEN_TYPE>({
     tokenType,
     token,
-  }: ChatQueryOptionsParams.VerifyToken<TTokenType>) =>
+  }: ApiParams.VERIFY_CHAT_TOKEN<TTokenType>) =>
     queryOptions({
       queryKey: [ChatQueryKey.verifyToken, tokenType, token],
       queryFn: () =>

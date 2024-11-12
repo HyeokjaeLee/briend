@@ -13,22 +13,9 @@ import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { useMutation } from '@tanstack/react-query';
 
-const db = new Dexie('ChattingHistoryDB');
+interface ChattingListProps {}
 
-interface ChattingListProps
-  extends Pick<Payload.ChannelToken, 'hostId' | 'channelId'> {
-  channelToken: string;
-}
-
-export const ChattingList = ({
-  hostId,
-  channelId,
-  channelToken,
-}: ChattingListProps) => {
-  db.version(1).stores({
-    chatMessages: '++id, message, userID, translatedMessage',
-  });
-
+export const ChattingList = ({}: ChattingListProps) => {
   const [cookies] = useCookies([COOKIES.USER_ID]);
 
   const userId = cookies['user-id'];
@@ -46,6 +33,24 @@ export const ChattingList = ({
       PUSHER_CHANNEL.CHATTING(hostId, channelId),
     );
 
+    console.log(PUSHER_CHANNEL.CHATTING(hostId, channelId));
+
+    // presence 채널 이벤트 바인딩
+    channel.bind('pusher:subscription_succeeded', (members: any) => {
+      // 초기 접속자 목록
+      console.log('현재 접속자:', members);
+    });
+
+    channel.bind('pusher:member_added', (member: any) => {
+      // 새로운 유저가 접속했을 때
+      console.log('새로운 접속자:', member);
+    });
+
+    channel.bind('pusher:member_removed', (member: any) => {
+      // 유저가 나갔을 때
+      console.log('접속 종료:', member);
+    });
+
     channel.bind(
       PUSHER_EVENT.CHATTING_SEND_MESSAGE(userId),
       ({ id, message }: PusherType.sendMessage) => {
@@ -56,7 +61,11 @@ export const ChattingList = ({
         });
       },
     );
-  }, [channelId, channelToken, hostId, mutateReceiveMessage, userId]);
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [mutateReceiveMessage, userId]);
 
   return (
     <ul>

@@ -47,6 +47,12 @@ export const POST = createApiRoute<ApiResponse.RECEIVE_MESSAGE>(
           }[i18n],
         );
 
+      console.log({
+        translatedMessage,
+        id,
+        userId,
+      });
+
       await pusher.trigger(
         PUSHER_CHANNEL.CHATTING(payload.hostId, payload.channelId),
         PUSHER_EVENT.CHATTING_RECEIVE_MESSAGE,

@@ -9,6 +9,7 @@ export namespace ApiParams {
     userId: string;
     language: LANGUAGE;
     guestNickname: string;
+    hostEmoji: string;
   }
 
   export interface CREATE_CHAT_CHANNEL_TOKEN {
@@ -40,6 +41,11 @@ export namespace ApiParams {
   export interface VERIFY_CHAT_TOKEN<TTokenType extends TOKEN_TYPE> {
     tokenType: TTokenType;
     token: string;
+  }
+
+  export interface AUTHENTICATE_PUSHER {
+    socketId: string;
+    userId: string;
   }
 }
 

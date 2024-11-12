@@ -15,6 +15,7 @@ export namespace Payload {
   export interface InviteToken {
     hostId: string;
     hostNickname: string;
+    hostEmoji: string;
     guestNickname: string;
     language: LANGUAGE;
   }
@@ -23,7 +24,9 @@ export namespace Payload {
     channelId: string;
     hostId: string;
     hostNickname: string;
+    hostEmoji: string;
     guestId: string;
     guestNickname: string;
+    guestEmoji: string;
   }
 }

@@ -2,7 +2,7 @@
 
 import { decodeJwt } from 'jose';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
@@ -15,7 +15,6 @@ import { IS_DEV } from '@/constants/public-env';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
-import { useGlobalStore } from '@/stores/global';
 import type { PusherType } from '@/types/api';
 import { TOKEN_TYPE, type Payload } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
@@ -67,11 +66,7 @@ export const InviteChatQRTemplate = ({
 
   const { t } = useTranslation('invite-chat-qr');
 
-  const setLastInviteLanguage = useGlobalStore(
-    (state) => state.setLastInviteLanguage,
-  );
-
-  const handleExpiredToken = () => {
+  const handleExpiredToken = useCallback(() => {
     toast({
       message: t('expired-toast-message'),
     });
@@ -79,9 +74,11 @@ export const InviteChatQRTemplate = ({
     throw new CustomError({
       status: ERROR_STATUS.EXPIRED_CHAT,
     });
-  };
+  }, [t]);
 
-  if (isExpired) handleExpiredToken();
+  useEffect(() => {
+    if (isExpired) handleExpiredToken();
+  }, [isExpired, handleExpiredToken]);
 
   useEffect(() => {
     const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
@@ -105,12 +102,9 @@ export const InviteChatQRTemplate = ({
     );
 
     return () => {
-      if (channel.subscribed) {
-        channel.unbind(PUSHER_EVENT.WAITING(hostId));
-        channel.unsubscribe();
-      }
+      channel.unsubscribe();
     };
-  }, [hostId, payload.language, router, setLastInviteLanguage, t]);
+  }, [hostId, payload.language, router, t]);
 
   const { href } = ROUTES.JOIN_CHAT.url({
     lng: payload.language,

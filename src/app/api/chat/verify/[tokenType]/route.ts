@@ -1,11 +1,13 @@
 import { decodeJwt, errors } from 'jose';
+import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
+import { COOKIES } from '@/constants/cookies-key';
 import type { ApiResponse } from '@/types/api';
 import type { Payload, TOKEN_TYPE } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
 
 type ChatTokenPayload = Payload.InviteToken | Payload.ChannelToken;
 
@@ -25,6 +27,16 @@ export const GET = createApiRoute<
 
   try {
     const { payload } = await jwtSecretVerify<ChatTokenPayload>(token);
+
+    const cookiesStore = await cookies();
+
+    const userId = cookiesStore.get(COOKIES.USER_ID)?.value;
+
+    if (![payload.hostId, payload.guestId].includes(userId)) {
+      throw new CustomError({
+        status: ERROR_STATUS.UNAUTHORIZED,
+      });
+    }
 
     return NextResponse.json({
       isExpired: false,
