@@ -16,24 +16,23 @@ interface ChattingRoom {
   token: string;
 }
 
-interface ChattingMessage
-  extends PusherType.receiveMessage,
-    PusherType.sendMessage {
-  index: number;
+interface ChattingMessage extends PusherType.sendMessage {
+  chattingRoomId: string;
   timestamp: number;
+  isReceived: boolean;
 }
 
 const db = new Dexie('chattingDB', {
   addons: [relationships],
 }) as Dexie & {
   chattingRoom: EntityTable<ChattingRoom, 'id'>;
-  chattingMessage: EntityTable<ChattingMessage, 'index'>;
+  chattingMessage: EntityTable<ChattingMessage, 'id'>;
 };
 
 db.version(1).stores({
   chattingRoom: 'id, token',
   chattingMessage:
-    '++index, chattingRoomId -> chattingRoom.id, timestamp, id, userId, message, translatedMessage',
+    '&id, fromUserId, message, translatedMessage, chattingRoomId -> chattingRoom.id, timestamp, isReceived',
 });
 
 export const chattingRoomTable = db.chattingRoom;

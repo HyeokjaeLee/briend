@@ -14,7 +14,7 @@ export const LoadingTemplate = ({ className }: LoadingTemplateProps) => {
         className,
       )}
     >
-      <Logo className="w-24" />
+      <Logo className="w-24 text-slate-900" />
       <Spinner className="text-slate-900" size="3" />
     </div>
   );

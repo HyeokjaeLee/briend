@@ -12,64 +12,58 @@ import { API_ROUTES } from '@/routes/api';
 import type { PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { useMutation } from '@tanstack/react-query';
+import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
+import { useLiveQuery } from 'dexie-react-hooks';
+import { chattingMessageTable, chattingRoomTable } from '@/stores/chatting-db.';
+import { cn } from '@/utils/cn';
 
-interface ChattingListProps {}
+interface ChattingListProps {
+  channelId: string;
+  myId: string;
+}
 
-export const ChattingList = ({}: ChattingListProps) => {
-  const [cookies] = useCookies([COOKIES.USER_ID]);
-
-  const userId = cookies['user-id'];
-
-  const receiveMessageMutation = useMutation({
-    mutationFn: API_ROUTES.RECEIVE_MESSAGE,
-  });
-
-  const mutateReceiveMessage = receiveMessageMutation.mutate;
-
-  useEffect(() => {
-    if (!userId) return;
-
-    const channel = pusher.subscribe(
-      PUSHER_CHANNEL.CHATTING(hostId, channelId),
+export const ChattingList = createOnlyClientComponent(
+  ({ channelId, myId }: ChattingListProps) => {
+    //TODO: 아이폰은 한번에 많이 랜더링하면 터지니까 무한스크롤 처럼 구현해야함
+    const messages = useLiveQuery(
+      () =>
+        chattingMessageTable
+          .where('chattingRoomId')
+          .equals(channelId)
+          .sortBy('timestamp'),
+      [channelId],
+      'loading',
     );
 
-    console.log(PUSHER_CHANNEL.CHATTING(hostId, channelId));
+    if (messages === 'loading') return null;
 
-    // presence 채널 이벤트 바인딩
-    channel.bind('pusher:subscription_succeeded', (members: any) => {
-      // 초기 접속자 목록
-      console.log('현재 접속자:', members);
-    });
+    return (
+      <ul className="flex flex-col gap-2 mx-2 my-7">
+        {messages.map((data, index) => {
+          const isMine = index % 5 === 0; //data.fromUserId === myId;
+          const isBeforeFromOther = index % 5 === 1;
+          //messages[index - 1]?.fromUserId !== data.fromUserId;
 
-    channel.bind('pusher:member_added', (member: any) => {
-      // 새로운 유저가 접속했을 때
-      console.log('새로운 접속자:', member);
-    });
-
-    channel.bind('pusher:member_removed', (member: any) => {
-      // 유저가 나갔을 때
-      console.log('접속 종료:', member);
-    });
-
-    channel.bind(
-      PUSHER_EVENT.CHATTING_SEND_MESSAGE(userId),
-      ({ id, message }: PusherType.sendMessage) => {
-        mutateReceiveMessage({
-          channelToken,
-          message,
-          id,
-        });
-      },
+          return (
+            <li key={data.id}>
+              {isBeforeFromOther ? (
+                <div className="h-2 w-2 bg-red-500" />
+              ) : null}
+              <article
+                className={cn(
+                  'relative max-w-[90%] w-fit px-3 py-2 rounded-b-xl whitespace-pre-wrap',
+                  {
+                    'bg-zinc-300 ml-auto rounded-tl-xl': isMine,
+                    'bg-blue-300 rounded-tr-xl': !isMine,
+                  },
+                )}
+              >
+                {data.message}
+              </article>
+            </li>
+          );
+        })}
+      </ul>
     );
-
-    return () => {
-      channel.unsubscribe();
-    };
-  }, [mutateReceiveMessage, userId]);
-
-  return (
-    <ul>
-      <li>ss</li>
-    </ul>
-  );
-};
+  },
+);

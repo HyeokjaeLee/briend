@@ -27,14 +27,14 @@ export const ToastProvider = () => {
         'h-0 relative p-0 w-[calc(100%-2rem)]',
         'left-1/2 xs:left-4',
       )}
-      draggableDirection="y"
+      draggableDirection="x"
       draggablePercent={50}
       limit={3}
       position="top-center"
       theme="colored"
       toastClassName={cn(
         'flex justify-center px-4 py-0',
-        '!bg-zinc-50/90',
+        '!bg-white/90',
         'rounded-lg backdrop-blur-sm cursor-grab',
       )}
       transition={Slide}

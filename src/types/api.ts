@@ -97,12 +97,13 @@ export namespace PusherType {
 
   export interface sendMessage {
     id: string;
+    fromUserId: string;
     message: string;
+    translatedMessage: string;
   }
 
   export interface receiveMessage {
     id: string;
     userId: string;
-    translatedMessage: string;
   }
 }

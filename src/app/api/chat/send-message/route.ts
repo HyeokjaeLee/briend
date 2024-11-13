@@ -21,8 +21,8 @@ export const POST = createApiRoute<ApiResponse.SEND_MESSAGE>(
       const id = nanoid();
 
       await pusher.trigger(
-        PUSHER_CHANNEL.CHATTING(payload.hostId, payload.channelId),
-        PUSHER_EVENT.CHATTING_SEND_MESSAGE(toUserId),
+        PUSHER_CHANNEL.CHATTING(payload.hostId),
+        PUSHER_EVENT.CHATTING_SEND_MESSAGE(payload.channelId, toUserId),
         {
           message,
           id,

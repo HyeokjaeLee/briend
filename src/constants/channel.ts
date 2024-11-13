@@ -1,12 +1,12 @@
 export const PUSHER_CHANNEL = {
   WAITING: 'presence-waiting-channel',
-  CHATTING: (hostId: string, channelId: string) =>
-    `presence-chatting-${hostId}-${channelId}`,
+  CHATTING: (hostId: string) => `presence-chatting-${hostId}`,
 };
 
 export const PUSHER_EVENT = {
   WAITING: (hostId: string) => `waiting-${hostId}`,
-  CHATTING_SEND_MESSAGE: (toUserId: string) => `send-message-${toUserId}`,
+  CHATTING_SEND_MESSAGE: (channelId: string, toUserId: string) =>
+    `${channelId}-send-message-${toUserId}`,
   CHATTING_RECEIVE_MESSAGE: 'chatting-receive-message',
   SUBSCRIPTION_SUCCEEDED: 'pusher:subscription_succeeded',
   MEMBER_ADDED: 'pusher:member_added',

@@ -31,7 +31,7 @@ export const RootHeader = () => {
   const { topHeaderTitle } = currentRoute;
 
   return (
-    <nav className="flex h-14 items-center justify-between bg-slate-50 px-5">
+    <nav className="flex h-14 items-center justify-between bg-slate-100 px-5">
       <Logo className="h-7 text-slate-900" />
       <div className="flex items-center gap-3">
         {topHeaderTitle ? (

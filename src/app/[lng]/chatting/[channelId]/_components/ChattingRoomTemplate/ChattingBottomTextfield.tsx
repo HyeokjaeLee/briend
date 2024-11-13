@@ -2,6 +2,7 @@
 
 import type { Channel } from 'pusher-js';
 
+import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -13,6 +14,7 @@ import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
 import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { PUSHER_EVENT } from '@/constants/channel';
 import { API_ROUTES } from '@/routes/api';
+import { chattingMessageTable } from '@/stores/chatting-db.';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DropdownMenu, TextArea } from '@radix-ui/themes';
@@ -25,14 +27,18 @@ interface ChattingBottomTextfieldProps {
   isExpired: boolean;
   channelToken: string;
   otherId: string;
+  myId: string;
   channel?: Channel;
+  channelId: string;
 }
 
 export const ChattingBottomTextfield = ({
   isExpired,
   channelToken,
   otherId,
+  myId,
   channel,
+  channelId,
 }: ChattingBottomTextfieldProps) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -77,26 +83,37 @@ export const ChattingBottomTextfield = ({
     channel.bind(
       PUSHER_EVENT.SUBSCRIPTION_SUCCEEDED,
       ({ members }: { members: object }) => {
+        //TODO: 상대방이 다른 사람과 채널을 사용하고 있다면 구독 취소, 재요청 버튼 표시
         setIsLive(otherId in members);
       },
     );
 
+    let memberRemovedTimeout: NodeJS.Timeout | null = null;
+
     channel.bind(PUSHER_EVENT.MEMBER_ADDED, ({ id }: { id: string }) => {
       if (id === otherId) {
-        setIsLive(true);
-        toast({
-          message: '친구가 돌아왔어요!',
-        });
+        if (memberRemovedTimeout) {
+          clearTimeout(memberRemovedTimeout);
+          memberRemovedTimeout = null;
+        } else {
+          setIsLive(true);
+          toast({
+            message: '친구가 돌아왔어요!',
+          });
+        }
       }
     });
 
     channel.bind(PUSHER_EVENT.MEMBER_REMOVED, ({ id }: { id: string }) => {
       if (id === otherId) {
-        setIsLive(false);
-        toast({
-          type: 'warning',
-          message: '친구가 자리를 떠났어요!',
-        });
+        memberRemovedTimeout = setTimeout(() => {
+          setIsLive(false);
+          toast({
+            type: 'warning',
+            message: '친구가 자리를 떠났어요!',
+          });
+          memberRemovedTimeout = null;
+        }, 1_000);
       }
     });
 
@@ -120,16 +137,27 @@ export const ChattingBottomTextfield = ({
       </DropdownMenu.Content>
     </DropdownMenu.Root>
   ) : (
-    <CustomBottomNav className="border-none bg-slate-50 pb-3 pl-4 pr-3">
+    <CustomBottomNav className="border-none bg-slate-50 py-3 pl-4 pr-3">
       <form
         className="flex gap-2 flex-center"
         onSubmit={form.handleSubmit(
           ({ message }) => {
-            sendMessageMutation.mutate({
+            chattingMessageTable.add({
+              id: nanoid(),
+              chattingRoomId: channelId,
+              fromUserId: myId,
+              message,
+              translatedMessage: '',
+              timestamp: Date.now(),
+              isReceived: false,
+            });
+            /**
+            *  sendMessageMutation.mutate({
               channelToken,
               message,
               toUserId: otherId,
             });
+            */
           },
           () => {},
         )}
@@ -164,9 +192,9 @@ export const ChattingBottomTextfield = ({
             size="4"
           >
             {isLive ? (
-              <RiSendPlane2Fill className="ml-1 size-6" />
+              <RiSendPlane2Fill className="ml-1 size-6 animate-jump-in animate-duration-300" />
             ) : (
-              <RiLock2Fill className="size-6" />
+              <RiLock2Fill className="size-6 animate-jump-in animate-duration-300" />
             )}
           </CustomIconButton>
         </div>

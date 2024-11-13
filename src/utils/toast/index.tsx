@@ -32,12 +32,15 @@ export const toast = ({
 
   toastQueue.add(messageId);
 
-  setTimeout(() => {
-    toastQueue.delete(messageId);
-  }, holdTime);
-
   toastifyToast(message, {
     autoClose: holdTime,
-    icon: <Icon className="size-5" />,
+    icon: (
+      <div className="animate-jump-in animate-delay-75">
+        <Icon />
+      </div>
+    ),
+    onClose: () => {
+      toastQueue.delete(messageId);
+    },
   });
 };

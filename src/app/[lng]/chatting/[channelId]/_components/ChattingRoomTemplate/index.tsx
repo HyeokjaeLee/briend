@@ -105,9 +105,7 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
       });
     }
 
-    const channel = pusher.subscribe(
-      PUSHER_CHANNEL.CHATTING(hostId, channelId),
-    );
+    const channel = pusher.subscribe(PUSHER_CHANNEL.CHATTING(hostId));
 
     setChannel(channel);
 
@@ -123,10 +121,13 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
         otherName={otherInfo.name}
         onTimeout={channelTokenQuery.refetch}
       />
+      <ChattingList channelId={channelId} myId={myInfo.id} />
       <ChattingBottomTextfield
         channel={channel}
+        channelId={channelId}
         channelToken={channelToken}
         isExpired={isExpired}
+        myId={myInfo.id}
         otherId={otherInfo.id}
       />
     </article>
@@ -152,7 +153,7 @@ export const ChattingRoomTemplate = ({
     'loading',
   );
 
-  if (channelToken === 'loading') return <LoadingTemplate />;
+  if (channelToken === 'loading') return null;
 
   if (!channelToken)
     throw new CustomError({
