@@ -3,15 +3,12 @@
 import type { Channel } from 'pusher-js';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { pick } from 'es-toolkit';
-import { useSession } from 'next-auth/react';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 import { pusher } from '@/app/pusher/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
-import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
 import { PUSHER_CHANNEL } from '@/constants/channel';
 import { COOKIES } from '@/constants/cookies-key';
 import { chattingRoomTable } from '@/stores/chatting-db.';

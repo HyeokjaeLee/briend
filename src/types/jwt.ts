@@ -16,17 +16,14 @@ export namespace Payload {
     hostId: string;
     hostNickname: string;
     hostEmoji: string;
+    hostLanguage: LANGUAGE;
     guestNickname: string;
-    language: LANGUAGE;
+    guestLanguage: LANGUAGE;
   }
 
-  export interface ChannelToken {
+  export interface ChannelToken extends InviteToken {
     channelId: string;
-    hostId: string;
-    hostNickname: string;
-    hostEmoji: string;
     guestId: string;
-    guestNickname: string;
     guestEmoji: string;
   }
 }

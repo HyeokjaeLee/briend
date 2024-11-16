@@ -81,8 +81,8 @@ export const InviteForm = () => {
         if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
         createChatMutation.mutate({
-          userId: user.id,
-          language,
+          hostId: user.id,
+          guestLanguage: language,
           guestNickname: nickname || nicknamePlaceholder,
           hostEmoji: user.emoji,
         });

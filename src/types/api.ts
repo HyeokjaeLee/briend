@@ -1,16 +1,13 @@
 import type { JWTPayload } from 'jose';
 
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
-import type { LANGUAGE } from '@/constants/language';
 import type { Payload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
-  export interface CREATE_CHAT_INVITE_TOKEN {
-    userId: string;
-    language: LANGUAGE;
-    guestNickname: string;
-    hostEmoji: string;
-  }
+  export type CREATE_CHAT_INVITE_TOKEN = Pick<
+    Payload.InviteToken,
+    'hostId' | 'hostEmoji' | 'guestLanguage' | 'guestNickname'
+  >;
 
   export interface CREATE_CHAT_CHANNEL_TOKEN {
     guestId: string;

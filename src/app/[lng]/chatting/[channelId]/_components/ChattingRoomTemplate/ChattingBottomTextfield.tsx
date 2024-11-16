@@ -126,12 +126,12 @@ export const ChattingBottomTextfield = ({
 
   return isExpired ? (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="absolute bottom-4 right-4">
+      <DropdownMenu.Trigger className="sticky bottom-4 right-4 ml-auto">
         <CustomIconButton className="rounded-full" color="gray" size="4">
           <RiLock2Fill className="size-6" />
         </CustomIconButton>
       </DropdownMenu.Trigger>
-      <DropdownMenu.Content className="p-4">
+      <DropdownMenu.Content className="mb-4 p-4">
         <h3 className="mb-2 text-lg font-bold">{t('lock-title')}</h3>
         <p className="whitespace-pre">{t('lock-contents')}</p>
       </DropdownMenu.Content>
