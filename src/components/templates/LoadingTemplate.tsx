@@ -15,12 +15,7 @@ export const LoadingTemplate = ({ className }: LoadingTemplateProps) => {
       )}
     >
       <div className="size-80">
-        <Lottie
-          loop
-          className="cursor-wait"
-          data={LoadingLottie}
-          sizing="contain"
-        />
+        <Lottie loop animationData={LoadingLottie} className="cursor-wait" />
       </div>
     </div>
   );

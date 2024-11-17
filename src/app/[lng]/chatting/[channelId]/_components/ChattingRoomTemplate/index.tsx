@@ -7,6 +7,7 @@ import { useLiveQuery } from 'dexie-react-hooks';
 import { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
+import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { PUSHER_CHANNEL } from '@/constants/channel';
@@ -14,7 +15,6 @@ import { COOKIES } from '@/constants/cookies-key';
 import { chattingRoomTable } from '@/stores/chatting-db.';
 import { TOKEN_TYPE } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
-import { toast } from '@/utils/toast';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 import { ChattingBottomTextfield } from './ChattingBottomTextfield';
@@ -47,11 +47,13 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
                 name: payload.hostNickname,
                 emoji: payload.hostEmoji,
                 id: payload.hostId,
+                language: payload.hostLanguage,
               },
               otherInfo: {
                 name: payload.guestNickname,
                 emoji: payload.guestEmoji,
                 id: payload.guestId,
+                language: payload.guestLanguage,
               },
             }
           : {
@@ -59,11 +61,13 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
                 name: payload.guestNickname,
                 emoji: payload.guestEmoji,
                 id: payload.guestId,
+                language: payload.guestLanguage,
               },
               otherInfo: {
                 name: payload.hostNickname,
                 emoji: payload.hostEmoji,
                 id: payload.hostId,
+                language: payload.hostLanguage,
               },
             };
 
@@ -94,13 +98,7 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
   const [channel, setChannel] = useState<Channel>();
 
   useEffect(() => {
-    if (isExpired) {
-      setChannel(undefined);
-
-      return toast({
-        message: 'expired-chat',
-      });
-    }
+    if (isExpired) return setChannel(undefined);
 
     const channel = pusher.subscribe(PUSHER_CHANNEL.CHATTING(hostId));
 
@@ -111,35 +109,38 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
     };
   }, [channelId, hostId, isExpired]);
 
+  const [isMyLanguage, setIsMyLanguage] = useState(true);
+
   return (
     <article className="relative flex flex-1 flex-col">
       <ChattingTopNav
-        expires={expires}
+        isMyLanguage={isMyLanguage}
+        myLanguage={myInfo.language}
+        otherLanguage={otherInfo.language}
         otherName={otherInfo.name}
-        onTimeout={channelTokenQuery.refetch}
+        onToggleLanguage={setIsMyLanguage}
       />
-      <ChattingList channelId={channelId} myId={myInfo.id} />
+      <ChattingList
+        channel={channel}
+        channelId={channelId}
+        isMyLanguage={isMyLanguage}
+        myId={myInfo.id}
+        otherEmoji={otherInfo.emoji}
+        otherName={otherInfo.name}
+      />
       <ChattingBottomTextfield
         channel={channel}
         channelId={channelId}
         channelToken={channelToken}
+        expires={expires}
         isExpired={isExpired}
         myId={myInfo.id}
         otherId={otherInfo.id}
+        onTimeout={channelTokenQuery.refetch}
       />
     </article>
   );
 };
-
-/**
- * 
- * @param param0  <ChattingList
-        {...pick(channelInfo, ['hostId', 'channelId'])}
-        channelToken={channelToken}
-      />
-     
- * @returns 
- */
 
 export const ChattingRoomTemplate = ({
   channelId,
@@ -150,13 +151,14 @@ export const ChattingRoomTemplate = ({
     'loading',
   );
 
+  const { t } = useTranslation('chatting');
+
   if (channelToken === 'loading') return null;
 
   if (!channelToken)
     throw new CustomError({
       status: ERROR_STATUS.UNAUTHORIZED,
-      // TODO: 추후 번역 메시지
-      message: 'invalid-channel',
+      message: t('invalid-channel'),
     });
 
   return <ChattingRoomContent channelToken={channelToken.token} />;

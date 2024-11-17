@@ -106,24 +106,24 @@ export const InviteChatQRTemplate = ({
     };
   }, [hostId, payload.language, router, t]);
 
+  const { guestLanguage } = payload;
+
   const { href } = ROUTES.JOIN_CHAT.url({
-    lng: payload.language,
+    lng: guestLanguage,
     searchParams: {
       inviteToken,
     },
   });
-
-  const { language } = payload;
 
   return (
     <article className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col">
         <section className="flex flex-1 rotate-180 flex-col items-center justify-center">
           <h1 className="break-keep text-center text-2xl font-bold">
-            📨 {INVITE_TITLE[language]}
+            📨 {INVITE_TITLE[guestLanguage]}
           </h1>
           <p className="px-4 py-2 text-center text-slate-500">
-            {INVITE_MESSAGE[language]}
+            {INVITE_MESSAGE[guestLanguage]}
           </p>
         </section>
         <section className="flex w-full flex-1 rotate-180 items-center justify-center bg-white p-4">

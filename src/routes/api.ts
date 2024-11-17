@@ -48,7 +48,7 @@ export const API_ROUTES = {
 
   SEND_MESSAGE: (params: ApiParams.SEND_MESSAGE) =>
     apiInstance
-      .post<ApiResponse.SEND_MESSAGE>('chat/send-message', {
+      .post('chat/send-message', {
         json: params,
       })
       .json(),

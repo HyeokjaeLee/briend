@@ -5,8 +5,7 @@ export const PUSHER_CHANNEL = {
 
 export const PUSHER_EVENT = {
   WAITING: (hostId: string) => `waiting-${hostId}`,
-  CHATTING_SEND_MESSAGE: (channelId: string, toUserId: string) =>
-    `${channelId}-send-message-${toUserId}`,
+  CHATTING_SEND_MESSAGE: (channelId: string) => `${channelId}-send-message`,
   CHATTING_RECEIVE_MESSAGE: 'chatting-receive-message',
   SUBSCRIPTION_SUCCEEDED: 'pusher:subscription_succeeded',
   MEMBER_ADDED: 'pusher:member_added',

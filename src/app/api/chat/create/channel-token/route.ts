@@ -11,6 +11,7 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams, ApiResponse, PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
+import { getAuthToken } from '@/utils/api/getAuthToken';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 
 export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
@@ -28,6 +29,8 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
         });
       }
 
+      const token = await getAuthToken({ req });
+
       const channelId = nanoid();
 
       const channelToken = await new SignJWT({
@@ -35,9 +38,11 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
         hostId: payload.hostId,
         hostNickname: payload.hostNickname,
         guestId,
-        guestNickname: payload.guestNickname,
-        guestEmoji: random().emoji,
+        guestNickname: token?.name || payload.guestNickname,
+        guestEmoji: token?.email || random().emoji,
         hostEmoji: payload.hostEmoji,
+        hostLanguage: payload.hostLanguage,
+        guestLanguage: payload.guestLanguage,
       } satisfies Payload.ChannelToken)
         .setProtectedHeader({ alg: 'HS256' })
         .setIssuedAt()

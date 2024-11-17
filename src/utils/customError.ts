@@ -31,14 +31,14 @@ export const ERROR = {
   }),
   UNAUTHORIZED: (message = 'Unauthorized') => ({
     message,
-    status: 401,
+    status: ERROR_STATUS.UNAUTHORIZED,
   }),
   EXPIRED_CHAT: (message = 'Expired Chat') => ({
     message,
-    status: 403,
+    status: ERROR_STATUS.EXPIRED_CHAT,
   }),
   UNKNOWN_VALUE: (key: string = 'value') => ({
     message: `${key} is unknown`,
-    status: 422,
+    status: ERROR_STATUS.UNKNOWN_VALUE,
   }),
 };

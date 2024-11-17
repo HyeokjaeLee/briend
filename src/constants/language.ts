@@ -15,3 +15,12 @@ export const LANGUAGE_NAME = {
   [LANGUAGE.THAI]: 'ภาษาไทย',
   [LANGUAGE.VIETNAMESE]: 'Tiếng Việt',
 };
+
+export const LANGUAGE_FLAG = {
+  [LANGUAGE.KOREAN]: '🇰🇷',
+  [LANGUAGE.ENGLISH]: '🇬🇧',
+  [LANGUAGE.JAPANESE]: '🇯🇵',
+  [LANGUAGE.CHINESE]: '🇨🇳',
+  [LANGUAGE.THAI]: '🇹🇭',
+  [LANGUAGE.VIETNAMESE]: '🇻🇳',
+};

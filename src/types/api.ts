@@ -26,7 +26,8 @@ export namespace ApiParams {
   export interface SEND_MESSAGE {
     channelToken: string;
     message: string;
-    toUserId: string;
+    fromUserId: string;
+    id: string;
   }
 
   export interface RECEIVE_MESSAGE {
@@ -69,10 +70,6 @@ export namespace ApiResponse {
     emoji: string;
   }
 
-  export interface SEND_MESSAGE {
-    id: string;
-  }
-
   export interface RECEIVE_MESSAGE {
     id: string;
   }
@@ -97,6 +94,7 @@ export namespace PusherType {
     fromUserId: string;
     message: string;
     translatedMessage: string;
+    timestamp: number;
   }
 
   export interface receiveMessage {

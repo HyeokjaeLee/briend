@@ -16,10 +16,9 @@ interface ChattingRoom {
   token: string;
 }
 
-interface ChattingMessage extends PusherType.sendMessage {
+export interface ChattingMessage extends PusherType.sendMessage {
   chattingRoomId: string;
-  timestamp: number;
-  isReceived: boolean;
+  state: 'sent' | 'receive' | 'error';
 }
 
 const db = new Dexie('chattingDB', {

@@ -12,9 +12,11 @@ import { RiLock2Fill, RiSendPlane2Fill } from 'react-icons/ri';
 import { useTranslation } from '@/app/i18n/client';
 import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
 import { CustomIconButton } from '@/components/atoms/CustomIconButton';
+import { Timer, type TimerProps } from '@/components/molecules/Timer';
 import { PUSHER_EVENT } from '@/constants/channel';
 import { API_ROUTES } from '@/routes/api';
 import { chattingMessageTable } from '@/stores/chatting-db.';
+import { cn } from '@/utils/cn';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DropdownMenu, TextArea } from '@radix-ui/themes';
@@ -23,7 +25,8 @@ import { useMutation } from '@tanstack/react-query';
 const MAX_MESSAGE_LENGTH = 1000;
 const DEFAULT_HEIGHT = 3.5;
 
-interface ChattingBottomTextfieldProps {
+interface ChattingBottomTextfieldProps
+  extends Pick<TimerProps, 'onTimeout' | 'expires'> {
   isExpired: boolean;
   channelToken: string;
   otherId: string;
@@ -39,6 +42,8 @@ export const ChattingBottomTextfield = ({
   myId,
   channel,
   channelId,
+  expires,
+  onTimeout,
 }: ChattingBottomTextfieldProps) => {
   const ref = useRef<HTMLTextAreaElement>(null);
 
@@ -72,7 +77,27 @@ export const ChattingBottomTextfield = ({
   const { t } = useTranslation('chatting');
 
   const sendMessageMutation = useMutation({
-    mutationFn: API_ROUTES.SEND_MESSAGE,
+    mutationFn: (args: { id: string; message: string }) =>
+      API_ROUTES.SEND_MESSAGE({
+        ...args,
+        channelToken,
+        fromUserId: myId,
+      }),
+    onMutate: (args) => {
+      chattingMessageTable.add({
+        ...args,
+        chattingRoomId: channelId,
+        fromUserId: myId,
+        translatedMessage: '',
+        timestamp: Date.now(),
+        state: 'sent',
+      });
+    },
+    onError: (_, { id }) => {
+      chattingMessageTable.update(id, {
+        state: 'error',
+      });
+    },
   });
 
   const [isLive, setIsLive] = useState(false);
@@ -124,6 +149,8 @@ export const ChattingBottomTextfield = ({
     };
   }, [channel, otherId]);
 
+  const [isTimerDisplay, setIsTimerDisplay] = useState(false);
+
   return isExpired ? (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger className="sticky bottom-4 right-4 ml-auto">
@@ -138,27 +165,30 @@ export const ChattingBottomTextfield = ({
     </DropdownMenu.Root>
   ) : (
     <CustomBottomNav className="border-none bg-slate-50 py-3 pl-4 pr-3">
+      <div
+        className={cn(
+          'absolute -top-12 right-8 rounded-full bg-slate-100/80 px-4 py-1 backdrop-blur',
+          isTimerDisplay ? 'animate-fade-up' : 'invisible',
+        )}
+      >
+        <Timer
+          expires={expires}
+          onChangeLeftSeconds={(leftSeconds) => {
+            if (leftSeconds < 600) {
+              setIsTimerDisplay(true);
+            }
+          }}
+          onTimeout={onTimeout}
+        />
+      </div>
       <form
         className="flex gap-2 flex-center"
         onSubmit={form.handleSubmit(
-          ({ message }) => {
-            chattingMessageTable.add({
+          ({ message }) =>
+            sendMessageMutation.mutate({
               id: nanoid(),
-              chattingRoomId: channelId,
-              fromUserId: myId,
               message,
-              translatedMessage: '',
-              timestamp: Date.now(),
-              isReceived: false,
-            });
-            /**
-            *  sendMessageMutation.mutate({
-              channelToken,
-              message,
-              toUserId: otherId,
-            });
-            */
-          },
+            }),
           () => {},
         )}
       >

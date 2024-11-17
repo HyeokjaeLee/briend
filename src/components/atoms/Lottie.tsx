@@ -1,49 +1,19 @@
 'use client';
 
+import type { LottieComponentProps as OriginalLottieProps } from 'lottie-react';
+
 import dynamic from 'next/dynamic';
 
-import type { LottieProps as OriginalLottieProps } from 'react-lottie';
+import { memo } from 'react';
 
-import { cn } from '@/utils/cn';
-
-const OriginalLottie = dynamic(() => import('react-lottie'), {
+const OriginalLottie = dynamic(() => import('lottie-react'), {
   ssr: false,
 });
 
-interface LottieProps
-  extends Omit<OriginalLottieProps, 'options' | 'isClickToPauseDisabled'> {
-  data: any;
-  loop?: boolean;
-  autoplay?: boolean;
-  className?: string;
-  sizing?: 'contain' | 'cover' | 'none';
-}
+type LottieProps = OriginalLottieProps;
 
-export const Lottie = ({
-  data,
-  loop = true,
-  autoplay = true,
-  className,
-  sizing = 'contain',
-  ...restProps
-}: LottieProps) => {
-  return (
-    <OriginalLottie
-      {...restProps}
-      isClickToPauseDisabled
-      options={{
-        autoplay,
-        animationData: data,
-        loop,
-        rendererSettings: {
-          className: cn('size-full cursor-default', className),
-          preserveAspectRatio: {
-            contain: 'xMidYMid meet',
-            cover: 'xMidYMid slice',
-            none: 'none',
-          }[sizing],
-        },
-      }}
-    />
-  );
-};
+export const Lottie = memo(({ loop = false, ...props }: LottieProps) => {
+  return <OriginalLottie {...props} loop={loop} />;
+});
+
+Lottie.displayName = 'Lottie';

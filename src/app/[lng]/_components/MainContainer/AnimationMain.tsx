@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { useLayoutEffect, useState, type PropsWithChildren } from 'react';
 
+import { SELECTOR } from '@/constants/selector';
 import {
   SESSION_STORAGE,
   type SESSION_STORAGE_TYPE,
@@ -112,6 +113,7 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
         key={key}
         /* @ts-expect-error - 🚧 임시로 해결 추후 @types/react 버전 업데이트 시 삭제 */
         className="flex flex-1 flex-col overflow-auto"
+        id={SELECTOR.MAIN}
         onAnimationComplete={(e: { opacity: number }) => {
           if (e.opacity === 1) {
             setAnimation(undefined);

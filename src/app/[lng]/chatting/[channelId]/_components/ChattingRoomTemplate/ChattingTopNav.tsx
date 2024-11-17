@@ -1,24 +1,28 @@
-'use client';
-
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 
 import { RiArrowGoBackFill } from 'react-icons/ri';
 
 import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { CustomTopHeader } from '@/components/atoms/CustomTopHeader';
-import { Timer, type TimerProps } from '@/components/molecules/Timer';
+import type { LANGUAGE } from '@/constants/language';
+import { LANGUAGE_FLAG } from '@/constants/language';
 import { ROUTES } from '@/routes/client';
-import type { Payload } from '@/types/jwt';
+import { Switch } from '@radix-ui/themes';
 
-interface ChattingTopNavProps
-  extends Pick<TimerProps, 'onTimeout' | 'expires'> {
+interface ChattingTopNavProps {
   otherName: string;
+  isMyLanguage: boolean;
+  onToggleLanguage: (checked: boolean) => void;
+  myLanguage: LANGUAGE;
+  otherLanguage: LANGUAGE;
 }
 
 export const ChattingTopNav = ({
   otherName,
-  ...timerProps
+  isMyLanguage,
+  onToggleLanguage,
+  myLanguage,
+  otherLanguage,
 }: ChattingTopNavProps) => (
   <CustomTopHeader className="flex items-center justify-between gap-8">
     <div className="flex items-center gap-8">
@@ -29,6 +33,15 @@ export const ChattingTopNav = ({
       </CustomIconButton>
       <h1 className="text-lg font-semibold">{otherName}</h1>
     </div>
-    <Timer {...timerProps} />
+    <div className="gap-2 flex-center">
+      <span className="text-2xl">
+        {LANGUAGE_FLAG[isMyLanguage ? myLanguage : otherLanguage]}
+      </span>
+      <Switch
+        checked={isMyLanguage}
+        size="3"
+        onCheckedChange={onToggleLanguage}
+      />
+    </div>
   </CustomTopHeader>
 );

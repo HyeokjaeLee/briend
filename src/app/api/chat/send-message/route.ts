@@ -1,54 +1,88 @@
+import { Translator } from 'deepl-node';
 import { errors } from 'jose';
 import { nanoid } from 'nanoid';
 import { NextResponse, type NextRequest } from 'next/server';
 
+import { scroller } from 'react-scroll';
+
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
-import type { ApiParams, ApiResponse, PusherType } from '@/types/api';
+import { LANGUAGE } from '@/constants/language';
+import { PRIVATE_ENV } from '@/constants/private-env';
+import type { ApiParams, PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
+import { isArrayItem } from '@/utils/isArrayItem';
 
-export const POST = createApiRoute<ApiResponse.SEND_MESSAGE>(
-  async (req: NextRequest) => {
-    const { channelToken, message, toUserId }: ApiParams.SEND_MESSAGE =
-      await req.json();
+const translatorWithDeepL = new Translator(PRIVATE_ENV.DEEPL_API_KEY);
 
-    try {
-      const { payload } =
-        await jwtSecretVerify<Payload.ChannelToken>(channelToken);
+const fromLanguageObject = {
+  [LANGUAGE.ENGLISH]: 'en',
+  [LANGUAGE.KOREAN]: 'ko',
+  [LANGUAGE.JAPANESE]: 'ja',
+  [LANGUAGE.CHINESE]: 'zh',
+} as const;
 
-      const id = nanoid();
+const toLanguageObject = {
+  ...fromLanguageObject,
+  [LANGUAGE.ENGLISH]: 'en-US',
+} as const;
 
-      await pusher.trigger(
-        PUSHER_CHANNEL.CHATTING(payload.hostId),
-        PUSHER_EVENT.CHATTING_SEND_MESSAGE(payload.channelId, toUserId),
-        {
-          message,
-          id,
-        } satisfies PusherType.sendMessage,
+const DEEPL_LANGUAGE = [
+  LANGUAGE.ENGLISH,
+  LANGUAGE.KOREAN,
+  LANGUAGE.JAPANESE,
+  LANGUAGE.CHINESE,
+] as const;
+
+export const POST = createApiRoute(async (req: NextRequest) => {
+  const { channelToken, message, fromUserId, id }: ApiParams.SEND_MESSAGE =
+    await req.json();
+
+  try {
+    const { payload } =
+      await jwtSecretVerify<Payload.ChannelToken>(channelToken);
+
+    const [fromLanguage, toLanguage] =
+      payload.hostId === fromUserId
+        ? [payload.hostLanguage, payload.guestLanguage]
+        : [payload.guestLanguage, payload.hostLanguage];
+
+    let translatedMessage: string;
+
+    if (
+      isArrayItem(DEEPL_LANGUAGE, fromLanguage) &&
+      isArrayItem(DEEPL_LANGUAGE, toLanguage)
+    ) {
+      const { text } = await translatorWithDeepL.translateText(
+        message,
+        fromLanguageObject[fromLanguage],
+        toLanguageObject[toLanguage],
       );
 
-      return NextResponse.json({
-        id,
-      } satisfies ApiResponse.SEND_MESSAGE);
-    } catch (e) {
-      if (e instanceof errors.JWTExpired)
-        return NextResponse.json(
-          {
-            id: '',
-          },
-          {
-            status: 401,
-          },
-        );
-
-      return NextResponse.json(
-        {
-          id: '',
-        },
-        { status: 500 },
-      );
+      translatedMessage = text;
+    } else {
+      //TODO: GOOGLE TRANSLATE
+      translatedMessage = message;
     }
-  },
-);
+
+    await pusher.trigger(
+      PUSHER_CHANNEL.CHATTING(payload.hostId),
+      PUSHER_EVENT.CHATTING_SEND_MESSAGE(payload.channelId),
+      {
+        message,
+        id,
+        fromUserId,
+        translatedMessage,
+        timestamp: Date.now(),
+      } satisfies PusherType.sendMessage,
+    );
+
+    return new NextResponse(null, { status: 200 });
+  } catch (e) {
+    return new NextResponse(null, {
+      status: e instanceof errors.JWTExpired ? 401 : 500,
+    });
+  }
+});
