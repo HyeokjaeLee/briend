@@ -1,9 +1,6 @@
 import { Translator } from 'deepl-node';
 import { errors } from 'jose';
-import { nanoid } from 'nanoid';
 import { NextResponse, type NextRequest } from 'next/server';
-
-import { scroller } from 'react-scroll';
 
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';

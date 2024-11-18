@@ -153,7 +153,7 @@ export const ChattingBottomTextfield = ({
 
   return isExpired ? (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="sticky bottom-4 right-4 ml-auto">
+      <DropdownMenu.Trigger className="sticky bottom-4 right-4 ml-auto mt-auto">
         <CustomIconButton className="rounded-full" color="gray" size="4">
           <RiLock2Fill className="size-6" />
         </CustomIconButton>

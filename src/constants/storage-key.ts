@@ -1,5 +1,3 @@
-import type { LANGUAGE } from './language';
-
 export enum SESSION_STORAGE {
   HISTORY_INDEX = 'custom-history-index',
   HISTORY_EXPIRE = 'custom-history-expire',

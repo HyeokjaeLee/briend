@@ -53,10 +53,10 @@ export const ChattingList = createOnlyClientComponent(
 
     const lastMessageId = useRef('');
 
-    const isReady = !!(messages !== 'loading' && channel);
+    const isLoading = messages === 'loading';
 
     useEffect(() => {
-      if (!isReady) return;
+      if (isLoading) return;
 
       if (messages.length) {
         setSendingMessages((prevMap) => {
@@ -67,10 +67,10 @@ export const ChattingList = createOnlyClientComponent(
           return prevMap;
         });
       }
-    }, [messages, isReady]);
+    }, [isLoading, messages]);
 
     useEffect(() => {
-      if (!isReady) return;
+      if (!channel) return;
 
       channel.bind(
         PUSHER_EVENT.CHATTING_SEND_MESSAGE(channelId),
@@ -88,10 +88,10 @@ export const ChattingList = createOnlyClientComponent(
           else chattingMessageTable.add(chattingMessageData);
         },
       );
-    }, [channel, channelId, isReady]);
+    }, [channel, channelId]);
 
     useEffect(() => {
-      if (!isReady) return;
+      if (isLoading) return;
 
       return () => {
         if (messages.length) {
@@ -100,7 +100,7 @@ export const ChattingList = createOnlyClientComponent(
           lastMessageId.current = lastMessage.id;
         }
       };
-    }, [messages, channel, channelId, isReady]);
+    }, [messages, channel, channelId, isLoading]);
 
     useLayoutEffect(() => {
       reactScroll.scroller.scrollTo(LAST_NEW_MESSAGE_ID, {
@@ -109,7 +109,7 @@ export const ChattingList = createOnlyClientComponent(
       });
     }, [messages]);
 
-    if (!isReady) return null;
+    if (isLoading) return null;
 
     return (
       <ul className="relative mx-2 my-4 flex flex-col gap-2">
