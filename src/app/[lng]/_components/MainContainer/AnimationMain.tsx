@@ -111,7 +111,6 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
       <motion.main
         {...animationProps}
         key={key}
-        /* @ts-expect-error - 🚧 임시로 해결 추후 @types/react 버전 업데이트 시 삭제 */
         className="flex flex-1 flex-col overflow-auto"
         id={SELECTOR.MAIN}
         onAnimationComplete={(e: { opacity: number }) => {
