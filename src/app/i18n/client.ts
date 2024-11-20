@@ -75,7 +75,9 @@ export const useTranslation = <
   }, [lng, i18n]);
 
   useLayoutEffect(() => {
+    console.info(cookies.i18next, lng);
     if (cookies.i18next === lng) return;
+
     setCookie(COOKIES.I18N, lng, { path: '/' });
   }, [lng, cookies.i18next, setCookie]);
 
