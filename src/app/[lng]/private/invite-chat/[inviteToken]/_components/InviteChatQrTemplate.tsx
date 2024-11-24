@@ -7,7 +7,7 @@ import { useCallback, useEffect } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
-import { QR } from '@/components/QR';
+import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';

@@ -1,8 +1,8 @@
-/* eslint-disable @next/next/no-img-element */
-
 import type { ImgHTMLAttributes, DetailedHTMLProps } from 'react';
 
 import { Skeleton } from '@radix-ui/themes';
+
+import { CustomImage } from '../atoms/CustomImage';
 
 const QR_API = 'https://api.qrserver.com/v1/create-qr-code';
 
@@ -22,11 +22,12 @@ export const QR = ({ size = 160, href, alt = 'qr', className }: QRProps) => {
 
   return (
     <Skeleton height={`${size}px`} width={`${size}px`}>
-      <img
+      <CustomImage
         key={`${size}-${href}`}
         alt={alt}
         className={className}
         height={size}
+        quality={100}
         src={url.href}
         width={size}
       />

@@ -19,6 +19,20 @@ export const ROUTES = {
     topHeaderType: 'root',
     topHeaderTitle: 'more-title',
   }),
+  INVITE_QR: createRoute<'userId', 'lng'>(
+    ({ userId }) => `/private/invite/${userId}/qr`,
+    {
+      topHeaderType: 'back',
+      bottomNavType: 'empty',
+    },
+  ),
+  CONNECTING_FRIEND: createRoute<'userId'>(
+    ({ userId }) => `/private/invite/${userId}/connecting`,
+    {
+      topHeaderType: 'back',
+      bottomNavType: 'empty',
+    },
+  ),
   INVITE_CHAT: createRoute('/private/invite-chat', {
     bottomNavType: 'root',
     topHeaderType: 'root',

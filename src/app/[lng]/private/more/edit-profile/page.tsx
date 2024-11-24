@@ -246,7 +246,6 @@ const EditProfilePage = (props: ProfilePageProps) => {
           className="w-full rounded-none"
           form={FORM_NAME}
           loading={formState.isSubmitting || editProfileMutation.isPending}
-          size="5"
           type="submit"
         >
           저장하기
