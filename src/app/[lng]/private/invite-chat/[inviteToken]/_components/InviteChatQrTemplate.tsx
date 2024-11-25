@@ -3,15 +3,16 @@
 import { decodeJwt } from 'jose';
 
 import { useCallback, useEffect } from 'react';
+import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
+import { BottomButton } from '@/components/molecules/BottomButton';
 import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
-import { IS_DEV } from '@/constants/public-env';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
@@ -40,6 +41,16 @@ const INVITE_MESSAGE = {
   [LANGUAGE.THAI]: 'สแกน QR สำหรับการสนทนาด้วยภาษาที่เหมือนกันกับเพื่อนของคุณ',
   [LANGUAGE.VIETNAMESE]:
     'Quét mã QR để trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
+};
+
+const INVITE_SHARE_MESSAGE = {
+  [LANGUAGE.KOREAN]: '친구와 같은 언어로 채팅할 수 있어요.',
+  [LANGUAGE.ENGLISH]: 'You can chat with your friend in the same language.',
+  [LANGUAGE.JAPANESE]: '同じ言語で友達とチャットできます。',
+  [LANGUAGE.CHINESE]: '您可以与您的朋友用相同的语言聊天。',
+  [LANGUAGE.THAI]: 'คุณสามารถสนทนาด้วยภาษาที่เหมือนกันกับเพื่อนของคุณ',
+  [LANGUAGE.VIETNAMESE]:
+    'Bạn có thể trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
 };
 
 interface InviteChatQrTemplateProps {
@@ -115,12 +126,14 @@ export const InviteChatQRTemplate = ({
     },
   });
 
+  const title = INVITE_TITLE[guestLanguage];
+
   return (
     <article className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col">
         <section className="flex flex-1 rotate-180 flex-col items-center justify-center">
           <h1 className="break-keep text-center text-2xl font-bold">
-            📨 {INVITE_TITLE[guestLanguage]}
+            📨 {title}
           </h1>
           <p className="px-4 py-2 text-center text-slate-500">
             {INVITE_MESSAGE[guestLanguage]}
@@ -130,20 +143,23 @@ export const InviteChatQRTemplate = ({
           <QR alt="invite-qr" href={href} size={180} />
         </section>
         <section className="flex flex-1 flex-col items-center justify-center">
-          {IS_DEV ? (
-            <>
-              DEV URL
-              <a className="max-w-56 text-wrap text-xs" href={href}>
-                {href}
-              </a>
-            </>
-          ) : null}
           <p className="text-center text-slate-500">{t('notice-message')}</p>
         </section>
       </div>
-      <div className="flex h-14 items-center justify-center border-t border-t-slate-200 bg-slate-100">
+      <div className="flex h-14 items-center justify-center">
         <Timer expires={expires} onTimeout={handleExpiredToken} />
       </div>
+      <BottomButton
+        onClick={() => {
+          navigator.share({
+            title,
+            text: INVITE_SHARE_MESSAGE[guestLanguage],
+            url: href,
+          });
+        }}
+      >
+        <RiShareFill className="size-7" /> 공유하기
+      </BottomButton>
     </article>
   );
 };

@@ -1,23 +1,20 @@
 import type { NextRequest } from 'next/server';
 
-import { errors, SignJWT } from 'jose';
-import { nanoid } from 'nanoid';
+import { errors } from 'jose';
 import { NextResponse } from 'next/server';
 import { random } from 'node-emoji';
 
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
-import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams, ApiResponse, PusherType } from '@/types/api';
 import type { Payload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { getAuthToken } from '@/utils/api/getAuthToken';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 
-export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
+export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
   async (req: NextRequest) => {
-    const { inviteToken, guestId }: ApiParams.CREATE_CHAT_CHANNEL_TOKEN =
-      await req.json();
+    const { inviteToken, guestId }: ApiParams.CREATE_FRIEND = await req.json();
 
     try {
       const { payload } =
@@ -31,35 +28,22 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
 
       const token = await getAuthToken({ req });
 
-      const channelId = nanoid();
-
-      const channelToken = await new SignJWT({
-        channelId,
-        hostId: payload.hostId,
-        hostNickname: payload.hostNickname,
-        guestId,
-        guestNickname: token?.name || payload.guestNickname,
-        guestEmoji: token?.email || random().emoji,
-        hostEmoji: payload.hostEmoji,
-        hostLanguage: payload.hostLanguage,
-        guestLanguage: payload.guestLanguage,
-      } satisfies Payload.ChannelToken)
-        .setProtectedHeader({ alg: 'HS256' })
-        .setIssuedAt()
-        .setExpirationTime('1d')
-        .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
-
       await pusher.trigger(
         PUSHER_CHANNEL.WAITING,
         PUSHER_EVENT.WAITING(payload.hostId),
         {
-          channelToken,
-        } satisfies PusherType.joinChat,
+          emoji: token?.email || random().emoji,
+          language: payload.guestLanguage,
+          nickname: token?.name || payload.guestNickname,
+          userId: token?.id || guestId,
+        } satisfies PusherType.addFriend,
       );
 
       return NextResponse.json({
-        channelId,
-        channelToken,
+        emoji: payload.hostEmoji,
+        language: payload.hostLanguage,
+        nickname: payload.hostNickname,
+        userId: payload.hostId,
       });
     } catch (e) {
       if (e instanceof errors.JWTExpired) {

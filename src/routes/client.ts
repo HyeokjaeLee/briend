@@ -13,26 +13,11 @@ export const ROUTES = {
       bottomNavType: 'empty',
     },
   ),
-
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
     topHeaderType: 'root',
     topHeaderTitle: 'more-title',
   }),
-  INVITE_QR: createRoute<'userId', 'lng'>(
-    ({ userId }) => `/private/invite/${userId}/qr`,
-    {
-      topHeaderType: 'back',
-      bottomNavType: 'empty',
-    },
-  ),
-  CONNECTING_FRIEND: createRoute<'userId'>(
-    ({ userId }) => `/private/invite/${userId}/connecting`,
-    {
-      topHeaderType: 'back',
-      bottomNavType: 'empty',
-    },
-  ),
   INVITE_CHAT: createRoute('/private/invite-chat', {
     bottomNavType: 'root',
     topHeaderType: 'root',
@@ -53,26 +38,13 @@ export const ROUTES = {
       bottomNavType: 'empty',
     },
   ),
-
   LOGIN: createRoute('/guest/login', {
     topHeaderType: 'back',
   }),
-  TEST: createRoute('/test'),
-
-  JOIN_CHAT2: createRoute<undefined, 'inviteToken'>('/api/join-chat', {
-    disableI18n: true,
-  }),
-  EXPIRED_CHAT: createRoute('/expired-chat', {
-    topHeaderType: 'back',
-    bottomNavType: 'empty',
-  }),
-
   EDIT_PROFILE: createRoute('/private/more/edit-profile', {
     topHeaderType: 'back',
     bottomNavType: 'empty',
   }),
-
-  ERROR_TO: createRoute<undefined, 'status'>('/error-to'),
 };
 
 export type RouteObject = (typeof ROUTES)[keyof typeof ROUTES];

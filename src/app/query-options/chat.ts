@@ -22,14 +22,14 @@ export const ChatQueryOptions = {
           token,
         }),
     }),
-  createChannelToken: (params: ApiParams.CREATE_CHAT_CHANNEL_TOKEN) =>
+  createFriend: (params: ApiParams.CREATE_FRIEND) =>
     queryOptions({
       queryKey: [
         ChatQueryKey.createChannelToken,
         params.guestId,
         params.inviteToken,
       ],
-      queryFn: () => API_ROUTES.CREATE_CHAT_CHANNEL_TOKEN(params),
+      queryFn: () => API_ROUTES.CREATE_FRIEND(params),
       staleTime: 120_000,
     }),
 };

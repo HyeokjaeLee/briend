@@ -76,7 +76,7 @@ export const InviteForm = () => {
 
   return (
     <form
-      className="mx-auto flex w-full flex-col items-center gap-4"
+      className="mx-auto mb-2 flex w-full flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
         if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
@@ -99,7 +99,7 @@ export const InviteForm = () => {
         />
         <ValidationMessage message={formState.errors.nickname?.message} />
       </label>
-      <label className="w-full font-semibold">
+      <label className="mb-10 w-full font-semibold">
         {t('friend-language')}
         <Controller
           control={control}
@@ -134,11 +134,8 @@ export const InviteForm = () => {
           )}
         />
       </label>
-      <p className="text-center text-sm text-slate-500">
-        {t('friend-setting-message')}
-      </p>
       <CustomButton
-        className="mt-8 w-full"
+        className="w-full"
         loading={formState.isSubmitting || createChatMutation.isPending}
         type="submit"
       >

@@ -65,7 +65,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const { t } = useTranslation('layout');
 
   return (
-    <nav className="flex justify-center border-t border-t-slate-200 bg-slate-100 px-16 py-3">
+    <nav className="flex justify-center border-t border-t-slate-100 px-16 py-3">
       <ul className="flex w-full max-w-96 justify-between gap-10">
         {NAVIGATION_ITEMS.map(
           ({ icon, fillIcon, routeName, translationKey }, index) => {

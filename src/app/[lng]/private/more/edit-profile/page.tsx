@@ -10,9 +10,9 @@ import { RiRefreshLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
-import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
 import { CustomButton } from '@/components/atoms/CustomButton';
 import { CustomIconButton } from '@/components/atoms/CustomIconButton';
+import { BottomButton } from '@/components/molecules/BottomButton';
 import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
@@ -241,16 +241,13 @@ const EditProfilePage = (props: ProfilePageProps) => {
           />
         </label>
       </form>
-      <CustomBottomNav>
-        <CustomButton
-          className="w-full rounded-none"
-          form={FORM_NAME}
-          loading={formState.isSubmitting || editProfileMutation.isPending}
-          type="submit"
-        >
-          저장하기
-        </CustomButton>
-      </CustomBottomNav>
+      <BottomButton
+        form={FORM_NAME}
+        loading={formState.isSubmitting || editProfileMutation.isPending}
+        type="submit"
+      >
+        저장하기
+      </BottomButton>
     </article>
   );
 };

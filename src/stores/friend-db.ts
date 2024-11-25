@@ -2,9 +2,9 @@
 
 import { Dexie, type EntityTable } from 'dexie';
 
-interface Friend {
-  userId: string;
-  emoji: string;
+import type { PusherType } from '@/types/api';
+
+interface Friend extends PusherType.addFriend {
   isGuest: boolean;
 }
 

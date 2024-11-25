@@ -11,7 +11,7 @@ import {
   RiMessage2Line,
 } from 'react-icons/ri';
 
-import { CustomButton } from '@/components/atoms/CustomButton';
+import { BottomButton } from '@/components/molecules/BottomButton';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
 import { ERROR_STATUS } from '@/utils/customError';
@@ -63,7 +63,7 @@ const ErrorPage = (e: { error: Error }) => {
           }
         })()}
       </h1>
-      <CustomButton asChild className="flex-center" size="3">
+      <BottomButton asChild color="red">
         {(() => {
           switch (errorStatusNumber) {
             case ERROR_STATUS.EXPIRED_CHAT:
@@ -88,7 +88,7 @@ const ErrorPage = (e: { error: Error }) => {
               );
           }
         })()}
-      </CustomButton>
+      </BottomButton>
     </article>
   );
 };

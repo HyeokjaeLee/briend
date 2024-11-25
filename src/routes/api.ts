@@ -22,14 +22,11 @@ export const API_ROUTES = {
       })
       .json(),
 
-  CREATE_CHAT_CHANNEL_TOKEN: (params: ApiParams.CREATE_CHAT_CHANNEL_TOKEN) =>
+  CREATE_FRIEND: (params: ApiParams.CREATE_FRIEND) =>
     apiInstance
-      .post<ApiResponse.CREATE_CHAT_CHANNEL_TOKEN>(
-        'chat/create/channel-token',
-        {
-          json: params,
-        },
-      )
+      .post<ApiResponse.CREATE_FRIEND>('chat/create/friend', {
+        json: params,
+      })
       .json(),
 
   UNLINK_ACCOUNT: (params: ApiParams.UNLINK_ACCOUNT) =>

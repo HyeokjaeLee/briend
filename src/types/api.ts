@@ -1,6 +1,7 @@
 import type { JWTPayload } from 'jose';
 
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
+import type { LANGUAGE } from '@/constants/language';
 import type { Payload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
@@ -9,7 +10,7 @@ export namespace ApiParams {
     'hostId' | 'hostEmoji' | 'guestLanguage' | 'guestNickname'
   >;
 
-  export interface CREATE_CHAT_CHANNEL_TOKEN {
+  export interface CREATE_FRIEND {
     guestId: string;
     inviteToken: string;
   }
@@ -52,10 +53,12 @@ export namespace ApiResponse {
     inviteToken: string;
   }
 
-  export type CREATE_CHAT_CHANNEL_TOKEN =
+  export type CREATE_FRIEND =
     | {
-        channelToken: string;
-        channelId: string;
+        emoji: string;
+        language: LANGUAGE;
+        nickname: string;
+        userId: string;
       }
     | {
         error: 'expired' | 'invalid';
@@ -87,6 +90,13 @@ export namespace ApiResponse {
 export namespace PusherType {
   export interface joinChat {
     channelToken: string;
+  }
+
+  export interface addFriend {
+    userId: string;
+    nickname: string;
+    emoji: string;
+    language: LANGUAGE;
   }
 
   export interface sendMessage {
