@@ -1,9 +1,9 @@
-import { usePathname, useSearchParams } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
 import { Suspense, useEffect } from 'react';
 
 import { SESSION_STORAGE } from '@/constants/storage-key';
+import { useUrl } from '@/hooks/useUrl';
 import { useHistoryStore } from '@/stores/history';
 
 const setHistoryExpire = () => {
@@ -14,12 +14,9 @@ const setHistoryExpire = () => {
 };
 
 const HistoryObserverController = () => {
-  const searchParams = useSearchParams().toString();
-  const pathname = usePathname();
-
-  let url = pathname;
-
-  if (searchParams) url += `?${searchParams}`;
+  const url = useUrl({
+    origin: false,
+  });
 
   const [setCustomHistory, setHistoryIndex] = useHistoryStore(
     useShallow((state) => [state.setCustomHistory, state.setHistoryIndex]),

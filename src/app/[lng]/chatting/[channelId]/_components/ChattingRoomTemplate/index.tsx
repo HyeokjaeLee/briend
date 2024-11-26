@@ -111,6 +111,7 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
 
   const [isMyLanguage, setIsMyLanguage] = useState(true);
 
+  //TODO: as string 처리한 내용은 추후 수정해야함
   return (
     <article className="relative flex flex-1 flex-col">
       <ChattingTopNav
@@ -122,20 +123,20 @@ const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
       />
       <ChattingList
         channel={channel}
-        channelId={channelId}
+        channelId={channelId as string}
         isMyLanguage={isMyLanguage}
-        myId={myInfo.id}
-        otherEmoji={otherInfo.emoji}
+        myId={myInfo.id as string}
+        otherEmoji={otherInfo.emoji as string}
         otherName={otherInfo.name}
       />
       <ChattingBottomTextfield
         channel={channel}
-        channelId={channelId}
+        channelId={channelId as string}
         channelToken={channelToken}
         expires={expires}
         isExpired={isExpired}
-        myId={myInfo.id}
-        otherId={otherInfo.id}
+        myId={myInfo.id as string}
+        otherId={otherInfo.id as string}
         onTimeout={channelTokenQuery.refetch}
       />
     </article>

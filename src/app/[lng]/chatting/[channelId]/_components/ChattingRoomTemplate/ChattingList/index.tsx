@@ -11,7 +11,7 @@ import { PUSHER_EVENT } from '@/constants/channel';
 import { SELECTOR } from '@/constants/selector';
 import type { ChattingMessage } from '@/stores/chatting-db.';
 import { chattingMessageTable } from '@/stores/chatting-db.';
-import type { PusherType } from '@/types/api';
+import type { PusherMessage } from '@/types/pusher-message';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
 
 import { ChattingListItem } from './ChattingListItem';
@@ -74,7 +74,7 @@ export const ChattingList = createOnlyClientComponent(
 
       channel.bind(
         PUSHER_EVENT.CHATTING_SEND_MESSAGE(channelId),
-        async (message: PusherType.sendMessage) => {
+        async (message: PusherMessage.sendMessage) => {
           const { id } = message;
           const sentMessage = await chattingMessageTable.get(id);
 

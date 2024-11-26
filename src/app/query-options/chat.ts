@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/routes/api';
-import type { ApiParams } from '@/types/api';
+import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 import { createQueryKeys } from '@/utils/createQueryKeys';
 import { queryOptions } from '@tanstack/react-query';

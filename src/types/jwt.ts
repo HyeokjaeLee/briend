@@ -5,7 +5,7 @@ export enum TOKEN_TYPE {
   CHANNEL = 'channel',
 }
 
-export namespace Payload {
+export namespace JwtPayload {
   export interface AccessToken {
     id: string;
     email: string;
@@ -19,6 +19,13 @@ export namespace Payload {
     hostLanguage: LANGUAGE;
     guestNickname: string;
     guestLanguage: LANGUAGE;
+  }
+
+  export interface FriendToken {
+    userId: string;
+    nickname: string;
+    emoji: string;
+    language: LANGUAGE;
   }
 
   export interface ChannelToken extends InviteToken {

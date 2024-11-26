@@ -1,12 +1,12 @@
+import type { PusherMessage } from './pusher-message';
 import type { JWTPayload } from 'jose';
 
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
-import type { LANGUAGE } from '@/constants/language';
-import type { Payload, TOKEN_TYPE } from '@/types/jwt';
+import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
   export type CREATE_CHAT_INVITE_TOKEN = Pick<
-    Payload.InviteToken,
+    JwtPayload.InviteToken,
     'hostId' | 'hostEmoji' | 'guestLanguage' | 'guestNickname'
   >;
 
@@ -54,12 +54,7 @@ export namespace ApiResponse {
   }
 
   export type CREATE_FRIEND =
-    | {
-        emoji: string;
-        language: LANGUAGE;
-        nickname: string;
-        userId: string;
-      }
+    | PusherMessage.addFriend
     | {
         error: 'expired' | 'invalid';
       };
@@ -81,34 +76,8 @@ export namespace ApiResponse {
     isExpired: boolean;
     tokenType: TOKEN_TYPE;
     payload: (TTokenType extends TOKEN_TYPE.INVITE
-      ? Payload.InviteToken
-      : Payload.ChannelToken) &
+      ? JwtPayload.InviteToken
+      : JwtPayload.ChannelToken) &
       JWTPayload;
-  }
-}
-
-export namespace PusherType {
-  export interface joinChat {
-    channelToken: string;
-  }
-
-  export interface addFriend {
-    userId: string;
-    nickname: string;
-    emoji: string;
-    language: LANGUAGE;
-  }
-
-  export interface sendMessage {
-    id: string;
-    fromUserId: string;
-    message: string;
-    translatedMessage: string;
-    timestamp: number;
-  }
-
-  export interface receiveMessage {
-    id: string;
-    userId: string;
   }
 }

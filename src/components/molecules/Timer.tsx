@@ -9,12 +9,14 @@ export interface TimerProps {
   expires: Date;
   onChangeLeftSeconds?: (leftSeconds: number) => void;
   onTimeout?: () => void;
+  className?: string;
 }
 
 export const Timer = ({
   expires,
   onChangeLeftSeconds,
   onTimeout,
+  className,
 }: TimerProps) => {
   const [leftSeconds, setLeftSeconds] = useState<number>(-1);
 
@@ -74,11 +76,16 @@ export const Timer = ({
 
   return (
     <strong
-      className={cn('flex items-center gap-2 text-slate-900 min-w-24', {
-        'text-red-500': notEnoughTime,
-        invisible: leftSeconds <= 0,
-        'animate-fade animate-reverse animate-duration-1000': leftSeconds <= 1,
-      })}
+      className={cn(
+        'flex items-center gap-2 text-slate-900 min-w-24',
+        {
+          'text-red-500': notEnoughTime,
+          invisible: leftSeconds <= 0,
+          'animate-fade animate-reverse animate-duration-1000':
+            leftSeconds <= 1,
+        },
+        className,
+      )}
     >
       <RiAlarmLine
         className={cn('size-6', {

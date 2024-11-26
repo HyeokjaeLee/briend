@@ -6,8 +6,9 @@ import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import type { ApiParams, PusherType } from '@/types/api';
-import type { Payload } from '@/types/jwt';
+import type { ApiParams } from '@/types/api-params';
+import type { JwtPayload } from '@/types/jwt';
+import type { PusherMessage } from '@/types/pusher-message';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { isArrayItem } from '@/utils/isArrayItem';
@@ -39,7 +40,7 @@ export const POST = createApiRoute(async (req: NextRequest) => {
 
   try {
     const { payload } =
-      await jwtSecretVerify<Payload.ChannelToken>(channelToken);
+      await jwtSecretVerify<JwtPayload.ChannelToken>(channelToken);
 
     const [fromLanguage, toLanguage] =
       payload.hostId === fromUserId
@@ -73,7 +74,7 @@ export const POST = createApiRoute(async (req: NextRequest) => {
         fromUserId,
         translatedMessage,
         timestamp: Date.now(),
-      } satisfies PusherType.sendMessage,
+      } satisfies PusherMessage.sendMessage,
     );
 
     return new NextResponse(null, { status: 200 });

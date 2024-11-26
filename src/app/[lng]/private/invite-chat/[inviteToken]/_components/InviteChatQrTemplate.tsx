@@ -16,8 +16,8 @@ import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
-import type { PusherType } from '@/types/api';
-import { TOKEN_TYPE, type Payload } from '@/types/jwt';
+import { TOKEN_TYPE, type JwtPayload } from '@/types/jwt';
+import type { PusherMessage } from '@/types/pusher-message';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -96,8 +96,8 @@ export const InviteChatQRTemplate = ({
 
     channel.bind(
       PUSHER_EVENT.WAITING(hostId),
-      ({ channelToken }: PusherType.joinChat) => {
-        const { channelId } = decodeJwt<Payload.ChannelToken>(channelToken);
+      ({ channelToken }: PusherMessage.joinChat) => {
+        const { channelId } = decodeJwt<JwtPayload.ChannelToken>(channelToken);
 
         chattingRoomTable.add({
           token: channelToken,
@@ -129,26 +129,31 @@ export const InviteChatQRTemplate = ({
   const title = INVITE_TITLE[guestLanguage];
 
   return (
-    <article className="flex flex-1 flex-col">
+    <article className="flex flex-1 flex-col py-2">
       <div className="flex flex-1 flex-col">
-        <section className="flex flex-1 rotate-180 flex-col items-center justify-center">
+        <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
           <h1 className="break-keep text-center text-2xl font-bold">
             📨 {title}
           </h1>
-          <p className="px-4 py-2 text-center text-slate-500">
+          <p className="px-4 text-center text-slate-500">
             {INVITE_MESSAGE[guestLanguage]}
           </p>
         </section>
-        <section className="flex w-full flex-1 rotate-180 items-center justify-center bg-white p-4">
+        <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
           <QR alt="invite-qr" href={href} size={180} />
         </section>
-        <section className="flex flex-1 flex-col items-center justify-center">
+        <section className="flex-1 flex-col gap-2 flex-center">
+          <h2 className="text-center text-xl font-bold text-slate-900">
+            ⚠️ {t('warning-message')}
+          </h2>
           <p className="text-center text-slate-500">{t('notice-message')}</p>
         </section>
       </div>
-      <div className="flex h-14 items-center justify-center">
-        <Timer expires={expires} onTimeout={handleExpiredToken} />
-      </div>
+      <Timer
+        className="mx-auto"
+        expires={expires}
+        onTimeout={handleExpiredToken}
+      />
       <BottomButton
         onClick={() => {
           navigator.share({

@@ -9,7 +9,7 @@
   html {
     font-size: 14px;
   }
-  p {
+  * {
     @apply break-keep whitespace-pre-line;
   }
 }

@@ -6,5 +6,9 @@ import { PRIVATE_ENV } from '@/constants/private-env';
 
 export const jwtSecretVerify = async <T>(
   jwtToken: string,
+  additionalSecret = '',
 ): Promise<JWTVerifyResult<T>> =>
-  jwtVerify<T>(jwtToken, new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
+  jwtVerify<T>(
+    jwtToken,
+    new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET + additionalSecret),
+  );

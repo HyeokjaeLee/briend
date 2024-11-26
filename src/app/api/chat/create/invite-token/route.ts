@@ -4,8 +4,9 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import type { ApiParams, ApiResponse } from '@/types/api';
-import type { Payload } from '@/types/jwt';
+import type { ApiParams } from '@/types/api-params';
+import type { ApiResponse } from '@/types/api-response';
+import type { JwtPayload } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { getAuthToken } from '@/utils/api/getAuthToken';
 import { CustomError, ERROR } from '@/utils/customError';
@@ -41,7 +42,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
       guestNickname,
       guestLanguage,
       hostLanguage,
-    } satisfies Payload.InviteToken)
+    } satisfies JwtPayload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('5m')

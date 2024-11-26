@@ -1,9 +1,10 @@
-import type { ApiParams, ApiResponse } from '../types/api';
+import type { ApiResponse } from '../types/api-response';
 import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
 import { PUBLIC_ENV } from '@/constants/public-env';
+import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 
 const apiInstance = ky.create({

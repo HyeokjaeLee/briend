@@ -17,17 +17,15 @@ const CreateChatPage = async ({ params }: CreateChatPageProps) => {
   const { t } = await getTranslation('invite-chat', lng);
 
   return (
-    <article className="flex flex-1 flex-col items-center justify-between p-4">
-      <section className="flex-1 flex-col flex-center">
-        <Lottie
-          loop
-          animationData={inviteFriendLottie}
-          className="mx-auto size-96"
-        />
-        <p className="text-center text-lg text-slate-500">
-          {t('friend-setting-message')}
-        </p>
-      </section>
+    <article className="flex flex-1 flex-col gap-4 p-4">
+      <Lottie
+        loop
+        animationData={inviteFriendLottie}
+        className="m-auto h-[calc(var(--content-height)-27rem)] w-auto"
+      />
+      <p className="text-center text-sm text-slate-500">
+        {t('friend-setting-message')}
+      </p>
       <InviteForm />
     </article>
   );

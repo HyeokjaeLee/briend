@@ -4,16 +4,28 @@ import type { LottieComponentProps as OriginalLottieProps } from 'lottie-react';
 
 import dynamic from 'next/dynamic';
 
-import { memo } from 'react';
+import { cn } from '@/utils/cn';
+
+interface LottieProps extends OriginalLottieProps {
+  innerClassName?: string;
+}
 
 const OriginalLottie = dynamic(() => import('lottie-react'), {
   ssr: false,
 });
 
-type LottieProps = OriginalLottieProps;
-
-export const Lottie = memo(({ loop = false, ...props }: LottieProps) => {
-  return <OriginalLottie {...props} loop={loop} />;
-});
-
-Lottie.displayName = 'Lottie';
+export const Lottie = ({
+  loop = false,
+  className,
+  innerClassName,
+  style,
+  ...props
+}: LottieProps) => (
+  <div className={className} style={style}>
+    <OriginalLottie
+      {...props}
+      className={cn('size-full', innerClassName)}
+      loop={loop}
+    />
+  </div>
+);

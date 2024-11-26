@@ -3,13 +3,13 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { COOKIES } from '@/constants/cookies-key';
-import type { ApiResponse } from '@/types/api';
-import type { Payload, TOKEN_TYPE } from '@/types/jwt';
+import type { ApiResponse } from '@/types/api-response';
+import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
 
-type ChatTokenPayload = Payload.InviteToken | Payload.ChannelToken;
+type ChatTokenPayload = JwtPayload.InviteToken | JwtPayload.ChannelToken;
 
 export const GET = createApiRoute<
   ApiResponse.VERIFY_CHAT_TOKEN<TOKEN_TYPE>,

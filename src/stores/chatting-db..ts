@@ -3,7 +3,7 @@
 import { Dexie, type EntityTable } from 'dexie';
 import relationships from 'dexie-relationships';
 
-import type { PusherType } from '@/types/api';
+import type { PusherMessage } from '@/types/pusher-message';
 
 (async () => {
   if (typeof window !== 'undefined') {
@@ -16,7 +16,7 @@ interface ChattingRoom {
   token: string;
 }
 
-export interface ChattingMessage extends PusherType.sendMessage {
+export interface ChattingMessage extends PusherMessage.sendMessage {
   chattingRoomId: string;
   state: 'sent' | 'receive' | 'error';
 }

@@ -2,7 +2,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { COOKIES } from '@/constants/cookies-key';
 import { prisma } from '@/prisma';
-import type { ApiParams, ApiResponse } from '@/types/api';
+import type { ApiParams } from '@/types/api-params';
+import type { ApiResponse } from '@/types/api-response';
 import { createApiRoute } from '@/utils/api/createApiRoute';
 import { CustomError, ERROR } from '@/utils/customError';
 
