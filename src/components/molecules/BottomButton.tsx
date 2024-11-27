@@ -10,7 +10,7 @@ export const BottomButton = ({
   ...restProps
 }: BottomButtonProps) => {
   return (
-    <CustomBottomNav className="h-20 border-t-0">
+    <CustomBottomNav className="h-17 border-t-0">
       <CustomButton
         activeScaleDown={false}
         className={cn('size-full rounded-none text-xl', className)}

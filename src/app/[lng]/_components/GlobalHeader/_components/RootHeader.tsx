@@ -3,7 +3,6 @@
 import { usePathname } from 'next/navigation';
 
 import { useTranslation } from '@/app/i18n/client';
-import { ROUTES } from '@/routes/client';
 import Logo from '@/svgs/logo.svg';
 import { findRoute } from '@/utils/findRoute';
 
@@ -14,20 +13,6 @@ export const RootHeader = () => {
 
   const currentRoute = findRoute(pathname);
 
-  let emoji = '';
-
-  switch (currentRoute) {
-    case ROUTES.HOME:
-      emoji = '💬';
-      break;
-    case ROUTES.INVITE_CHAT:
-      emoji = '📨';
-      break;
-    case ROUTES.MORE_MENUS:
-      emoji = '📦';
-      break;
-  }
-
   const { topHeaderTitle } = currentRoute;
 
   return (
@@ -35,9 +20,8 @@ export const RootHeader = () => {
       <Logo className="h-7 text-slate-900" />
       <div className="flex items-center gap-3">
         {topHeaderTitle ? (
-          <h1 className="text-lg font-semibold">{t(topHeaderTitle)}</h1>
+          <h2 className="text-lg font-semibold">{t(topHeaderTitle)}</h2>
         ) : null}
-        {emoji ? <span className="text-2xl">{emoji}</span> : null}
       </div>
     </nav>
   );

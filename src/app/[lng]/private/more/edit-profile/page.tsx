@@ -159,8 +159,8 @@ const EditProfilePage = (props: ProfilePageProps) => {
         })}
       >
         <section className="w-full flex-col gap-8 flex-center">
-          <Skeleton className="size-36 rounded-full" loading={!selectedEmoji}>
-            <div className="flex size-36 select-none items-center justify-center rounded-full bg-blue-100 text-7xl">
+          <Skeleton loading={!selectedEmoji}>
+            <div className="flex size-32 select-none items-center justify-center rounded-full bg-blue-100 text-5xl">
               {selectedEmoji}
             </div>
           </Skeleton>

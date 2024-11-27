@@ -34,6 +34,7 @@ const config: Config = {
       },
       spacing: {
         '14.4': '3.6rem',
+        '17': '4.25rem',
         cdvh: 'var(--viewport-height)',
         cdch: 'var(--content-height)',
       },

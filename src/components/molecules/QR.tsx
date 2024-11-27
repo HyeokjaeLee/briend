@@ -24,6 +24,7 @@ export const QR = ({ size = 160, href, alt = 'qr', className }: QRProps) => {
     <Skeleton height={`${size}px`} width={`${size}px`}>
       <CustomImage
         key={`${size}-${href}`}
+        unoptimized
         alt={alt}
         className={className}
         height={size}

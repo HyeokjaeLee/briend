@@ -3,6 +3,7 @@
 import { decodeJwt } from 'jose';
 
 import { useCallback, useEffect } from 'react';
+import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
@@ -129,22 +130,24 @@ export const InviteChatQRTemplate = ({
   const title = INVITE_TITLE[guestLanguage];
 
   return (
-    <article className="flex flex-1 flex-col py-2">
+    <article className="flex flex-1 flex-col p-2">
       <div className="flex flex-1 flex-col">
         <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
-          <h1 className="break-keep text-center text-2xl font-bold">
-            📨 {title}
+          <h1 className="break-keep text-center text-xl font-bold">
+            <FcCollaboration aria-hidden className="mb-1 mr-2 inline size-6" />
+            {title}
           </h1>
-          <p className="px-4 text-center text-slate-500">
+          <p className="px-4 text-center text-sm text-slate-500">
             {INVITE_MESSAGE[guestLanguage]}
           </p>
         </section>
         <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
-          <QR alt="invite-qr" href={href} size={180} />
+          <QR alt="invite-qr" href={href} size={150} />
         </section>
         <section className="flex-1 flex-col gap-2 flex-center">
           <h2 className="text-center text-xl font-bold text-slate-900">
-            ⚠️ {t('warning-message')}
+            <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
+            {t('warning-message')}
           </h2>
           <p className="text-center text-slate-500">{t('notice-message')}</p>
         </section>

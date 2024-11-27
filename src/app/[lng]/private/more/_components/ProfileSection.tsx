@@ -28,8 +28,8 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
         className,
       )}
     >
-      <Skeleton className="size-36 rounded-full" loading={!user}>
-        <div className="flex size-36 select-none items-center justify-center rounded-full bg-sky-50 text-7xl">
+      <Skeleton loading={!user}>
+        <div className="flex size-32 select-none items-center justify-center rounded-full bg-sky-50 text-5xl">
           {user?.emoji}
         </div>
       </Skeleton>

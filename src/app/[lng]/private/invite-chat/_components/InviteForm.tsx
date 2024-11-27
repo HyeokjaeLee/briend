@@ -88,7 +88,7 @@ export const InviteForm = () => {
         });
       })}
     >
-      <label className="w-full font-semibold">
+      <label className="w-full text-sm font-semibold">
         {t('friend-nickname')}
         <TextField.Root
           {...register('nickname')}
@@ -99,7 +99,7 @@ export const InviteForm = () => {
         />
         <ValidationMessage message={formState.errors.nickname?.message} />
       </label>
-      <label className="mb-10 w-full font-semibold">
+      <label className="mb-10 w-full text-sm font-semibold">
         {t('friend-language')}
         <Controller
           control={control}

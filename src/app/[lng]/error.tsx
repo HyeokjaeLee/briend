@@ -11,7 +11,7 @@ import {
   RiMessage2Line,
 } from 'react-icons/ri';
 
-import { BottomButton } from '@/components/molecules/BottomButton';
+import { CustomButton } from '@/components/atoms/CustomButton';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
 import { ERROR_STATUS } from '@/utils/customError';
@@ -28,20 +28,37 @@ const ErrorPage = (e: { error: Error }) => {
 
   const isLogined = !!useSession();
 
-  return (
-    <article className="flex-1 flex-col gap-8 p-4 flex-center">
-      <div>
-        {(() => {
-          switch (errorStatusNumber) {
-            case ERROR_STATUS.UNAUTHORIZED:
-              return <RiLock2Line className="size-32 text-slate-50" />;
-            case ERROR_STATUS.EXPIRED_CHAT:
-              return <RiAlarmLine className="size-32 text-red-500" />;
+  const dynamicInfo = {
+    icon: <RiErrorWarningFill className="size-32 text-red-500" />,
+    text: t('home-button-text'),
+    buttonIcon: <RiHome3Fill />,
+    buttonText: t('home-button-text'),
+    buttonLink: ROUTES.HOME.pathname,
+  };
 
-            default:
-              return <RiErrorWarningFill className="size-32 text-red-500" />;
-          }
-        })()}
+  switch (errorStatusNumber) {
+    case ERROR_STATUS.UNAUTHORIZED: {
+      dynamicInfo.icon = <RiLock2Line className="size-32 text-slate-50" />;
+      dynamicInfo.text = t('not-allowed');
+
+      break;
+    }
+    case ERROR_STATUS.EXPIRED_CHAT: {
+      dynamicInfo.icon = <RiAlarmLine className="size-32 text-red-500" />;
+      dynamicInfo.text = t('expired-chat');
+      dynamicInfo.buttonIcon = <RiMessage2Line />;
+
+      if (isLogined) {
+        dynamicInfo.buttonText = t('create-chat-button-text');
+        dynamicInfo.buttonLink = ROUTES.INVITE_CHAT.pathname;
+      }
+    }
+  }
+
+  return (
+    <article className="flex-1 flex-col gap-8 flex-center">
+      <div>
+        {dynamicInfo.icon}
         <p
           className={cn('text-2xl font-bold text-center text-red-500', {
             'text-slate-50': errorStatusNumber === ERROR_STATUS.UNAUTHORIZED,
@@ -51,44 +68,18 @@ const ErrorPage = (e: { error: Error }) => {
         </p>
       </div>
       <h1 className="whitespace-pre-line text-center text-xl font-semibold">
-        {(() => {
-          switch (errorStatusNumber) {
-            case ERROR_STATUS.UNAUTHORIZED:
-              return t('not-allowed');
-            case ERROR_STATUS.EXPIRED_CHAT:
-              return t('expired-chat');
-
-            default:
-              return t('unknown-error');
-          }
-        })()}
+        {dynamicInfo.text}
       </h1>
-      <BottomButton asChild color="red">
-        {(() => {
-          switch (errorStatusNumber) {
-            case ERROR_STATUS.EXPIRED_CHAT:
-              return isLogined ? (
-                <Link replace href={ROUTES.INVITE_CHAT.pathname}>
-                  <RiMessage2Line />
-                  {t('create-chat-button-text')}
-                </Link>
-              ) : (
-                <Link replace href={ROUTES.HOME.pathname}>
-                  <RiHome3Fill />
-                  {t('home-button-text')}
-                </Link>
-              );
-
-            default:
-              return (
-                <Link replace href={ROUTES.HOME.pathname}>
-                  <RiHome3Fill />
-                  {t('home-button-text')}
-                </Link>
-              );
-          }
-        })()}
-      </BottomButton>
+      <CustomButton
+        asChild
+        className="fixed bottom-0 h-17 w-full max-w-xl rounded-none"
+        color="red"
+      >
+        <Link replace href={dynamicInfo.buttonLink}>
+          <div className="mt-1">{dynamicInfo.buttonIcon}</div>
+          {dynamicInfo.buttonText}
+        </Link>
+      </CustomButton>
     </article>
   );
 };
