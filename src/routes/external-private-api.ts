@@ -19,10 +19,16 @@ export const EXTERNAL_PRIVATE_API = {
         message: string;
         url: string;
       }>('http://www.buly.kr/api/shoturl.siso', {
+        headers: {
+          Accept: '*/*',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
         body: params.toString(),
       });
 
       const json = await res.json();
+
+      console.info(json);
 
       if (json.result !== 'Y') return url;
 
