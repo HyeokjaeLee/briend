@@ -1,6 +1,5 @@
 import { errors } from 'jose';
 
-import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import type { JwtPayload } from '@/types/jwt';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
@@ -21,21 +20,19 @@ const InviteChatQRPage = async (props: InviteChatQRPageProps) => {
     const { payload } =
       await jwtSecretVerify<JwtPayload.InviteToken>(inviteToken);
 
-    const url = await API_ROUTES.SHORT_URL(
-      ROUTES.JOIN_CHAT.url({
-        lng: payload.guestLanguage,
-        searchParams: {
-          inviteToken,
-        },
-      }).href,
-    );
-
     return (
       <InviteChatQRTemplate
         exp={payload.exp}
         guestLanguage={payload.guestLanguage}
         hostId={payload.hostId}
-        url={url}
+        url={
+          ROUTES.JOIN_CHAT.url({
+            lng: payload.guestLanguage,
+            searchParams: {
+              inviteToken,
+            },
+          }).href
+        }
       />
     );
   } catch (e) {

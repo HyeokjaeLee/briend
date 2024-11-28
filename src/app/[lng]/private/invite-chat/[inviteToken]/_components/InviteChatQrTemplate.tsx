@@ -10,6 +10,7 @@ import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
+import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { BottomButton } from '@/components/molecules/BottomButton';
 import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
@@ -22,6 +23,7 @@ import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {
   [LANGUAGE.KOREAN]: '채팅에 초대받았어요!',
@@ -84,6 +86,8 @@ export const InviteChatQRTemplate = ({
     });
   };
 
+  const { data: shortUrl } = useSuspenseQuery(UtilsQueryOptions.shortUrl(url));
+
   useEffect(() => {
     const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
 
@@ -125,7 +129,7 @@ export const InviteChatQRTemplate = ({
           </p>
         </section>
         <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
-          <QR alt="invite-qr" href={url} size={150} />
+          <QR alt="invite-qr" href={shortUrl} size={150} />
         </section>
         <section className="flex-1 flex-col gap-2 flex-center">
           <h2 className="text-center text-xl font-bold text-slate-900">
@@ -145,7 +149,7 @@ export const InviteChatQRTemplate = ({
           navigator.share({
             title,
             text: INVITE_SHARE_MESSAGE[guestLanguage],
-            url,
+            url: shortUrl,
           });
         }}
       >

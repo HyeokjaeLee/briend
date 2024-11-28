@@ -3,7 +3,7 @@ import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
-import { IS_DEV, PUBLIC_ENV } from '@/constants/public-env';
+import { PUBLIC_ENV } from '@/constants/public-env';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 
@@ -80,16 +80,10 @@ export const API_ROUTES = {
       .json(),
 
   SHORT_URL: async (url: string) => {
-    if (IS_DEV) return url;
-
     try {
       const params = new URLSearchParams({
         url,
       });
-
-      const body = params.toString();
-
-      console.info('⏳ ' + body);
 
       const res = await ky.post<{
         short_url?: string;
@@ -97,19 +91,15 @@ export const API_ROUTES = {
         headers: {
           Accept: 'application/json',
         },
-        body,
+        body: params.toString(),
       });
 
       const json = await res.json();
 
-      console.info(json);
-
       if (!json.short_url) return url;
 
       return json.short_url;
-    } catch (e) {
-      console.error(e);
-
+    } catch {
       return url;
     }
   },
