@@ -81,6 +81,7 @@ export const API_ROUTES = {
 
   SHORT_URL: async (url: string) => {
     if (IS_DEV) return url;
+    console.info(IS_DEV);
     try {
       const params = new URLSearchParams({
         url,
@@ -104,7 +105,9 @@ export const API_ROUTES = {
       if (!json.short_url) return url;
 
       return json.short_url;
-    } catch {
+    } catch (e) {
+      console.error(e);
+
       return url;
     }
   },

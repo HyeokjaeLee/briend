@@ -22,12 +22,7 @@ const InviteChatQRPage = async (props: InviteChatQRPageProps) => {
       await jwtSecretVerify<JwtPayload.InviteToken>(inviteToken);
 
     const url = await API_ROUTES.SHORT_URL(
-      ROUTES.JOIN_CHAT.url({
-        lng: payload.guestLanguage,
-        searchParams: {
-          inviteToken,
-        },
-      }).href,
+      'https://vercel.com/hyeokjaelees-projects-6880e108/briend/AmmqNWYfhGmyVyUfnPNQgxXWMsuU/logs?slug=app-future&slug=en-US&slug=hyeokjaelees-projects-6880e108&slug=briend&slug=AmmqNWYfhGmyVyUfnPNQgxXWMsuU&slug=logs&page=3&timeline=past30Minutes&startDate=1732817962913&endDate=1732819762913&levels=error&levels=info&levels=warning&live=true',
     );
 
     return (
