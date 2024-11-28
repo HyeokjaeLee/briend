@@ -1,14 +1,15 @@
 'use client';
 
+import type { JWTPayload } from 'jose';
+
 import { decodeJwt } from 'jose';
 
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
-import { ChatQueryOptions } from '@/app/query-options/chat';
 import { BottomButton } from '@/components/molecules/BottomButton';
 import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
@@ -17,11 +18,10 @@ import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
-import { TOKEN_TYPE, type JwtPayload } from '@/types/jwt';
+import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
-import { useSuspenseQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {
   [LANGUAGE.KOREAN]: '채팅에 초대받았어요!',
@@ -54,31 +54,27 @@ const INVITE_SHARE_MESSAGE = {
     'Bạn có thể trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
 };
 
-interface InviteChatQrTemplateProps {
-  inviteToken: string;
+interface InviteChatQrTemplateProps
+  extends Pick<
+    JwtPayload.InviteToken & JWTPayload,
+    'exp' | 'hostId' | 'guestLanguage'
+  > {
+  url: string;
 }
 
 export const InviteChatQRTemplate = ({
-  inviteToken,
+  url,
+  exp,
+  hostId,
+  guestLanguage,
 }: InviteChatQrTemplateProps) => {
-  const {
-    data: { payload, isExpired },
-  } = useSuspenseQuery(
-    ChatQueryOptions.verifyToken({
-      token: inviteToken,
-      tokenType: TOKEN_TYPE.INVITE,
-    }),
-  );
-
-  const hostId = payload.hostId;
-
-  const expires = new Date((payload.exp ?? 0) * 1_000);
+  const expires = new Date((exp ?? 0) * 1_000);
 
   const router = useCustomRouter();
 
   const { t } = useTranslation('invite-chat-qr');
 
-  const handleExpiredToken = useCallback(() => {
+  const handleExpiredToken = () => {
     toast({
       message: t('expired-toast-message'),
     });
@@ -86,11 +82,7 @@ export const InviteChatQRTemplate = ({
     throw new CustomError({
       status: ERROR_STATUS.EXPIRED_CHAT,
     });
-  }, [t]);
-
-  useEffect(() => {
-    if (isExpired) handleExpiredToken();
-  }, [isExpired, handleExpiredToken]);
+  };
 
   useEffect(() => {
     const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
@@ -116,16 +108,7 @@ export const InviteChatQRTemplate = ({
     return () => {
       channel.unsubscribe();
     };
-  }, [hostId, payload.language, router, t]);
-
-  const { guestLanguage } = payload;
-
-  const { href } = ROUTES.JOIN_CHAT.url({
-    lng: guestLanguage,
-    searchParams: {
-      inviteToken,
-    },
-  });
+  }, [hostId, router, t]);
 
   const title = INVITE_TITLE[guestLanguage];
 
@@ -142,7 +125,7 @@ export const InviteChatQRTemplate = ({
           </p>
         </section>
         <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
-          <QR alt="invite-qr" href={href} size={150} />
+          <QR alt="invite-qr" href={url} size={150} />
         </section>
         <section className="flex-1 flex-col gap-2 flex-center">
           <h2 className="text-center text-xl font-bold text-slate-900">
@@ -162,7 +145,7 @@ export const InviteChatQRTemplate = ({
           navigator.share({
             title,
             text: INVITE_SHARE_MESSAGE[guestLanguage],
-            url: href,
+            url,
           });
         }}
       >
