@@ -1,7 +1,7 @@
 import { errors } from 'jose';
 
+import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import { EXTERNAL_PRIVATE_API } from '@/routes/external-private-api';
 import type { JwtPayload } from '@/types/jwt';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
@@ -21,7 +21,7 @@ const InviteChatQRPage = async (props: InviteChatQRPageProps) => {
     const { payload } =
       await jwtSecretVerify<JwtPayload.InviteToken>(inviteToken);
 
-    const url = await EXTERNAL_PRIVATE_API.SHORT_URL(
+    const url = await API_ROUTES.SHORT_URL(
       ROUTES.JOIN_CHAT.url({
         lng: payload.guestLanguage,
         searchParams: {

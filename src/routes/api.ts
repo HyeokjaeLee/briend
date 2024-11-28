@@ -3,7 +3,7 @@ import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { IS_DEV, PUBLIC_ENV } from '@/constants/public-env';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 
@@ -78,4 +78,34 @@ export const API_ROUTES = {
         json: params,
       })
       .json(),
+
+  SHORT_URL: async (url: string) => {
+    if (IS_DEV) return url;
+    try {
+      const params = new URLSearchParams({
+        url,
+        'max-click': '1',
+      });
+
+      console.info('⏳ ' + params.toString());
+
+      const res = await ky.post<{
+        short_url?: string;
+      }>('https://spoo.me', {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params.toString(),
+      });
+
+      const json = await res.json();
+
+      if (!json.short_url) return url;
+
+      return json.short_url;
+    } catch {
+      return url;
+    }
+  },
 };
