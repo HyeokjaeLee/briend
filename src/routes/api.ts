@@ -87,8 +87,6 @@ export const API_ROUTES = {
         'max-click': '1',
       });
 
-      console.info('⏳ ' + params.toString());
-
       const res = await ky.post<{
         short_url?: string;
       }>('https://spoo.me', {
@@ -100,6 +98,8 @@ export const API_ROUTES = {
       });
 
       const json = await res.json();
+
+      console.info(json);
 
       if (!json.short_url) return url;
 
