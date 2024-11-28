@@ -81,20 +81,23 @@ export const API_ROUTES = {
 
   SHORT_URL: async (url: string) => {
     if (IS_DEV) return url;
-    console.info(IS_DEV);
+
     try {
       const params = new URLSearchParams({
         url,
       });
+
+      const body = params.toString();
+
+      console.info('⏳ ' + body);
 
       const res = await ky.post<{
         short_url?: string;
       }>('https://spoo.me', {
         headers: {
           Accept: 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: params.toString(),
+        body,
       });
 
       const json = await res.json();
