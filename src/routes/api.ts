@@ -85,7 +85,6 @@ export const API_ROUTES = {
     try {
       const params = new URLSearchParams({
         url,
-        'max-click': '1',
       });
 
       const res = await ky.post<{
