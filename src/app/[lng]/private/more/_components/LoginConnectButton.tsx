@@ -1,14 +1,13 @@
 'use client';
 
-import { setCookie } from 'cookies-next';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
-import { COOKIES } from '@/constants/cookies-key';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { API_ROUTES } from '@/routes/api';
+import { cookies } from '@/stores/cookies';
 import { cn } from '@/utils/cn';
 import { toast } from '@/utils/toast';
 import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
@@ -55,7 +54,7 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
       onClick={async () => {
         if (isConnected) return unlinkAccountMutation.mutate({ provider });
 
-        setCookie(COOKIES.PROVIDER_TO_CONNECT, provider);
+        cookies.set('PROVIDER_TO_CONNECT', provider);
       }}
     >
       <div

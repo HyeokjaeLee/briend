@@ -2,17 +2,17 @@ import type { NextRequest, NextResponse } from 'next/server';
 
 import { nanoid } from 'nanoid';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { auth } from '@/auth';
+import { COOKIES } from '@/stores/cookies';
 
-export const setUserIdCookie = (req: NextRequest, res: NextResponse) => {
-  let userId = req.cookies.get(COOKIES.USER_ID)?.value;
+export const setUserIdCookie = async (req: NextRequest, res: NextResponse) => {
+  const cookieUserId = req.cookies.get(COOKIES.USER_ID)?.value;
 
-  if (!userId) {
-    userId = nanoid();
-    res.cookies.set(COOKIES.USER_ID, userId, {
-      maxAge: 3_153_600_000, // 100 years
-    });
+  const sessionUserId = await auth().then((session) => session?.user.id);
+
+  if (!cookieUserId || (sessionUserId && sessionUserId !== cookieUserId)) {
+    res.cookies.set(COOKIES.USER_ID, sessionUserId || nanoid());
   }
 
-  return userId;
+  return res;
 };

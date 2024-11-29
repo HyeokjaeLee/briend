@@ -1,23 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
 import { ToastContainer, Slide } from 'react-toastify';
 
-import { SESSION_STORAGE } from '@/constants/storage-key';
 import { cn } from '@/utils/cn';
-import { toast } from '@/utils/toast';
+
+import { useProviderConnectToast } from './_hooks/useProviderConnectToast';
+import { useRefreshToast } from './_hooks/useRefreshToast';
 
 export const ToastProvider = () => {
-  useEffect(() => {
-    const refreshToast = sessionStorage.getItem(SESSION_STORAGE.REFRESH_TOAST);
+  useRefreshToast();
 
-    if (refreshToast) {
-      sessionStorage.removeItem(SESSION_STORAGE.REFRESH_TOAST);
-      toast({
-        message: refreshToast,
-      });
-    }
-  }, []);
+  useProviderConnectToast();
 
   return (
     <ToastContainer

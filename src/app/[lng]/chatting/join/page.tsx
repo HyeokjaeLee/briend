@@ -1,15 +1,15 @@
 'use client';
 
 import { use, useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 
 import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
-import { COOKIES } from '@/constants/cookies-key';
+import { useCookies } from '@/hooks/useCookies';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
+import { COOKIES } from '@/stores/cookies';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
 import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
@@ -28,7 +28,7 @@ const ChattingJoinPage = createOnlyClientComponent(
 
     const [cookies] = useCookies([COOKIES.USER_ID]);
 
-    const userId = cookies[COOKIES.USER_ID];
+    const userId = cookies.USER_ID;
 
     if (!inviteToken || !userId)
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken', 'userId']));

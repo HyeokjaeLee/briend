@@ -1,26 +1,19 @@
-'use client';
-
-import { getCookie, deleteCookie, setCookie } from 'cookies-next';
 import { useSession } from 'next-auth/react';
 
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
-import { COOKIES } from '@/constants/cookies-key';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
+import { cookies } from '@/stores/cookies';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { toast } from '@/utils/toast';
 
-export const CookiesSync = () => {
+export const useProviderConnectToast = () => {
   const session = useSession();
 
   const user = session.data?.user;
 
-  const userId = user?.id;
-
-  const providerToConnect = getCookie(COOKIES.PROVIDER_TO_CONNECT);
-
-  if (userId) setCookie(COOKIES.USER_ID, userId);
+  const providerToConnect = cookies.get('PROVIDER_TO_CONNECT');
 
   const [deletedProviderToConnect, setDeletedProviderToConnect] =
     useState<LOGIN_PROVIDERS | null>(null);
@@ -30,7 +23,7 @@ export const CookiesSync = () => {
   useEffect(() => {
     if (!hasProviderToConnect || !providerToConnect) return;
 
-    deleteCookie(COOKIES.PROVIDER_TO_CONNECT);
+    cookies.remove('PROVIDER_TO_CONNECT');
     setDeletedProviderToConnect(providerToConnect);
   }, [hasProviderToConnect, providerToConnect]);
 
@@ -55,6 +48,4 @@ export const CookiesSync = () => {
       setDeletedProviderToConnect(null);
     }
   }, [deletedProviderToConnect, t, user]);
-
-  return null;
 };

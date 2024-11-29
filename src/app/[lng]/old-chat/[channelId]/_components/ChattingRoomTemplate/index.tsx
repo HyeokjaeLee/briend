@@ -5,14 +5,14 @@ import type { Channel } from 'pusher-js';
 import { useLiveQuery } from 'dexie-react-hooks';
 
 import { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
 
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { PUSHER_CHANNEL } from '@/constants/channel';
-import { COOKIES } from '@/constants/cookies-key';
+import { useCookies } from '@/hooks/useCookies';
 import { chattingRoomTable } from '@/stores/chatting-db.';
+import { COOKIES } from '@/stores/cookies';
 import { TOKEN_TYPE } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -32,7 +32,7 @@ interface ChattingRoomContentProps {
 const ChattingRoomContent = ({ channelToken }: ChattingRoomContentProps) => {
   const [cookies] = useCookies([COOKIES.USER_ID]);
 
-  const userId = cookies[COOKIES.USER_ID];
+  const userId = cookies.USER_ID;
 
   const channelTokenQuery = useSuspenseQuery({
     ...ChatQueryOptions.verifyToken({

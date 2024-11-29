@@ -1,17 +1,18 @@
 import { usePathname } from 'next/navigation';
 
 import { useCallback } from 'react';
-import { useCookies } from 'react-cookie';
 
-import { COOKIES } from '@/constants/cookies-key';
 import { LANGUAGE } from '@/constants/language';
+import { COOKIES } from '@/stores/cookies';
 import { isEnumValue } from '@/utils/isEnumValue';
 
+import { useCookies } from './useCookies';
+
 export const useCustomHref = () => {
-  const [{ i18next }] = useCookies([COOKIES.I18N]);
+  const [cookies] = useCookies([COOKIES.I18N]);
   const pathname = usePathname();
 
-  let i18n: string = i18next;
+  let i18n: string = cookies.I18N;
 
   const [, i18nPath] = pathname.split('/');
 

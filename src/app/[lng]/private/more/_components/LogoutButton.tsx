@@ -25,7 +25,6 @@ export const LogoutButton = ({ lng }: LogoutButtonProps) => {
     () => () => {
       getSession().then((session) => {
         if (session) return;
-
         window.location.replace(`/${lng}${ROUTES.HOME.pathname}`);
       });
     },

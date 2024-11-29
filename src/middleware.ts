@@ -17,7 +17,7 @@ export const middleware = auth(async (req: NextRequest) => {
 
   const res = setI18nNextResponse(req);
 
-  setUserIdCookie(req, res);
+  await setUserIdCookie(req, res);
 
   return res;
 });

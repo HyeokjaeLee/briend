@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { NextResponse } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { COOKIES } from '@/stores/cookies';
 
 import { fallbackLng, languages } from '../app/i18n/settings';
 
