@@ -5,7 +5,7 @@ import { use, useEffect } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
-import { COOKIES } from '@/constants/cookies-key';
+import { COOKIES } from '@/constants/cookies';
 import { useCookies } from '@/hooks/useCookies';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';

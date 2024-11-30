@@ -1,3 +1,5 @@
+'use client';
+
 import type { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
 
 import { Cookies } from 'react-cookie';
@@ -6,8 +8,7 @@ import {
   COOKIES,
   type COOKIES_KEY_TYPE,
   type COOKIES_VALUE,
-} from '@/constants/cookies-key';
-import { IS_DEV } from '@/constants/public-env';
+} from '@/constants/cookies';
 
 export class CustomCookies extends Cookies {
   get<TKey extends COOKIES_KEY_TYPE>(key: TKey, options?: CookieGetOptions) {
@@ -33,9 +34,3 @@ export class CustomCookies extends Cookies {
 }
 
 export const cookies = new CustomCookies();
-
-export const DEFAULT_COOKIES_OPTIONS: CookieSetOptions = {
-  httpOnly: !IS_DEV,
-  secure: !IS_DEV,
-  path: '/',
-};

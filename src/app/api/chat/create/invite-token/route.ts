@@ -1,7 +1,7 @@
 import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { COOKIES } from '@/constants/cookies';
 import { LANGUAGE } from '@/constants/language';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams } from '@/types/api-params';

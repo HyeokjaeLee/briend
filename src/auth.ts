@@ -8,7 +8,7 @@ import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
-import { COOKIES } from './constants/cookies-key';
+import { COOKIES } from './constants/cookies';
 import { LOGIN_PROVIDERS } from './constants/etc';
 import { PRIVATE_ENV } from './constants/private-env';
 import { prisma } from './prisma';

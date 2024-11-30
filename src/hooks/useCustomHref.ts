@@ -2,7 +2,7 @@ import { usePathname } from 'next/navigation';
 
 import { useCallback } from 'react';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { COOKIES } from '@/constants/cookies';
 import { LANGUAGE } from '@/constants/language';
 import { isEnumValue } from '@/utils/isEnumValue';
 

@@ -3,7 +3,7 @@ import type { NextRequest, NextResponse } from 'next/server';
 import { nanoid } from 'nanoid';
 
 import { auth } from '@/auth';
-import { COOKIES } from '@/stores/cookies';
+import { COOKIES } from '@/constants/cookies';
 
 export const setUserIdCookie = async (req: NextRequest, res: NextResponse) => {
   const cookieUserId = req.cookies.get(COOKIES.USER_ID)?.value;

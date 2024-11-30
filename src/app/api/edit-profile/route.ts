@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies-key';
+import { COOKIES } from '@/constants/cookies';
 import { prisma } from '@/prisma';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';

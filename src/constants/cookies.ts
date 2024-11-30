@@ -1,5 +1,8 @@
 import type { LOGIN_PROVIDERS } from './etc';
 import type { LANGUAGE } from './language';
+import type { CookieSetOptions } from 'universal-cookie';
+
+import { IS_DEV } from './public-env';
 
 export enum COOKIES {
   I18N = 'I18N',
@@ -16,3 +19,9 @@ export interface COOKIES_VALUE {
 }
 
 export type COOKIES_KEY_TYPE = keyof typeof COOKIES;
+
+export const DEFAULT_COOKIES_OPTIONS: CookieSetOptions = {
+  httpOnly: !IS_DEV,
+  secure: !IS_DEV,
+  path: '/',
+};
