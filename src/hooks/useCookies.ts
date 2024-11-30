@@ -4,7 +4,7 @@ import type {
   COOKIES,
   COOKIES_KEY_TYPE,
   COOKIES_VALUE,
-} from '@/stores/cookies';
+} from '@/constants/cookies-key';
 
 export const useCookies = useReactCookies<
   COOKIES,

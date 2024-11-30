@@ -3,11 +3,14 @@ import type { NextRequest } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { NextResponse } from 'next/server';
 
-import { COOKIES } from '@/stores/cookies';
-
 import { fallbackLng, languages } from '../app/i18n/settings';
 
-acceptLanguage.languages(languages);
+enum COOKIES {
+  I18N = 'I18N',
+  USER_ID = 'USER_ID',
+  PRIVATE_REFERER = 'PRIVATE_REFERER',
+  PROVIDER_TO_CONNECT = 'PROVIDER_TO_CONNECT',
+}
 
 export const setI18nNextResponse = (req: NextRequest) => {
   let lng: string | undefined;
