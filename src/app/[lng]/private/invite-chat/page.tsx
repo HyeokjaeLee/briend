@@ -21,7 +21,7 @@ const CreateChatPage = async ({ params }: CreateChatPageProps) => {
       <Lottie
         loop
         animationData={inviteFriendLottie}
-        className="m-auto h-[calc(var(--content-height)-27rem)] w-auto"
+        className="m-auto h-[calc(var(--content-height)-28rem)] w-auto"
       />
       <p className="text-center text-sm text-slate-500">
         {t('friend-setting-message')}

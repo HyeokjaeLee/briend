@@ -2,6 +2,7 @@
 
 import { Dexie, type EntityTable } from 'dexie';
 
+import { IS_CLIENT } from '@/constants/etc';
 import type { PusherMessage } from '@/types/pusher-message';
 
 interface Friend extends PusherMessage.addFriend {
@@ -9,7 +10,7 @@ interface Friend extends PusherMessage.addFriend {
 }
 
 (async () => {
-  if (typeof window !== 'undefined') {
+  if (IS_CLIENT) {
     await import('dexie-observable');
   }
 })();

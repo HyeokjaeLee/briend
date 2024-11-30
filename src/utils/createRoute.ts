@@ -1,3 +1,4 @@
+import { IS_CLIENT } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
 
@@ -55,10 +56,7 @@ export const createRoute = <
       }
 
       const lng =
-        params.lng ||
-        (typeof window !== 'undefined'
-          ? location.pathname.split('/')[1]
-          : null);
+        params.lng || (IS_CLIENT ? location.pathname.split('/')[1] : null);
 
       if (!options?.disableI18n && isEnumValue(LANGUAGE, lng)) {
         url.pathname = `/${lng}${url.pathname}`;

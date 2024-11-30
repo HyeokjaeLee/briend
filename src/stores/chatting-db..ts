@@ -3,10 +3,11 @@
 import { Dexie, type EntityTable } from 'dexie';
 import relationships from 'dexie-relationships';
 
+import { IS_CLIENT } from '@/constants/etc';
 import type { PusherMessage } from '@/types/pusher-message';
 
 (async () => {
-  if (typeof window !== 'undefined') {
+  if (IS_CLIENT) {
     await import('dexie-observable');
   }
 })();

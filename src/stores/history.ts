@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 
+import { IS_CLIENT } from '@/constants/etc';
 import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { CustomError } from '@/utils/customError';
@@ -18,7 +19,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
   let historyIndex = -1;
   const customHistory = new Map<number, string>();
 
-  if (typeof window !== 'undefined') {
+  if (IS_CLIENT) {
     const sessionExpire = sessionStorage.getItem(
       SESSION_STORAGE.HISTORY_EXPIRE,
     );

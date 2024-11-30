@@ -18,11 +18,10 @@ import {
   useTranslation as useOriginalTranslation,
 } from 'react-i18next';
 
+import { IS_CLIENT } from '@/constants/etc';
 import { CustomError, ERROR } from '@/utils/customError';
 
 import { getOptions, languages } from './settings';
-
-const isServer = typeof window === 'undefined';
 
 i18next(initReactI18next)
   .use(LanguageDetector)
@@ -38,7 +37,7 @@ i18next(initReactI18next)
     detection: {
       order: ['path', 'htmlTag', 'cookie', 'navigator'],
     },
-    preload: isServer ? languages : [],
+    preload: IS_CLIENT ? [] : languages,
   });
 
 export const useTranslation = <
@@ -55,7 +54,7 @@ export const useTranslation = <
   if (typeof lng !== 'string')
     throw new CustomError(ERROR.UNKNOWN_VALUE('lng'));
 
-  if (isServer && lng && i18n.resolvedLanguage !== lng) {
+  if (!IS_CLIENT && lng && i18n.resolvedLanguage !== lng) {
     i18n.changeLanguage(lng);
   }
 

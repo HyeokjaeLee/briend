@@ -17,6 +17,19 @@ const config: Config = {
           max: '480px',
         },
       },
+      keyframes: {
+        'shake-horizontal': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '10%, 30%, 50%, 70%': { transform: 'translateX(-10px)' },
+          '20%, 40%, 60%': { transform: 'translateX(10px)' },
+          '80%': { transform: 'translateX(8px)' },
+          '90%': { transform: 'translateX(-8px)' },
+        },
+      },
+      animation: {
+        shake:
+          'shake-horizontal var(--tw-animate-duration, 1s) cubic-bezier(0.455, 0.030, 0.515, 0.955) var(--tw-animate-delay, 0s) both',
+      },
       colors: {
         'naver-green': '#03C75A',
         'kakao-yellow': '#FEE500',

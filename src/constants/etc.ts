@@ -3,3 +3,9 @@ export enum LOGIN_PROVIDERS {
   NAVER = 'naver',
   KAKAO = 'kakao',
 }
+
+export const IS_CLIENT = typeof window !== 'undefined';
+
+export enum QUERY_KEYS {
+  SESSION = 'saved-session-storage',
+}

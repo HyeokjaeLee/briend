@@ -3,6 +3,7 @@
 import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
+import { IS_CLIENT } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
@@ -31,8 +32,7 @@ interface GlobalStore {
 
 export const useGlobalStore = create<GlobalStore>((set) => {
   const lastInviteLanguage =
-    (typeof window !== 'undefined' &&
-      localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
+    (IS_CLIENT && localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
     LANGUAGE.ENGLISH;
 
   if (!isEnumValue(LANGUAGE, lastInviteLanguage)) {
