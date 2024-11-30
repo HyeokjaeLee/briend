@@ -12,6 +12,8 @@ enum COOKIES {
   PROVIDER_TO_CONNECT = 'PROVIDER_TO_CONNECT',
 }
 
+acceptLanguage.languages(languages);
+
 export const setI18nNextResponse = (req: NextRequest) => {
   let lng: string | undefined;
   let hasLngPath = false;
