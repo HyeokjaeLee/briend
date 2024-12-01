@@ -28,7 +28,12 @@ export const QR = ({
   url.searchParams.set('data', href);
 
   return (
-    <Skeleton height={`${size}px`} loading={loading} width={`${size}px`}>
+    <Skeleton
+      height={`${size}px`}
+      //! loading 상태과 관계없이 이미지 로딩을 기다리기 위해 false 대신 undefined 사용
+      loading={loading || undefined}
+      width={`${size}px`}
+    >
       {loading ? null : (
         <CustomImage
           key={`${size}-${href}`}
