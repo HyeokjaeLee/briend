@@ -16,7 +16,6 @@ import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
-import { IS_DEV } from '@/constants/public-env';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
@@ -25,7 +24,7 @@ import type { PusherMessage } from '@/types/pusher-message';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
-import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {
   [LANGUAGE.KOREAN]: '채팅에 초대받았어요!',
