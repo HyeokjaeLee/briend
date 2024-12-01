@@ -14,6 +14,7 @@ import { createApiRoute } from '@/utils/api/createApiRoute';
 import { createFriendToken } from '@/utils/api/createFriendToken';
 import { getAuthToken } from '@/utils/api/getAuthToken';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
+import { CustomError, ERROR_STATUS } from '@/utils/customError';
 
 export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
   async (req: NextRequest) => {
@@ -25,15 +26,17 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
 
       const { hostId } = payload;
 
-      if (guestId === hostId) {
-        return NextResponse.json({
-          error: 'invalid',
+      if (guestId === hostId)
+        throw new CustomError({
+          status: ERROR_STATUS.UNAUTHORIZED,
+          message: 'guestId and hostId are the same',
         });
-      }
 
       const token = await getAuthToken({ req });
 
-      const myId = token?.id || guestId;
+      const isGuest = !token?.id;
+
+      const myId = isGuest ? guestId : token.id;
 
       const [{ friendToken: myToken }, { friendToken: hostToken }] =
         await Promise.all([
@@ -42,12 +45,14 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: myId,
+            isGuest,
           }),
           createFriendToken(myId, {
             emoji: payload.hostEmoji,
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: hostId,
+            isGuest,
           }),
         ]);
 
@@ -66,14 +71,12 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
       });
     } catch (e) {
       if (e instanceof errors.JWTExpired) {
-        return NextResponse.json({
-          error: 'expired',
+        throw new CustomError({
+          status: ERROR_STATUS.EXPIRED_CHAT,
         });
       }
 
-      return NextResponse.json({
-        error: 'invalid',
-      });
+      throw e;
     }
   },
 );

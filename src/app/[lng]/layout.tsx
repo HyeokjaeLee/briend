@@ -85,7 +85,7 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
       <body className="size-full">
         <GlobalProvider className="flex size-full" scaling="90%">
           <div className="flex-1 bg-slate-100" />
-          <div className="relative flex h-fit max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
+          <div className="relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
             <GlobalHeader />
             <ToastProvider />
             <MainContainer>{children}</MainContainer>

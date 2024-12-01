@@ -41,6 +41,7 @@ export const createApiRoute =
         return NextResponse.json(
           {
             error: e.stack,
+            customStatus: e.customStatus,
           },
           {
             status: e.status,
@@ -52,6 +53,7 @@ export const createApiRoute =
         return NextResponse.json(
           {
             error: e.stack,
+            customStatus: 500,
           },
           {
             status: 500,

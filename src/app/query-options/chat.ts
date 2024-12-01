@@ -6,7 +6,7 @@ import { queryOptions } from '@tanstack/react-query';
 
 export const ChatQueryKey = createQueryKeys('chat', [
   'verifyToken',
-  'createChannelToken',
+  'createFriend',
 ] as const);
 
 export const ChatQueryOptions = {
@@ -21,15 +21,13 @@ export const ChatQueryOptions = {
           tokenType,
           token,
         }),
+      retry: false,
     }),
   createFriend: (params: ApiParams.CREATE_FRIEND) =>
     queryOptions({
-      queryKey: [
-        ChatQueryKey.createChannelToken,
-        params.guestId,
-        params.inviteToken,
-      ],
+      queryKey: [ChatQueryKey.createFriend, params.guestId, params.inviteToken],
       queryFn: () => API_ROUTES.CREATE_FRIEND(params),
       staleTime: 120_000,
+      retry: false,
     }),
 };

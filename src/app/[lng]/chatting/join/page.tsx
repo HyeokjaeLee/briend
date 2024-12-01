@@ -11,7 +11,7 @@ import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
-import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils/customError';
 import { toast } from '@/utils/toast';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
@@ -39,15 +39,6 @@ const ChattingJoinPage = createOnlyClientComponent(
         inviteToken,
       }),
     );
-
-    if ('error' in data) {
-      if (data.error === 'expired')
-        throw new CustomError({
-          status: ERROR_STATUS.EXPIRED_CHAT,
-        });
-
-      throw new CustomError();
-    }
 
     const router = useCustomRouter();
 

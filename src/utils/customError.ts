@@ -6,13 +6,17 @@ interface CustomErrorProps {
 
 export class CustomError extends Error {
   status: number;
+  customStatus: number;
 
   constructor(props?: CustomErrorProps) {
-    const status = props?.status ?? 500;
-    const message = `<${status}> ${props?.message ?? 'Unknown Error'}`;
+    const customStatus = props?.status ?? 500;
+    const httpsStatus = Number(String(customStatus).slice(0, 3));
+
+    const message = `<${customStatus}> ${props?.message ?? 'Unknown Error'}`;
 
     super(message);
-    this.status = status;
+    this.status = httpsStatus;
+    this.customStatus = customStatus;
     this.cause = props?.cause;
   }
 }

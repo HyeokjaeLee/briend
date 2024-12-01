@@ -14,6 +14,7 @@ const apiInstance = ky.create({
     'Content-Type': 'application/json',
     Accept: 'application/json',
   },
+  timeout: 5_000,
 });
 
 export const API_ROUTES = {

@@ -3,23 +3,22 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-import {
-  RiAlarmLine,
-  RiErrorWarningFill,
-  RiHome3Fill,
-  RiLock2Line,
-  RiMessage2Line,
-} from 'react-icons/ri';
+import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton } from '@/components/atoms/CustomButton';
+import { Lottie } from '@/components/atoms/Lottie';
 import { ROUTES } from '@/routes/client';
-import { cn } from '@/utils/cn';
 import { ERROR_STATUS } from '@/utils/customError';
 
 import { useTranslation } from '../i18n/client';
 
+import CommonErrorLottie from './_assets/common-error.json';
+import TimeErrorLottie from './_assets/time-error.json';
+import UnauthErrorLottie from './_assets/unauth-error.json';
+
 const ErrorPage = (e: { error: Error }) => {
   const [errorStatus] = e.error.message.match(/<[^>]+>/g) ?? [];
+
   const errorStatusNumber = errorStatus
     ? Number(errorStatus.slice(1, -1))
     : null;
@@ -29,8 +28,8 @@ const ErrorPage = (e: { error: Error }) => {
   const isLogined = !!useSession();
 
   const dynamicInfo = {
-    icon: <RiErrorWarningFill className="size-32 text-red-500" />,
-    text: t('home-button-text'),
+    lottie: CommonErrorLottie as unknown,
+    text: t('unknown-error'),
     buttonIcon: <RiHome3Fill />,
     buttonText: t('home-button-text'),
     buttonLink: ROUTES.HOME.pathname,
@@ -38,13 +37,13 @@ const ErrorPage = (e: { error: Error }) => {
 
   switch (errorStatusNumber) {
     case ERROR_STATUS.UNAUTHORIZED: {
-      dynamicInfo.icon = <RiLock2Line className="size-32 text-slate-50" />;
+      dynamicInfo.lottie = UnauthErrorLottie;
       dynamicInfo.text = t('not-allowed');
 
       break;
     }
     case ERROR_STATUS.EXPIRED_CHAT: {
-      dynamicInfo.icon = <RiAlarmLine className="size-32 text-red-500" />;
+      dynamicInfo.lottie = TimeErrorLottie;
       dynamicInfo.text = t('expired-chat');
       dynamicInfo.buttonIcon = <RiMessage2Line />;
 
@@ -57,21 +56,13 @@ const ErrorPage = (e: { error: Error }) => {
 
   return (
     <article className="flex-1 flex-col gap-8 flex-center">
-      <div>
-        {dynamicInfo.icon}
-        <p
-          className={cn('text-2xl font-bold text-center text-red-500', {
-            'text-slate-50': errorStatusNumber === ERROR_STATUS.UNAUTHORIZED,
-          })}
-        >
-          {errorStatusNumber || 500}
-        </p>
-      </div>
+      <Lottie loop animationData={dynamicInfo.lottie} className="w-2/3" />
       <h1 className="whitespace-pre-line text-center text-xl font-semibold">
         {dynamicInfo.text}
       </h1>
       <CustomButton
         asChild
+        activeScaleDown={false}
         className="fixed bottom-0 h-17 w-full max-w-xl rounded-none"
         color="red"
       >

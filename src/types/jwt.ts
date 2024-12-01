@@ -26,6 +26,7 @@ export namespace JwtPayload {
     nickname: string;
     emoji: string;
     language: LANGUAGE;
+    isGuest: boolean;
   }
 
   export interface ChannelToken extends InviteToken {

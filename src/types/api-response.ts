@@ -9,11 +9,7 @@ export namespace ApiResponse {
     inviteToken: string;
   }
 
-  export type CREATE_FRIEND =
-    | PusherMessage.addFriend
-    | {
-        error: 'expired' | 'invalid';
-      };
+  export type CREATE_FRIEND = PusherMessage.addFriend;
 
   export interface UNLINK_ACCOUNT {
     unlinkedProvider: LOGIN_PROVIDERS;
