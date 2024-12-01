@@ -45,7 +45,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: myId,
-            isGuest,
+            isGuest: false,
           }),
           createFriendToken(myId, {
             emoji: payload.hostEmoji,

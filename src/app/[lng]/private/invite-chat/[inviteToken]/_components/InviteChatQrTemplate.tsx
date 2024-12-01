@@ -18,7 +18,7 @@ import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
-import { chattingRoomTable } from '@/stores/chatting-db.';
+import { friend } from '@/stores/indexed-db';
 import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
@@ -96,20 +96,25 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
       channel.bind(
         PUSHER_EVENT.WAITING(hostId),
-        ({ channelToken }: PusherMessage.joinChat) => {
-          const { channelId } =
-            decodeJwt<JwtPayload.ChannelToken>(channelToken);
+        ({ friendToken }: PusherMessage.addFriend) => {
+          const { userId } = decodeJwt<JwtPayload.FriendToken>(friendToken);
 
-          chattingRoomTable.add({
-            token: channelToken,
-            id: channelId,
+          if (!friend)
+            throw new CustomError({
+              status: ERROR_STATUS.UNKNOWN_VALUE,
+              message: 'friend Table not found',
+            });
+
+          friend.put({
+            friendToken,
+            userId,
           });
 
           toast({
             message: t('start-chatting'),
           });
 
-          router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId }));
+          router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId: userId }));
         },
       );
 

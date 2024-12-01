@@ -2,6 +2,7 @@
 
 import 'dexie-observable';
 import { Dexie, type EntityTable } from 'dexie';
+import relationships from 'dexie-relationships';
 
 import { IS_CLIENT } from '@/constants/etc';
 import type { PusherMessage } from '@/types/pusher-message';
@@ -23,7 +24,9 @@ interface IndexedDB extends Dexie {
 let db: IndexedDB | undefined;
 
 if (IS_CLIENT) {
-  db = new Dexie('briendDB') as IndexedDB;
+  db = new Dexie('briendDB', {
+    addons: [relationships],
+  }) as IndexedDB;
 
   db.version(1).stores({
     friend: 'userId, friendToken',

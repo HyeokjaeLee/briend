@@ -16,6 +16,9 @@ const config: Config = {
         xs: {
           max: '480px',
         },
+        lg: {
+          max: '1280px',
+        },
       },
       keyframes: {
         'shake-horizontal': {
