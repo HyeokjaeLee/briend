@@ -16,14 +16,16 @@ import { QR } from '@/components/molecules/QR';
 import { Timer } from '@/components/molecules/Timer';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
+import { IS_DEV } from '@/constants/public-env';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
 import { chattingRoomTable } from '@/stores/chatting-db.';
 import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
+import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {
   [LANGUAGE.KOREAN]: '채팅에 초대받았어요!',
@@ -64,97 +66,109 @@ interface InviteChatQrTemplateProps
   url: string;
 }
 
-export const InviteChatQRTemplate = ({
-  url,
-  exp,
-  hostId,
-  guestLanguage,
-}: InviteChatQrTemplateProps) => {
-  const expires = new Date((exp ?? 0) * 1_000);
+export const InviteChatQRTemplate = createOnlyClientComponent(
+  ({ url, exp, hostId, guestLanguage }: InviteChatQrTemplateProps) => {
+    const expires = new Date((exp ?? 0) * 1_000);
 
-  const router = useCustomRouter();
+    const router = useCustomRouter();
 
-  const { t } = useTranslation('invite-chat-qr');
+    const { t } = useTranslation('invite-chat-qr');
 
-  const handleExpiredToken = () => {
-    toast({
-      message: t('expired-toast-message'),
-    });
+    const handleExpiredToken = () => {
+      toast({
+        message: t('expired-toast-message'),
+      });
 
-    throw new CustomError({
-      status: ERROR_STATUS.EXPIRED_CHAT,
-    });
-  };
-
-  const { data: shortUrl } = useSuspenseQuery(UtilsQueryOptions.shortUrl(url));
-
-  useEffect(() => {
-    const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
-
-    channel.bind(
-      PUSHER_EVENT.WAITING(hostId),
-      ({ channelToken }: PusherMessage.joinChat) => {
-        const { channelId } = decodeJwt<JwtPayload.ChannelToken>(channelToken);
-
-        chattingRoomTable.add({
-          token: channelToken,
-          id: channelId,
-        });
-
-        toast({
-          message: t('start-chatting'),
-        });
-
-        router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId }));
-      },
-    );
-
-    return () => {
-      channel.unsubscribe();
+      throw new CustomError({
+        status: ERROR_STATUS.EXPIRED_CHAT,
+      });
     };
-  }, [hostId, router, t]);
 
-  const title = INVITE_TITLE[guestLanguage];
+    const { data: shortUrl, isFetched } = useQuery({
+      ...UtilsQueryOptions.shortUrl(url),
+      staleTime: 300_000,
+      gcTime: 300_000,
+    });
 
-  return (
-    <article className="flex flex-1 flex-col p-2">
-      <div className="flex flex-1 flex-col">
-        <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
-          <h1 className="break-keep text-center text-xl font-bold">
-            <FcCollaboration aria-hidden className="mb-1 mr-2 inline size-6" />
-            {title}
-          </h1>
-          <p className="px-4 text-center text-sm text-slate-500">
-            {INVITE_MESSAGE[guestLanguage]}
-          </p>
-        </section>
-        <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
-          <QR alt="invite-qr" href={shortUrl} size={150} />
-        </section>
-        <section className="flex-1 flex-col gap-2 flex-center">
-          <h2 className="text-center text-xl font-bold text-slate-900">
-            <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
-            {t('warning-message')}
-          </h2>
-          <p className="text-center text-slate-500">{t('notice-message')}</p>
-        </section>
-      </div>
-      <Timer
-        className="mx-auto"
-        expires={expires}
-        onTimeout={handleExpiredToken}
-      />
-      <BottomButton
-        onClick={() => {
-          navigator.share({
-            title,
-            text: INVITE_SHARE_MESSAGE[guestLanguage],
-            url: shortUrl,
+    const inviteUrl = shortUrl ?? url;
+
+    useEffect(() => {
+      const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
+
+      channel.bind(
+        PUSHER_EVENT.WAITING(hostId),
+        ({ channelToken }: PusherMessage.joinChat) => {
+          const { channelId } =
+            decodeJwt<JwtPayload.ChannelToken>(channelToken);
+
+          chattingRoomTable.add({
+            token: channelToken,
+            id: channelId,
           });
-        }}
-      >
-        <RiShareFill className="size-7" /> 공유하기
-      </BottomButton>
-    </article>
-  );
-};
+
+          toast({
+            message: t('start-chatting'),
+          });
+
+          router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId }));
+        },
+      );
+
+      return () => {
+        channel.unsubscribe();
+      };
+    }, [hostId, router, t]);
+
+    const title = INVITE_TITLE[guestLanguage];
+
+    return (
+      <article className="flex flex-1 flex-col p-2">
+        <div className="flex flex-1 flex-col">
+          <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
+            <h1 className="break-keep text-center text-xl font-bold">
+              <FcCollaboration
+                aria-hidden
+                className="mb-1 mr-2 inline size-6"
+              />
+              {title}
+            </h1>
+            <p className="px-4 text-center text-sm text-slate-500">
+              {INVITE_MESSAGE[guestLanguage]}
+            </p>
+          </section>
+          <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
+            <QR
+              alt="invite-qr"
+              href={inviteUrl}
+              loading={!isFetched}
+              size={150}
+            />
+          </section>
+          <section className="flex-1 flex-col gap-2 flex-center">
+            <h2 className="text-center text-xl font-bold text-slate-900">
+              <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
+              {t('warning-message')}
+            </h2>
+            <p className="text-center text-slate-500">{t('notice-message')}</p>
+          </section>
+        </div>
+        <Timer
+          className="mx-auto"
+          expires={expires}
+          onTimeout={handleExpiredToken}
+        />
+        <BottomButton
+          onClick={() => {
+            navigator.share({
+              title,
+              text: INVITE_SHARE_MESSAGE[guestLanguage],
+              url: inviteUrl,
+            });
+          }}
+        >
+          <RiShareFill className="size-7" /> 공유하기
+        </BottomButton>
+      </article>
+    );
+  },
+);

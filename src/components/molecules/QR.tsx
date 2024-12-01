@@ -13,25 +13,34 @@ interface QRProps
   > {
   size?: number;
   href: string;
+  loading?: boolean;
 }
 
-export const QR = ({ size = 160, href, alt = 'qr', className }: QRProps) => {
+export const QR = ({
+  size = 160,
+  href,
+  alt = 'qr',
+  className,
+  loading,
+}: QRProps) => {
   const url = new URL(QR_API);
   url.searchParams.set('size', `${size}x${size}`);
   url.searchParams.set('data', href);
 
   return (
-    <Skeleton height={`${size}px`} width={`${size}px`}>
-      <CustomImage
-        key={`${size}-${href}`}
-        unoptimized
-        alt={alt}
-        className={className}
-        height={size}
-        quality={100}
-        src={url.href}
-        width={size}
-      />
+    <Skeleton height={`${size}px`} loading={loading} width={`${size}px`}>
+      {loading ? null : (
+        <CustomImage
+          key={`${size}-${href}`}
+          unoptimized
+          alt={alt}
+          className={className}
+          height={size}
+          quality={100}
+          src={url.href}
+          width={size}
+        />
+      )}
     </Skeleton>
   );
 };

@@ -6,6 +6,7 @@ import ky from 'ky';
 import { PUBLIC_ENV } from '@/constants/public-env';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
+import { CustomError } from '@/utils/customError';
 
 const apiInstance = ky.create({
   prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
@@ -80,28 +81,27 @@ export const API_ROUTES = {
       .json(),
 
   SHORT_URL: async (url: string) => {
-    try {
-      const params = new URLSearchParams({
-        url,
+    const params = new URLSearchParams({
+      url,
+    });
+
+    const res = await ky.post<{
+      short_url?: string;
+    }>('https://spoo.me', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params.toString(),
+    });
+
+    const json = await res.json();
+
+    if (!json.short_url)
+      throw new CustomError({
+        message: 'Failed to shorten URL',
       });
 
-      const res = await ky.post<{
-        short_url?: string;
-      }>('https://spoo.me', {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: params.toString(),
-      });
-
-      const json = await res.json();
-
-      if (!json.short_url) return url;
-
-      return json.short_url;
-    } catch {
-      return url;
-    }
+    return json.short_url;
   },
 };
