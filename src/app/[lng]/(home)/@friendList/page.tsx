@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 
+import { WebWorkerExample } from '@/components/WebWorkerExample';
 import { CustomLink } from '@/components/atoms/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { Avatar } from '@radix-ui/themes';
@@ -35,6 +36,7 @@ const ChattingListPage = () => {
           </li>
         ))}
       </ul>
+      <WebWorkerExample />
     </article>
   );
 };

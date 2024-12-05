@@ -66,7 +66,7 @@ const ErrorPage = (e: { error: Error }) => {
         className="fixed bottom-0 h-17 w-full max-w-xl rounded-none"
         color="red"
       >
-        <Link replace href={dynamicInfo.buttonLink}>
+        <Link replace className="z-10" href={dynamicInfo.buttonLink}>
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
           {dynamicInfo.buttonText}
         </Link>
