@@ -4,7 +4,7 @@ import { API_ROUTES } from '@/routes/api';
 import { createQueryKeys } from '@/utils/createQueryKeys';
 import { queryOptions } from '@tanstack/react-query';
 
-export const UtilsQueryKey = createQueryKeys('utils', ['shortUrl'] as const);
+export const UtilsQueryKey = createQueryKeys('utils', ['shortUrl']);
 
 export const UtilsQueryOptions = {
   shortUrl: (url: string) =>
