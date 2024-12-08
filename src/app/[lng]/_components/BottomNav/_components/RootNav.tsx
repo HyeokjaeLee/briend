@@ -2,6 +2,7 @@
 
 import { useSession } from 'next-auth/react';
 
+import { useState } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
   RiAddCircleLine,
@@ -13,7 +14,6 @@ import {
 } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/atoms/CustomButton';
 import { CustomLink } from '@/components/atoms/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
@@ -58,6 +58,8 @@ export const RootNav = ({ pathname }: RootNavProps) => {
     ({ routeName }) => ROUTES[routeName] === currentRoute,
   );
 
+  const [activeIndex, setActiveIndex] = useState(currentRouteIndex);
+
   const session = useSession();
 
   const isAuthenticated = session.status === 'authenticated';
@@ -65,48 +67,43 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const { t } = useTranslation('layout');
 
   return (
-    <nav className="flex justify-center border-t border-t-slate-100 px-16 py-3">
-      <ul className="flex w-full max-w-96 justify-between gap-10">
+    <nav className="flex justify-center border-t border-t-slate-100">
+      <ul className="flex w-full justify-between">
         {NAVIGATION_ITEMS.map(
           ({ icon, fillIcon, routeName, translationKey }, index) => {
             const route = ROUTES[routeName];
 
-            const isActive = currentRoute === route;
+            const isActive = activeIndex === index;
 
             const Icon = isActive ? fillIcon : icon;
 
             return typeof route.pathname === 'string' ? (
-              <li key={route.index}>
-                <CustomButton
-                  asChild
-                  className="flex flex-col items-center justify-center gap-1 text-xs"
-                  color="gray"
-                  size="3"
-                  variant="ghost"
+              <li key={route.index} className="flex-1">
+                <CustomLink
+                  className={cn(
+                    'py-3 flex-center flex-col gap-1 text-xs rounded-md group',
+                    'active:scale-90 transition-all duration-75 ease-out',
+                    isActive ? 'font-bold text-sky-500' : 'text-slate-400',
+                  )}
+                  href={route.pathname}
+                  //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
+                  replace={isAuthenticated}
+                  withAnimation={
+                    isAuthenticated
+                      ? index < currentRouteIndex
+                        ? 'FROM_LEFT'
+                        : 'FROM_RIGHT'
+                      : 'FROM_BOTTOM'
+                  }
+                  onClick={() => setActiveIndex(index)}
                 >
-                  <CustomLink
-                    className={
-                      isActive ? 'font-bold text-sky-500' : 'text-slate-400'
-                    }
-                    href={route.pathname}
-                    //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
-                    replace={isAuthenticated}
-                    withAnimation={
-                      isAuthenticated
-                        ? index < currentRouteIndex
-                          ? 'FROM_LEFT'
-                          : 'FROM_RIGHT'
-                        : 'FROM_BOTTOM'
-                    }
-                  >
-                    <Icon
-                      className={cn('size-6', {
-                        'animate-jump animate-duration-300': isActive,
-                      })}
-                    />
-                    {t(translationKey)}
-                  </CustomLink>
-                </CustomButton>
+                  <Icon
+                    className={cn('size-6 animate-duration-300', {
+                      'animate-jump': isActive,
+                    })}
+                  />
+                  {t(translationKey)}
+                </CustomLink>
               </li>
             ) : null;
           },

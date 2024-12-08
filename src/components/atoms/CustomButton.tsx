@@ -17,6 +17,7 @@ export const CustomButton = ({
 }: CustomButtonProps) => {
   return (
     <Button
+      {...restProps}
       className={cn(
         'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-none',
         {
@@ -29,7 +30,6 @@ export const CustomButton = ({
       color={color}
       size={size}
       type={type}
-      {...restProps}
     />
   );
 };
