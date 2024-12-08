@@ -1,6 +1,5 @@
 'use client';
 
-import 'dexie-observable';
 import { Dexie, type EntityTable } from 'dexie';
 import relationships from 'dexie-relationships';
 
@@ -24,6 +23,8 @@ interface IndexedDB extends Dexie {
 let db: IndexedDB | undefined;
 
 if (IS_CLIENT) {
+  import('dexie-observable');
+
   db = new Dexie('briendDB', {
     addons: [relationships],
   }) as IndexedDB;
@@ -35,4 +36,5 @@ if (IS_CLIENT) {
   });
 }
 
-export const { friend, message } = db ?? {};
+export const friendTable = db?.friend;
+export const messageTable = db?.message;

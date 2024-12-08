@@ -9,9 +9,9 @@ import { COOKIES } from '@/constants/cookies';
 import { useCookies } from '@/hooks/useCookies';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
-import { chattingRoomTable } from '@/stores/chatting-db.';
+import { friendTable } from '@/stores/indexed-db';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
@@ -44,18 +44,20 @@ const ChattingJoinPage = createOnlyClientComponent(
 
     const { t } = useTranslation('invite-chat-qr');
 
-    //TODO: 추후 USER_ID와 매핑하는 페이지 추가, ChattingTable은 friendId를 id로 사용하고 Map 객체를 가지게함 (Map 객체의 Key는 ChattingMessage Id)
     useEffect(() => {
-      chattingRoomTable.add({
-        token: data.userId,
-        id: data.userId,
-      });
+      if (!friendTable)
+        throw new CustomError({
+          status: ERROR_STATUS.UNKNOWN_VALUE,
+          message: 'friend Table not found',
+        });
+
+      friendTable.put(data);
 
       toast({
         message: t('start-chatting'),
       });
 
-      router.replace(ROUTES.CHATTING_ROOM.pathname({ channelId: data.userId }));
+      router.replace(ROUTES.CHATTING_ROOM.pathname({ userId: data.userId }));
     }, [data, router, t]);
 
     return <LoadingTemplate />;

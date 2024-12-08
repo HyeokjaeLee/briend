@@ -15,6 +15,7 @@ import { languages } from '../i18n/settings';
 import { BottomNav } from './_components/BottomNav';
 import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
+import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
@@ -70,14 +71,9 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
-  loading: ReactElement;
 }
 
-const RootLayout = async ({
-  children,
-  params,
-  loading,
-}: Readonly<RootLayoutProps>) => {
+const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
   const { lng } = await params;
 
   return (
@@ -90,7 +86,7 @@ const RootLayout = async ({
         <GlobalProvider className="flex size-full" scaling="90%">
           <div className="flex-1 bg-slate-100" />
           <div className="relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
-            {loading}
+            <GlobalLoading />
             <GlobalHeader />
             <ToastProvider />
             <MainContainer>{children}</MainContainer>

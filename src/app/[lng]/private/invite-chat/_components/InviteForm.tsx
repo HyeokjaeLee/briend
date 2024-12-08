@@ -14,8 +14,8 @@ import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import { chattingRoomTable } from '@/stores/chatting-db.';
 import { useGlobalStore } from '@/stores/global';
+import { friendTable } from '@/stores/indexed-db';
 import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -50,8 +50,7 @@ export const InviteForm = () => {
     ]),
   );
 
-  const chattingIndex =
-    (useLiveQuery(() => chattingRoomTable.count()) || 0) + 1;
+  const chattingIndex = useLiveQuery(() => friendTable?.count());
 
   const { control, handleSubmit, register, formState } = useForm<
     z.infer<typeof formSchema>
@@ -66,7 +65,7 @@ export const InviteForm = () => {
     },
   });
 
-  const nicknamePlaceholder = `Friend ${chattingIndex}`;
+  const nicknamePlaceholder = chattingIndex ? `Friend ${chattingIndex}` : '';
 
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
