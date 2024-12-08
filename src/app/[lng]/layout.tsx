@@ -15,7 +15,6 @@ import { languages } from '../i18n/settings';
 import { BottomNav } from './_components/BottomNav';
 import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
-import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
@@ -90,7 +89,6 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
             <ToastProvider />
             <MainContainer>{children}</MainContainer>
             <BottomNav />
-            <GlobalLoading />
           </div>
           <div className="flex-1 bg-slate-100 lg:hidden" />
         </GlobalProvider>
