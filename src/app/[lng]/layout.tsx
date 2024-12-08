@@ -70,9 +70,14 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
+  loading: ReactElement;
 }
 
-const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
+const RootLayout = async ({
+  children,
+  params,
+  loading,
+}: Readonly<RootLayoutProps>) => {
   const { lng } = await params;
 
   return (
@@ -85,6 +90,7 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
         <GlobalProvider className="flex size-full" scaling="90%">
           <div className="flex-1 bg-slate-100" />
           <div className="relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
+            {loading}
             <GlobalHeader />
             <ToastProvider />
             <MainContainer>{children}</MainContainer>
