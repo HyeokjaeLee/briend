@@ -7,7 +7,7 @@ import { queryOptions } from '@tanstack/react-query';
 export const ChatQueryKey = createQueryKeys('chat', [
   'verifyToken',
   'createFriend',
-] as const);
+]);
 
 export const ChatQueryOptions = {
   verifyToken: <TTokenType extends TOKEN_TYPE>({
