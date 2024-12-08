@@ -21,7 +21,7 @@ export const CustomIconButton = ({
         {
           'active:scale-75 active:bg-slate-100 transition-all duration-75':
             activeScaleDown,
-          'h-14': size === '4',
+          'size-14': size === '4',
         },
         className,
       )}

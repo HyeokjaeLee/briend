@@ -3,14 +3,14 @@ import { decodeJwt } from 'jose';
 
 import { useMemo } from 'react';
 
-import { friend } from '@/stores/indexed-db';
+import { friendTable } from '@/stores/indexed-db';
 import type { JwtPayload } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 export const useFriendList = () => {
   const friendTokenList = useLiveQuery(() => {
-    if (!friend) throw new CustomError({ status: ERROR_STATUS.NOT_FOUND });
+    if (!friendTable) throw new CustomError({ status: ERROR_STATUS.NOT_FOUND });
 
-    return friend.toArray();
+    return friendTable.toArray();
   });
 
   const friendList = useMemo(() => {

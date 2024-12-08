@@ -2,14 +2,14 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { useLayoutEffect } from 'react';
+import { memo, useLayoutEffect } from 'react';
 
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
 import { useUrl } from '@/hooks/useUrl';
 import { useGlobalStore } from '@/stores/global';
 import { cn } from '@/utils/cn';
 
-const LoadingPage = () => {
+export const GlobalLoading = memo(() => {
   const [globalLoading, setGlobalLoading] = useGlobalStore(
     useShallow((state) => [state.globalLoading, state.setGlobalLoading]),
   );
@@ -40,6 +40,6 @@ const LoadingPage = () => {
       )}
     />
   );
-};
+});
 
-export default LoadingPage;
+GlobalLoading.displayName = 'GlobalLoading';
