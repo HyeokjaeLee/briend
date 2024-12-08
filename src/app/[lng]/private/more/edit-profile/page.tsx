@@ -23,7 +23,7 @@ import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Select, Skeleton, TextField } from '@radix-ui/themes';
+import { Avatar, Select, Skeleton, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 
 const createRandomEmojiList = () => {
@@ -159,10 +159,12 @@ const EditProfilePage = (props: ProfilePageProps) => {
         })}
       >
         <section className="w-full flex-col gap-8 flex-center">
-          <Skeleton loading={!selectedEmoji}>
-            <div className="flex size-32 select-none items-center justify-center rounded-full bg-blue-100 text-5xl">
-              {selectedEmoji}
-            </div>
+          <Skeleton>
+            <Avatar
+              fallback={<span className="text-5xl">{selectedEmoji}</span>}
+              radius="full"
+              size="7"
+            />
           </Skeleton>
           <Skeleton className="h-32 w-full" loading={!randomEmojiList.length}>
             <ul className="w-full flex-wrap gap-5 rounded-xl bg-sky-50 p-5 flex-center">

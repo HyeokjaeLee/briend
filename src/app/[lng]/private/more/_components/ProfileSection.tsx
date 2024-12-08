@@ -7,7 +7,7 @@ import { useTranslation } from '@/app/i18n/client';
 import type { LANGUAGE } from '@/constants/language';
 import { LANGUAGE_NAME } from '@/constants/language';
 import { cn } from '@/utils/cn';
-import { Badge, Skeleton } from '@radix-ui/themes';
+import { Avatar, Badge, Skeleton } from '@radix-ui/themes';
 
 interface ProfileSectionProps {
   className?: string;
@@ -29,9 +29,11 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton loading={!user}>
-        <div className="flex size-32 select-none items-center justify-center rounded-full bg-sky-50 text-5xl">
-          {user?.emoji}
-        </div>
+        <Avatar
+          fallback={<span className="text-5xl">{user!.emoji}</span>}
+          radius="full"
+          size="7"
+        />
       </Skeleton>
       <div className="mt-4 flex items-center justify-center gap-2">
         <Skeleton className="h-7 w-28" loading={!user}>
