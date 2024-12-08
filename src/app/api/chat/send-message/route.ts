@@ -4,8 +4,8 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
+import { ENV } from '@/constants/env';
 import { LANGUAGE } from '@/constants/language';
-import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams } from '@/types/api-params';
 import type { JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
@@ -13,7 +13,7 @@ import { createApiRoute } from '@/utils/api/createApiRoute';
 import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
 import { isArrayItem } from '@/utils/isArrayItem';
 
-const translatorWithDeepL = new Translator(PRIVATE_ENV.DEEPL_API_KEY);
+const translatorWithDeepL = new Translator(ENV.DEEPL_API_KEY);
 
 const fromLanguageObject = {
   [LANGUAGE.ENGLISH]: 'en',

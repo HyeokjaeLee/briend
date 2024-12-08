@@ -1,6 +1,6 @@
 import { SignJWT } from 'jose';
 
-import { PRIVATE_ENV } from '@/constants/private-env';
+import { ENV } from '@/constants/env';
 import type { JwtPayload } from '@/types/jwt';
 
 export const createFriendToken = async (
@@ -13,7 +13,7 @@ export const createFriendToken = async (
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
-    .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET + linkedUserId));
+    .sign(new TextEncoder().encode(ENV.AUTH_SECRET + linkedUserId));
 
   return { friendToken };
 };

@@ -1,6 +1,6 @@
+import { ENV } from '@/constants/env';
 import { IS_CLIENT } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
-import { PUBLIC_ENV } from '@/constants/public-env';
 
 import { CustomError, ERROR } from './customError';
 import { isEnumValue } from './isEnumValue';
@@ -43,7 +43,7 @@ export const createRoute = <
             lng?: LANGUAGE;
           },
     ) => {
-      const url = new URL(PUBLIC_ENV.BASE_URL);
+      const url = new URL(ENV.BASE_URL);
 
       if (typeof pathname === 'string') {
         url.pathname = pathname;

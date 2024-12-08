@@ -2,7 +2,7 @@ import type { LOGIN_PROVIDERS } from './etc';
 import type { LANGUAGE } from './language';
 import type { CookieSetOptions } from 'universal-cookie';
 
-import { IS_DEV } from './public-env';
+import { IS_DEV } from './env';
 
 export enum COOKIES {
   I18N = 'I18N',

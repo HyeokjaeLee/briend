@@ -1,5 +1,5 @@
+import { IS_DEV } from '@/constants/env';
 import { QUERY_KEYS } from '@/constants/etc';
-import { IS_DEV } from '@/constants/public-env';
 import { API_ROUTES } from '@/routes/api';
 import { createQueryKeys } from '@/utils/createQueryKeys';
 import { queryOptions } from '@tanstack/react-query';

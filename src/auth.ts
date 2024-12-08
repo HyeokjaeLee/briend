@@ -9,8 +9,8 @@ import Naver from 'next-auth/providers/naver';
 import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies';
+import { ENV } from './constants/env';
 import { LOGIN_PROVIDERS } from './constants/etc';
-import { PRIVATE_ENV } from './constants/private-env';
 import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
 import { ERROR } from './utils/customError';
@@ -45,12 +45,12 @@ export const {
   providers: [
     Google,
     Naver({
-      clientId: PRIVATE_ENV.AUTH_NAVER_CLIENT_ID,
-      clientSecret: PRIVATE_ENV.AUTH_NAVER_SECRET,
+      clientId: ENV.AUTH_NAVER_CLIENT_ID,
+      clientSecret: ENV.AUTH_NAVER_SECRET,
     }),
     Kakao({
-      clientId: PRIVATE_ENV.AUTH_KAKAO_APP_KEY,
-      clientSecret: PRIVATE_ENV.AUTH_KAKAO_APP_KEY,
+      clientId: ENV.AUTH_KAKAO_APP_KEY,
+      clientSecret: ENV.AUTH_KAKAO_APP_KEY,
     }),
   ],
   session: {

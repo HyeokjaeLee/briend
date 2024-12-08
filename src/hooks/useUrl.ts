@@ -1,6 +1,6 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { ENV } from '@/constants/env';
 
 interface UseUrlOptions {
   origin?: boolean;
@@ -15,7 +15,7 @@ export const useUrl = (options?: UseUrlOptions) => {
 
   let url = pathname;
 
-  if (origin) url = PUBLIC_ENV.BASE_URL + url;
+  if (origin) url = ENV.BASE_URL + url;
 
   if (searchParams.size) url += `?${searchParams}`;
 

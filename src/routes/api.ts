@@ -3,13 +3,13 @@ import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { ENV } from '@/constants/env';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 import { CustomError } from '@/utils/customError';
 
 const apiInstance = ky.create({
-  prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
+  prefixUrl: `${ENV.BASE_URL}/api`,
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',

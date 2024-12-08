@@ -3,9 +3,9 @@
 import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
+import { ENV } from '@/constants/env';
 import { IS_CLIENT } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
-import { PUBLIC_ENV } from '@/constants/public-env';
 import { LOCAL_STORAGE } from '@/constants/storage-key';
 import { CustomError } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
@@ -60,8 +60,8 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       return set({ lastInviteLanguage: language });
     },
 
-    pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {
-      cluster: PUBLIC_ENV.PUSHER_CLUSTER,
+    pusher: new Pusher(ENV.PUSHER_KEY, {
+      cluster: ENV.PUSHER_CLUSTER,
     }),
   };
 });

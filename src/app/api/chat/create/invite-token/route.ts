@@ -2,8 +2,8 @@ import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { COOKIES } from '@/constants/cookies';
+import { ENV } from '@/constants/env';
 import { LANGUAGE } from '@/constants/language';
-import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
@@ -46,7 +46,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('5m')
-      .sign(new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET));
+      .sign(new TextEncoder().encode(ENV.AUTH_SECRET));
 
     return NextResponse.json({
       inviteToken,
