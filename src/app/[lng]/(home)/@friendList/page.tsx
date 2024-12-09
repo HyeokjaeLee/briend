@@ -26,7 +26,7 @@ const ChattingListPage = () => {
           <li key={friend.userId}>
             <CustomLink
               href={ROUTES.CHATTING_ROOM.pathname({
-                channelId: friend.userId,
+                userId: friend.userId,
               })}
             >
               <div>

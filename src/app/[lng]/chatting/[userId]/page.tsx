@@ -1,9 +1,9 @@
-import { SendMessageForm } from './_components/SendMessageForm';
+import { UserActionSection } from './_components/UserActionSection';
 
 const ChattingPage = () => {
   return (
     <article className="h-full bg-slate-100">
-      <SendMessageForm />
+      <UserActionSection />
     </article>
   );
 };

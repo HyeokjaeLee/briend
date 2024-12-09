@@ -17,6 +17,7 @@ import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalProvider } from './_components/GlobalProvider';
+import { GlobalSuspense } from './_components/GlobalSuspense';
 import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
 
@@ -86,11 +87,13 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
         <GlobalProvider className="flex size-full" scaling="90%">
           <div className="flex-1 bg-slate-100" />
           <div className="relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
-            <GlobalLoading />
-            <GlobalHeader />
-            <ToastProvider />
-            <MainContainer>{children}</MainContainer>
-            <BottomNav />
+            <GlobalSuspense>
+              <GlobalLoading />
+              <GlobalHeader />
+              <ToastProvider />
+              <MainContainer>{children}</MainContainer>
+              <BottomNav />
+            </GlobalSuspense>
           </div>
           <div className="flex-1 bg-slate-100 lg:hidden" />
         </GlobalProvider>
