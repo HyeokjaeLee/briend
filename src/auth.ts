@@ -1,5 +1,4 @@
 import { pick } from 'es-toolkit';
-import { nanoid } from 'nanoid';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
@@ -13,6 +12,7 @@ import { LOGIN_PROVIDERS } from './constants/etc';
 import { PRIVATE_ENV } from './constants/private-env';
 import { prisma } from './prisma';
 import { ROUTES } from './routes/client';
+import { createId } from './utils/createId';
 import { ERROR } from './utils/customError';
 import { isEnumValue } from './utils/isEnumValue';
 
@@ -102,7 +102,8 @@ export const {
         })
         .then(async (existedAccount) => {
           const cookieStore = await cookies();
-          const clientId = cookieStore.get(COOKIES.USER_ID)?.value || nanoid();
+          const clientId =
+            cookieStore.get(COOKIES.USER_ID)?.value || createId();
 
           //* 🔗 계정연동을 위한 인증 시도 시 true
           const providerToConnect = cookieStore.get(
@@ -192,7 +193,7 @@ export const {
           } catch {
             //! 중복된 id를 가진 경우 새로운 id를 생성하여 유저 생성
             const createUserWithNewId = async () => {
-              newUserData.id = nanoid();
+              newUserData.id = createId();
 
               try {
                 const user = await prisma.users.create({

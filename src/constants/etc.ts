@@ -9,3 +9,5 @@ export const IS_CLIENT = typeof window !== 'undefined';
 export enum QUERY_KEYS {
   SESSION = 'saved-session-storage',
 }
+
+export const PEER_PREFIX = 'briend-';

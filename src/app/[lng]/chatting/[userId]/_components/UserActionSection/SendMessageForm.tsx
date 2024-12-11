@@ -9,16 +9,14 @@ import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { cn } from '@/utils/cn';
 
 interface SendMessageFormProps {
-  onChange?: (value: string) => void;
   form: Form;
 }
 
 export const SendMessageForm = ({
-  onChange,
-  form: { register },
+  form: { handleSubmit, register },
 }: SendMessageFormProps) => {
   return (
-    <form>
+    <form onSubmit={handleSubmit(() => {})}>
       <section className="flex items-end gap-2">
         <div
           className={cn(
@@ -32,7 +30,6 @@ export const SendMessageForm = ({
             className="w-full resize-none bg-transparent outline-none hide-scrollbar"
             maxRows={4}
             title="message-input"
-            onChange={(e) => onChange?.(e.target.value)}
           />
         </div>
         <CustomIconButton
