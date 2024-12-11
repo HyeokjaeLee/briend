@@ -12,7 +12,7 @@ export const useCustomHref = () => {
   const [cookies] = useCookies([COOKIES.I18N]);
   const pathname = usePathname();
 
-  let i18n: string = cookies.I18N;
+  let i18n = cookies.I18N;
 
   const [, i18nPath] = pathname.split('/');
 

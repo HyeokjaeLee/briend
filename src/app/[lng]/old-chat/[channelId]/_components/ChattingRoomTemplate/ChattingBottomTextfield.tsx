@@ -2,7 +2,6 @@
 
 import type { Channel } from 'pusher-js';
 
-import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -17,6 +16,7 @@ import { PUSHER_EVENT } from '@/constants/channel';
 import { API_ROUTES } from '@/routes/api';
 import { chattingMessageTable } from '@/stores/chatting-db.';
 import { cn } from '@/utils/cn';
+import { createId } from '@/utils/createId';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DropdownMenu, TextArea } from '@radix-ui/themes';
@@ -186,7 +186,7 @@ export const ChattingBottomTextfield = ({
         onSubmit={form.handleSubmit(
           ({ message }) =>
             sendMessageMutation.mutate({
-              id: nanoid(),
+              id: createId(),
               message,
             }),
           () => {},
