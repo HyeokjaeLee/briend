@@ -8,7 +8,7 @@ export const ROUTES = {
   }),
   CHATTING_ROOM: createRoute<'userId'>(({ userId }) => `/chatting/${userId}`, {
     topHeaderType: 'empty',
-    bottomNavType: 'empty',
+    bottomNavType: 'root',
   }),
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',

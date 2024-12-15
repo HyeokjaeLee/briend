@@ -16,6 +16,7 @@ interface CustomLinkProps extends LinkProps {
   i18nOptimize?: boolean;
   withLoading?: boolean;
   withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
+  intercept?: boolean;
 }
 
 export const CustomLink = ({
@@ -26,6 +27,7 @@ export const CustomLink = ({
   replace,
   withLoading = true,
   withAnimation,
+  intercept = false,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();

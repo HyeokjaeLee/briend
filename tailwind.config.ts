@@ -14,10 +14,7 @@ const config: Config = {
     extend: {
       screens: {
         xs: {
-          max: '480px',
-        },
-        lg: {
-          max: '1280px',
+          min: '480px',
         },
       },
       keyframes: {
@@ -32,6 +29,12 @@ const config: Config = {
       animation: {
         shake:
           'shake-horizontal var(--tw-animate-duration, 1s) cubic-bezier(0.455, 0.030, 0.515, 0.955) var(--tw-animate-delay, 0s) both',
+      },
+      boxShadow: {
+        'lg-left':
+          '-10px 0 15px -3px rgb(0 0 0 / 0.03), -4px 0 6px -4px rgb(0 0 0 / 0.02)',
+        'lg-right':
+          '10px 0 15px -3px rgb(0 0 0 / 0.03), 4px 0 6px -4px rgb(0 0 0 / 0.02)',
       },
       colors: {
         'naver-green': '#03C75A',

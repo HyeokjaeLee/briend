@@ -10,4 +10,4 @@ export enum QUERY_KEYS {
   SESSION = 'saved-session-storage',
 }
 
-export const PEER_PREFIX = 'briend-';
+export const PEER_PREFIX = 'briend_';

@@ -14,6 +14,16 @@ interface GlobalLoadingOptions {
   delay?: 0 | 100 | 200 | 300;
 }
 
+export enum MEDIA_QUERY {
+  xs = 480,
+  sm = 640,
+  md = 768,
+  lg = 1024,
+  xl = 1280,
+}
+
+type MEDIA_QUERY_KEY = keyof typeof MEDIA_QUERY;
+
 interface GlobalStore {
   globalLoading: {
     value: boolean;
@@ -26,6 +36,10 @@ interface GlobalStore {
 
   lastInviteLanguage: LANGUAGE;
   setLastInviteLanguage: (language: LANGUAGE) => void;
+
+  mediaQueryKey: MEDIA_QUERY_KEY;
+  mediaQuery: MEDIA_QUERY;
+  resetMediaQuery: () => void;
 
   pusher: Pusher;
 }
@@ -41,6 +55,21 @@ export const useGlobalStore = create<GlobalStore>((set) => {
     throw new CustomError();
   }
 
+  const findMediaQueryKey = () => {
+    let mediaQueryKey: MEDIA_QUERY_KEY = 'xs';
+    for (const [value, key] of Object.entries(MEDIA_QUERY)) {
+      const mediaQueryList = window.matchMedia(`(min-width: ${value}px)`);
+
+      if (mediaQueryList.matches) {
+        mediaQueryKey = key as MEDIA_QUERY_KEY;
+      } else break;
+    }
+
+    return mediaQueryKey;
+  };
+
+  const mediaQueryKey = IS_CLIENT ? findMediaQueryKey() : 'xs';
+
   return {
     globalLoading: {
       value: false,
@@ -53,6 +82,15 @@ export const useGlobalStore = create<GlobalStore>((set) => {
         },
       }),
 
+    mediaQueryKey,
+    mediaQuery: MEDIA_QUERY[mediaQueryKey],
+    resetMediaQuery: () => {
+      const mediaQueryKey = findMediaQueryKey();
+
+      return set({ mediaQueryKey, mediaQuery: MEDIA_QUERY[mediaQueryKey] });
+    },
+
+    //TODO 전역에서 사용할 필요가 없는값인것 같음 추후 로컬 상태값으로 변경 필요
     lastInviteLanguage,
     setLastInviteLanguage: (language) => {
       localStorage.setItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE, language);

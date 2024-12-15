@@ -14,7 +14,7 @@ export const BottomNav = () => {
   return bottomNavType !== 'none' ? (
     <footer
       key={bottomNavType}
-      className="w-full max-w-xl animate-fade-up animate-duration-75"
+      className="w-full max-w-screen-sm animate-fade-up animate-duration-75"
       id={SELECTOR.BOTTOM_NAV}
     >
       {
