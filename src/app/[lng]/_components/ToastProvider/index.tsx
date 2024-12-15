@@ -18,7 +18,7 @@ export const ToastProvider = () => {
       bodyClassName="p-0 whitespace-pre-line flex gap-1 text-black text-lg font-medium font-pretendard"
       className={cn(
         'h-0 relative p-0 w-[calc(100%-2rem)]',
-        'left-1/2 xs:left-4',
+        'left-4 xs:left-1/2',
       )}
       draggableDirection="x"
       draggablePercent={50}

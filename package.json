@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "predev": "bun update:env",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "prebuild": "prisma generate",
     "build": "next build",
     "start": "next start",

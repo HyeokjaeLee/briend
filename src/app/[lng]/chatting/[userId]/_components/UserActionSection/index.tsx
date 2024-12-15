@@ -2,6 +2,7 @@
 
 import type { DataConnection } from 'peerjs';
 
+import { useParams } from 'next/navigation';
 import { Peer } from 'peerjs';
 
 import { useEffect, useRef, useState } from 'react';
@@ -24,15 +25,21 @@ export type Form = UseFormReturn<SendMessageFormValues, any, undefined>;
 
 export const UserActionSection = () => {
   const form = useForm<SendMessageFormValues>();
+  const params = useParams();
+
+  const friendUserId = params.userId;
+
   const [cookies] = useCookies([COOKIES.USER_ID]);
 
   const userId = cookies.USER_ID;
 
-  const [, /**isConnected */ setIsConnected] = useState(false);
-  const peerRef = useRef<Peer>(null);
-  const connectionRef = useRef<DataConnection>(null);
+  const [isConnected, setIsConnected] = useState(false);
+  const peerRef = useRef<Peer | null>(null);
+  const connectionRef = useRef<DataConnection | null>(null);
 
   const setupConnection = (conn: DataConnection) => {
+    connectionRef.current = conn;
+
     conn.on('open', () => {
       setIsConnected(true);
     });
@@ -43,64 +50,56 @@ export const UserActionSection = () => {
 
     conn.on('close', () => {
       setIsConnected(false);
+      connectionRef.current = null;
     });
   };
-
-  /**
-  *  // 다른 피어에 연결
-  const connectToPeer = (targetPeerId: string) => {
-    if (!peerRef.current) return;
-
-    const conn = peerRef.current.connect(targetPeerId);
-    connectionRef.current = conn;
-    setupConnection(conn);
-  };
-
-  // 메시지 전송
-  const sendMessage = (message: string) => {
-    if (connectionRef.current?.open) {
-      connectionRef.current.send(message);
-
-      return true;
-    }
-
-    return false;
-  };
-  */
 
   useEffect(() => {
-    if (!userId) return;
+    const connectToPeer = async (targetPeerId: string) => {
+      if (!peerRef.current) return;
 
-    peerRef.current = new Peer(PEER_PREFIX + userId, {
-      debug: 2,
-      config: {
-        iceServers: [
-          { urls: 'stun:stun.l.google.com:19302' },
-          { urls: 'stun:stun1.l.google.com:19302' },
-        ],
-      },
-    });
-
-    peerRef.current.on('connection', (conn) => {
-      connectionRef.current = conn;
+      const conn = peerRef.current.connect(targetPeerId);
       setupConnection(conn);
-    });
+    };
 
-    // 에러 처리
-    peerRef.current.on('error', (error) => {
-      console.error('Peer error:', error);
-      setIsConnected(false);
-    });
+    const initializePeerConnection = async () => {
+      if (!userId || !friendUserId) return;
+
+      const peer = new Peer(`${PEER_PREFIX}${userId}`);
+      peerRef.current = peer;
+
+      peer.on('open', async () => {
+        connectToPeer(`${PEER_PREFIX}${friendUserId}`);
+      });
+
+      peer.on('connection', (conn) => {
+        setupConnection(conn);
+      });
+
+      peer.on('error', (err) => {
+        console.error('PeerJS error:', err);
+        setIsConnected(false);
+      });
+    };
+
+    initializePeerConnection();
 
     return () => {
       connectionRef.current?.close();
       peerRef.current?.destroy();
     };
-  }, [userId]);
+  }, [friendUserId, userId]);
+
+  const onSubmit = (values: SendMessageFormValues) => {
+    if (!connectionRef.current) return;
+
+    connectionRef.current.send(values.message);
+    form.reset();
+  };
 
   return (
     <CustomBottomNav className="border-t-0 bg-slate-100 p-5">
-      <SendMessageForm form={form} />
+      <SendMessageForm form={form} onSubmit={onSubmit} />
     </CustomBottomNav>
   );
 };

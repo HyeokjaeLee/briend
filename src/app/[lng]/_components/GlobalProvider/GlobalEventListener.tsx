@@ -4,14 +4,17 @@ import { Suspense, useLayoutEffect } from 'react';
 
 import { SELECTOR } from '@/constants/selector';
 import { useUrl } from '@/hooks/useUrl';
+import { useGlobalStore } from '@/stores/global';
 
 const GlobalEventListenerController = () => {
   const url = useUrl({
     origin: false,
   });
 
+  const resetMediaQuery = useGlobalStore((state) => state.resetMediaQuery);
+
   useLayoutEffect(() => {
-    const updateHeight = throttle(() => {
+    const updateHeight = () => {
       const height = window.visualViewport?.height || window.innerHeight;
       const topHeaderHeight =
         document.getElementById(SELECTOR.TOP_HEADER)?.clientHeight ?? 0;
@@ -28,18 +31,25 @@ const GlobalEventListenerController = () => {
         '--content-height',
         `${contentHeight}px`,
       );
+    };
+    const debouncedResizeHandler = throttle(() => {
+      updateHeight();
+      resetMediaQuery();
     }, 33);
 
-    updateHeight();
+    debouncedResizeHandler();
 
-    window.addEventListener('resize', updateHeight);
-    window.visualViewport?.addEventListener('resize', updateHeight);
+    window.addEventListener('resize', debouncedResizeHandler);
+    window.visualViewport?.addEventListener('resize', debouncedResizeHandler);
 
     return () => {
-      window.removeEventListener('resize', updateHeight);
-      window.visualViewport?.removeEventListener('resize', updateHeight);
+      window.removeEventListener('resize', debouncedResizeHandler);
+      window.visualViewport?.removeEventListener(
+        'resize',
+        debouncedResizeHandler,
+      );
     };
-  }, [url]);
+  }, [resetMediaQuery, url]);
 
   return null;
 };

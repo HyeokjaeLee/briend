@@ -111,7 +111,7 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
       <motion.main
         {...animationProps}
         key={key}
-        className="flex size-full flex-1 flex-col overflow-auto"
+        className="flex size-full flex-col overflow-auto"
         id={SELECTOR.MAIN}
         onAnimationComplete={(e: { opacity: number }) => {
           if (e.opacity === 1) {

@@ -72,9 +72,14 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
+  rightSide: ReactElement;
 }
 
-const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
+const RootLayout = async ({
+  children,
+  params,
+  rightSide,
+}: Readonly<RootLayoutProps>) => {
   const { lng } = await params;
 
   return (
@@ -85,8 +90,13 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
     >
       <body className="size-full">
         <GlobalProvider className="flex size-full" scaling="90%">
-          <div className="flex-1 bg-slate-100" />
-          <div className="relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-xl flex-col overflow-hidden text-slate-900 shadow-xl">
+          <aside className="hidden flex-1 bg-slate-100 2xl:block" />
+          <div
+            className={cn(
+              'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-md flex-col overflow-hidden text-slate-900',
+              'flex-[2] shadow-none md:shadow-lg',
+            )}
+          >
             <GlobalSuspense>
               <GlobalLoading />
               <GlobalHeader />
@@ -95,7 +105,9 @@ const RootLayout = async ({ children, params }: Readonly<RootLayoutProps>) => {
               <BottomNav />
             </GlobalSuspense>
           </div>
-          <div className="flex-1 bg-slate-100 lg:hidden" />
+          <aside className="hidden flex-[2] bg-slate-100 md:block">
+            {rightSide}
+          </aside>
         </GlobalProvider>
       </body>
     </html>

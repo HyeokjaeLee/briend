@@ -63,7 +63,7 @@ const ErrorPage = (e: { error: Error }) => {
       <CustomButton
         asChild
         activeScaleDown={false}
-        className="fixed bottom-0 h-17 w-full max-w-xl rounded-none"
+        className="fixed bottom-0 h-17 w-full max-w-screen-sm rounded-none"
         color="red"
       >
         <Link replace className="z-10" href={dynamicInfo.buttonLink}>

@@ -1,25 +1,31 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { decodeJwt } from 'jose';
 
-import { useMemo } from 'react';
+import { useEffect } from 'react';
 
+import { useFriendStore } from '@/stores/friend';
 import { friendTable } from '@/stores/indexed-db';
 import type { JwtPayload } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
-export const useFriendList = () => {
+
+export const FriendStoreMounter = () => {
+  const setFriendStore = useFriendStore((state) => state.setFriendList);
+
   const friendTokenList = useLiveQuery(() => {
     if (!friendTable) throw new CustomError({ status: ERROR_STATUS.NOT_FOUND });
 
     return friendTable.toArray();
   });
 
-  const friendList = useMemo(() => {
-    if (!friendTokenList) return [];
+  useEffect(() => {
+    if (!friendTokenList) return;
 
-    return friendTokenList.map((friend) =>
+    const friendList = friendTokenList.map((friend) =>
       decodeJwt<JwtPayload.FriendToken>(friend.friendToken),
     );
-  }, [friendTokenList]);
 
-  return friendList;
+    setFriendStore(friendList);
+  }, [friendTokenList, setFriendStore]);
+
+  return null;
 };
