@@ -11,11 +11,11 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/atoms/CustomButton';
 import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE } from '@/constants/language';
+import { friendTable } from '@/database/indexed-db';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores/global';
-import { friendTable } from '@/stores/indexed-db';
 import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -38,7 +38,7 @@ export const InviteForm = () => {
 
   const formSchema = z.object({
     language: z.nativeEnum(LANGUAGE),
-    nickname: z.string().max(10, t('nickname-max-length')),
+    nickname: z.string().max(20, t('nickname-max-length')),
   });
 
   const router = useCustomRouter();

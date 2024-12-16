@@ -1,31 +1,22 @@
 'use client';
 
-import type Peer from 'peerjs';
+import type { DataConnection, Peer } from 'peerjs';
 
 import { create } from 'zustand';
 
-import { useState } from 'react';
-
-export enum CONNECTION_STATUS {
-  CONNECTED = 0,
-  DISCONNECTED = 2,
-  ERROR = 1,
-}
-
 interface FriendPeer {
   peerId: string;
-  isOnline: boolean;
+  connection: DataConnection | null;
+  isConnected: boolean;
+  isExpired: boolean;
 }
 
 interface PeerStore {
-  connectionStatus: CONNECTION_STATUS;
-  setConnectionStatus: (status: CONNECTION_STATUS) => void;
-
   peer: Peer | null;
   setPeer: (peer: Peer | null) => void;
 
-  connectedFriendPeerMap: Map<string, FriendPeer>;
-  setConnectedFriendPeerMap: (
+  friendConnectionMap: Map<string, FriendPeer>;
+  setFriendConnectionMap: (
     setStateAction: (prevMap: Map<string, FriendPeer>) => void,
   ) => void;
 }
@@ -35,18 +26,15 @@ export const usePeerStore = create<PeerStore>((set) => {
   const baseConnectedPeerMap = new Map<string, FriendPeer>();
 
   return {
-    connectionStatus: CONNECTION_STATUS.DISCONNECTED,
-    setConnectionStatus: (status) => set({ connectionStatus: status }),
-
     peer: null,
     setPeer: (peer) => set({ peer }),
 
-    connectedFriendPeerMap: baseConnectedPeerMap,
-    setConnectedFriendPeerMap: (setStateAction) => {
+    friendConnectionMap: baseConnectedPeerMap,
+    setFriendConnectionMap: (setStateAction) => {
       setStateAction(baseConnectedPeerMap);
 
       set({
-        connectedFriendPeerMap: new Map(baseConnectedPeerMap),
+        friendConnectionMap: new Map(baseConnectedPeerMap),
       });
     },
   };

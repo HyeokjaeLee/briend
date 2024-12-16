@@ -5,8 +5,7 @@ import type {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { useRouter } from 'next/navigation';
-
-import { useMemo } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
 import { SESSION_STORAGE } from '@/constants/storage-key';
@@ -20,7 +19,7 @@ import { useCustomHref } from './useCustomHref';
 interface CustomNavigationOptions {
   withLoading?: boolean;
   withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
-  onlyIntercept?: boolean;
+  toSidePanel?: boolean;
 }
 
 interface CustomRouter extends AppRouterInstance {
@@ -33,118 +32,116 @@ interface CustomRouter extends AppRouterInstance {
     options?: NavigateOptions & CustomNavigationOptions,
   ) => void;
   prefetch: (href: string | URL, options?: PrefetchOptions) => void;
-  back: (options?: Omit<CustomNavigationOptions, 'onlyIntercept'>) => void;
-  forward: (options?: Omit<CustomNavigationOptions, 'onlyIntercept'>) => void;
+  back: (options?: Omit<CustomNavigationOptions, 'toSidePanel'>) => void;
+  forward: (options?: Omit<CustomNavigationOptions, 'toSidePanel'>) => void;
 }
+
+let memoizedCustomRouter: CustomRouter;
 
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
+  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
+    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
+  );
 
-  return useMemo((): CustomRouter => {
-    const replace: CustomRouter['replace'] = (href, options) => {
+  if (memoizedCustomRouter) return memoizedCustomRouter;
+
+  const replace: CustomRouter['replace'] = (href, options) => {
+    const customHref = getCustomHref(href);
+
+    if (isCurrentHref(customHref)) return;
+
+    const {
+      withLoading = true,
+      withAnimation = 'NONE',
+      scroll,
+      toSidePanel,
+    } = options ?? {};
+
+    if (toSidePanel) return setSidePanelUrl(customHref);
+
+    sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
+
+    if (withLoading) setGlobalLoading(true);
+
+    sessionStorage.setItem(SESSION_STORAGE.NAVIGATION_ANIMATION, withAnimation);
+
+    return router.replace(customHref, {
+      scroll,
+    });
+  };
+
+  memoizedCustomRouter = {
+    forward: (options) => {
+      const { withLoading, withAnimation = 'FROM_BOTTOM' } = options ?? {};
+
+      if (withLoading) setGlobalLoading(true);
+
+      sessionStorage.setItem(
+        SESSION_STORAGE.NAVIGATION_ANIMATION,
+        withAnimation,
+      );
+
+      return router.forward();
+    },
+    refresh: router.refresh,
+    back: (options) => {
+      const { withLoading, withAnimation = 'FROM_TOP' } = options ?? {};
+
+      const { historyIndex } = useHistoryStore.getState();
+
+      const hasBack = 0 < historyIndex;
+
+      if (!hasBack)
+        return replace(ROUTES.HOME.pathname, {
+          withAnimation,
+          withLoading,
+        });
+
+      if (withLoading) setGlobalLoading(true);
+
+      sessionStorage.setItem(
+        SESSION_STORAGE.NAVIGATION_ANIMATION,
+        withAnimation,
+      );
+
+      return router.back();
+    },
+    push: (href, options) => {
       const customHref = getCustomHref(href);
 
       if (isCurrentHref(customHref)) return;
 
-      sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
-
-      let {
-        withLoading: isLoading = true,
-        withAnimation: animationType,
+      const {
         scroll,
+        toSidePanel,
+        withAnimation = 'FROM_BOTTOM',
+        withLoading = true,
       } = options ?? {};
 
-      if (options?.onlyIntercept) {
-        animationType ??= 'NONE';
-        sessionStorage.setItem(SESSION_STORAGE.ONLY_INTERCEPT, location.href);
-        isLoading = false;
-        scroll = false;
-      }
+      if (toSidePanel) return setSidePanelUrl(customHref);
 
-      if (isLoading) setGlobalLoading(true);
-      if (animationType)
-        sessionStorage.setItem(
-          SESSION_STORAGE.NAVIGATION_ANIMATION,
-          animationType,
-        );
+      if (withLoading) setGlobalLoading(true);
 
-      return router.replace(customHref, {
+      sessionStorage.setItem(
+        SESSION_STORAGE.NAVIGATION_ANIMATION,
+        withAnimation,
+      );
+
+      return router.push(customHref, {
         scroll,
       });
-    };
+    },
+    replace,
+    prefetch: (href, options) => {
+      const customHref = getCustomHref(href);
 
-    return {
-      forward: (options) => {
-        const withLoading = options?.withLoading;
-        const animationType = options?.withAnimation ?? 'FROM_BOTTOM';
+      if (isCurrentHref(customHref)) return;
 
-        if (withLoading) setGlobalLoading(true);
-        if (animationType)
-          sessionStorage.setItem(
-            SESSION_STORAGE.NAVIGATION_ANIMATION,
-            animationType,
-          );
+      return router.prefetch(customHref, options);
+    },
+  };
 
-        return router.forward();
-      },
-      refresh: () => {
-        return router.refresh();
-      },
-      back: (options) => {
-        const withLoading = options?.withLoading;
-        const animationType = options?.withAnimation;
-        const { historyIndex } = useHistoryStore.getState();
-
-        const hasBack = 0 < historyIndex;
-
-        if (!hasBack)
-          return replace(ROUTES.HOME.pathname, {
-            withAnimation: animationType,
-            withLoading,
-          });
-
-        if (withLoading) setGlobalLoading(true);
-        if (animationType)
-          sessionStorage.setItem(
-            SESSION_STORAGE.NAVIGATION_ANIMATION,
-            animationType,
-          );
-
-        return router.back();
-      },
-      push: (href, options) => {
-        const customHref = getCustomHref(href);
-
-        if (isCurrentHref(customHref)) return;
-
-        if (options?.onlyIntercept) {
-          return replace(customHref, options);
-        }
-
-        const withLoading = options?.withLoading ?? true;
-        const animationType = options?.withAnimation;
-
-        if (withLoading) setGlobalLoading(true);
-        if (animationType)
-          sessionStorage.setItem(
-            SESSION_STORAGE.NAVIGATION_ANIMATION,
-            animationType,
-          );
-
-        return router.push(customHref, {
-          scroll: options?.scroll,
-        });
-      },
-      replace,
-      prefetch: (href, options) => {
-        const customHref = getCustomHref(href);
-
-        if (isCurrentHref(customHref)) return;
-
-        return router.prefetch(customHref, options);
-      },
-    };
-  }, [getCustomHref, router, setGlobalLoading]);
+  return memoizedCustomRouter;
 };

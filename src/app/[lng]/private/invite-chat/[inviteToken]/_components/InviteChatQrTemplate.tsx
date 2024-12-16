@@ -18,7 +18,7 @@ import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
 import { LANGUAGE } from '@/constants/language';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
-import { friendTable } from '@/stores/indexed-db';
+import { friendTable } from '@/database/indexed-db';
 import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';

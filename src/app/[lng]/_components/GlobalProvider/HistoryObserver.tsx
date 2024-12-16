@@ -28,19 +28,6 @@ const HistoryObserverController = () => {
   useEffect(() => {
     const { historyIndex, customHistory } = useHistoryStore.getState();
 
-    const interceptFromHref = sessionStorage.getItem(
-      SESSION_STORAGE.ONLY_INTERCEPT,
-    );
-
-    if (interceptFromHref) {
-      sessionStorage.removeItem(SESSION_STORAGE.ONLY_INTERCEPT);
-
-      return router.replace(interceptFromHref, {
-        scroll: false,
-        withAnimation: 'NONE',
-      });
-    }
-
     const historyState: {
       historyIndex?: number;
     } = history.state;

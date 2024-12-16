@@ -8,6 +8,9 @@ import { isEnumValue } from '@/utils/isEnumValue';
 
 import { useCookies } from './useCookies';
 
+/**
+ * @returns i18n 언어 정보가 있으면 기본 href에 lng path를 추가한 값을 반환하는 함수
+ */
 export const useCustomHref = () => {
   const [cookies] = useCookies([COOKIES.I18N]);
   const pathname = usePathname();

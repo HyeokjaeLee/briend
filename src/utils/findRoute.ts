@@ -26,7 +26,10 @@ export const findRoute = (pathname: string) => {
         route.pathname === splitedCurrentPathname.join('/') ||
         (route.pathname === '/' && splitedCurrentPathname.length === 1)
       ) {
-        return route;
+        return {
+          name: routeName,
+          ...route,
+        } as const;
       }
     } else if (typeof route.pathname === 'function') {
       const splitedRoutePathname = route.pathname({} as any).split('/');
@@ -71,10 +74,13 @@ export const findRoute = (pathname: string) => {
       cause: `route not found: ${pathname}`,
     });
 
-  const currentRoute = allRoutes[matchedRoute.name];
+  const resultRoute = allRoutes[matchedRoute.name];
 
-  if (!currentRoute)
-    throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['currentRoute']));
+  if (!resultRoute)
+    throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['resultRoute']));
 
-  return currentRoute;
+  return {
+    name: matchedRoute.name,
+    ...resultRoute,
+  } as const;
 };

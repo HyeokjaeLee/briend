@@ -19,6 +19,7 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { FriendStoreMounter } from './FriendStoreMounter';
 import { GlobalEventListener } from './GlobalEventListener';
 import { HistoryObserver } from './HistoryObserver';
+import { PeerConnector } from './PeerConnector';
 
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
@@ -75,6 +76,7 @@ export const GlobalProvider = (
           persistOptions={persistOptions}
         >
           <FriendStoreMounter />
+          <PeerConnector />
           <Theme {...props} />
         </PersistQueryClientProvider>
       </CookiesProvider>

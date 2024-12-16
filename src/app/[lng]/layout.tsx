@@ -90,11 +90,11 @@ const RootLayout = async ({
     >
       <body className="size-full">
         <GlobalProvider className="flex size-full" scaling="90%">
-          <aside className="hidden flex-1 bg-slate-100 2xl:block" />
+          <aside className="hidden flex-1 bg-slate-100 xl:block" />
           <div
             className={cn(
-              'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-md flex-col overflow-hidden text-slate-900',
-              'flex-[2] shadow-none md:shadow-lg',
+              'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
+              'flex-1 shadow-none sm:shadow-lg',
             )}
           >
             <GlobalSuspense>
@@ -105,7 +105,7 @@ const RootLayout = async ({
               <BottomNav />
             </GlobalSuspense>
           </div>
-          <aside className="hidden flex-[2] bg-slate-100 md:block">
+          <aside className="hidden flex-1 bg-slate-100 sm:block">
             {rightSide}
           </aside>
         </GlobalProvider>

@@ -63,7 +63,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
   const formSchema = z.object({
     emoji: z.string(),
     language: z.nativeEnum(LANGUAGE),
-    nickname: z.string().max(10, t('nickname-max-length')),
+    nickname: z.string().max(20, t('nickname-max-length')),
   });
 
   type ProfileSchema = z.infer<typeof formSchema>;
@@ -159,7 +159,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         })}
       >
         <section className="w-full flex-col gap-8 flex-center">
-          <Skeleton>
+          <Skeleton loading={!selectedEmoji}>
             <Avatar
               fallback={<span className="text-5xl">{selectedEmoji}</span>}
               radius="full"
