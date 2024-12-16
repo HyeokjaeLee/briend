@@ -20,6 +20,7 @@ import { useCustomHref } from './useCustomHref';
 interface CustomNavigationOptions {
   withLoading?: boolean;
   withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
+  onlyIntercept?: boolean;
 }
 
 interface CustomRouter extends AppRouterInstance {
@@ -32,8 +33,8 @@ interface CustomRouter extends AppRouterInstance {
     options?: NavigateOptions & CustomNavigationOptions,
   ) => void;
   prefetch: (href: string | URL, options?: PrefetchOptions) => void;
-  back: (options?: CustomNavigationOptions) => void;
-  forward: (options?: CustomNavigationOptions) => void;
+  back: (options?: Omit<CustomNavigationOptions, 'onlyIntercept'>) => void;
+  forward: (options?: Omit<CustomNavigationOptions, 'onlyIntercept'>) => void;
 }
 
 export const useCustomRouter = () => {
@@ -49,29 +50,41 @@ export const useCustomRouter = () => {
 
       sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
 
-      const withLoading = options?.withLoading ?? true;
-      const withAnimation = options?.withAnimation;
+      let {
+        withLoading: isLoading = true,
+        withAnimation: animationType,
+        scroll,
+      } = options ?? {};
 
-      if (withLoading) setGlobalLoading(true);
-      if (withAnimation)
+      if (options?.onlyIntercept) {
+        animationType ??= 'NONE';
+        sessionStorage.setItem(SESSION_STORAGE.ONLY_INTERCEPT, location.href);
+        isLoading = false;
+        scroll = false;
+      }
+
+      if (isLoading) setGlobalLoading(true);
+      if (animationType)
         sessionStorage.setItem(
           SESSION_STORAGE.NAVIGATION_ANIMATION,
-          withAnimation,
+          animationType,
         );
 
-      return router.replace(customHref, options);
+      return router.replace(customHref, {
+        scroll,
+      });
     };
 
     return {
       forward: (options) => {
         const withLoading = options?.withLoading;
-        const withAnimation = options?.withAnimation ?? 'FR';
+        const animationType = options?.withAnimation ?? 'FROM_BOTTOM';
 
         if (withLoading) setGlobalLoading(true);
-        if (withAnimation)
+        if (animationType)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
-            withAnimation,
+            animationType,
           );
 
         return router.forward();
@@ -81,22 +94,22 @@ export const useCustomRouter = () => {
       },
       back: (options) => {
         const withLoading = options?.withLoading;
-        const withAnimation = options?.withAnimation;
+        const animationType = options?.withAnimation;
         const { historyIndex } = useHistoryStore.getState();
 
         const hasBack = 0 < historyIndex;
 
         if (!hasBack)
           return replace(ROUTES.HOME.pathname, {
-            withAnimation,
+            withAnimation: animationType,
             withLoading,
           });
 
         if (withLoading) setGlobalLoading(true);
-        if (withAnimation)
+        if (animationType)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
-            withAnimation,
+            animationType,
           );
 
         return router.back();
@@ -106,17 +119,23 @@ export const useCustomRouter = () => {
 
         if (isCurrentHref(customHref)) return;
 
+        if (options?.onlyIntercept) {
+          return replace(customHref, options);
+        }
+
         const withLoading = options?.withLoading ?? true;
-        const withAnimation = options?.withAnimation;
+        const animationType = options?.withAnimation;
 
         if (withLoading) setGlobalLoading(true);
-        if (withAnimation)
+        if (animationType)
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
-            withAnimation,
+            animationType,
           );
 
-        return router.push(customHref, options);
+        return router.push(customHref, {
+          scroll: options?.scroll,
+        });
       },
       replace,
       prefetch: (href, options) => {

@@ -16,7 +16,8 @@ interface CustomLinkProps extends LinkProps {
   i18nOptimize?: boolean;
   withLoading?: boolean;
   withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
-  intercept?: boolean;
+  /** 실제 라우팅 이동을 하지않고 인터셉트 라우트만 노출 */
+  onlyIntercept?: boolean;
 }
 
 export const CustomLink = ({
@@ -27,10 +28,20 @@ export const CustomLink = ({
   replace,
   withLoading = true,
   withAnimation,
-  intercept = false,
+  onlyIntercept = false,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
+
+  let animationType = withAnimation;
+  let isReplace = replace;
+  let isLoading = withLoading;
+
+  if (onlyIntercept) {
+    animationType ??= 'NONE';
+    isReplace ??= true;
+    isLoading = false;
+  }
 
   const stringHref = href.toString();
 
@@ -58,16 +69,20 @@ export const CustomLink = ({
           return e.preventDefault();
         }
 
-        if (withLoading) setGlobalLoading(true);
+        if (isLoading) setGlobalLoading(true);
 
-        if (withAnimation) {
+        if (onlyIntercept) {
+          sessionStorage.setItem(SESSION_STORAGE.ONLY_INTERCEPT, location.href);
+        }
+
+        if (animationType) {
           sessionStorage.setItem(
             SESSION_STORAGE.NAVIGATION_ANIMATION,
-            withAnimation,
+            animationType,
           );
         }
 
-        if (replace)
+        if (isReplace)
           sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
 
         onClick?.(e);

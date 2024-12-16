@@ -20,10 +20,10 @@ const ChattingListPage = () => {
         {friendList.map((friend) => (
           <li key={friend.userId}>
             <CustomLink
+              onlyIntercept
               href={ROUTES.CHATTING_ROOM.pathname({
                 userId: friend.userId,
               })}
-              withAnimation="NONE"
             >
               <div>
                 <Avatar fallback={friend.emoji} size="7" />

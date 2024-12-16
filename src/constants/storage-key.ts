@@ -5,6 +5,7 @@ export enum SESSION_STORAGE {
   NAVIGATION_ANIMATION = 'session-animation',
   REPLACE_MARK = 'replace-mark',
   REFRESH_TOAST = 'refresh-toast',
+  ONLY_INTERCEPT = 'only-intercept',
 }
 
 export namespace SESSION_STORAGE_TYPE {
