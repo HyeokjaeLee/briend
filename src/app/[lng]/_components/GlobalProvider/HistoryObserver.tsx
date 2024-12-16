@@ -3,6 +3,7 @@ import { useShallow } from 'zustand/shallow';
 import { Suspense, useEffect } from 'react';
 
 import { SESSION_STORAGE } from '@/constants/storage-key';
+import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { useUrl } from '@/hooks/useUrl';
 import { useHistoryStore } from '@/stores/history';
 
@@ -22,8 +23,23 @@ const HistoryObserverController = () => {
     useShallow((state) => [state.setCustomHistory, state.setHistoryIndex]),
   );
 
+  const router = useCustomRouter();
+
   useEffect(() => {
     const { historyIndex, customHistory } = useHistoryStore.getState();
+
+    const interceptFromHref = sessionStorage.getItem(
+      SESSION_STORAGE.ONLY_INTERCEPT,
+    );
+
+    if (interceptFromHref) {
+      sessionStorage.removeItem(SESSION_STORAGE.ONLY_INTERCEPT);
+
+      return router.replace(interceptFromHref, {
+        scroll: false,
+        withAnimation: 'NONE',
+      });
+    }
 
     const historyState: {
       historyIndex?: number;
@@ -56,7 +72,7 @@ const HistoryObserverController = () => {
     return () => {
       window.removeEventListener('beforeunload', setHistoryExpire);
     };
-  }, [url, setCustomHistory, setHistoryIndex]);
+  }, [url, setCustomHistory, setHistoryIndex, router]);
 
   return null;
 };

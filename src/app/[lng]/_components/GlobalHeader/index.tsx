@@ -2,7 +2,11 @@
 
 import { usePathname } from 'next/navigation';
 
+import { useEffect, useRef } from 'react';
+
+import { IS_CLIENT } from '@/constants/etc';
 import { SELECTOR } from '@/constants/selector';
+import { SESSION_STORAGE } from '@/constants/storage-key';
 import { findRoute } from '@/utils/findRoute';
 
 import { BackHeader } from './_components/BackHeader';
@@ -12,13 +16,28 @@ export const GlobalHeader = () => {
   const pathname = usePathname();
 
   const { topHeaderType } = findRoute(pathname);
+  const prevTopHeaderType = useRef(topHeaderType);
+
+  const isIntercepting = !!(
+    IS_CLIENT && sessionStorage.getItem(SESSION_STORAGE.ONLY_INTERCEPT)
+  );
+
+  useEffect(() => {
+    if (!isIntercepting) {
+      prevTopHeaderType.current = topHeaderType;
+    }
+  }, [topHeaderType, isIntercepting]);
+
+  const currentTopHeaderType = isIntercepting
+    ? prevTopHeaderType.current
+    : topHeaderType;
 
   return (
     <>
-      {topHeaderType !== 'none' ? (
+      {currentTopHeaderType !== 'none' ? (
         <header
           key={topHeaderType}
-          className="relative top-0 h-fit w-full max-w-screen-sm animate-fade-down animate-duration-75"
+          className="relative top-0 h-fit w-full max-w-screen-md"
           id={SELECTOR.TOP_HEADER}
         >
           {
@@ -26,7 +45,7 @@ export const GlobalHeader = () => {
               root: <RootHeader />,
               back: <BackHeader />,
               empty: null,
-            }[topHeaderType]
+            }[currentTopHeaderType]
           }
         </header>
       ) : null}
