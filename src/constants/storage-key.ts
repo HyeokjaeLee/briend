@@ -5,7 +5,7 @@ export enum SESSION_STORAGE {
   NAVIGATION_ANIMATION = 'session-animation',
   REPLACE_MARK = 'replace-mark',
   REFRESH_TOAST = 'refresh-toast',
-  ONLY_INTERCEPT = 'only-intercept',
+  SIDE_PANEL_URL = 'side-panel-url',
 }
 
 export namespace SESSION_STORAGE_TYPE {

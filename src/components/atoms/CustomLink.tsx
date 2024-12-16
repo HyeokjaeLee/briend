@@ -1,6 +1,7 @@
 'use client';
 
 import Link, { type LinkProps } from 'next/link';
+import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
@@ -16,8 +17,7 @@ interface CustomLinkProps extends LinkProps {
   i18nOptimize?: boolean;
   withLoading?: boolean;
   withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
-  /** 실제 라우팅 이동을 하지않고 인터셉트 라우트만 노출 */
-  onlyIntercept?: boolean;
+  toSidePanel?: boolean;
 }
 
 export const CustomLink = ({
@@ -28,26 +28,18 @@ export const CustomLink = ({
   replace,
   withLoading = true,
   withAnimation,
-  onlyIntercept = false,
+  toSidePanel,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
-
-  let animationType = withAnimation;
-  let isReplace = replace;
-  let isLoading = withLoading;
-
-  if (onlyIntercept) {
-    animationType ??= 'NONE';
-    isReplace ??= true;
-    isLoading = false;
-  }
 
   const stringHref = href.toString();
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
+  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
+    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
+  );
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -60,32 +52,38 @@ export const CustomLink = ({
   return (
     <Link
       {...restLinkProps}
+      shallow
       href={customHref}
       replace={replace}
       onClick={(e) => {
-        if (isCurrentHref(customHref)) {
-          console.info('blocked by same href');
+        try {
+          if (toSidePanel) {
+            e.preventDefault();
+            setSidePanelUrl(customHref);
 
-          return e.preventDefault();
+            return;
+          }
+
+          if (isCurrentHref(customHref)) {
+            console.info('blocked by same href');
+
+            return e.preventDefault();
+          }
+
+          if (withLoading) setGlobalLoading(true);
+
+          if (withAnimation) {
+            sessionStorage.setItem(
+              SESSION_STORAGE.NAVIGATION_ANIMATION,
+              withAnimation,
+            );
+          }
+
+          if (replace)
+            sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
+        } finally {
+          onClick?.(e);
         }
-
-        if (isLoading) setGlobalLoading(true);
-
-        if (onlyIntercept) {
-          sessionStorage.setItem(SESSION_STORAGE.ONLY_INTERCEPT, location.href);
-        }
-
-        if (animationType) {
-          sessionStorage.setItem(
-            SESSION_STORAGE.NAVIGATION_ANIMATION,
-            animationType,
-          );
-        }
-
-        if (isReplace)
-          sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
-
-        onClick?.(e);
       }}
     >
       {children}

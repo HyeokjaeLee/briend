@@ -3,8 +3,8 @@ import { decodeJwt } from 'jose';
 
 import { useEffect } from 'react';
 
+import { friendTable } from '@/database/indexed-db';
 import { useFriendStore } from '@/stores/friend';
-import { friendTable } from '@/stores/indexed-db';
 import type { JwtPayload } from '@/types/jwt';
 import { CustomError, ERROR_STATUS } from '@/utils/customError';
 

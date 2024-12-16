@@ -6,7 +6,8 @@ import { create } from 'zustand';
 import { IS_CLIENT } from '@/constants/etc';
 import { LANGUAGE } from '@/constants/language';
 import { PUBLIC_ENV } from '@/constants/public-env';
-import { LOCAL_STORAGE } from '@/constants/storage-key';
+import { LOCAL_STORAGE, SESSION_STORAGE } from '@/constants/storage-key';
+import { ROUTES } from '@/routes/client';
 import { CustomError } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 
@@ -14,7 +15,7 @@ interface GlobalLoadingOptions {
   delay?: 0 | 100 | 200 | 300;
 }
 
-export enum MEDIA_QUERY {
+export enum MEDIA_QUERY_BREAK_POINT {
   xs = 480,
   sm = 640,
   md = 768,
@@ -22,7 +23,7 @@ export enum MEDIA_QUERY {
   xl = 1280,
 }
 
-type MEDIA_QUERY_KEY = keyof typeof MEDIA_QUERY;
+type MEDIA_QUERY = keyof typeof MEDIA_QUERY_BREAK_POINT;
 
 interface GlobalStore {
   globalLoading: {
@@ -37,9 +38,12 @@ interface GlobalStore {
   lastInviteLanguage: LANGUAGE;
   setLastInviteLanguage: (language: LANGUAGE) => void;
 
-  mediaQueryKey: MEDIA_QUERY_KEY;
   mediaQuery: MEDIA_QUERY;
+  mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT;
   resetMediaQuery: () => void;
+
+  sidePanelUrl: string;
+  setSidePanelUrl: (url: string) => void;
 
   pusher: Pusher;
 }
@@ -55,20 +59,25 @@ export const useGlobalStore = create<GlobalStore>((set) => {
     throw new CustomError();
   }
 
-  const findMediaQueryKey = () => {
-    let mediaQueryKey: MEDIA_QUERY_KEY = 'xs';
-    for (const [value, key] of Object.entries(MEDIA_QUERY)) {
+  const getMediaQuery = () => {
+    let mediaQuery: MEDIA_QUERY = 'xs';
+    for (const [value, key] of Object.entries(MEDIA_QUERY_BREAK_POINT)) {
       const mediaQueryList = window.matchMedia(`(min-width: ${value}px)`);
 
       if (mediaQueryList.matches) {
-        mediaQueryKey = key as MEDIA_QUERY_KEY;
+        mediaQuery = key as MEDIA_QUERY;
       } else break;
     }
 
-    return mediaQueryKey;
+    return mediaQuery;
   };
 
-  const mediaQueryKey = IS_CLIENT ? findMediaQueryKey() : 'xs';
+  const mediaQuery = IS_CLIENT ? getMediaQuery() : 'xs';
+
+  const sidePanelUrl = IS_CLIENT
+    ? sessionStorage.getItem(SESSION_STORAGE.SIDE_PANEL_URL) ||
+      ROUTES.HOME.pathname
+    : ROUTES.HOME.pathname;
 
   return {
     globalLoading: {
@@ -82,12 +91,15 @@ export const useGlobalStore = create<GlobalStore>((set) => {
         },
       }),
 
-    mediaQueryKey,
-    mediaQuery: MEDIA_QUERY[mediaQueryKey],
+    mediaQuery,
+    mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT[mediaQuery],
     resetMediaQuery: () => {
-      const mediaQueryKey = findMediaQueryKey();
+      const mediaQueryKey = getMediaQuery();
 
-      return set({ mediaQueryKey, mediaQuery: MEDIA_QUERY[mediaQueryKey] });
+      return set({
+        mediaQuery: mediaQueryKey,
+        mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT[mediaQueryKey],
+      });
     },
 
     //TODO 전역에서 사용할 필요가 없는값인것 같음 추후 로컬 상태값으로 변경 필요
@@ -96,6 +108,12 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       localStorage.setItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE, language);
 
       return set({ lastInviteLanguage: language });
+    },
+
+    sidePanelUrl,
+    setSidePanelUrl: (url) => {
+      sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, url);
+      set({ sidePanelUrl: url });
     },
 
     pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {

@@ -1,34 +1,35 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
 import { useShallow } from 'zustand/shallow';
 
 import { CustomLink } from '@/components/atoms/CustomLink';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores/friend';
-import { toast } from '@/utils/toast';
+import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores/global';
+import { usePeerStore } from '@/stores/peer';
 import { Avatar } from '@radix-ui/themes';
+
+import { FriendCard } from './_components/FriendCard';
 
 const ChattingListPage = () => {
   const [friendList] = useFriendStore(
     useShallow((state) => [state.friendList]),
   );
 
+  const friendConnectionMap = usePeerStore(
+    (state) => state.friendConnectionMap,
+  );
+
   return (
     <article>
       <ul>
-        {friendList.map((friend) => (
-          <li key={friend.userId}>
-            <CustomLink
-              onlyIntercept
-              href={ROUTES.CHATTING_ROOM.pathname({
-                userId: friend.userId,
-              })}
-            >
-              <div>
-                <Avatar fallback={friend.emoji} size="7" />
-              </div>
-            </CustomLink>
+        {friendList.map(({ userId, emoji, nickname }) => (
+          <li key={userId}>
+            <FriendCard
+              emoji={emoji}
+              friendUserId={userId}
+              nickname={nickname}
+            />
           </li>
         ))}
       </ul>

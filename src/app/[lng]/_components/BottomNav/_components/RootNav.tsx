@@ -55,7 +55,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const currentRoute = findRoute(pathname);
 
   const currentRouteIndex = NAVIGATION_ITEMS.findIndex(
-    ({ routeName }) => ROUTES[routeName] === currentRoute,
+    ({ routeName }) => routeName === currentRoute.name,
   );
 
   const [activeIndex, setActiveIndex] = useState(currentRouteIndex);

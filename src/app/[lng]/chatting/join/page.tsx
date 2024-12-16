@@ -6,10 +6,11 @@ import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
 import { COOKIES } from '@/constants/cookies';
+import { friendTable } from '@/database/indexed-db';
 import { useCookies } from '@/hooks/useCookies';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { ROUTES } from '@/routes/client';
-import { friendTable } from '@/stores/indexed-db';
+import { useGlobalStore } from '@/stores/global';
 import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
 import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
 import { toast } from '@/utils/toast';
@@ -56,6 +57,8 @@ const ChattingJoinPage = createOnlyClientComponent(
       toast({
         message: t('start-chatting'),
       });
+
+      const { mediaQueryBreakPoint } = useGlobalStore.getState();
 
       router.replace(ROUTES.CHATTING_ROOM.pathname({ userId: data.userId }));
     }, [data, router, t]);
