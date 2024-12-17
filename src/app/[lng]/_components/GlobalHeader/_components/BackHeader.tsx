@@ -30,7 +30,7 @@ export const BackHeader = () => {
         'justify-end': isLoginPage,
       })}
     >
-      <CustomIconButton variant="ghost" onClick={() => router.back()}>
+      <CustomIconButton size="3" variant="ghost" onClick={() => router.back()}>
         <BackIcon
           className={cn('text-slate-900', isLoginPage ? 'size-8' : 'size-6')}
         />

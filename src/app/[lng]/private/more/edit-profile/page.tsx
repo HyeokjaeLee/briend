@@ -26,6 +26,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, Select, Skeleton, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 
+import { useSaveProfileImage } from './_hooks/useSaveProfileImage';
+
 const createRandomEmojiList = () => {
   const randomEmojiList: string[] = [];
 
@@ -134,6 +136,8 @@ const EditProfilePage = (props: ProfilePageProps) => {
     },
   });
 
+  const { isLoading, setImage, imageSrc } = useSaveProfileImage();
+
   return (
     <article className="p-4">
       <form
@@ -159,11 +163,28 @@ const EditProfilePage = (props: ProfilePageProps) => {
         })}
       >
         <section className="w-full flex-col gap-8 flex-center">
+          <label>
+            asfasfas
+            <input
+              accept="image/*"
+              className="hidden"
+              id="image-upload"
+              type="file"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+
+                if (file) {
+                  setImage(file);
+                }
+              }}
+            />
+          </label>
           <Skeleton loading={!selectedEmoji}>
             <Avatar
               fallback={<span className="text-5xl">{selectedEmoji}</span>}
               radius="full"
               size="7"
+              src={imageSrc}
             />
           </Skeleton>
           <Skeleton className="h-32 w-full" loading={!randomEmojiList.length}>

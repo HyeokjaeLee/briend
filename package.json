@@ -22,6 +22,7 @@
     "@tanstack/react-query-persist-client": "^5.62.7",
     "@vercel/functions": "^1.5.1",
     "accept-language": "^3.0.20",
+    "browser-image-compression": "^2.0.2",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "deepl-node": "^1.15.0",

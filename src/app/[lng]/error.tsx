@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
+import { useState } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton } from '@/components/atoms/CustomButton';
@@ -54,8 +55,15 @@ const ErrorPage = (e: { error: Error }) => {
     }
   }
 
+  const [containerElement, setContainerElement] = useState<HTMLElement | null>(
+    null,
+  );
+
   return (
-    <article className="flex-1 flex-col gap-8 flex-center">
+    <article
+      ref={setContainerElement}
+      className="flex-1 flex-col gap-8 flex-center"
+    >
       <Lottie loop animationData={dynamicInfo.lottie} className="w-2/3" />
       <h1 className="whitespace-pre-line text-center text-xl font-semibold">
         {dynamicInfo.text}
@@ -65,6 +73,9 @@ const ErrorPage = (e: { error: Error }) => {
         activeScaleDown={false}
         className="fixed bottom-0 h-17 w-full max-w-screen-sm rounded-none"
         color="red"
+        style={{
+          width: containerElement?.clientWidth,
+        }}
       >
         <Link replace className="z-10" href={dynamicInfo.buttonLink}>
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
