@@ -6,7 +6,7 @@ import { z } from 'zod';
 
 import { useEffect, useReducer, use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { RiRefreshLine } from 'react-icons/ri';
+import { FaUser, FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
@@ -163,62 +163,37 @@ const EditProfilePage = (props: ProfilePageProps) => {
         })}
       >
         <section className="w-full flex-col gap-8 flex-center">
-          <label>
-            asfasfas
-            <input
-              accept="image/*"
-              className="hidden"
-              id="image-upload"
-              type="file"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
+          <Skeleton loading={isLoading}>
+            <label
+              className="relative cursor-pointer rounded-full"
+              htmlFor="image-upload"
+            >
+              <Avatar
+                fallback={<FaUser className="size-12 text-white" />}
+                radius="full"
+                size="7"
+                src={imageSrc}
+              />
+              <input
+                accept="image/*"
+                className="hidden"
+                id="image-upload"
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
 
-                if (file) {
-                  setImage(file);
-                }
-              }}
-            />
-          </label>
-          <Skeleton loading={!selectedEmoji}>
-            <Avatar
-              fallback={<span className="text-5xl">{selectedEmoji}</span>}
-              radius="full"
-              size="7"
-              src={imageSrc}
-            />
-          </Skeleton>
-          <Skeleton className="h-32 w-full" loading={!randomEmojiList.length}>
-            <ul className="w-full flex-wrap gap-5 rounded-xl bg-sky-50 p-5 flex-center">
-              {randomEmojiList.map((emoji) => (
-                <li key={emoji} className="relative">
-                  <CustomIconButton
-                    className={cn('text-3xl', {
-                      'bg-sky-500': selectedEmoji === emoji,
-                    })}
-                    variant="ghost"
-                    onClick={(e) => {
-                      e.preventDefault();
-
-                      setValue('emoji', emoji);
-                    }}
-                  >
-                    {emoji}
-                  </CustomIconButton>
-                </li>
-              ))}
-            </ul>
+                  if (file) {
+                    setImage(file);
+                  }
+                }}
+              />
+              <div className="absolute bottom-1 right-1/2 translate-x-1/2 rounded-full bg-white p-2">
+                <FaCamera />
+              </div>
+            </label>
           </Skeleton>
         </section>
-        <CustomButton
-          className="w-full"
-          variant="outline"
-          onClick={() => {
-            dispatchRandomEmojiList();
-          }}
-        >
-          <RiRefreshLine className="size-7" />
-          {t('change-random-emoji')}
-        </CustomButton>
+        <CustomButton asChild className="w-full" variant="outline" />
         <label className="w-full">
           {t('my-nickname')}
           <TextField.Root
