@@ -1,27 +1,19 @@
 import imageCompression from 'browser-image-compression';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-interface SaveImageOptions {
+interface LocalImageOptions {
   maxSizeMB?: number;
   size?: number; // 1:1 크기
 }
 
-export const useSaveProfileImage = ({
+export const useGetLocalImage = ({
   maxSizeMB = 1,
   size = 96,
-}: SaveImageOptions = {}) => {
-  const [imageSrc, setImageSrc] = useState<string>();
+}: LocalImageOptions = {}) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(
-    () => () => {
-      if (imageSrc) URL.revokeObjectURL(imageSrc);
-    },
-    [imageSrc],
-  );
-
-  const setImage = async (file: File): Promise<Blob> => {
+  const getImage = async (file: File) => {
     setIsLoading(true);
 
     // 이미지 로드
@@ -45,7 +37,7 @@ export const useSaveProfileImage = ({
     };
 
     // 1:1 비율로 크롭
-    const cropToSquare = (img: HTMLImageElement): Promise<Blob> => {
+    const cropToSquare = (img: HTMLImageElement) => {
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d')!;
 
@@ -82,10 +74,6 @@ export const useSaveProfileImage = ({
         },
       );
 
-      if (imageSrc) URL.revokeObjectURL(imageSrc);
-
-      setImageSrc(URL.createObjectURL(compressedFile));
-
       return compressedFile;
     } catch (error) {
       console.error('이미지 처리 실패:', error);
@@ -95,5 +83,5 @@ export const useSaveProfileImage = ({
     }
   };
 
-  return { setImage, isLoading, imageSrc };
+  return { getImage, isLoading };
 };
