@@ -12,12 +12,20 @@ enum MESSAGE_STATE {
   ERROR = 'error',
 }
 
+interface ProfileImageTable {
+  userId: string;
+  blob: Blob;
+  type: string;
+  updatedAt: number;
+}
+
 interface IndexedDB extends Dexie {
   friend: EntityTable<PusherMessage.addFriend, 'userId'>;
   message: EntityTable<
     PusherMessage.sendMessage & { state: MESSAGE_STATE },
     'id'
   >;
+  profileImage: EntityTable<ProfileImageTable, 'userId'>;
 }
 
 let db: IndexedDB | undefined;
@@ -33,8 +41,10 @@ if (IS_CLIENT) {
     friend: 'userId, friendToken',
     message:
       'id, fromUserId -> friend.userId, message, translatedMessage, timestamp, state',
+    profileImage: 'userId, blob, type, updatedAt',
   });
 }
 
 export const friendTable = db?.friend;
 export const messageTable = db?.message;
+export const profileImageTable = db?.profileImage;

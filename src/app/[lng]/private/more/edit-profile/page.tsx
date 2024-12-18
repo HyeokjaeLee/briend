@@ -1,5 +1,6 @@
 'use client';
 
+import { useLiveQuery } from 'dexie-react-hooks';
 import { getSession, useSession } from 'next-auth/react';
 import { random } from 'node-emoji';
 import { z } from 'zod';
@@ -15,7 +16,10 @@ import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { BottomButton } from '@/components/molecules/BottomButton';
 import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
+import { profileImageTable } from '@/database/indexed-db';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
+import { useGetLocalImage } from '@/hooks/useGetLocalImage';
+import { useImageBlobUrl } from '@/hooks/useImageBlobUrl';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { cn } from '@/utils/cn';
@@ -25,8 +29,6 @@ import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, Select, Skeleton, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
-
-import { useSaveProfileImage } from './_hooks/useSaveProfileImage';
 
 const createRandomEmojiList = () => {
   const randomEmojiList: string[] = [];
@@ -100,8 +102,6 @@ const EditProfilePage = (props: ProfilePageProps) => {
     },
   });
 
-  const selectedEmoji = watch('emoji');
-
   const hasRandomEmojiList = !!randomEmojiList.length;
 
   useEffect(() => {
@@ -136,7 +136,17 @@ const EditProfilePage = (props: ProfilePageProps) => {
     },
   });
 
-  const { isLoading, setImage, imageSrc } = useSaveProfileImage();
+  const { isLoading, getImage } = useGetLocalImage();
+
+  const { createBlobUrl, imageBlobUrl } = useImageBlobUrl();
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    profileImageTable?.get(user.id).then((profileImage) => {
+      if (profileImage) createBlobUrl(profileImage.blob);
+    });
+  }, [createBlobUrl, user?.id]);
 
   return (
     <article className="p-4">
@@ -172,29 +182,39 @@ const EditProfilePage = (props: ProfilePageProps) => {
                 fallback={<FaUser className="size-12 text-white" />}
                 radius="full"
                 size="7"
-                src={imageSrc}
+                src={imageBlobUrl}
               />
               <input
                 accept="image/*"
                 className="hidden"
                 id="image-upload"
                 type="file"
-                onChange={(e) => {
+                onChange={async (e) => {
                   const file = e.target.files?.[0];
 
                   if (file) {
-                    setImage(file);
+                    const blob = await getImage(file);
+                    createBlobUrl(blob);
+
+                    /**
+                     * profileImageTable?.put({
+                      userId: user?.id,
+                      blob,
+                      type: file.type,
+                      updatedAt: Date.now(),
+                    });
+                     */
                   }
                 }}
               />
-              <div className="absolute bottom-1 right-1/2 translate-x-1/2 rounded-full bg-white p-2">
-                <FaCamera />
+              <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
+                <FaCamera className="size-4 text-slate-700" />
               </div>
             </label>
           </Skeleton>
         </section>
         <CustomButton asChild className="w-full" variant="outline" />
-        <label className="w-full">
+        <label className="w-full font-semibold">
           {t('my-nickname')}
           <TextField.Root
             {...register('nickname')}
