@@ -20,8 +20,9 @@ export const CustomButton = ({
       {...restProps}
       className={cn(
         'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-none',
+        'text-nowrap',
         {
-          'active:scale-90 transition-transform duration-75 ease-out':
+          'active:scale-95 transition-transform duration-75 ease-out':
             activeScaleDown,
           'h-14': size === '4',
         },
