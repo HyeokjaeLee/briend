@@ -2,14 +2,12 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-import { type RefAttributes } from 'react';
+import type { PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
 import { DEFAULT_COOKIES_OPTIONS } from '@/constants/cookies';
 import { IS_CLIENT, QUERY_KEYS } from '@/constants/etc';
 import { cookies } from '@/stores/cookies';
-import type { ThemeProps } from '@radix-ui/themes';
-import { Theme } from '@radix-ui/themes';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
@@ -60,9 +58,7 @@ const persistOptions: OmitKeyof<PersistQueryClientOptions, 'queryClient'> = {
   },
 };
 
-export const GlobalProvider = (
-  props: ThemeProps & RefAttributes<HTMLDivElement>,
-) => {
+export const GlobalProvider = ({ children }: PropsWithChildren) => {
   return (
     <SessionProvider>
       <CookiesProvider
@@ -77,7 +73,7 @@ export const GlobalProvider = (
         >
           <FriendStoreMounter />
           <PeerConnector />
-          <Theme {...props} />
+          {children}
         </PersistQueryClientProvider>
       </CookiesProvider>
     </SessionProvider>

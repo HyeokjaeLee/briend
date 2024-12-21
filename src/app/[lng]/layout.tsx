@@ -9,6 +9,7 @@ import type { ReactElement } from 'react';
 
 import { LANGUAGE } from '@/constants/language';
 import { cn } from '@/utils/cn';
+import { Theme } from '@radix-ui/themes';
 
 import { languages } from '../i18n/settings';
 
@@ -88,28 +89,30 @@ const RootLayout = async ({
       dir={dir(lng)}
       lang={lng}
     >
-      <body className="size-full">
-        <GlobalProvider className="flex size-full" scaling="90%">
-          <aside className="hidden flex-1 bg-slate-100 xl:block" />
-          <div
-            className={cn(
-              'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
-              'flex-1 shadow-none sm:shadow-lg',
-            )}
-          >
-            <GlobalSuspense>
-              <GlobalLoading />
-              <GlobalHeader />
-              <ToastProvider />
-              <MainContainer>{children}</MainContainer>
-              <BottomNav />
-            </GlobalSuspense>
-          </div>
-          <aside className="hidden flex-1 bg-slate-100 sm:block">
-            {rightSide}
-          </aside>
-        </GlobalProvider>
-      </body>
+      <Theme asChild className="flex size-full" scaling="90%">
+        <body>
+          <GlobalProvider>
+            <aside className="hidden flex-1 bg-slate-100 xl:block" />
+            <div
+              className={cn(
+                'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
+                'flex-1 shadow-none sm:shadow-lg',
+              )}
+            >
+              <GlobalSuspense>
+                <GlobalLoading />
+                <GlobalHeader />
+                <ToastProvider />
+                <MainContainer>{children}</MainContainer>
+                <BottomNav />
+              </GlobalSuspense>
+            </div>
+            <aside className="hidden flex-1 bg-slate-100 sm:block">
+              {rightSide}
+            </aside>
+          </GlobalProvider>
+        </body>
+      </Theme>
     </html>
   );
 };
