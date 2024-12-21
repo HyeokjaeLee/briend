@@ -58,8 +58,6 @@ const ChattingJoinPage = createOnlyClientComponent(
         message: t('start-chatting'),
       });
 
-      const { mediaQueryBreakPoint } = useGlobalStore.getState();
-
       router.replace(ROUTES.CHATTING_ROOM.pathname({ userId: data.userId }));
     }, [data, router, t]);
 

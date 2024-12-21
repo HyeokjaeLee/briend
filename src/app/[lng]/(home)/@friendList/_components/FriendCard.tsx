@@ -7,7 +7,7 @@ import { Avatar } from '@radix-ui/themes';
 
 interface FriendCardProps {
   friendUserId: string;
-  emoji: string;
+
   nickname: string;
   toSidePanel?: boolean;
 }
@@ -20,7 +20,7 @@ enum CONNECTION_STATUS {
 
 export const FriendCard = ({
   friendUserId,
-  emoji,
+
   nickname,
 }: FriendCardProps) => {
   const hasSidePanel = useGlobalStore(
@@ -50,7 +50,7 @@ export const FriendCard = ({
       toSidePanel={hasSidePanel}
     >
       <article className="flex gap-3">
-        <Avatar fallback={emoji} radius="full" size="5" />
+        <Avatar radius="full" size="5" />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong>{nickname}</strong>

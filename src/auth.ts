@@ -5,7 +5,6 @@ import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
-import { random as randomEmoji } from 'node-emoji';
 
 import { COOKIES } from './constants/cookies';
 import { LOGIN_PROVIDERS } from './constants/etc';
@@ -19,7 +18,6 @@ import { isEnumValue } from './utils/isEnumValue';
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
   updatedProfile?: {
-    emoji: string;
     nickname: string;
   };
 }
@@ -76,7 +74,6 @@ export const {
         }
 
         if (sessionDataToUpdate.updatedProfile) {
-          token.emoji = sessionDataToUpdate.updatedProfile.emoji;
           token.name = sessionDataToUpdate.updatedProfile.nickname;
         }
 
@@ -166,7 +163,6 @@ export const {
           }
 
           const newUserData = {
-            emoji: randomEmoji().emoji,
             id: clientId,
             email,
             name,
@@ -217,7 +213,7 @@ export const {
         });
 
       token = {
-        ...pick(savedAccount, ['id', 'name', 'email', 'emoji']),
+        ...pick(savedAccount, ['id', 'name', 'email']),
         isKakaoConnected: !!savedAccount.kakao_id,
         isGoogleConnected: !!savedAccount.google_id,
         isNaverConnected: !!savedAccount.naver_id,
@@ -226,18 +222,11 @@ export const {
       return token;
     },
     session: async ({ session, token }) => {
-      (['id', 'name', 'email', 'emoji'] as const).forEach((key) => {
+      (['id', 'name', 'email'] as const).forEach((key) => {
         const value = token[key];
 
         if (typeof value === 'string') {
-          switch (key) {
-            case 'emoji':
-              //! 간혹 이모지에 공백이 들어가는 경우가 있음
-              session.user.emoji = value.trim();
-              break;
-            default:
-              session.user[key] = value;
-          }
+          session.user[key] = value;
         }
       });
 

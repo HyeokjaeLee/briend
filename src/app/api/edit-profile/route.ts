@@ -20,7 +20,6 @@ export const POST = createApiRoute(
         id,
       },
       data: {
-        emoji: params.emoji,
         name: params.nickname,
       },
     });
@@ -29,7 +28,6 @@ export const POST = createApiRoute(
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user.name']));
 
     return NextResponse.json<ApiResponse.EDIT_PROFILE>({
-      emoji: user.emoji,
       nickname: user.name,
     });
   },

@@ -25,7 +25,6 @@ export interface QrInfo {
   userId: string;
   language: LANGUAGE;
   nickname: string;
-  emoji: string;
   expires: string;
 }
 
@@ -50,7 +49,7 @@ export const InviteForm = () => {
     ]),
   );
 
-  const chattingIndex = useLiveQuery(() => friendTable?.count());
+  const friendCount = useLiveQuery(() => friendTable?.count());
 
   const { control, handleSubmit, register, formState } = useForm<
     z.infer<typeof formSchema>
@@ -65,7 +64,8 @@ export const InviteForm = () => {
     },
   });
 
-  const nicknamePlaceholder = chattingIndex ? `Friend ${chattingIndex}` : '';
+  const nicknamePlaceholder =
+    typeof friendCount === 'number' ? `Friend ${friendCount}` : '';
 
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
@@ -83,7 +83,6 @@ export const InviteForm = () => {
           hostId: user.id,
           guestLanguage: language,
           guestNickname: nickname || nicknamePlaceholder,
-          hostEmoji: user.emoji,
         });
       })}
     >

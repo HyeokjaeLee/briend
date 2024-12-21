@@ -15,7 +15,6 @@ export namespace JwtPayload {
   export interface InviteToken {
     hostId: string;
     hostNickname: string;
-    hostEmoji: string;
     hostLanguage: LANGUAGE;
     guestNickname: string;
     guestLanguage: LANGUAGE;
@@ -24,7 +23,6 @@ export namespace JwtPayload {
   export interface FriendToken {
     userId: string;
     nickname: string;
-    emoji: string;
     language: LANGUAGE;
     isGuest: boolean;
   }
@@ -32,6 +30,5 @@ export namespace JwtPayload {
   export interface ChannelToken extends InviteToken {
     channelId: string;
     guestId: string;
-    guestEmoji: string;
   }
 }

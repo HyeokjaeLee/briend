@@ -1,18 +1,15 @@
 'use client';
 
-import { useLiveQuery } from 'dexie-react-hooks';
 import { getSession, useSession } from 'next-auth/react';
-import { random } from 'node-emoji';
 import { z } from 'zod';
 
-import { useEffect, useReducer, use } from 'react';
+import { useEffect, use } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaUser, FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
 import { CustomButton } from '@/components/atoms/CustomButton';
-import { CustomIconButton } from '@/components/atoms/CustomIconButton';
 import { BottomButton } from '@/components/molecules/BottomButton';
 import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
@@ -20,29 +17,15 @@ import { profileImageTable } from '@/database/indexed-db';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
 import { useGetLocalImage } from '@/hooks/useGetLocalImage';
 import { useImageBlobUrl } from '@/hooks/useImageBlobUrl';
+import { useIndexedDB } from '@/hooks/useIndexedDB';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import { cn } from '@/utils/cn';
 import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar, Select, Skeleton, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
-
-const createRandomEmojiList = () => {
-  const randomEmojiList: string[] = [];
-
-  while (randomEmojiList.length < 20) {
-    const randomEmoji = random().emoji;
-
-    if (!randomEmojiList.includes(randomEmoji)) {
-      randomEmojiList.push(randomEmoji);
-    }
-  }
-
-  return randomEmojiList;
-};
 
 interface ProfilePageProps {
   params: Promise<{
@@ -57,17 +40,12 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const { lng } = params;
 
-  const [randomEmojiList, dispatchRandomEmojiList] = useReducer(
-    () => createRandomEmojiList(),
-    [],
-  );
-
   const { t } = useTranslation('edit-profile');
 
   const formSchema = z.object({
-    emoji: z.string(),
     language: z.nativeEnum(LANGUAGE),
     nickname: z.string().max(20, t('nickname-max-length')),
+    profileImageUpdatedAt: z.date().optional(),
   });
 
   type ProfileSchema = z.infer<typeof formSchema>;
@@ -76,15 +54,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const user = session.data?.user;
 
-  const {
-    control,
-    handleSubmit,
-    register,
-    formState,
-    watch,
-    setValue,
-    getValues,
-  } = useForm<ProfileSchema>({
+  const form = useForm<ProfileSchema>({
     resolver: zodResolver(formSchema),
     mode: 'onChange',
     defaultValues: async () => {
@@ -95,29 +65,19 @@ const EditProfilePage = (props: ProfilePageProps) => {
       if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
       return {
-        emoji: user.emoji,
         language: lng,
         nickname: user.name ?? 'Unknown',
       };
     },
   });
 
-  const hasRandomEmojiList = !!randomEmojiList.length;
-
-  useEffect(() => {
-    if (!hasRandomEmojiList) {
-      dispatchRandomEmojiList();
-    }
-  }, [hasRandomEmojiList]);
-
   const router = useCustomRouter();
 
   const editProfileMutation = useMutation({
     mutationFn: API_ROUTES.EDIT_PROFILE,
-    onSuccess: async ({ emoji, nickname }) => {
+    onSuccess: async ({ nickname }) => {
       await session.update({
         updatedProfile: {
-          emoji,
           nickname,
         },
       } satisfies SessionDataToUpdate);
@@ -126,7 +86,9 @@ const EditProfilePage = (props: ProfilePageProps) => {
         message: t('save-profile'),
       });
 
-      router.push(`/${getValues('language')}${ROUTES.MORE_MENUS.pathname}`);
+      router.push(
+        `/${form.getValues('language')}${ROUTES.MORE_MENUS.pathname}`,
+      );
     },
     onError: () => {
       toast({
@@ -140,34 +102,35 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const { createBlobUrl, imageBlobUrl } = useImageBlobUrl();
 
-  useEffect(() => {
-    if (!user?.id) return;
+  const profileImage = useIndexedDB(
+    profileImageTable,
+    (table) => {
+      if (!user?.id) return;
 
-    profileImageTable?.get(user.id).then((profileImage) => {
-      if (profileImage) createBlobUrl(profileImage.blob);
-    });
-  }, [createBlobUrl, user?.id]);
+      return table.get(user.id);
+    },
+    [user?.id],
+  );
+
+  useEffect(() => {
+    if (profileImage?.blob) createBlobUrl(profileImage.blob);
+  }, [createBlobUrl, profileImage?.blob]);
 
   return (
     <article className="p-4">
       <form
         className="flex-col gap-8 flex-center"
         id={FORM_NAME}
-        onSubmit={handleSubmit(async ({ emoji, language, nickname }) => {
+        onSubmit={form.handleSubmit(async ({ language, nickname }) => {
           if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
-          if (
-            emoji === user.emoji &&
-            nickname === user.name &&
-            lng === language
-          )
+          if (nickname === user.name && lng === language)
             return toast({
               type: 'fail',
               message: t('no-change'),
             });
 
           editProfileMutation.mutate({
-            emoji,
             nickname,
           });
         })}
@@ -192,19 +155,21 @@ const EditProfilePage = (props: ProfilePageProps) => {
                 onChange={async (e) => {
                   const file = e.target.files?.[0];
 
-                  if (file) {
-                    const blob = await getImage(file);
-                    createBlobUrl(blob);
+                  if (!user || !file)
+                    throw new CustomError(
+                      ERROR.NOT_ENOUGH_PARAMS(['user', 'file']),
+                    );
 
-                    /**
-                     * profileImageTable?.put({
-                      userId: user?.id,
-                      blob,
-                      type: file.type,
-                      updatedAt: Date.now(),
-                    });
-                     */
-                  }
+                  const blob = await getImage(file);
+
+                  createBlobUrl(blob);
+
+                  profileImageTable?.put({
+                    userId: user?.id,
+                    blob,
+                    type: file.type,
+                    updatedAt: Date.now(),
+                  });
                 }}
               />
               <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
@@ -217,18 +182,20 @@ const EditProfilePage = (props: ProfilePageProps) => {
         <label className="w-full font-semibold">
           {t('my-nickname')}
           <TextField.Root
-            {...register('nickname')}
+            {...form.register('nickname')}
             className="mt-2 h-14 w-full rounded-xl px-1"
             placeholder={t('my-nickname')}
             size="3"
             variant="soft"
           />
-          <ValidationMessage message={formState.errors.nickname?.message} />
+          <ValidationMessage
+            message={form.formState.errors.nickname?.message}
+          />
         </label>
         <label className="w-full font-semibold">
           {t('friend-language')}
           <Controller
-            control={control}
+            control={form.control}
             name="language"
             render={({ field }) => (
               <Select.Root
@@ -261,10 +228,10 @@ const EditProfilePage = (props: ProfilePageProps) => {
       </form>
       <BottomButton
         form={FORM_NAME}
-        loading={formState.isSubmitting || editProfileMutation.isPending}
+        loading={form.formState.isSubmitting || editProfileMutation.isPending}
         type="submit"
       >
-        저장하기
+        {t('save')}
       </BottomButton>
     </article>
   );
