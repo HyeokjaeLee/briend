@@ -1,9 +1,9 @@
 {
-  "change-random-emoji": "새로운 이모지",
   "my-nickname": "닉네임",
   "nickname-max-length": "닉네임은 10자 이하로 설정해야해요",
   "friend-language": "언어",
   "no-change": "변경된 내용이 없어요!",
   "save-profile": "프로필이 변경되었어요!",
-  "error-save-profile": "프로필 변경에 실패했어요!"
+  "error-save-profile": "프로필 변경에 실패했어요!",
+  "save": "저장하기"
 }

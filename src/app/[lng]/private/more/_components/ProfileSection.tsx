@@ -30,7 +30,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
     >
       <Skeleton loading={!user}>
         <Avatar
-          fallback={<span className="text-5xl">{user?.emoji}</span>}
+          fallback={<span className="text-5xl">s</span>}
           radius="full"
           size="7"
         />

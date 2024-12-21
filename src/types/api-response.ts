@@ -17,7 +17,6 @@ export namespace ApiResponse {
 
   export interface EDIT_PROFILE {
     nickname: string;
-    emoji: string;
   }
 
   export interface RECEIVE_MESSAGE {

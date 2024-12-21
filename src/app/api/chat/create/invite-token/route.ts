@@ -18,7 +18,6 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
       guestNickname,
       guestLanguage,
       hostId,
-      hostEmoji,
     }: ApiParams.CREATE_CHAT_INVITE_TOKEN = await req.json();
 
     const token = await getAuthToken({ req });
@@ -38,7 +37,6 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
     const inviteToken = await new SignJWT({
       hostId,
       hostNickname,
-      hostEmoji,
       guestNickname,
       guestLanguage,
       hostLanguage,

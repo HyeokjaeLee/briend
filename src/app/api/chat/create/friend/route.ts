@@ -2,7 +2,6 @@ import type { NextRequest } from 'next/server';
 
 import { errors } from 'jose';
 import { NextResponse } from 'next/server';
-import { random } from 'node-emoji';
 
 import { pusher } from '@/app/pusher/server';
 import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
@@ -41,14 +40,12 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
       const [{ friendToken: myToken }, { friendToken: hostToken }] =
         await Promise.all([
           createFriendToken(hostId, {
-            emoji: token?.email || random().emoji,
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: myId,
             isGuest: false,
           }),
           createFriendToken(myId, {
-            emoji: payload.hostEmoji,
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: hostId,

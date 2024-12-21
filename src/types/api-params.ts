@@ -4,7 +4,7 @@ import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
 export namespace ApiParams {
   export type CREATE_CHAT_INVITE_TOKEN = Pick<
     JwtPayload.InviteToken,
-    'hostId' | 'hostEmoji' | 'guestLanguage' | 'guestNickname'
+    'hostId' | 'guestLanguage' | 'guestNickname'
   >;
 
   export interface CREATE_FRIEND {
@@ -18,7 +18,6 @@ export namespace ApiParams {
 
   export interface EDIT_PROFILE {
     nickname: string;
-    emoji: string;
   }
 
   export interface SEND_MESSAGE {

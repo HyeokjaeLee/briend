@@ -23,13 +23,9 @@ const ChattingListPage = () => {
   return (
     <article>
       <ul>
-        {friendList.map(({ userId, emoji, nickname }) => (
+        {friendList.map(({ userId, nickname }) => (
           <li key={userId}>
-            <FriendCard
-              emoji={emoji}
-              friendUserId={userId}
-              nickname={nickname}
-            />
+            <FriendCard friendUserId={userId} nickname={nickname} />
           </li>
         ))}
       </ul>

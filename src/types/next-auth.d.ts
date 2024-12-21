@@ -5,7 +5,6 @@ export interface UserSession {
   id: string;
   name?: string;
   email?: string;
-  emoji: string;
   isKakaoConnected: boolean;
   isGoogleConnected: boolean;
   isAppleConnected: boolean;
