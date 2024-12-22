@@ -11,6 +11,7 @@ import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
 import { SESSION_STORAGE } from '@/constants/storage-key';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores/global';
+import { useGlobalModalStore } from '@/stores/global-modal';
 import { useHistoryStore } from '@/stores/history';
 import { isCurrentHref } from '@/utils/isCurrentHref';
 
@@ -87,6 +88,11 @@ export const useCustomRouter = () => {
     },
     refresh: router.refresh,
     back: (options) => {
+      const { setIsGlobalModalOpen, backNoticeInfo } =
+        useGlobalModalStore.getState();
+
+      if (backNoticeInfo) return setIsGlobalModalOpen(true);
+
       const { withLoading, withAnimation = 'FROM_TOP' } = options ?? {};
 
       const { historyIndex } = useHistoryStore.getState();

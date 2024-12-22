@@ -17,6 +17,7 @@ import { BottomNav } from './_components/BottomNav';
 import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
+import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { GlobalSuspense } from './_components/GlobalSuspense';
 import { MainContainer } from './_components/MainContainer';
@@ -91,26 +92,27 @@ const RootLayout = async ({
     >
       <Theme asChild className="flex size-full" scaling="90%">
         <body>
-          <GlobalProvider>
-            <aside className="hidden flex-1 bg-slate-100 xl:block" />
-            <div
-              className={cn(
-                'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
-                'flex-1 shadow-none sm:shadow-lg',
-              )}
-            >
-              <GlobalSuspense>
+          <GlobalSuspense>
+            <GlobalProvider>
+              <aside className="hidden flex-1 bg-slate-100 xl:block" />
+              <div
+                className={cn(
+                  'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
+                  'flex-1 shadow-none sm:shadow-lg',
+                )}
+              >
                 <GlobalLoading />
                 <GlobalHeader />
                 <ToastProvider />
+                <GlobalModals />
                 <MainContainer>{children}</MainContainer>
                 <BottomNav />
-              </GlobalSuspense>
-            </div>
-            <aside className="hidden flex-1 bg-slate-100 sm:block">
-              {rightSide}
-            </aside>
-          </GlobalProvider>
+              </div>
+              <aside className="hidden flex-1 bg-slate-100 sm:block">
+                {rightSide}
+              </aside>
+            </GlobalProvider>
+          </GlobalSuspense>
         </body>
       </Theme>
     </html>

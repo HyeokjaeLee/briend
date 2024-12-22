@@ -11,6 +11,8 @@ export const POST = createApiRoute(
   async (req: NextRequest) => {
     const params: ApiParams.EDIT_PROFILE = await req.json();
 
+    console.log(params);
+
     const id = req.cookies.get(COOKIES.USER_ID)?.value;
 
     if (!id) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['id']));

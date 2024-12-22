@@ -6,27 +6,26 @@ import { z } from 'zod';
 
 import { useEffect, use, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { FaUser, FaCamera } from 'react-icons/fa';
+import { FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
 import { CustomButton } from '@/components/atoms/CustomButton';
-import { Modal } from '@/components/atoms/Modal';
 import { BottomButton } from '@/components/molecules/BottomButton';
 import { ProfileImage } from '@/components/molecules/ProfileImage';
 import { ValidationMessage } from '@/components/molecules/ValidationMessage';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
 import { profileImageTable } from '@/database/indexed-db';
 import { useCustomRouter } from '@/hooks/useCustomRouter';
-import { useGetLocalImage } from '@/hooks/useGetLocalImage';
 import { useImageBlobUrl } from '@/hooks/useImageBlobUrl';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
+import { useGlobalModalStore } from '@/stores/global-modal';
 import { CustomError, ERROR } from '@/utils/customError';
 import { isEnumValue } from '@/utils/isEnumValue';
 import { toast } from '@/utils/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Avatar, Select, Skeleton, TextField } from '@radix-ui/themes';
+import { Select, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 
 import { ProfileImageChangeModal } from './_components/ProfileImageChangeModal';
@@ -59,7 +58,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         blob: z.instanceof(Blob),
         updatedAt: z.number(),
       })
-      .optional(),
+      .nullable(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -77,18 +76,25 @@ const EditProfilePage = (props: ProfilePageProps) => {
       return {
         language: lng,
         nickname: user.name ?? 'Unknown',
-        profileImage: profileImage && omit(profileImage, ['userId']),
+        profileImage: profileImage ? omit(profileImage, ['userId']) : null,
       };
     },
   });
 
-  const profileBlob = form.watch('profileImage')?.blob;
+  const setBackNoticeInfo = useGlobalModalStore(
+    (state) => state.setBackNoticeInfo,
+  );
 
-  const { createBlobUrl, imageBlobUrl } = useImageBlobUrl();
+  const [profileImageSrc, dispatchProfileImage] = useImageBlobUrl();
+
+  const { blob: profileImageBlob, updatedAt: profileImageUpdateAt } =
+    form.watch('profileImage') ?? {};
 
   useEffect(() => {
-    if (profileBlob) createBlobUrl(profileBlob);
-  }, [createBlobUrl, profileBlob]);
+    if (!profileImageBlob) return dispatchProfileImage({ type: 'REVOKE' });
+
+    dispatchProfileImage({ type: 'CREATE', payload: profileImageBlob });
+  }, [dispatchProfileImage, profileImageBlob]);
 
   const router = useCustomRouter();
 
@@ -105,9 +111,13 @@ const EditProfilePage = (props: ProfilePageProps) => {
         message: t('save-profile'),
       });
 
-      router.push(
-        `/${form.getValues('language')}${ROUTES.MORE_MENUS.pathname}`,
-      );
+      const language = form.getValues('language');
+
+      const nextPathname = `/${language}${ROUTES.MORE_MENUS.pathname}`;
+
+      if (language === lng) return router.push(nextPathname);
+
+      location.href = nextPathname;
     },
     onError: () => {
       toast({
@@ -117,7 +127,21 @@ const EditProfilePage = (props: ProfilePageProps) => {
     },
   });
 
-  const { isLoading, getImage } = useGetLocalImage();
+  const isNoChanged =
+    !form.formState.isDirty &&
+    form.formState.defaultValues?.profileImage?.updatedAt ===
+      profileImageUpdateAt;
+
+  useEffect(() => {
+    if (isNoChanged) return;
+
+    setBackNoticeInfo({
+      message: t('back-notice-message'),
+      title: t('back-notice-title'),
+    });
+
+    return () => setBackNoticeInfo(null);
+  }, [setBackNoticeInfo, t, isNoChanged]);
 
   const [isProfileImageModalOpen, setIsProfileImageModalOpen] = useState(false);
 
@@ -126,30 +150,13 @@ const EditProfilePage = (props: ProfilePageProps) => {
       <form
         className="flex-col gap-8 flex-center"
         id={FORM_NAME}
-        onSubmit={form.handleSubmit(
-          async ({ language, nickname, profileImage }) => {
-            if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
+        onSubmit={form.handleSubmit(async ({ nickname }) => {
+          if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
-            if (nickname === user.name && lng === language)
-              return toast({
-                type: 'fail',
-                message: t('no-change'),
-              });
-
-            /**
-     *         profileImageTable?.put({
-              userId: user?.id,
-              blob,
-              type: file.type,
-              updatedAt: Date.now(),
-            });
-     */
-
-            editProfileMutation.mutate({
-              nickname,
-            });
-          },
-        )}
+          editProfileMutation.mutate({
+            nickname,
+          });
+        })}
       >
         <section className="w-full flex-col gap-8 flex-center">
           <button
@@ -157,7 +164,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
-            <ProfileImage loading={isLoading} src={imageBlobUrl} />
+            <ProfileImage src={profileImageSrc} />
             <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>
@@ -213,9 +220,19 @@ const EditProfilePage = (props: ProfilePageProps) => {
       </form>
       <ProfileImageChangeModal
         open={isProfileImageModalOpen}
+        onChangeProfileImage={(file) => {
+          if (!file) return form.setValue('profileImage', null);
+
+          form.setValue('profileImage', {
+            blob: file,
+            type: file.type,
+            updatedAt: Date.now(),
+          });
+        }}
         onClose={() => setIsProfileImageModalOpen(false)}
       />
       <BottomButton
+        disabled={isNoChanged}
         form={FORM_NAME}
         loading={form.formState.isSubmitting || editProfileMutation.isPending}
         type="submit"

@@ -1,63 +1,66 @@
+import { useTranslation } from '@/app/i18n/client';
 import { CustomButton } from '@/components/atoms/CustomButton';
 import { Modal } from '@/components/atoms/Modal';
-import { ProfileImage } from '@/components/molecules/ProfileImage';
+import { useGetLocalImage } from '@/hooks/useGetLocalImage';
+import { CustomError, ERROR } from '@/utils/customError';
 
 interface ProfileImageChangeModalProps {
-  imageBlobUrl: string;
-  loading?: boolean;
   open?: boolean;
   onClose?: () => void;
+  onChangeProfileImage?: (file: File | null) => void;
 }
 
 export const ProfileImageChangeModal = ({
-  imageBlobUrl,
-  loading,
   open,
   onClose,
+  onChangeProfileImage,
 }: ProfileImageChangeModalProps) => {
+  const { getImage, isLoading } = useGetLocalImage();
+  const { t } = useTranslation('edit-profile');
+
   return (
-    <Modal open={open} onClose={onClose}>
-      <ProfileImage
-        className="m-auto"
-        loading={loading}
-        size="8"
-        src={imageBlobUrl}
-      />
-      <footer className="flex w-full flex-col gap-2">
-        <CustomButton asChild className="w-full">
+    <Modal
+      hasCloseButton
+      open={open}
+      title={t('profile-image-change')}
+      onClose={onClose}
+    >
+      <footer className="mt-auto flex w-full gap-2">
+        <CustomButton
+          disabled={isLoading}
+          size="3"
+          variant="outline"
+          onClick={() => {
+            onChangeProfileImage?.(null);
+            onClose?.();
+          }}
+        >
+          {t('use-default-image')}
+        </CustomButton>
+        <CustomButton asChild disabled={isLoading} size="3">
           <label>
-            앨범에서 선택
+            {t('select-on-gallery')}
             <input
               accept="image/*"
               className="hidden"
               id="image-upload"
               type="file"
               onChange={async (e) => {
-                /**
-              *  const file = e.target.files?.[0];
+                if (isLoading) return;
 
-              if (!user || !file)
-                throw new CustomError(
-                  ERROR.NOT_ENOUGH_PARAMS(['user', 'file']),
-                );
+                const file = e.target.files?.[0];
 
-              const blob = await getImage(file);
+                if (!file)
+                  throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['file']));
 
-              createBlobUrl(blob);
+                const blob = await getImage(file);
 
-              profileImageTable?.put({
-                userId: user?.id,
-                blob,
-                type: file.type,
-                updatedAt: Date.now(),
-              });
-              */
+                onClose?.();
+
+                onChangeProfileImage?.(blob);
               }}
             />
           </label>
-        </CustomButton>
-        <CustomButton className="w-full" variant="outline">
-          기본 이미지 적용
         </CustomButton>
       </footer>
     </Modal>

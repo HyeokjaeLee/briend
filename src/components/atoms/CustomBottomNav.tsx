@@ -33,5 +33,5 @@ export const CustomBottomNav = ({
 
   return bottomContainerElement
     ? createPortal(contents, bottomContainerElement)
-    : contents;
+    : null;
 };
