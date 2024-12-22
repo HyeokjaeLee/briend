@@ -1,12 +1,12 @@
 import { throttle } from 'es-toolkit';
 
-import { Suspense, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 
 import { SELECTOR } from '@/constants/selector';
 import { useUrl } from '@/hooks/useUrl';
 import { useGlobalStore } from '@/stores/global';
 
-const GlobalEventListenerController = () => {
+export const GlobalEventListener = () => {
   const url = useUrl({
     origin: false,
   });
@@ -32,12 +32,15 @@ const GlobalEventListenerController = () => {
         `${contentHeight}px`,
       );
     };
-    const debouncedResizeHandler = throttle(() => {
+
+    const resizeHandler = () => {
       updateHeight();
       resetMediaQuery();
-    }, 33);
+    };
 
-    debouncedResizeHandler();
+    const debouncedResizeHandler = throttle(resizeHandler, 33);
+
+    resizeHandler();
 
     window.addEventListener('resize', debouncedResizeHandler);
     window.visualViewport?.addEventListener('resize', debouncedResizeHandler);
@@ -52,12 +55,4 @@ const GlobalEventListenerController = () => {
   }, [resetMediaQuery, url]);
 
   return null;
-};
-
-export const GlobalEventListener = () => {
-  return (
-    <Suspense>
-      <GlobalEventListenerController />
-    </Suspense>
-  );
 };

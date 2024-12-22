@@ -1,21 +1,26 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
+
+type BlobAction = { type: 'CREATE'; payload: Blob } | { type: 'REVOKE' };
+
+const imageBlobUrlReducer = (state: string | undefined, action: BlobAction) => {
+  switch (action.type) {
+    case 'CREATE':
+      if (state) URL.revokeObjectURL(state);
+
+      return URL.createObjectURL(action.payload);
+    case 'REVOKE':
+      if (state) URL.revokeObjectURL(state);
+
+      return undefined;
+  }
+};
 
 export const useImageBlobUrl = () => {
-  const [imageBlobUrl, setImageBlobUrl] = useState<string>();
+  const reducer = useReducer(imageBlobUrlReducer, undefined);
 
-  useEffect(
-    () => () => {
-      if (imageBlobUrl) URL.revokeObjectURL(imageBlobUrl);
-    },
-    [imageBlobUrl],
-  );
+  const [, dispatch] = reducer;
 
-  const createBlobUrl = useCallback((blob: Blob) => {
-    const blobUrl = URL.createObjectURL(blob);
-    setImageBlobUrl(blobUrl);
+  useEffect(() => () => dispatch({ type: 'REVOKE' }), [dispatch]);
 
-    return blobUrl;
-  }, []);
-
-  return { createBlobUrl, imageBlobUrl };
+  return reducer;
 };
