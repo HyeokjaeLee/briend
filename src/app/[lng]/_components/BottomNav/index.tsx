@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 
 import { SELECTOR } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { findRoute } from '@/utils';
 
 import { RootNav } from './_components/RootNav';
@@ -10,7 +11,13 @@ import { RootNav } from './_components/RootNav';
 export const BottomNav = () => {
   const pathname = usePathname();
 
-  const { bottomNavType } = findRoute(pathname);
+  let { bottomNavType } = findRoute(pathname);
+
+  const isErrorRoute = useGlobalStore((state) => state.isErrorRoute);
+
+  if (isErrorRoute) {
+    bottomNavType = 'empty';
+  }
 
   return bottomNavType !== 'none' ? (
     <footer

@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton, Lottie } from '@/components';
 import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores';
 import { ERROR_STATUS } from '@/utils';
 
 import { useTranslation } from '../i18n/client';
@@ -16,7 +17,12 @@ import CommonErrorLottie from './_assets/common-error.json';
 import TimeErrorLottie from './_assets/time-error.json';
 import UnauthErrorLottie from './_assets/unauth-error.json';
 
-const ErrorPage = (e: { error: Error }) => {
+interface ErrorPageProps {
+  error: Error;
+  reset: () => void;
+}
+
+const ErrorPage = (e: ErrorPageProps) => {
   const [errorStatus] = e.error.message.match(/<[^>]+>/g) ?? [];
 
   const errorStatusNumber = errorStatus
@@ -54,29 +60,36 @@ const ErrorPage = (e: { error: Error }) => {
     }
   }
 
-  const [containerElement, setContainerElement] = useState<HTMLElement | null>(
-    null,
-  );
+  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
+
+  useEffect(() => {
+    setIsErrorRoute(true);
+
+    return () => {
+      setIsErrorRoute(false);
+    };
+  }, [setIsErrorRoute]);
 
   return (
-    <article
-      ref={setContainerElement}
-      className="flex-1 flex-col gap-8 flex-center"
-    >
-      <Lottie loop animationData={dynamicInfo.lottie} className="w-2/3" />
-      <h1 className="whitespace-pre-line text-center text-xl font-semibold">
-        {dynamicInfo.text}
-      </h1>
+    <article className="relative size-full flex-1 flex-col gap-8 flex-center">
+      <section className="flex-1 flex-col flex-center">
+        <Lottie loop animationData={dynamicInfo.lottie} className="w-2/3" />
+        <h1 className="whitespace-pre-line text-center text-xl font-semibold">
+          {dynamicInfo.text}
+        </h1>
+      </section>
       <CustomButton
         asChild
         activeScaleDown={false}
-        className="fixed bottom-0 h-17 w-full max-w-screen-sm rounded-none"
+        className="mt-auto h-17 w-full rounded-none"
         color="red"
-        style={{
-          width: containerElement?.clientWidth,
-        }}
       >
-        <Link replace className="z-10" href={dynamicInfo.buttonLink}>
+        <Link
+          replace
+          className="z-20"
+          href={dynamicInfo.buttonLink}
+          onClick={e.reset}
+        >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
           {dynamicInfo.buttonText}
         </Link>

@@ -47,6 +47,7 @@
     "pusher-js": "^8.4.0-rc2",
     "react": "^19.0.0",
     "react-cookie": "^7.2.2",
+    "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.0",
     "react-i18next": "^15.1.4",
