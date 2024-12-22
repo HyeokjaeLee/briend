@@ -4,16 +4,14 @@ import { use, useEffect } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
-import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
-import { COOKIES } from '@/constants/cookies';
+import { LoadingTemplate } from '@/components';
+import { COOKIES } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
-import { useCookies } from '@/hooks/useCookies';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
+import { useCookies, useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores/global';
-import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
-import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
-import { toast } from '@/utils/toast';
+import { useGlobalStore } from '@/stores';
+import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
+import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 interface ChattingJoinPageProps {

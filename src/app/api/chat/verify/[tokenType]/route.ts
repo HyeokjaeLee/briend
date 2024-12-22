@@ -2,12 +2,11 @@ import { decodeJwt, errors } from 'jose';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies';
+import { COOKIES } from '@/constants';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
-import { createApiRoute } from '@/utils/api/createApiRoute';
-import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
-import { CustomError, ERROR, ERROR_STATUS } from '@/utils/customError';
+import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
+import { createApiRoute, jwtSecretVerify } from '@/utils/api';
 
 type ChatTokenPayload = JwtPayload.InviteToken | JwtPayload.ChannelToken;
 

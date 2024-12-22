@@ -6,10 +6,9 @@ import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
-import { CustomButton } from '@/components/atoms/CustomButton';
-import { Lottie } from '@/components/atoms/Lottie';
+import { CustomButton, Lottie } from '@/components';
 import { ROUTES } from '@/routes/client';
-import { ERROR_STATUS } from '@/utils/customError';
+import { ERROR_STATUS } from '@/utils';
 
 import { useTranslation } from '../i18n/client';
 
@@ -33,7 +32,7 @@ const ErrorPage = (e: { error: Error }) => {
     text: t('unknown-error'),
     buttonIcon: <RiHome3Fill />,
     buttonText: t('home-button-text'),
-    buttonLink: ROUTES.HOME.pathname,
+    buttonLink: ROUTES.FRIEND_LIST.pathname,
   };
 
   switch (errorStatusNumber) {

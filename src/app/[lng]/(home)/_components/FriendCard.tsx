@@ -1,13 +1,15 @@
-import { CustomLink } from '@/components/atoms/CustomLink';
+import { CustomLink } from '@/components';
 import { ROUTES } from '@/routes/client';
-import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores/global';
-import { usePeerStore } from '@/stores/peer';
-import { cn } from '@/utils/cn';
+import {
+  usePeerStore,
+  MEDIA_QUERY_BREAK_POINT,
+  useGlobalStore,
+} from '@/stores';
+import { cn } from '@/utils';
 import { Avatar } from '@radix-ui/themes';
 
 interface FriendCardProps {
   friendUserId: string;
-
   nickname: string;
   toSidePanel?: boolean;
 }

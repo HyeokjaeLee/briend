@@ -1,8 +1,8 @@
 import type { NextRequest, NextResponse } from 'next/server';
 
 import { auth } from '@/auth';
-import { COOKIES } from '@/constants/cookies';
-import { createId } from '@/utils/createId';
+import { COOKIES } from '@/constants';
+import { createId } from '@/utils';
 
 export const setUserIdCookie = async (req: NextRequest, res: NextResponse) => {
   let cookieUserId = req.cookies.get(COOKIES.USER_ID)?.value;

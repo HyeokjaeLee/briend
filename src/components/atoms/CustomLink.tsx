@@ -5,13 +5,12 @@ import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
-import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { useCustomHref } from '@/hooks/useCustomHref';
-import { useGlobalStore } from '@/stores/global';
-import { isCurrentHref } from '@/utils/isCurrentHref';
+import { SESSION_STORAGE, type SESSION_STORAGE_TYPE } from '@/constants';
+import { useCustomHref } from '@/hooks';
+import { useGlobalStore } from '@/stores';
+import { isCurrentHref } from '@/utils';
 
-interface CustomLinkProps extends LinkProps {
+export interface CustomLinkProps extends LinkProps {
   children?: React.ReactNode;
   className?: string;
   i18nOptimize?: boolean;

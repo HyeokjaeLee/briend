@@ -2,8 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 
-import { SELECTOR } from '@/constants/selector';
-import { findRoute } from '@/utils/findRoute';
+import { SELECTOR } from '@/constants';
+import { findRoute } from '@/utils';
 
 import { RootNav } from './_components/RootNav';
 

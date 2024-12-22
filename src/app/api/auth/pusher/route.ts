@@ -3,8 +3,8 @@ import type { ChannelAuthResponse } from 'pusher';
 import { NextResponse } from 'next/server';
 
 import { pusher } from '@/app/pusher/server';
-import { createApiRoute } from '@/utils/api/createApiRoute';
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils';
+import { createApiRoute } from '@/utils/api';
 
 export const POST = createApiRoute<ChannelAuthResponse>(async (req) => {
   const formData = await req.formData();

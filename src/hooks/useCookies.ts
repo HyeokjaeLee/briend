@@ -1,6 +1,6 @@
 import { useCookies as useReactCookies } from 'react-cookie';
 
-import type { COOKIES, COOKIES_VALUE } from '@/constants/cookies';
+import type { COOKIES, COOKIES_VALUE } from '@/constants';
 
 interface CookieSetOptions {
   doNotParse?: boolean;

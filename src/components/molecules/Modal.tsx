@@ -2,12 +2,18 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { RiCloseLine } from 'react-icons/ri';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 import { Portal } from '@radix-ui/themes';
 
-import { CustomIconButton } from './CustomIconButton';
+import { CustomIconButton } from '../atoms/CustomIconButton';
 
-interface ModalProps {
+const MODAL_ANIMATION = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0, transition: { duration: 0.1 } },
+};
+
+export interface ModalProps {
   children: React.ReactNode;
   className?: string;
   open?: boolean;
@@ -15,12 +21,6 @@ interface ModalProps {
   hasCloseButton?: boolean;
   title?: React.ReactNode;
 }
-
-const MODAL_ANIMATION = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-  exit: { opacity: 0, transition: { duration: 0.1 } },
-};
 
 export const Modal = ({
   children,

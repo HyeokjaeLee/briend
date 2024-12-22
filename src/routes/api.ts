@@ -3,10 +3,10 @@ import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { PUBLIC_ENV } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
-import { CustomError } from '@/utils/customError';
+import { CustomError } from '@/utils';
 
 const apiInstance = ky.create({
   prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,

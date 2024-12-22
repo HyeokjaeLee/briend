@@ -277,7 +277,7 @@ export const {
         }
 
         return NextResponse.redirect(
-          new URL(ROUTES.HOME.pathname, nextUrl.origin),
+          new URL(ROUTES.FRIEND_LIST.pathname, nextUrl.origin),
         );
       }
     },

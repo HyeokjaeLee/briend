@@ -2,7 +2,7 @@
 
 import { ToastContainer, Slide } from 'react-toastify';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 
 import { useProviderConnectToast } from './_hooks/useProviderConnectToast';
 import { useRefreshToast } from './_hooks/useRefreshToast';

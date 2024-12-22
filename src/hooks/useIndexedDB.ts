@@ -2,7 +2,7 @@ import type { EntityTable } from 'dexie';
 
 import { useLiveQuery } from 'dexie-react-hooks';
 
-import { CustomError, ERROR_STATUS } from '@/utils/customError';
+import { CustomError, ERROR_STATUS } from '@/utils';
 
 export const useIndexedDB = <
   TTable extends EntityTable<any, any> | undefined,

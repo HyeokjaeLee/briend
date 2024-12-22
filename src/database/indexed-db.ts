@@ -3,7 +3,7 @@
 import { Dexie, type EntityTable } from 'dexie';
 import relationships from 'dexie-relationships';
 
-import { IS_CLIENT } from '@/constants/etc';
+import { IS_CLIENT } from '@/constants';
 import type { PusherMessage } from '@/types/pusher-message';
 
 enum MESSAGE_STATE {

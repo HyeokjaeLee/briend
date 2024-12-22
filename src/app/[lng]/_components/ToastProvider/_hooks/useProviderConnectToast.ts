@@ -3,17 +3,16 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
-import { LOGIN_PROVIDERS } from '@/constants/etc';
-import { cookies } from '@/stores/cookies';
-import { isEnumValue } from '@/utils/isEnumValue';
-import { toast } from '@/utils/toast';
+import { LOGIN_PROVIDERS } from '@/constants';
+import { customCookies, isEnumValue } from '@/utils';
+import { toast } from '@/utils/client';
 
 export const useProviderConnectToast = () => {
   const session = useSession();
 
   const user = session.data?.user;
 
-  const providerToConnect = cookies.get('PROVIDER_TO_CONNECT');
+  const providerToConnect = customCookies.get('PROVIDER_TO_CONNECT');
 
   const [deletedProviderToConnect, setDeletedProviderToConnect] =
     useState<LOGIN_PROVIDERS | null>(null);
@@ -23,7 +22,7 @@ export const useProviderConnectToast = () => {
   useEffect(() => {
     if (!hasProviderToConnect || !providerToConnect) return;
 
-    cookies.remove('PROVIDER_TO_CONNECT');
+    customCookies.remove('PROVIDER_TO_CONNECT');
     setDeletedProviderToConnect(providerToConnect);
   }, [hasProviderToConnect, providerToConnect]);
 

@@ -2,9 +2,9 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores/global';
-import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
-import { findRoute } from '@/utils/findRoute';
+import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores';
+import { findRoute } from '@/utils';
+import { createOnlyClientComponent } from '@/utils/client';
 
 import EmptyTemplate from './_templates/Empty';
 

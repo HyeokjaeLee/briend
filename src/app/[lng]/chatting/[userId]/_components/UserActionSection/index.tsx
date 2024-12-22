@@ -9,10 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
-import { CustomBottomNav } from '@/components/atoms/CustomBottomNav';
-import { COOKIES } from '@/constants/cookies';
-import { PEER_PREFIX } from '@/constants/etc';
-import { useCookies } from '@/hooks/useCookies';
+import { CustomBottomNav } from '@/components';
+import { COOKIES, PEER_PREFIX } from '@/constants';
+import { useCookies } from '@/hooks';
 
 import { SendMessageForm } from './SendMessageForm';
 

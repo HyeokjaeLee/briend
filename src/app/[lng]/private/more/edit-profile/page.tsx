@@ -10,20 +10,20 @@ import { FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
-import { CustomButton } from '@/components/atoms/CustomButton';
-import { BottomButton } from '@/components/molecules/BottomButton';
-import { ProfileImage } from '@/components/molecules/ProfileImage';
-import { ValidationMessage } from '@/components/molecules/ValidationMessage';
-import { LANGUAGE, LANGUAGE_NAME } from '@/constants/language';
+import {
+  CustomButton,
+  BottomButton,
+  ProfileImage,
+  ValidationMessage,
+} from '@/components';
+import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { profileImageTable } from '@/database/indexed-db';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
-import { useImageBlobUrl } from '@/hooks/useImageBlobUrl';
+import { useCustomRouter, useImageBlobUrl } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
-import { useGlobalModalStore } from '@/stores/global-modal';
-import { CustomError, ERROR } from '@/utils/customError';
-import { isEnumValue } from '@/utils/isEnumValue';
-import { toast } from '@/utils/toast';
+import { useGlobalModalStore } from '@/stores';
+import { CustomError, ERROR, isEnumValue } from '@/utils';
+import { toast } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';

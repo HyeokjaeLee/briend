@@ -2,10 +2,12 @@
 
 import { create } from 'zustand';
 
-import { IS_CLIENT } from '@/constants/etc';
-import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { CustomError } from '@/utils/customError';
+import {
+  IS_CLIENT,
+  SESSION_STORAGE,
+  type SESSION_STORAGE_TYPE,
+} from '@/constants';
+import { CustomError } from '@/utils';
 
 interface HistoryStore {
   historyIndex: number;

@@ -1,4 +1,4 @@
-import type { LOGIN_PROVIDERS } from '@/constants/etc';
+import type { LOGIN_PROVIDERS } from '@/constants';
 import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {

@@ -14,10 +14,9 @@ import {
 } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomLink } from '@/components/atoms/CustomLink';
+import { CustomLink } from '@/components';
 import { ROUTES } from '@/routes/client';
-import { cn } from '@/utils/cn';
-import { findRoute } from '@/utils/findRoute';
+import { cn, findRoute } from '@/utils';
 
 interface RootNavProps {
   pathname: string;
@@ -34,7 +33,7 @@ const NAVIGATION_ITEMS: NavigationItem[] = [
   {
     icon: RiMessage3Line,
     fillIcon: RiMessage3Fill,
-    routeName: 'HOME',
+    routeName: 'FRIEND_LIST',
     translationKey: 'chat',
   },
   {

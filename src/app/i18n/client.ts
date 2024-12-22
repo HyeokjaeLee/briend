@@ -18,8 +18,8 @@ import {
   useTranslation as useOriginalTranslation,
 } from 'react-i18next';
 
-import { IS_CLIENT } from '@/constants/etc';
-import { CustomError, ERROR } from '@/utils/customError';
+import { IS_CLIENT } from '@/constants';
+import { CustomError, ERROR } from '@/utils';
 
 import { getOptions, languages } from './settings';
 

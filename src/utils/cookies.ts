@@ -8,9 +8,9 @@ import {
   COOKIES,
   type COOKIES_KEY_TYPE,
   type COOKIES_VALUE,
-} from '@/constants/cookies';
+} from '@/constants';
 
-export class CustomCookies extends Cookies {
+class CustomCookies extends Cookies {
   get<TKey extends COOKIES_KEY_TYPE>(key: TKey, options?: CookieGetOptions) {
     const value: COOKIES_VALUE[TKey] = super.get(COOKIES[key], options);
 
@@ -33,4 +33,4 @@ export class CustomCookies extends Cookies {
   }
 }
 
-export const cookies = new CustomCookies();
+export const customCookies = new CustomCookies();

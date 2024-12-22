@@ -7,13 +7,10 @@ import type {
 import { useRouter } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
-import type { SESSION_STORAGE_TYPE } from '@/constants/storage-key';
-import { SESSION_STORAGE } from '@/constants/storage-key';
+import { SESSION_STORAGE, type SESSION_STORAGE_TYPE } from '@/constants';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores/global';
-import { useGlobalModalStore } from '@/stores/global-modal';
-import { useHistoryStore } from '@/stores/history';
-import { isCurrentHref } from '@/utils/isCurrentHref';
+import { useGlobalStore, useGlobalModalStore, useHistoryStore } from '@/stores';
+import { isCurrentHref } from '@/utils';
 
 import { useCustomHref } from './useCustomHref';
 
@@ -100,7 +97,7 @@ export const useCustomRouter = () => {
       const hasBack = 0 < historyIndex;
 
       if (!hasBack)
-        return replace(ROUTES.HOME.pathname, {
+        return replace(ROUTES.FRIEND_LIST.pathname, {
           withAnimation,
           withLoading,
         });

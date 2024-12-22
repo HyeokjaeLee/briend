@@ -5,9 +5,9 @@ import { useShallow } from 'zustand/shallow';
 import { memo, useLayoutEffect } from 'react';
 
 import { LoadingTemplate } from '@/components/templates/LoadingTemplate';
-import { useUrl } from '@/hooks/useUrl';
-import { useGlobalStore } from '@/stores/global';
-import { cn } from '@/utils/cn';
+import { useUrl } from '@/hooks';
+import { useGlobalStore } from '@/stores';
+import { cn } from '@/utils';
 
 export const GlobalLoading = memo(() => {
   const [globalLoading, setGlobalLoading] = useGlobalStore(

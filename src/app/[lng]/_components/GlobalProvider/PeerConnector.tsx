@@ -5,11 +5,9 @@ import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
-import { COOKIES } from '@/constants/cookies';
-import { PEER_PREFIX } from '@/constants/etc';
-import { useCookies } from '@/hooks/useCookies';
-import { useFriendStore } from '@/stores/friend';
-import { usePeerStore } from '@/stores/peer';
+import { COOKIES, PEER_PREFIX } from '@/constants';
+import { useCookies } from '@/hooks';
+import { useFriendStore, usePeerStore } from '@/stores';
 
 export const PeerConnector = () => {
   const [cookies] = useCookies([COOKIES.USER_ID]);

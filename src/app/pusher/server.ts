@@ -1,7 +1,7 @@
 import Pusher from 'pusher';
 
+import { PUBLIC_ENV } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import { PUBLIC_ENV } from '@/constants/public-env';
 
 export const pusher = new Pusher({
   appId: PRIVATE_ENV.PUSHER_APP_ID,

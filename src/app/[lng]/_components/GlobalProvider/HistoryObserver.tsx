@@ -2,10 +2,9 @@ import { useShallow } from 'zustand/shallow';
 
 import { Suspense, useEffect } from 'react';
 
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
-import { useUrl } from '@/hooks/useUrl';
-import { useHistoryStore } from '@/stores/history';
+import { SESSION_STORAGE } from '@/constants';
+import { useCustomRouter, useUrl } from '@/hooks';
+import { useHistoryStore } from '@/stores';
 
 const setHistoryExpire = () => {
   sessionStorage.setItem(

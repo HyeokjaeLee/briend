@@ -5,11 +5,10 @@ import { useSession } from 'next-auth/react';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
-import { LOGIN_PROVIDERS } from '@/constants/etc';
+import { LOGIN_PROVIDERS } from '@/constants';
 import { API_ROUTES } from '@/routes/api';
-import { cookies } from '@/stores/cookies';
-import { cn } from '@/utils/cn';
-import { toast } from '@/utils/toast';
+import { customCookies, cn } from '@/utils';
+import { toast } from '@/utils/client';
 import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 
@@ -54,7 +53,7 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
       onClick={async () => {
         if (isConnected) return unlinkAccountMutation.mutate({ provider });
 
-        cookies.set('PROVIDER_TO_CONNECT', provider);
+        customCookies.set('PROVIDER_TO_CONNECT', provider);
       }}
     >
       <div

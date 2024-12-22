@@ -1,8 +1,8 @@
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 import LoadingLottie from '@assets/lottie/loading.json';
 
 import { Lottie } from '../atoms/Lottie';
-interface LoadingTemplateProps {
+export interface LoadingTemplateProps {
   className?: string;
 }
 

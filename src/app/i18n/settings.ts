@@ -1,4 +1,4 @@
-import { LANGUAGE } from '@/constants/language';
+import { LANGUAGE } from '@/constants';
 
 export const fallbackLng = LANGUAGE.ENGLISH;
 export const languages = [

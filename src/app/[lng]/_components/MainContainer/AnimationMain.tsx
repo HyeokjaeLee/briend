@@ -6,13 +6,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { useLayoutEffect, useState, type PropsWithChildren } from 'react';
 
-import { SELECTOR } from '@/constants/selector';
 import {
   SESSION_STORAGE,
+  SELECTOR,
   type SESSION_STORAGE_TYPE,
-} from '@/constants/storage-key';
-import { useUrl } from '@/hooks/useUrl';
-import { useHistoryStore } from '@/stores/history';
+} from '@/constants';
+import { useUrl } from '@/hooks';
+import { useHistoryStore } from '@/stores';
 
 const transitionX = {
   duration: 0.05,

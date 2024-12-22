@@ -3,13 +3,15 @@
 import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
-import { IS_CLIENT } from '@/constants/etc';
-import { LANGUAGE } from '@/constants/language';
-import { PUBLIC_ENV } from '@/constants/public-env';
-import { LOCAL_STORAGE, SESSION_STORAGE } from '@/constants/storage-key';
+import {
+  IS_CLIENT,
+  LANGUAGE,
+  LOCAL_STORAGE,
+  SESSION_STORAGE,
+  PUBLIC_ENV,
+} from '@/constants';
 import { ROUTES } from '@/routes/client';
-import { CustomError } from '@/utils/customError';
-import { isEnumValue } from '@/utils/isEnumValue';
+import { CustomError, isEnumValue } from '@/utils';
 
 interface GlobalLoadingOptions {
   delay?: 0 | 100 | 200 | 300;
@@ -76,8 +78,8 @@ export const useGlobalStore = create<GlobalStore>((set) => {
 
   const sidePanelUrl = IS_CLIENT
     ? sessionStorage.getItem(SESSION_STORAGE.SIDE_PANEL_URL) ||
-      ROUTES.HOME.pathname
-    : ROUTES.HOME.pathname;
+      ROUTES.FRIEND_LIST.pathname
+    : ROUTES.FRIEND_LIST.pathname;
 
   return {
     globalLoading: {

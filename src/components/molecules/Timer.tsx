@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { RiAlarmLine } from 'react-icons/ri';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 
 export interface TimerProps {
   expires: Date;

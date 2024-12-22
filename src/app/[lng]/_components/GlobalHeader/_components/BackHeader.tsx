@@ -5,11 +5,10 @@ import { usePathname } from 'next/navigation';
 import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomIconButton } from '@/components/atoms/CustomIconButton';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
+import { CustomIconButton } from '@/components';
+import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { cn } from '@/utils/cn';
-import { findRoute } from '@/utils/findRoute';
+import { cn, findRoute } from '@/utils';
 
 export const BackHeader = () => {
   const router = useCustomRouter();
