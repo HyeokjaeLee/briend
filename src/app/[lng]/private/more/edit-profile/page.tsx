@@ -96,35 +96,8 @@ const EditProfilePage = (props: ProfilePageProps) => {
     dispatchProfileImage({ type: 'CREATE', payload: profileImageBlob });
   }, [dispatchProfileImage, profileImageBlob]);
 
-  const router = useCustomRouter();
-
   const editProfileMutation = useMutation({
     mutationFn: API_ROUTES.EDIT_PROFILE,
-    onSuccess: async ({ nickname }) => {
-      await session.update({
-        updatedProfile: {
-          nickname,
-        },
-      } satisfies SessionDataToUpdate);
-
-      toast({
-        message: t('save-profile'),
-      });
-
-      const language = form.getValues('language');
-
-      const nextPathname = `/${language}${ROUTES.MORE_MENUS.pathname}`;
-
-      if (language === lng) return router.push(nextPathname);
-
-      location.href = nextPathname;
-    },
-    onError: () => {
-      toast({
-        message: t('error-save-profile'),
-        type: 'fail',
-      });
-    },
   });
 
   const isNoChanged =
@@ -145,18 +118,58 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const [isProfileImageModalOpen, setIsProfileImageModalOpen] = useState(false);
 
+  const router = useCustomRouter();
+
+  const handleSubmit = form.handleSubmit(async ({ nickname, profileImage }) => {
+    try {
+      if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
+
+      editProfileMutation.mutate(
+        {
+          nickname,
+        },
+        {
+          onSuccess: async () => {
+            await session.update({
+              updatedProfile: {
+                nickname,
+              },
+            } satisfies SessionDataToUpdate);
+          },
+        },
+      );
+
+      if (profileImage)
+        await profileImageTable?.put({
+          ...profileImage,
+          userId: user.id,
+        });
+
+      toast({
+        message: t('save-profile'),
+      });
+
+      const language = form.getValues('language');
+
+      const nextPathname = `/${language}${ROUTES.MORE_MENUS.pathname}`;
+
+      if (language === lng) return router.push(nextPathname);
+
+      location.href = nextPathname;
+    } catch {
+      toast({
+        message: t('error-save-profile'),
+        type: 'fail',
+      });
+    }
+  });
+
   return (
     <article className="p-4">
       <form
         className="flex-col gap-8 flex-center"
         id={FORM_NAME}
-        onSubmit={form.handleSubmit(async ({ nickname }) => {
-          if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
-
-          editProfileMutation.mutate({
-            nickname,
-          });
-        })}
+        onSubmit={handleSubmit}
       >
         <section className="w-full flex-col gap-8 flex-center">
           <button

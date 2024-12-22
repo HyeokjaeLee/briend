@@ -47,6 +47,9 @@ interface GlobalStore {
   sidePanelUrl: string;
   setSidePanelUrl: (url: string) => void;
 
+  isErrorRoute: boolean;
+  setIsErrorRoute: (isErrorRoute: boolean) => void;
+
   pusher: Pusher;
 }
 
@@ -117,6 +120,9 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, url);
       set({ sidePanelUrl: url });
     },
+
+    isErrorRoute: false,
+    setIsErrorRoute: (isErrorRoute) => set({ isErrorRoute }),
 
     pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {
       cluster: PUBLIC_ENV.PUSHER_CLUSTER,

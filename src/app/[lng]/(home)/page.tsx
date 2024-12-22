@@ -14,6 +14,8 @@ import {
 import { Avatar } from '@radix-ui/themes';
 
 import { FriendCard } from './_components/FriendCard';
+import { GuestCard } from './_components/GuestCard';
+import { MyProfileCard } from './_components/MyProfileCard';
 
 const ChattingListPage = () => {
   const [friendList] = useFriendStore(
@@ -25,11 +27,12 @@ const ChattingListPage = () => {
   );
 
   const session = useSession();
-  const user = session.data?.user;
+  const isLogin = !!session.data?.user;
 
   return (
     <article>
       <ul>
+        {isLogin ? <MyProfileCard /> : <GuestCard />}
         {friendList.map(({ userId, nickname }) => (
           <li key={userId}>
             <FriendCard friendUserId={userId} nickname={nickname} />
