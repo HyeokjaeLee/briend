@@ -6,11 +6,10 @@ import { useEffect } from 'react';
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/atoms/CustomButton';
-import type { LANGUAGE } from '@/constants/language';
-import { SESSION_STORAGE } from '@/constants/storage-key';
+import { CustomButton } from '@/components';
+import { SESSION_STORAGE, type LANGUAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores/global';
+import { useGlobalStore } from '@/stores';
 
 interface LogoutButtonProps {
   lng: LANGUAGE;
@@ -25,7 +24,7 @@ export const LogoutButton = ({ lng }: LogoutButtonProps) => {
     () => () => {
       getSession().then((session) => {
         if (session) return;
-        window.location.replace(`/${lng}${ROUTES.HOME.pathname}`);
+        window.location.replace(`/${lng}${ROUTES.FRIEND_LIST.pathname}`);
       });
     },
     [lng],

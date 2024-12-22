@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 import { Button, type ButtonProps } from '@radix-ui/themes';
 
 export interface CustomButtonProps extends ButtonProps {

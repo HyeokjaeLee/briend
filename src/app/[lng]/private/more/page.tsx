@@ -2,10 +2,8 @@ import { FaChevronRight } from 'react-icons/fa6';
 
 import { getTranslation } from '@/app/i18n/server';
 import { signIn, signOut } from '@/auth';
-import { CustomButton } from '@/components/atoms/CustomButton';
-import { CustomLink } from '@/components/atoms/CustomLink';
-import { LOGIN_PROVIDERS } from '@/constants/etc';
-import type { LANGUAGE } from '@/constants/language';
+import { CustomButton, CustomLink } from '@/components';
+import { LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
 

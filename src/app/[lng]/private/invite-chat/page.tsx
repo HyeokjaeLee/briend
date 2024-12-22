@@ -1,6 +1,6 @@
 import { getTranslation } from '@/app/i18n/server';
-import { Lottie } from '@/components/atoms/Lottie';
-import type { LANGUAGE } from '@/constants/language';
+import { Lottie } from '@/components';
+import type { LANGUAGE } from '@/constants';
 
 import inviteFriendLottie from './_assets/invite-friend.json';
 import { InviteForm } from './_components/InviteForm';

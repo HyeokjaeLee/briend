@@ -1,5 +1,5 @@
 import { signIn } from '@/auth';
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 
 import {
   LoginButtonContents,

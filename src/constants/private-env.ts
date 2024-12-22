@@ -1,4 +1,4 @@
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils';
 
 const privateEnv = {
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,

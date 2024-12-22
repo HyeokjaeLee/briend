@@ -1,21 +1,16 @@
-import { useLiveQuery } from 'dexie-react-hooks';
 import { decodeJwt } from 'jose';
 
 import { useEffect } from 'react';
 
 import { friendTable } from '@/database/indexed-db';
-import { useFriendStore } from '@/stores/friend';
+import { useIndexedDB } from '@/hooks';
+import { useFriendStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
-import { CustomError, ERROR_STATUS } from '@/utils/customError';
 
 export const FriendStoreMounter = () => {
   const setFriendStore = useFriendStore((state) => state.setFriendList);
 
-  const friendTokenList = useLiveQuery(() => {
-    if (!friendTable) throw new CustomError({ status: ERROR_STATUS.NOT_FOUND });
-
-    return friendTable.toArray();
-  });
+  const friendTokenList = useIndexedDB(friendTable, (table) => table.toArray());
 
   useEffect(() => {
     if (!friendTokenList) return;

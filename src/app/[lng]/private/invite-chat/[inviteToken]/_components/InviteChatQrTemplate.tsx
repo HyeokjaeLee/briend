@@ -11,19 +11,15 @@ import { RiShareFill } from 'react-icons/ri';
 import { useTranslation } from '@/app/i18n/client';
 import { pusher } from '@/app/pusher/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
-import { BottomButton } from '@/components/molecules/BottomButton';
-import { QR } from '@/components/molecules/QR';
-import { Timer } from '@/components/molecules/Timer';
-import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
-import { LANGUAGE } from '@/constants/language';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
-import { ROUTES } from '@/routes/client';
+import { BottomButton, Timer, QR } from '@/components';
+import { PUSHER_CHANNEL, PUSHER_EVENT, LANGUAGE } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
+import { useCustomRouter } from '@/hooks';
+import { ROUTES } from '@/routes/client';
 import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
-import { createOnlyClientComponent } from '@/utils/createOnlyClientComponent';
-import { CustomError, ERROR_STATUS } from '@/utils/customError';
-import { toast } from '@/utils/toast';
+import { CustomError, ERROR_STATUS } from '@/utils';
+import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {

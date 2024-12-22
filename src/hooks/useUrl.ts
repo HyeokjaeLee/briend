@@ -1,6 +1,6 @@
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { PUBLIC_ENV } from '@/constants';
 
 interface UseUrlOptions {
   origin?: boolean;

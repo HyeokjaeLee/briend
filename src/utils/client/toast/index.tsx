@@ -1,10 +1,10 @@
 import React from 'react';
 import { toast as toastifyToast } from 'react-toastify';
 
-import FailIcon from './assets/fail.svg';
-import InfoIcon from './assets/info.svg';
-import SuccessIcon from './assets/success.svg';
-import WarningIcon from './assets/warning.svg';
+import FailIcon from './_assets/fail.svg';
+import InfoIcon from './_assets/info.svg';
+import SuccessIcon from './_assets/success.svg';
+import WarningIcon from './_assets/warning.svg';
 
 export interface ToastOptions {
   type?: 'fail' | 'success' | 'warning' | 'info';

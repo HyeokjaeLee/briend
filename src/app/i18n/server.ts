@@ -6,7 +6,7 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import type { FallbackNs } from 'react-i18next';
 import { initReactI18next } from 'react-i18next/initReactI18next';
 
-import type { LANGUAGE } from '@/constants/language';
+import type { LANGUAGE } from '@/constants';
 
 import { getOptions } from './settings';
 

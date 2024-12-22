@@ -5,9 +5,8 @@ import { SessionProvider } from 'next-auth/react';
 import type { PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
-import { DEFAULT_COOKIES_OPTIONS } from '@/constants/cookies';
-import { IS_CLIENT, QUERY_KEYS } from '@/constants/etc';
-import { cookies } from '@/stores/cookies';
+import { DEFAULT_COOKIES_OPTIONS, IS_CLIENT, QUERY_KEYS } from '@/constants';
+import { customCookies } from '@/utils';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
@@ -62,7 +61,7 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
   return (
     <SessionProvider>
       <CookiesProvider
-        cookies={cookies}
+        cookies={customCookies}
         defaultSetOptions={DEFAULT_COOKIES_OPTIONS}
       >
         <HistoryObserver />

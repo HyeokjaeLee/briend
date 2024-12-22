@@ -4,7 +4,7 @@ import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.sha
 
 import { useContext, useEffect, useRef, type PropsWithChildren } from 'react';
 
-import { useUrl } from '@/hooks/useUrl';
+import { useUrl } from '@/hooks';
 
 export const FrozenRouter = ({ children }: PropsWithChildren) => {
   const context = useContext(LayoutRouterContext);

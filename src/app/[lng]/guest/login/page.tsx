@@ -1,6 +1,5 @@
 import { getTranslation } from '@/app/i18n/server';
-import { LOGIN_PROVIDERS } from '@/constants/etc';
-import type { LANGUAGE } from '@/constants/language';
+import { LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import Logo from '@/svgs/logo.svg';
 
 import { LoginButton } from './_components/LoginButton';

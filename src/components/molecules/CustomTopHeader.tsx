@@ -3,13 +3,15 @@
 import { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { SELECTOR } from '@/constants/selector';
-import { cn } from '@/utils/cn';
+import { SELECTOR } from '@/constants';
+import { cn } from '@/utils';
+
+export type CustomTopHeaderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export const CustomTopHeader = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+}: CustomTopHeaderProps) => {
   const [headerContainerElement, setHeaderContainerElement] =
     useState<HTMLElement | null>(null);
 

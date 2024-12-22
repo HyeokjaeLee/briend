@@ -6,7 +6,7 @@ import { CustomImage } from '../atoms/CustomImage';
 
 const QR_API = 'https://api.qrserver.com/v1/create-qr-code';
 
-interface QRProps
+export interface QRProps
   extends Pick<
     DetailedHTMLProps<ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>,
     'alt' | 'className' | 'onLoad'

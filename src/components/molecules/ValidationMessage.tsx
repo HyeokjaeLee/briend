@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { cn } from '@/utils/cn';
-interface ValidationMessageProps {
+import { cn } from '@/utils';
+export interface ValidationMessageProps {
   message?: string;
 }
 

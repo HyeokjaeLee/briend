@@ -1,9 +1,10 @@
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 
-import { CustomBottomNav } from '../atoms/CustomBottomNav';
 import { CustomButton, type CustomButtonProps } from '../atoms/CustomButton';
 
-type BottomButtonProps = Omit<CustomButtonProps, 'activeScaleDown'>;
+import { CustomBottomNav } from './CustomBottomNav';
+
+export type BottomButtonProps = Omit<CustomButtonProps, 'activeScaleDown'>;
 
 export const BottomButton = ({
   className,

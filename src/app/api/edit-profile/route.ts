@@ -1,17 +1,15 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies';
+import { COOKIES } from '@/constants';
 import { prisma } from '@/prisma';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
-import { createApiRoute } from '@/utils/api/createApiRoute';
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils';
+import { createApiRoute } from '@/utils/api';
 
 export const POST = createApiRoute(
   async (req: NextRequest) => {
     const params: ApiParams.EDIT_PROFILE = await req.json();
-
-    console.log(params);
 
     const id = req.cookies.get(COOKIES.USER_ID)?.value;
 

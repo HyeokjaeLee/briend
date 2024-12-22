@@ -1,4 +1,4 @@
-import type { LANGUAGE } from '@/constants/language';
+import type { LANGUAGE } from '@/constants';
 
 export enum TOKEN_TYPE {
   INVITE = 'invite',

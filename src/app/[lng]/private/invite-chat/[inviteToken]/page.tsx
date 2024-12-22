@@ -2,8 +2,8 @@ import { errors } from 'jose';
 
 import { ROUTES } from '@/routes/client';
 import type { JwtPayload } from '@/types/jwt';
-import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
-import { CustomError, ERROR_STATUS } from '@/utils/customError';
+import { CustomError, ERROR_STATUS } from '@/utils';
+import { jwtSecretVerify } from '@/utils/api';
 
 import { InviteChatQRTemplate } from './_components/InviteChatQrTemplate';
 

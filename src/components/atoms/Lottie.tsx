@@ -4,9 +4,9 @@ import type { LottieComponentProps as OriginalLottieProps } from 'lottie-react';
 
 import dynamic from 'next/dynamic';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/utils';
 
-interface LottieProps extends OriginalLottieProps {
+export interface LottieProps extends OriginalLottieProps {
   innerClassName?: string;
 }
 

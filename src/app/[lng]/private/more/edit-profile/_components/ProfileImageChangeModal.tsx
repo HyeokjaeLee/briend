@@ -1,8 +1,7 @@
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton } from '@/components/atoms/CustomButton';
-import { Modal } from '@/components/atoms/Modal';
-import { useGetLocalImage } from '@/hooks/useGetLocalImage';
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomButton, Modal } from '@/components';
+import { useGetLocalImage } from '@/hooks';
+import { CustomError, ERROR } from '@/utils';
 
 interface ProfileImageChangeModalProps {
   open?: boolean;

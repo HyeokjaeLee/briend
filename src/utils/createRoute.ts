@@ -1,6 +1,4 @@
-import { IS_CLIENT } from '@/constants/etc';
-import { LANGUAGE } from '@/constants/language';
-import { PUBLIC_ENV } from '@/constants/public-env';
+import { IS_CLIENT, LANGUAGE, PUBLIC_ENV } from '@/constants';
 
 import { CustomError, ERROR } from './customError';
 import { isEnumValue } from './isEnumValue';

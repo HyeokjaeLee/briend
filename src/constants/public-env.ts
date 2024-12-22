@@ -1,4 +1,4 @@
-import { CustomError, ERROR } from '@/utils/customError';
+import { CustomError, ERROR } from '@/utils';
 
 const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,

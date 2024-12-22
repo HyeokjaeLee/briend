@@ -4,9 +4,8 @@ import { useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import { useTranslation } from '@/app/i18n/client';
-import type { LANGUAGE } from '@/constants/language';
-import { LANGUAGE_NAME } from '@/constants/language';
-import { cn } from '@/utils/cn';
+import { LANGUAGE_NAME, type LANGUAGE } from '@/constants';
+import { cn } from '@/utils';
 import { Avatar, Badge, Skeleton } from '@radix-ui/themes';
 
 interface ProfileSectionProps {

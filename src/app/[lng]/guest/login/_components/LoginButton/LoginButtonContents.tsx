@@ -3,9 +3,9 @@
 import Image from 'next/image';
 
 import { useTranslation } from '@/app/i18n/client';
-import { LOGIN_PROVIDERS } from '@/constants/etc';
-import { useGlobalStore } from '@/stores/global';
-import { cn } from '@/utils/cn';
+import { LOGIN_PROVIDERS } from '@/constants';
+import { useGlobalStore } from '@/stores';
+import { cn } from '@/utils';
 
 export interface LoginButtonContentsProps {
   provider: LOGIN_PROVIDERS;

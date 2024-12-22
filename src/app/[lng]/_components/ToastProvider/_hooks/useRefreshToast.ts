@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { SESSION_STORAGE } from '@/constants/storage-key';
-import { toast } from '@/utils/toast';
+import { SESSION_STORAGE } from '@/constants';
+import { toast } from '@/utils/client';
 
 export const useRefreshToast = () => {
   useEffect(() => {

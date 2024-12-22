@@ -1,9 +1,8 @@
 import { useShallow } from 'zustand/shallow';
 
-import { CustomButton } from '@/components/atoms/CustomButton';
-import { Modal } from '@/components/atoms/Modal';
-import { useCustomRouter } from '@/hooks/useCustomRouter';
-import { useGlobalModalStore } from '@/stores/global-modal';
+import { CustomButton, Modal } from '@/components';
+import { useCustomRouter } from '@/hooks';
+import { useGlobalModalStore } from '@/stores';
 
 export const BackNoticeModal = () => {
   const [

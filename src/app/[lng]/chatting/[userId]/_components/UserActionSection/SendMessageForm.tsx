@@ -5,8 +5,8 @@ import type { Form } from '.';
 import { RiSendPlane2Fill } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 
-import { CustomIconButton } from '@/components/atoms/CustomIconButton';
-import { cn } from '@/utils/cn';
+import { CustomIconButton } from '@/components';
+import { cn } from '@/utils';
 
 interface SendMessageFormProps {
   form: Form;

@@ -4,16 +4,18 @@ import { errors } from 'jose';
 import { NextResponse } from 'next/server';
 
 import { pusher } from '@/app/pusher/server';
-import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants/channel';
+import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
-import { createApiRoute } from '@/utils/api/createApiRoute';
-import { createFriendToken } from '@/utils/api/createFriendToken';
-import { getAuthToken } from '@/utils/api/getAuthToken';
-import { jwtSecretVerify } from '@/utils/api/jwtSecretVerify';
-import { CustomError, ERROR_STATUS } from '@/utils/customError';
+import { CustomError, ERROR_STATUS } from '@/utils';
+import {
+  createApiRoute,
+  createFriendToken,
+  getAuthToken,
+  jwtSecretVerify,
+} from '@/utils/api';
 
 export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
   async (req: NextRequest) => {

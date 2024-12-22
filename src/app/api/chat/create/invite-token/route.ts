@@ -1,16 +1,13 @@
 import { SignJWT } from 'jose';
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { COOKIES } from '@/constants/cookies';
-import { LANGUAGE } from '@/constants/language';
+import { COOKIES, LANGUAGE } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
-import { createApiRoute } from '@/utils/api/createApiRoute';
-import { getAuthToken } from '@/utils/api/getAuthToken';
-import { CustomError, ERROR } from '@/utils/customError';
-import { isEnumValue } from '@/utils/isEnumValue';
+import { CustomError, ERROR, isEnumValue } from '@/utils';
+import { createApiRoute, getAuthToken } from '@/utils/api';
 
 export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
   async (req: NextRequest) => {

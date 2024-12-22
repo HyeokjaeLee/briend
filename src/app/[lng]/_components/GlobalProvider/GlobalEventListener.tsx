@@ -2,9 +2,9 @@ import { throttle } from 'es-toolkit';
 
 import { useLayoutEffect } from 'react';
 
-import { SELECTOR } from '@/constants/selector';
-import { useUrl } from '@/hooks/useUrl';
-import { useGlobalStore } from '@/stores/global';
+import { SELECTOR } from '@/constants';
+import { useUrl } from '@/hooks';
+import { useGlobalStore } from '@/stores';
 
 export const GlobalEventListener = () => {
   const url = useUrl({

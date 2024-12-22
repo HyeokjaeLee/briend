@@ -7,8 +7,8 @@ import { headers } from 'next/headers';
 
 import type { ReactElement } from 'react';
 
-import { LANGUAGE } from '@/constants/language';
-import { cn } from '@/utils/cn';
+import { LANGUAGE } from '@/constants';
+import { cn } from '@/utils';
 import { Theme } from '@radix-ui/themes';
 
 import { languages } from '../i18n/settings';
