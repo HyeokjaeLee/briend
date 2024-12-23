@@ -9,7 +9,6 @@ import { COOKIES } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
 import { useCookies, useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores';
 import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useSuspenseQuery } from '@tanstack/react-query';
