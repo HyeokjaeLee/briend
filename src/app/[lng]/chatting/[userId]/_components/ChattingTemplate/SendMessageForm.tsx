@@ -1,6 +1,6 @@
 'use client';
 
-import type { Form } from '.';
+import type { Form } from '../UserActionSection';
 
 import { RiSendPlane2Fill } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';

@@ -6,7 +6,7 @@ import { create } from 'zustand';
 
 import { CustomError } from '@/utils';
 
-interface FriendPeer {
+export interface FriendPeer {
   peerId: string;
   connection: DataConnection | null;
   isConnected: boolean;
@@ -14,6 +14,9 @@ interface FriendPeer {
 }
 
 interface PeerStore {
+  isMounted: boolean;
+  mount: () => void;
+
   peer: Peer | null;
   setPeer: (peer: Peer | null) => void;
 
@@ -29,6 +32,9 @@ export const usePeerStore = create<PeerStore>((set) => {
   const baseConnectedPeerMap = new Map<string, FriendPeer>();
 
   return {
+    isMounted: false,
+    mount: () => set({ isMounted: true }),
+
     peer: null,
     setPeer: (peer) => set({ peer }),
 
