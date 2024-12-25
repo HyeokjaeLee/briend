@@ -1,7 +1,6 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { useSession } from 'next-auth/react';
 import { z } from 'zod';
 import { useShallow } from 'zustand/shallow';
 
@@ -11,7 +10,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { CustomButton, ValidationMessage } from '@/components';
 import { LANGUAGE } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
-import { useCustomRouter } from '@/hooks';
+import { useCustomRouter, useUserData } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
@@ -27,9 +26,7 @@ export interface QrInfo {
 }
 
 export const InviteForm = () => {
-  const session = useSession();
-
-  const user = session.data?.user;
+  const { user } = useUserData();
 
   const { t } = useTranslation('invite-chat');
 

@@ -9,10 +9,10 @@ export const GuestCard = () => {
 
   return (
     <CustomLink
-      className="relative flex animate-fade-down items-center gap-4 px-5 py-3"
+      className="relative flex animate-fade-down items-center gap-4 px-5 py-4 animate-duration-150"
       href={ROUTES.LOGIN.pathname}
     >
-      <Lottie loop animationData={FriendRendingLottie} className="size-36" />
+      <Lottie loop animationData={FriendRendingLottie} className="h-20" />
       <div>
         <strong className="text-lg font-semibold">{t('login-rending1')}</strong>
         <p className="text-zinc-500">{t('login-rending2')}</p>

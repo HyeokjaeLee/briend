@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { SessionDataToUpdate } from '@/auth';
 import { LOGIN_PROVIDERS } from '@/constants';
+import { useUserData } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { customCookies, cn } from '@/utils';
 import { toast } from '@/utils/client';
@@ -17,9 +17,7 @@ interface LoginConnectButtonProps {
 }
 
 export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
-  const session = useSession();
-
-  const user = session.data?.user;
+  const { user } = useUserData();
   const { t } = useTranslation('more');
   const isConnected =
     user?.[

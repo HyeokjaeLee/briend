@@ -1,7 +1,5 @@
 'use client';
 
-import { useSession } from 'next-auth/react';
-
 import { useState } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
@@ -15,6 +13,7 @@ import {
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomLink } from '@/components';
+import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { cn, findRoute } from '@/utils';
 
@@ -59,9 +58,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
 
   const [activeIndex, setActiveIndex] = useState(currentRouteIndex);
 
-  const session = useSession();
-
-  const isAuthenticated = session.status === 'authenticated';
+  const { isLogin } = useUserData();
 
   const { t } = useTranslation('layout');
 
@@ -86,9 +83,9 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   )}
                   href={route.pathname}
                   //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
-                  replace={isAuthenticated}
+                  replace={isLogin}
                   withAnimation={
-                    isAuthenticated
+                    isLogin
                       ? index < currentRouteIndex
                         ? 'FROM_LEFT'
                         : 'FROM_RIGHT'

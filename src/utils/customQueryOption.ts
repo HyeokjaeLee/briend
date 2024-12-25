@@ -5,20 +5,24 @@ import {
   type UnusedSkipTokenOptions,
 } from '@tanstack/react-query';
 
-export const customQueryOption = <TParams extends undefined | object, TResult>(
+export const customQueryOption = <
+  TParams extends undefined | object,
+  TResult,
+  TSelect = TResult,
+>(
   callback: (
     params: TParams,
   ) => Omit<
-    UnusedSkipTokenOptions<TResult, Error, TResult, string[]>,
+    UnusedSkipTokenOptions<TResult, Error, TSelect, string[]>,
     'queryKey'
   > & { queryKey?: string[] },
 ) => {
   const uniqueQueryKey = nanoid();
 
-  return (
+  return <TNewSelect = TSelect>(
     params?: TParams,
     options?: Omit<
-      UnusedSkipTokenOptions<TResult, Error, TResult, string[]>,
+      UnusedSkipTokenOptions<TResult, Error, TNewSelect, string[]>,
       'queryFn' | 'queryKey'
     >,
   ) => {
@@ -31,17 +35,11 @@ export const customQueryOption = <TParams extends undefined | object, TResult>(
 
     if (params) queryKey.push(...Object.values(params));
 
-    let queryOptionParams = {
+    const queryOptionParams = {
       ...commonQueryOptionParams,
       queryKey,
-    };
-
-    if (options) {
-      queryOptionParams = {
-        ...queryOptionParams,
-        ...options,
-      };
-    }
+      ...options,
+    } as UnusedSkipTokenOptions<TResult, Error, TNewSelect>;
 
     return queryOptions(queryOptionParams);
   };

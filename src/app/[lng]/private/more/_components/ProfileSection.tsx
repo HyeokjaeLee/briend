@@ -1,10 +1,10 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { LANGUAGE_NAME, type LANGUAGE } from '@/constants';
+import { useUserData } from '@/hooks';
 import { cn } from '@/utils';
 import { Avatar, Badge, Skeleton } from '@radix-ui/themes';
 
@@ -13,12 +13,10 @@ interface ProfileSectionProps {
 }
 
 export const ProfileSection = ({ className }: ProfileSectionProps) => {
-  const session = useSession();
+  const { user } = useUserData();
 
   const { lng } = useParams<{ lng: LANGUAGE }>();
   const { t } = useTranslation('more');
-
-  const user = session.data?.user;
 
   return (
     <section

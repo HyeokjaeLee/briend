@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 
 import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton, Lottie } from '@/components';
+import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { ERROR_STATUS } from '@/utils';
@@ -31,7 +31,7 @@ const ErrorPage = (e: ErrorPageProps) => {
 
   const { t } = useTranslation('error');
 
-  const isLogined = !!useSession();
+  const { isLogin } = useUserData();
 
   const dynamicInfo = {
     lottie: CommonErrorLottie as unknown,
@@ -53,7 +53,7 @@ const ErrorPage = (e: ErrorPageProps) => {
       dynamicInfo.text = t('expired-chat');
       dynamicInfo.buttonIcon = <RiMessage2Line />;
 
-      if (isLogined) {
+      if (isLogin) {
         dynamicInfo.buttonText = t('create-chat-button-text');
         dynamicInfo.buttonLink = ROUTES.INVITE_CHAT.pathname;
       }

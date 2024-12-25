@@ -2,10 +2,11 @@
 
 import { SessionProvider } from 'next-auth/react';
 
-import type { PropsWithChildren } from 'react';
+import { useEffect, type PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
 import { DEFAULT_COOKIES_OPTIONS, IS_CLIENT, QUERY_KEYS } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { customCookies } from '@/utils';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import type { OmitKeyof } from '@tanstack/react-query';
@@ -59,6 +60,10 @@ const persistOptions: OmitKeyof<PersistQueryClientOptions, 'queryClient'> = {
 };
 
 export const GlobalProvider = ({ children }: PropsWithChildren) => {
+  const mount = useGlobalStore((state) => state.mount);
+
+  useEffect(mount, [mount]);
+
   return (
     <SessionProvider>
       <CookiesProvider

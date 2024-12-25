@@ -1,16 +1,13 @@
-import { useSession } from 'next-auth/react';
-
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { LOGIN_PROVIDERS } from '@/constants';
+import { useUserData } from '@/hooks';
 import { customCookies, isEnumValue } from '@/utils';
 import { toast } from '@/utils/client';
 
 export const useProviderConnectToast = () => {
-  const session = useSession();
-
-  const user = session.data?.user;
+  const { user } = useUserData();
 
   const providerToConnect = customCookies.get('PROVIDER_TO_CONNECT');
 
