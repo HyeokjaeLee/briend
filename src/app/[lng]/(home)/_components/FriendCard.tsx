@@ -1,4 +1,4 @@
-import { CustomLink } from '@/components';
+import { CustomLink, ProfileImage } from '@/components';
 import { ROUTES } from '@/routes/client';
 import {
   usePeerStore,
@@ -6,7 +6,6 @@ import {
   useGlobalStore,
 } from '@/stores';
 import { cn } from '@/utils';
-import { Avatar } from '@radix-ui/themes';
 
 interface FriendCardProps {
   friendUserId: string;
@@ -52,7 +51,7 @@ export const FriendCard = ({
       toSidePanel={hasSidePanel}
     >
       <article className="flex gap-3">
-        <Avatar radius="full" size="5" />
+        <ProfileImage size="5" />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong>{nickname}</strong>

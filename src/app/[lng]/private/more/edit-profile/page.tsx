@@ -1,7 +1,7 @@
 'use client';
 
 import { omit } from 'es-toolkit';
-import { getSession, useSession } from 'next-auth/react';
+import { getSession } from 'next-auth/react';
 import { z } from 'zod';
 
 import { useEffect, use, useState } from 'react';
@@ -18,7 +18,7 @@ import {
 } from '@/components';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { profileImageTable } from '@/database/indexed-db';
-import { useCustomRouter, useImageBlobUrl } from '@/hooks';
+import { useCustomRouter, useImageBlobUrl, useUserData } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
@@ -45,9 +45,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const { t } = useTranslation('edit-profile');
 
-  const session = useSession();
-
-  const user = session.data?.user;
+  const { user } = useUserData();
 
   const formSchema = z.object({
     language: z.nativeEnum(LANGUAGE),
@@ -144,6 +142,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
           ...profileImage,
           userId: user.id,
         });
+      else await profileImageTable?.delete(user.id);
 
       toast({
         message: t('save-profile'),

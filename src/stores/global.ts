@@ -28,6 +28,9 @@ export enum MEDIA_QUERY_BREAK_POINT {
 type MEDIA_QUERY = keyof typeof MEDIA_QUERY_BREAK_POINT;
 
 interface GlobalStore {
+  isMounted: boolean;
+  mount: () => void;
+
   globalLoading: {
     value: boolean;
     options?: GlobalLoadingOptions;
@@ -85,6 +88,9 @@ export const useGlobalStore = create<GlobalStore>((set) => {
     : ROUTES.FRIEND_LIST.pathname;
 
   return {
+    isMounted: false,
+    mount: () => set({ isMounted: true }),
+
     globalLoading: {
       value: false,
     },

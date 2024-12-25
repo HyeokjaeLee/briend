@@ -1,4 +1,3 @@
-import { useSession } from 'next-auth/react';
 import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
@@ -12,23 +11,20 @@ import { profileImageTable } from '@/database/indexed-db';
 import { useImageBlobUrl, useIndexedDB } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
-import { CustomError, ERROR } from '@/utils';
 
-export const MyProfileCard = () => {
-  const session = useSession();
+interface MyProfileCardProps {
+  userId: string;
+  userName?: string;
+}
 
-  const user = session.data?.user;
-
-  if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
-
+export const MyProfileCard = ({
+  userId,
+  userName = 'Unknown',
+}: MyProfileCardProps) => {
   const profileImage = useIndexedDB(
     profileImageTable,
-    (table) => {
-      if (!user) return;
-
-      return table.get(user.id);
-    },
-    [user],
+    (table) => table.get(userId),
+    [userId],
   );
 
   const myProfileImageBlob = profileImage?.blob;
@@ -59,7 +55,7 @@ export const MyProfileCard = () => {
         <ProfileImage size="6" src={profileImageSrc} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
-            <strong>{user?.name ?? 'Unknown'}</strong>
+            <strong>{userName}</strong>
             <p className="text-zinc-500">{t('edit-profile')}</p>
           </div>
           <div className="mb-auto flex items-center gap-2 font-bold">
