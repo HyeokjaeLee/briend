@@ -1,19 +1,15 @@
-'use client';
+import { ChattingTemplate } from './_components/ChattingTemplate/inadex';
 
-import { useShallow } from 'zustand/shallow';
+interface ChattingPageProps {
+  params: Promise<{
+    userId: string;
+  }>;
+}
 
-import { usePeerStore } from '@/stores';
+const ChattingPage = async ({ params }: ChattingPageProps) => {
+  const { userId } = await params;
 
-import { UserActionSection } from './_components/UserActionSection';
-
-const ChattingPage = () => {
-  const [friendConnectionMap] = usePeerStore(
-    useShallow((state) => [state.friendConnectionMap]),
-  );
-
-  console.log(friendConnectionMap);
-
-  return <article className="h-full bg-slate-100">ss</article>;
+  return <ChattingTemplate userId={userId} />;
 };
 
 export default ChattingPage;

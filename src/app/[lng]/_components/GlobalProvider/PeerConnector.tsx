@@ -11,15 +11,21 @@ import { useFriendStore, usePeerStore } from '@/stores';
 
 export const PeerConnector = () => {
   const [cookies] = useCookies([COOKIES.USER_ID]);
-  const [peer, setPeer, setFriendConnectionMap, updateFriendConnectStatus] =
-    usePeerStore(
-      useShallow((state) => [
-        state.peer,
-        state.setPeer,
-        state.setFriendConnectionMap,
-        state.updateFriendConnectStatus,
-      ]),
-    );
+  const [
+    peer,
+    setPeer,
+    setFriendConnectionMap,
+    updateFriendConnectStatus,
+    mount,
+  ] = usePeerStore(
+    useShallow((state) => [
+      state.peer,
+      state.setPeer,
+      state.setFriendConnectionMap,
+      state.updateFriendConnectStatus,
+      state.mount,
+    ]),
+  );
 
   const friendList = useFriendStore((state) => state.friendList);
 
@@ -130,10 +136,18 @@ export const PeerConnector = () => {
       }),
     );
 
+    mount();
+
     return () => {
       unmountHandlerList.forEach((handler) => handler());
     };
-  }, [friendList, peer, setFriendConnectionMap, updateFriendConnectStatus]);
+  }, [
+    friendList,
+    peer,
+    setFriendConnectionMap,
+    mount,
+    updateFriendConnectStatus,
+  ]);
 
   return null;
 };

@@ -13,7 +13,7 @@ import { CustomBottomNav } from '@/components';
 import { COOKIES, PEER_PREFIX } from '@/constants';
 import { useCookies } from '@/hooks';
 
-import { SendMessageForm } from './SendMessageForm';
+import { SendMessageForm } from '../ChattingTemplate/SendMessageForm';
 
 interface SendMessageFormValues {
   message: string;
