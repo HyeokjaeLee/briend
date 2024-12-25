@@ -8,3 +8,4 @@ export { useImageBlobUrl } from './useImageBlobUrl';
 export { useIndexedDB } from './useIndexedDB';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';
+export { useMyProfileImage } from './useMyProfileImage';

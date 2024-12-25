@@ -4,6 +4,8 @@ import type { DataConnection, Peer } from 'peerjs';
 
 import { create } from 'zustand';
 
+import { CustomError } from '@/utils';
+
 interface FriendPeer {
   peerId: string;
   connection: DataConnection | null;
@@ -19,6 +21,7 @@ interface PeerStore {
   setFriendConnectionMap: (
     setStateAction: (prevMap: Map<string, FriendPeer>) => void,
   ) => void;
+  updateFriendConnectStatus: (userId: string, isConnected: boolean) => void;
 }
 
 export const usePeerStore = create<PeerStore>((set) => {
@@ -32,6 +35,22 @@ export const usePeerStore = create<PeerStore>((set) => {
     friendConnectionMap: baseConnectedPeerMap,
     setFriendConnectionMap: (setStateAction) => {
       setStateAction(baseConnectedPeerMap);
+
+      set({
+        friendConnectionMap: new Map(baseConnectedPeerMap),
+      });
+    },
+    updateFriendConnectStatus: (userId, isConnected) => {
+      const friendConnection = baseConnectedPeerMap.get(userId);
+
+      if (!friendConnection)
+        throw new CustomError({
+          message: 'Friend Connection Not Found',
+        });
+
+      friendConnection.isConnected = isConnected;
+
+      baseConnectedPeerMap.set(userId, friendConnection);
 
       set({
         friendConnectionMap: new Map(baseConnectedPeerMap),

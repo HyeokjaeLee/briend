@@ -17,7 +17,7 @@ interface LoginConnectButtonProps {
 }
 
 export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
-  const { user } = useUserData();
+  const { user, sessionUpdate } = useUserData();
   const { t } = useTranslation('more');
   const isConnected =
     user?.[
@@ -31,7 +31,7 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
   const unlinkAccountMutation = useMutation({
     mutationFn: API_ROUTES.UNLINK_ACCOUNT,
     onSuccess: async ({ unlinkedProvider }) => {
-      await session.update({
+      await sessionUpdate({
         unlinkedProvider,
       } satisfies SessionDataToUpdate);
 

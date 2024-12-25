@@ -1,50 +1,27 @@
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
 import CountUp from 'react-countup';
 import { TbFriends, TbFriendsOff } from 'react-icons/tb';
 
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage, CustomLink } from '@/components';
 import { MAX_FIREND_COUNT } from '@/constants';
-import { profileImageTable } from '@/database/indexed-db';
-import { useImageBlobUrl, useIndexedDB } from '@/hooks';
+import { useMyProfileImage } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
 
 interface MyProfileCardProps {
-  userId: string;
   userName?: string;
 }
 
-export const MyProfileCard = ({
-  userId,
-  userName = 'Unknown',
-}: MyProfileCardProps) => {
-  const profileImage = useIndexedDB(
-    profileImageTable,
-    (table) => table.get(userId),
-    [userId],
-  );
-
-  const myProfileImageBlob = profileImage?.blob;
-
-  const [profileImageSrc, dispatchProfileImage] = useImageBlobUrl();
-
+export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
   const { t } = useTranslation('friend-list');
-
-  useEffect(() => {
-    if (myProfileImageBlob) {
-      dispatchProfileImage({
-        type: 'CREATE',
-        payload: myProfileImageBlob,
-      });
-    }
-  }, [myProfileImageBlob, dispatchProfileImage]);
 
   const [firendCount, isLimitedAddFriend] = useFriendStore(
     useShallow((state) => [state.friendList.length, state.isLinimtedAddFriend]),
   );
+
+  const { profileImageSrc } = useMyProfileImage();
 
   return (
     <CustomLink
