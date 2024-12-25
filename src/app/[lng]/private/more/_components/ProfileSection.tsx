@@ -3,10 +3,11 @@
 import { useParams } from 'next/navigation';
 
 import { useTranslation } from '@/app/i18n/client';
+import { ProfileImage } from '@/components';
 import { LANGUAGE_NAME, type LANGUAGE } from '@/constants';
-import { useUserData } from '@/hooks';
+import { useMyProfileImage, useUserData } from '@/hooks';
 import { cn } from '@/utils';
-import { Avatar, Badge, Skeleton } from '@radix-ui/themes';
+import { Badge, Skeleton } from '@radix-ui/themes';
 
 interface ProfileSectionProps {
   className?: string;
@@ -17,6 +18,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
 
   const { lng } = useParams<{ lng: LANGUAGE }>();
   const { t } = useTranslation('more');
+  const { profileImageSrc } = useMyProfileImage();
 
   return (
     <section
@@ -26,11 +28,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton loading={!user}>
-        <Avatar
-          fallback={<span className="text-5xl">s</span>}
-          radius="full"
-          size="7"
-        />
+        <ProfileImage size="7" src={profileImageSrc} />
       </Skeleton>
       <div className="mt-4 flex items-center justify-center gap-2">
         <Skeleton className="h-7 w-28" loading={!user}>

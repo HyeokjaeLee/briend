@@ -45,7 +45,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const { t } = useTranslation('edit-profile');
 
-  const { user } = useUserData();
+  const { user, sessionUpdate } = useUserData();
 
   const formSchema = z.object({
     language: z.nativeEnum(LANGUAGE),
@@ -128,7 +128,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         },
         {
           onSuccess: async () => {
-            await session.update({
+            await sessionUpdate({
               updatedProfile: {
                 nickname,
               },
