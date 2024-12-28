@@ -4,28 +4,30 @@ import { Dexie, type EntityTable } from 'dexie';
 import relationships from 'dexie-relationships';
 
 import { IS_CLIENT } from '@/constants';
+import type { MessageData } from '@/types/peer-data';
 import type { PusherMessage } from '@/types/pusher-message';
 
-enum MESSAGE_STATE {
+export enum MESSAGE_STATE {
   SENT = 'sent',
   RECEIVE = 'receive',
   ERROR = 'error',
 }
 
-interface ProfileImageTable {
+interface ProfileImageTableItem {
   userId: string;
   blob: Blob;
   type: string;
   updatedAt: number;
 }
 
+interface MessageTableItem extends MessageData {
+  state: MESSAGE_STATE;
+}
+
 interface IndexedDB extends Dexie {
   friend: EntityTable<PusherMessage.addFriend, 'userId'>;
-  message: EntityTable<
-    PusherMessage.sendMessage & { state: MESSAGE_STATE },
-    'id'
-  >;
-  profileImage: EntityTable<ProfileImageTable, 'userId'>;
+  message: EntityTable<MessageTableItem, 'id'>;
+  profileImage: EntityTable<ProfileImageTableItem, 'userId'>;
 }
 
 let db: IndexedDB | undefined;

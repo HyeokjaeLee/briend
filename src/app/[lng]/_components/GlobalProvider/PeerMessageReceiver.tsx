@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
 import { usePeerStore } from '@/stores';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
@@ -21,12 +22,21 @@ export const PeerMessageReceiver = () => {
         )
           throw new CustomError(ERROR.UNKNOWN_VALUE());
 
-        const data = unkownData as PeerData;
+        const { data, type } = unkownData as PeerData;
 
         //TODO: 여기서 모든 P2P 메시지들을 처리해서 각 데이터베이스에 저장해줘야함
-        switch (data.type) {
+        switch (type) {
           case MESSAGE_TYPE.MESSAGE:
+            messageTable?.put({
+              ...data,
+              state: MESSAGE_STATE.RECEIVE,
+            });
             break;
+
+          case MESSAGE_TYPE.CHECK_RECEIVE_MESSAGE:
+            messageTable?.update(data.id, {
+              state: MESSAGE_STATE.RECEIVE,
+            });
         }
       });
     });
