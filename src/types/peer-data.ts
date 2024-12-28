@@ -4,7 +4,7 @@ export enum MESSAGE_TYPE {
   UPDATE_PROFILE = 'update-profile',
 }
 
-interface Message {
+export interface MessageData {
   id: string;
   fromUserId: string;
   message: string;
@@ -12,13 +12,13 @@ interface Message {
   timestamp: number;
 }
 
-interface CheckReceiveMessage {
+interface CheckReceiveMessageData {
   id: string;
   fromUserId: string;
   timestamp: number;
 }
 
-interface UpdateProfile {
+export interface UpdateProfile {
   profileImage: {
     blob: Blob;
     type: string;
@@ -29,11 +29,11 @@ interface UpdateProfile {
 export type PeerData =
   | {
       type: MESSAGE_TYPE.MESSAGE;
-      data: Message;
+      data: MessageData;
     }
   | {
       type: MESSAGE_TYPE.CHECK_RECEIVE_MESSAGE;
-      data: CheckReceiveMessage;
+      data: CheckReceiveMessageData;
     }
   | {
       type: MESSAGE_TYPE.UPDATE_PROFILE;
