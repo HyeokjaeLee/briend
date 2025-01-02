@@ -8,19 +8,13 @@ interface ChattingPageHeaderProps {
 }
 
 export const ChattingPageHeader = ({ userId }: ChattingPageHeaderProps) => {
-  const connection = usePeerStore((state) =>
-    state.friendConnectionMap.get(userId),
+  const friendPeer = usePeerStore((state) =>
+    state.friendConnections.data.get(userId),
   );
-
-  const firendConnectionMap = usePeerStore(
-    (state) => state.friendConnectionMap,
-  );
-
-  console.log(firendConnectionMap);
 
   return (
     <BackHeader>
-      <ConnectionIndicator connection={connection} />
+      <ConnectionIndicator friendPeer={friendPeer} />
     </BackHeader>
   );
 };

@@ -1,3 +1,4 @@
+export { checkExpired } from './checkExpired';
 export { cn } from './cn';
 export { customCookies } from './cookies';
 export { createId } from './createId';

@@ -2,7 +2,7 @@ import type { FriendPeer } from '@/stores/peer';
 import { cn } from '@/utils';
 
 export interface ConnectionIndicatorProps {
-  connection?: FriendPeer;
+  friendPeer?: FriendPeer;
   className?: string;
 }
 
@@ -14,14 +14,14 @@ enum CONNECTION_STATUS {
 
 export const ConnectionIndicator = ({
   className,
-  connection,
+  friendPeer,
 }: ConnectionIndicatorProps) => {
   let connectionStatus: CONNECTION_STATUS = CONNECTION_STATUS.EXPIRED;
 
-  if (connection?.isExpired) {
+  if (friendPeer?.isExpired) {
     connectionStatus = CONNECTION_STATUS.EXPIRED;
   } else {
-    connectionStatus = connection?.isConnected
+    connectionStatus = friendPeer?.isConnected
       ? CONNECTION_STATUS.ONLINE
       : CONNECTION_STATUS.OFFLINE;
   }
