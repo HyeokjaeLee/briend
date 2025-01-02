@@ -7,7 +7,7 @@ import { useFriendStore, usePeerStore } from '@/stores';
 import { Skeleton } from '@radix-ui/themes';
 
 import { FriendCard } from './_components/FriendCard';
-import { GuestCard } from './_components/GuestCard';
+import { GuestBanner } from './_components/GuestBanner';
 import { MyProfileCard } from './_components/MyProfileCard';
 
 const ChattingListPage = () => {
@@ -26,7 +26,7 @@ const ChattingListPage = () => {
       <ul>
         <li className="border-b border-b-slate-100">
           {isLogin ? (
-            <MyProfileCard userId={user.id} userName={user.name} />
+            <MyProfileCard userName={user.name} />
           ) : isLoading ? (
             <div className="flex h-28 items-center gap-4 px-5">
               <Skeleton className="size-20" />
@@ -36,7 +36,7 @@ const ChattingListPage = () => {
               </div>
             </div>
           ) : (
-            <GuestCard />
+            <GuestBanner />
           )}
         </li>
         {friendList.map(({ userId, nickname }) => (

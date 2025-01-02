@@ -29,6 +29,7 @@ interface PeerStore {
 
 export const usePeerStore = create<PeerStore>((set) => {
   //* 동시성 이슈를 해결하기 위해 해당 Map객체만을 참조, 수정하여 상태값으로 사용
+
   const baseConnectedPeerMap = new Map<string, FriendPeer>();
 
   return {

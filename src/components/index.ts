@@ -16,6 +16,10 @@ export { Lottie, type LottieProps } from './atoms/Lottie';
  */
 export { BottomButton, type BottomButtonProps } from './molecules/BottomButton';
 export {
+  ConnectionIndicator,
+  type ConnectionIndicatorProps,
+} from './molecules/ConnectionIndicator';
+export {
   CustomBottomNav,
   type CustomBottomNavProps,
 } from './molecules/CustomBottomNav';
@@ -31,6 +35,11 @@ export {
   ValidationMessage,
   type ValidationMessageProps,
 } from './molecules/ValidationMessage';
+
+/**
+ * @package organisms 컴포넌트
+ */
+export { BackHeader, type BackHeaderProps } from './organisms/BackHeader';
 
 /**
  * @package templates 컴포넌트

@@ -73,8 +73,8 @@ export const createRoute = <
 
       return url;
     },
-    bottomNavType: options?.bottomNavType ?? 'none',
-    topHeaderType: options?.topHeaderType ?? 'none',
+    bottomNavType: options?.bottomNavType ?? 'empty',
+    topHeaderType: options?.topHeaderType ?? 'empty',
     topHeaderTitle: options?.topHeaderTitle,
   });
 };

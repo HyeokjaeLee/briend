@@ -3,7 +3,7 @@
 import { type DataConnection, Peer } from 'peerjs';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { COOKIES, PEER_PREFIX } from '@/constants';
 import { useCookies } from '@/hooks';
@@ -27,9 +27,13 @@ export const PeerConnector = () => {
     ]),
   );
 
-  const friendList = useFriendStore((state) => state.friendList);
+  const [friendList, isFriendStoreMounted] = useFriendStore(
+    useShallow((state) => [state.friendList, state.isMounted]),
+  );
 
   const userId = cookies.USER_ID;
+
+  const [test, setTest] = useState();
 
   useEffect(() => {
     if (!userId) return;
@@ -48,9 +52,13 @@ export const PeerConnector = () => {
       },
     });
 
-    peer.on('open', () => {
+    const peerOpenHandler = () => {
       setPeer(peer);
-    });
+    };
+
+    peer.on('open', peerOpenHandler);
+
+    return () => peer.off('open', peerOpenHandler);
 
     return () => {
       const { friendConnectionMap } = usePeerStore.getState();
@@ -64,6 +72,16 @@ export const PeerConnector = () => {
       peer.destroy();
     };
   }, [setPeer, userId]);
+
+  useEffect(() => {
+    if (!friendList.length) return;
+
+    setFriendConnectionMap((prevMap) => {
+      friendList.forEach(({ userId, exp }) => {
+        const isExpired = exp ? exp * 1000 < Date.now() : true;
+      });
+    });
+  }, [isFriendStoreMounted, friendList, setFriendConnectionMap]);
 
   useEffect(() => {
     // 상대방으로 부터 들어오는 연결 처리
@@ -149,5 +167,9 @@ export const PeerConnector = () => {
     updateFriendConnectStatus,
   ]);
 
-  return null;
+  return (
+    <button className="fixed right-0 top-0 z-50" onClick={test}>
+      test
+    </button>
+  );
 };

@@ -1,4 +1,5 @@
 import { decodeJwt } from 'jose';
+import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
@@ -8,7 +9,9 @@ import { useFriendStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
 
 export const FriendStoreMounter = () => {
-  const setFriendStore = useFriendStore((state) => state.setFriendList);
+  const [mount, setFriendStore] = useFriendStore(
+    useShallow((state) => [state.mount, state.setFriendList]),
+  );
 
   const friendTokenList = useIndexedDB(friendTable, (table) => table.toArray());
 
@@ -20,7 +23,9 @@ export const FriendStoreMounter = () => {
     );
 
     setFriendStore(friendList);
-  }, [friendTokenList, setFriendStore]);
+
+    mount();
+  }, [friendTokenList, setFriendStore, mount]);
 
   return null;
 };
