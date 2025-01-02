@@ -7,12 +7,10 @@ import { MESSAGE_TYPE } from '@/types/peer-data';
 import { CustomError, ERROR, hasObjectKey, isEnumValue } from '@/utils';
 
 export const PeerMessageReceiver = () => {
-  const friendConnectionMap = usePeerStore(
-    (state) => state.friendConnectionMap,
-  );
+  const friendConnections = usePeerStore((state) => state.friendConnections);
 
   useEffect(() => {
-    friendConnectionMap.forEach(({ connection }) => {
+    friendConnections.data.forEach(({ connection }) => {
       if (!connection) return;
 
       connection.on('data', (unkownData) => {
@@ -40,7 +38,7 @@ export const PeerMessageReceiver = () => {
         }
       });
     });
-  }, [friendConnectionMap]);
+  }, [friendConnections]);
 
   return null;
 };

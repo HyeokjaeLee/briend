@@ -3,7 +3,6 @@
 import { useShallow } from 'zustand/shallow';
 
 import { LoadingTemplate } from '@/components';
-import { BackHeader } from '@/components/organisms/BackHeader';
 import { usePeerStore } from '@/stores';
 import { CustomError, ERROR } from '@/utils';
 
@@ -12,16 +11,16 @@ interface ChattingTemplateProps {
 }
 
 export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
-  const [isMounted, connection] = usePeerStore(
+  const [isMounted, friendPeer] = usePeerStore(
     useShallow((state) => [
       state.isMounted,
-      state.friendConnectionMap.get(userId),
+      state.friendConnections.data.get(userId),
     ]),
   );
 
   if (!isMounted) return <LoadingTemplate />;
 
-  if (!connection) throw new CustomError(ERROR.UNAUTHORIZED());
+  if (!friendPeer) throw new CustomError(ERROR.UNAUTHORIZED());
 
   return <article>ss</article>;
 };

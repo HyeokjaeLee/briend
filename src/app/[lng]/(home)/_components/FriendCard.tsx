@@ -22,8 +22,8 @@ export const FriendCard = ({
     (state) => MEDIA_QUERY_BREAK_POINT.sm <= state.mediaQueryBreakPoint,
   );
 
-  const connection = usePeerStore((state) =>
-    state.friendConnectionMap.get(friendUserId),
+  const friendPeer = usePeerStore((state) =>
+    state.friendConnections.data.get(friendUserId),
   );
 
   return (
@@ -42,7 +42,7 @@ export const FriendCard = ({
             <p>마지막 메시지</p>
           </div>
           <div className="mb-auto">
-            <ConnectionIndicator connection={connection} />
+            <ConnectionIndicator friendPeer={friendPeer} />
           </div>
         </div>
       </article>

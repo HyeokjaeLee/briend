@@ -1,0 +1,47 @@
+import { Peer } from 'peerjs';
+import { useShallow } from 'zustand/shallow';
+
+import { useEffect } from 'react';
+import { useCookies } from 'react-cookie';
+
+import { COOKIES, PEER_PREFIX } from '@/constants';
+import { usePeerStore } from '@/stores';
+
+export const usePeer = () => {
+  const [{ USER_ID: userId }] = useCookies([COOKIES.USER_ID]);
+  const [peer, setPeer] = usePeerStore(
+    useShallow((state) => [state.peer, state.setPeer]),
+  );
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const peer = new Peer(PEER_PREFIX + userId, {
+      config: {
+        reconnect: true,
+        secure: true,
+        iceServers: [
+          { urls: 'stun:stun.l.google.com:19302' },
+          { urls: 'stun:stun1.l.google.com:19302' },
+        ],
+        pingInterval: 2_000,
+        timeout: 5_000,
+        retries: 3,
+      },
+    });
+
+    const peerOpenHandler = () => {
+      setPeer(peer);
+    };
+
+    peer.on('open', peerOpenHandler);
+
+    return () => {
+      peer.destroy();
+      peer.off('open', peerOpenHandler);
+      setPeer(null);
+    };
+  }, [setPeer, userId]);
+
+  return peer;
+};
