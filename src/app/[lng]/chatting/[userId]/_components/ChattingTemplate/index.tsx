@@ -3,6 +3,7 @@
 import { useShallow } from 'zustand/shallow';
 
 import { LoadingTemplate } from '@/components';
+import { BackHeader } from '@/components/organisms/BackHeader';
 import { usePeerStore } from '@/stores';
 import { CustomError, ERROR } from '@/utils';
 
@@ -22,5 +23,5 @@ export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
 
   if (!connection) throw new CustomError(ERROR.UNAUTHORIZED());
 
-  return <article>{userId}</article>;
+  return <article>ss</article>;
 };

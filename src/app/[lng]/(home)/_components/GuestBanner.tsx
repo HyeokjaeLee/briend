@@ -4,7 +4,8 @@ import { CustomLink, Lottie } from '@/components';
 import { ROUTES } from '@/routes/client';
 
 import FriendRendingLottie from './_assets/friend-reding.json';
-export const GuestCard = () => {
+
+export const GuestBanner = () => {
   const { t } = useTranslation('friend-list');
 
   return (

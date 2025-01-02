@@ -7,7 +7,7 @@ export const ROUTES = {
     topHeaderTitle: 'chat-title',
   }),
   CHATTING_ROOM: createRoute<'userId'>(({ userId }) => `/chatting/${userId}`, {
-    topHeaderType: 'empty',
+    bottomNavType: 'none',
   }),
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
@@ -23,23 +23,24 @@ export const ROUTES = {
     ({ inviteToken }) => `/private/invite-chat/${inviteToken}`,
     {
       topHeaderType: 'back',
-      bottomNavType: 'empty',
     },
   ),
-  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/chatting/join'),
+  JOIN_CHAT: createRoute<undefined, 'inviteToken'>('/chatting/join', {
+    topHeaderType: 'none',
+    bottomNavType: 'none',
+  }),
   INVITED_CHAT_ENTER: createRoute<'hostId', 'expires' | 'accessToken'>(
     ({ hostId }) => `/enter/${hostId}`,
     {
       topHeaderType: 'back',
-      bottomNavType: 'empty',
     },
   ),
   LOGIN: createRoute('/guest/login', {
     topHeaderType: 'back',
+    bottomNavType: 'none',
   }),
   EDIT_PROFILE: createRoute('/private/more/edit-profile', {
     topHeaderType: 'back',
-    bottomNavType: 'empty',
   }),
 };
 

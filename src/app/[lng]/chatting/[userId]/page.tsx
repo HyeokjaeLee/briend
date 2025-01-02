@@ -1,4 +1,5 @@
-import { ChattingTemplate } from './_components/ChattingTemplate/inadex';
+import { ChattingPageHeader } from './_components/ChattingPageHeader';
+import { ChattingTemplate } from './_components/ChattingTemplate';
 
 interface ChattingPageProps {
   params: Promise<{
@@ -6,10 +7,13 @@ interface ChattingPageProps {
   }>;
 }
 
-const ChattingPage = async ({ params }: ChattingPageProps) => {
+export default async function ChattingPage({ params }: ChattingPageProps) {
   const { userId } = await params;
 
-  return <ChattingTemplate userId={userId} />;
-};
-
-export default ChattingPage;
+  return (
+    <article className="size-full">
+      <ChattingPageHeader userId={userId} />
+      <ChattingTemplate userId={userId} />
+    </article>
+  );
+}
