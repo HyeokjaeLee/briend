@@ -21,6 +21,7 @@ interface ProfileImageTableItem {
 }
 
 interface MessageTableItem extends MessageData {
+  id: string;
   state: MESSAGE_STATE;
 }
 

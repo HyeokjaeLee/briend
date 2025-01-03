@@ -27,6 +27,9 @@ interface PeerStore {
   setFriendConnections: (
     setStateAction?: (prevMap: Map<string, FriendPeer>) => void,
   ) => void;
+
+  /** 상태 관찰 필요없는 객체 */
+  requestedPingPongMap: Map<string, string>;
 }
 
 export const usePeerStore = create<PeerStore>((set) => ({
@@ -49,4 +52,6 @@ export const usePeerStore = create<PeerStore>((set) => ({
         },
       };
     }),
+
+  requestedPingPongMap: new Map(),
 }));
