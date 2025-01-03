@@ -2,6 +2,8 @@
 
 import { useShallow } from 'zustand/shallow';
 
+import { useEffect } from 'react';
+
 import { LoadingTemplate } from '@/components';
 import { usePeerStore } from '@/stores';
 import { CustomError, ERROR } from '@/utils';

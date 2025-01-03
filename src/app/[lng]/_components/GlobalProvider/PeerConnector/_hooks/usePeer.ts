@@ -2,9 +2,9 @@ import { Peer } from 'peerjs';
 import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
-import { useCookies } from 'react-cookie';
 
 import { COOKIES, PEER_PREFIX } from '@/constants';
+import { useCookies } from '@/hooks';
 import { usePeerStore } from '@/stores';
 
 export const usePeer = () => {
