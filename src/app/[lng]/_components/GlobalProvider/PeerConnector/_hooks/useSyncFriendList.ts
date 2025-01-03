@@ -1,15 +1,12 @@
 import type { Peer } from 'peerjs';
 
-import { nanoid } from 'nanoid';
 import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
-import { COOKIES, IS_DEV, PEER_PREFIX } from '@/constants';
+import { COOKIES, PEER_PREFIX } from '@/constants';
 import { useCookies } from '@/hooks';
 import { useFriendStore, usePeerStore } from '@/stores';
-import type { PeerData } from '@/types/peer-data';
-import { MESSAGE_TYPE } from '@/types/peer-data';
 import { checkExpired, CustomError, ERROR } from '@/utils';
 
 export const useSyncFriendList = (peer: Peer | null) => {
@@ -19,8 +16,6 @@ export const useSyncFriendList = (peer: Peer | null) => {
 
     friendConnectionsData,
     setFriendConnections,
-
-    requestedPingPongMap,
   ] = usePeerStore(
     useShallow((state) => [
       state.isMounted,
@@ -28,8 +23,6 @@ export const useSyncFriendList = (peer: Peer | null) => {
 
       state.friendConnections.data,
       state.setFriendConnections,
-
-      state.requestedPingPongMap,
     ]),
   );
 
@@ -90,73 +83,38 @@ export const useSyncFriendList = (peer: Peer | null) => {
   useEffect(() => {
     if (!isPeerStoreMounted || !peer || !myUserId) return;
 
-    const expireInterval = setInterval(
-      () => {
-        //* 이전 요청에서 돌아오지 않은 응답이 있는 경우 disconnect
+    const expireInterval = setInterval(() => {
+      friendConnectionsData.forEach((friendPeer, userId) => {
+        if (friendPeer.isExpired) return;
 
-        requestedPingPongMap.forEach((userId, requestId) => {
-          const friendPeer = friendConnectionsData.get(userId);
+        const isExpired = checkExpired(friendPeer.exp);
 
-          if (friendPeer) {
-            friendPeer.connection?.removeAllListeners();
-            friendPeer.connection?.close();
+        if (!isExpired) {
+          if (friendPeer.isConnected) return;
 
-            setFriendConnections((prevMap) =>
-              prevMap.set(userId, {
-                ...friendPeer,
-                connection: null,
-                isConnected: false,
-              }),
-            );
-            setFriendConnections();
-          }
+          return setFriendConnections((prevMap) =>
+            prevMap.set(userId, {
+              ...friendPeer,
+              connectionType: 'outgoing',
+              connection: peer.connect(friendPeer.peerId),
+            }),
+          );
+        }
 
-          requestedPingPongMap.delete(requestId);
-        });
+        if (!friendPeer.isExpired || friendPeer.connection) {
+          friendPeer.connection?.removeAllListeners();
+          friendPeer.connection?.close();
 
-        friendConnectionsData.forEach((friendPeer, userId) => {
-          if (friendPeer.isExpired) return;
-
-          const isExpired = checkExpired(friendPeer.exp);
-
-          if (!isExpired) {
-            if (friendPeer.isConnected) {
-              const id = nanoid();
-
-              requestedPingPongMap.set(id, userId);
-
-              return friendPeer.connection?.send({
-                type: MESSAGE_TYPE.CHECK_PEER_STATUS,
-                data: myUserId,
-                id,
-              } satisfies PeerData);
-            }
-
-            return setFriendConnections((prevMap) =>
-              prevMap.set(userId, {
-                ...friendPeer,
-                connectionType: 'outgoing',
-                connection: peer.connect(friendPeer.peerId),
-              }),
-            );
-          }
-
-          if (!friendPeer.isExpired || friendPeer.connection) {
-            friendPeer.connection?.removeAllListeners();
-            friendPeer.connection?.close();
-
-            setFriendConnections((prevMap) =>
-              prevMap.set(userId, {
-                ...friendPeer,
-                isExpired: true,
-                connection: null,
-              }),
-            );
-          }
-        });
-      },
-      IS_DEV ? 5_000 : 10_000,
-    );
+          setFriendConnections((prevMap) =>
+            prevMap.set(userId, {
+              ...friendPeer,
+              isExpired: true,
+              connection: null,
+            }),
+          );
+        }
+      });
+    }, 10_000);
 
     return () => clearInterval(expireInterval);
   }, [
@@ -165,6 +123,5 @@ export const useSyncFriendList = (peer: Peer | null) => {
     isPeerStoreMounted,
     peer,
     setFriendConnections,
-    requestedPingPongMap,
   ]);
 };

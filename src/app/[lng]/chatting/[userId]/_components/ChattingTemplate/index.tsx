@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/shallow';
 import { useEffect } from 'react';
 
 import { LoadingTemplate } from '@/components';
+import { useCheckIndividualPeer } from '@/hooks';
 import { usePeerStore } from '@/stores';
 import { CustomError, ERROR } from '@/utils';
 
@@ -20,7 +21,9 @@ export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
     ]),
   );
 
-  if (!isMounted) return <LoadingTemplate />;
+  const { isLoading } = useCheckIndividualPeer(userId);
+
+  if (!isMounted || isLoading) return <LoadingTemplate />;
 
   if (!friendPeer) throw new CustomError(ERROR.UNAUTHORIZED());
 
