@@ -1,5 +1,3 @@
 {
-  "lock-title": "채팅이 만료되었어요.",
-  "lock-contents": "내용을 확인하는것만 가능해요.\n대화를 계속 하려면 QR을 통해 친구를 다시 초대해주세요.",
-  "invalid-channel": "유효하지 않은 채팅방이에요."
+  "send-form-placeholder": "메시지 입력"
 }

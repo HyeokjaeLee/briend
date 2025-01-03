@@ -33,7 +33,7 @@ export const useCheckIndividualPeer = (
     ]),
   );
 
-  const interval = options?.interval ?? 3_000;
+  const interval = options?.interval ?? 5_000;
 
   const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
 
