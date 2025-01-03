@@ -3,14 +3,22 @@
 import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
-import { LoadingTemplate } from '@/components';
+import { CustomBottomNav, LoadingTemplate } from '@/components';
 import { useCheckIndividualPeer } from '@/hooks';
 import { usePeerStore } from '@/stores';
 import { CustomError, ERROR } from '@/utils';
 
+import { SendMessageForm } from './SendMessageForm';
+
 interface ChattingTemplateProps {
   userId: string;
+}
+
+interface SendMessageFormValues {
+  message: string;
+  peerId: string;
 }
 
 export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
@@ -23,9 +31,19 @@ export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
 
   const { isLoading } = useCheckIndividualPeer(userId);
 
+  const form = useForm<SendMessageFormValues>();
+
   if (!isMounted || isLoading) return <LoadingTemplate />;
 
   if (!friendPeer) throw new CustomError(ERROR.UNAUTHORIZED());
 
-  return <article>ss</article>;
+  const onSubmit = (values: SendMessageFormValues) => {
+    form.reset();
+  };
+
+  return (
+    <article>
+      <SendMessageForm form={form} />
+    </article>
+  );
 };

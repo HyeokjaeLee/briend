@@ -2,9 +2,10 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { useEffect, useRef } from 'react';
+
 import type { FriendPeer } from '@/stores/peer';
 import { cn } from '@/utils';
-import { useEffect, useRef, useState } from 'react';
 
 export interface ConnectionIndicatorProps {
   friendPeer?: FriendPeer;
@@ -33,7 +34,7 @@ export const ConnectionIndicator = ({
     return (
       <div
         className={cn(
-          'size-2 rounded-full box-border border border-slate-300',
+          'size-2 rounded-full box-border border border-slate-300 flex-shrink-0',
           className,
         )}
       />
@@ -51,7 +52,7 @@ export const ConnectionIndicator = ({
         key={connectionStatus}
         animate={firstRenderRef.current ? false : { scale: [1, 2, 1] }}
         className={cn(
-          'size-2 rounded-full',
+          'size-2 rounded-full flex-shrink-0',
           {
             [CONNECTION_STATUS.ONLINE]: 'bg-green-500',
             [CONNECTION_STATUS.OFFLINE]: 'bg-red-500',
