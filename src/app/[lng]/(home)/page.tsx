@@ -15,10 +15,6 @@ const ChattingListPage = () => {
     useShallow((state) => [state.friendList]),
   );
 
-  const friendConnectionMap = usePeerStore(
-    (state) => state.friendConnectionMap,
-  );
-
   const { isLogin, isLoading, user } = useUserData();
 
   return (

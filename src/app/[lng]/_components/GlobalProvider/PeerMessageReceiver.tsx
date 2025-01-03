@@ -8,7 +8,6 @@ import { useCookies } from '@/hooks';
 import { usePeerStore } from '@/stores';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
-import { toast } from '@/utils/client';
 
 export const PeerMessageReceiver = () => {
   const [friendConnections, requestedPingPongMap] = usePeerStore(
@@ -23,11 +22,12 @@ export const PeerMessageReceiver = () => {
   useEffect(() => {
     if (!userId) return;
 
+    const unmountHandlerList: (() => void)[] = [];
+
     friendConnections.data.forEach(({ connection }) => {
       if (!connection) return;
-      connection.on('data', (data) => {
-        const peerMessage = data as PeerData;
 
+      const dataHandler = ((peerMessage: PeerData) => {
         switch (peerMessage.type) {
           case MESSAGE_TYPE.MESSAGE:
             return messageTable?.put({
@@ -41,18 +41,22 @@ export const PeerMessageReceiver = () => {
               state: MESSAGE_STATE.RECEIVE,
             });
 
-          case MESSAGE_TYPE.CHECK_PEER_STATUS:
+          case MESSAGE_TYPE.CHECK_PEER_STATUS: {
             if (peerMessage.data === userId)
               //* 보냈던 요청이 돌아오면 다음 disconnect 이벤트에서 제외
-              toast({
-                message: 'connected',
-              });
-            requestedPingPongMap.delete(peerMessage.id);
+              return requestedPingPongMap.delete(peerMessage.id);
 
             return connection.send(peerMessage satisfies PeerData);
+          }
         }
-      });
+      }) as (data: unknown) => void;
+
+      connection.on('data', dataHandler);
+
+      unmountHandlerList.push(() => connection.off('data', dataHandler));
     });
+
+    return () => unmountHandlerList.forEach((handler) => handler());
   }, [friendConnections, userId, requestedPingPongMap]);
 
   return null;
