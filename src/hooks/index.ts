@@ -1,5 +1,6 @@
 'use client';
 
+export { useCheckIndividualPeer } from './useCheckIndividualPeer';
 export { useCookies } from './useCookies';
 export { useCustomHref } from './useCustomHref';
 export { useCustomRouter } from './useCustomRouter';
