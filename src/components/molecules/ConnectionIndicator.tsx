@@ -1,3 +1,7 @@
+'use client';
+
+import { AnimatePresence, motion } from 'framer-motion';
+
 import type { FriendPeer } from '@/stores/peer';
 import { cn } from '@/utils';
 
@@ -27,16 +31,26 @@ export const ConnectionIndicator = ({
   }
 
   return (
-    <div
-      className={cn(
-        'size-2 rounded-full flex-center',
-        {
-          [CONNECTION_STATUS.ONLINE]: 'bg-green-500',
-          [CONNECTION_STATUS.OFFLINE]: 'bg-slate-400',
-          [CONNECTION_STATUS.EXPIRED]: 'hidden',
-        }[connectionStatus],
-        className,
-      )}
-    />
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={connectionStatus}
+        animate={{ scale: [1, 2, 1] }}
+        className={cn(
+          'size-2 rounded-full flex-center',
+          {
+            [CONNECTION_STATUS.ONLINE]: 'bg-green-500',
+            [CONNECTION_STATUS.OFFLINE]: 'bg-red-500',
+            [CONNECTION_STATUS.EXPIRED]: 'bg-gray-500',
+          }[connectionStatus],
+          className,
+        )}
+        initial={{ scale: 1 }}
+        transition={{
+          duration: 0.3,
+          times: [0, 0.5, 1],
+          ease: 'easeInOut',
+        }}
+      />
+    </AnimatePresence>
   );
 };

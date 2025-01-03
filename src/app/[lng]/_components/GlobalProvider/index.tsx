@@ -19,6 +19,7 @@ import { FriendStoreMounter } from './FriendStoreMounter';
 import { GlobalEventListener } from './GlobalEventListener';
 import { HistoryObserver } from './HistoryObserver';
 import { PeerConnector } from './PeerConnector';
+import { PeerMessageReceiver } from './PeerMessageReceiver';
 
 const queryClient = new QueryClient({
   mutationCache: new MutationCache({
@@ -79,6 +80,7 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
           <ReactQueryDevtools initialIsOpen={false} />
           <FriendStoreMounter />
           <PeerConnector />
+          <PeerMessageReceiver />
           {children}
         </PersistQueryClientProvider>
       </CookiesProvider>

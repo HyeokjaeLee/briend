@@ -93,6 +93,7 @@ export const useSyncFriendList = (peer: Peer | null) => {
     const expireInterval = setInterval(
       () => {
         //* 이전 요청에서 돌아오지 않은 응답이 있는 경우 disconnect
+
         requestedPingPongMap.forEach((userId, requestId) => {
           const friendPeer = friendConnectionsData.get(userId);
 
@@ -154,7 +155,7 @@ export const useSyncFriendList = (peer: Peer | null) => {
           }
         });
       },
-      IS_DEV ? 3_000 : 10_000,
+      IS_DEV ? 5_000 : 10_000,
     );
 
     return () => clearInterval(expireInterval);
