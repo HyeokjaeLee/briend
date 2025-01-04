@@ -35,6 +35,8 @@ const config: Config = {
           '-10px 0 15px -3px rgb(0 0 0 / 0.03), -4px 0 6px -4px rgb(0 0 0 / 0.02)',
         'lg-right':
           '10px 0 15px -3px rgb(0 0 0 / 0.03), 4px 0 6px -4px rgb(0 0 0 / 0.02)',
+        'lg-top':
+          '0 -10px 15px -3px rgb(0 0 0 / 0.03), 0 -4px 6px -4px rgb(0 0 0 / 0.02)',
       },
       colors: {
         'naver-green': '#03C75A',

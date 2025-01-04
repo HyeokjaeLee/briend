@@ -2,9 +2,9 @@ import { Suspense, type PropsWithChildren } from 'react';
 
 import { LoadingTemplate } from '@/components';
 
-export const GlobalSuspense = ({ children }: PropsWithChildren) => {
+export const LoadingSuspense = ({ children }: PropsWithChildren) => {
   return (
-    <Suspense fallback={<LoadingTemplate className="animate-fade" />}>
+    <Suspense fallback={<LoadingTemplate className="z-0 animate-fade" />}>
       {children}
     </Suspense>
   );

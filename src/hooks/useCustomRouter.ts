@@ -51,7 +51,7 @@ export const useCustomRouter = () => {
     if (isCurrentHref(customHref)) return;
 
     const {
-      withLoading = true,
+      withLoading,
       withAnimation = 'NONE',
       scroll,
       toSidePanel,
@@ -120,7 +120,7 @@ export const useCustomRouter = () => {
         scroll,
         toSidePanel,
         withAnimation = 'FROM_BOTTOM',
-        withLoading = true,
+        withLoading,
       } = options ?? {};
 
       if (toSidePanel) return setSidePanelUrl(customHref);

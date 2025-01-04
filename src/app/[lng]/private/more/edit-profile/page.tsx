@@ -98,10 +98,13 @@ const EditProfilePage = (props: ProfilePageProps) => {
     mutationFn: API_ROUTES.EDIT_PROFILE,
   });
 
-  const isNoChanged =
-    !form.formState.isDirty &&
-    form.formState.defaultValues?.profileImage?.updatedAt ===
-      profileImageUpdateAt;
+  const initialProfileUpdateAt =
+    form.formState.defaultValues?.profileImage?.updatedAt;
+
+  const isNoChanged = initialProfileUpdateAt
+    ? true
+    : !form.formState.isDirty &&
+      initialProfileUpdateAt === profileImageUpdateAt;
 
   useEffect(() => {
     if (isNoChanged) return;
