@@ -11,9 +11,9 @@ export default async function ChattingPage({ params }: ChattingPageProps) {
   const { userId } = await params;
 
   return (
-    <article className="size-full">
+    <>
       <ChattingPageHeader userId={userId} />
       <ChattingTemplate userId={userId} />
-    </article>
+    </>
   );
 }

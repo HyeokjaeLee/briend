@@ -1,3 +1,5 @@
 {
-  "send-form-placeholder": "메시지 입력"
+  "send-form-placeholder": "메시지 입력",
+  "empty-title": "아직 친구와 나눈 대화가 없네요.",
+  "empty-description": "먼저 인사를 건내보세요!"
 }

@@ -56,7 +56,7 @@ export const ConnectionIndicator = ({
           {
             [CONNECTION_STATUS.ONLINE]: 'bg-green-500',
             [CONNECTION_STATUS.OFFLINE]: 'bg-red-500',
-            [CONNECTION_STATUS.EXPIRED]: 'bg-gray-500',
+            [CONNECTION_STATUS.EXPIRED]: 'bg-zinc-500',
           }[connectionStatus],
           className,
         )}

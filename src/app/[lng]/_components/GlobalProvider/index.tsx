@@ -77,7 +77,7 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
           client={queryClient}
           persistOptions={persistOptions}
         >
-          <ReactQueryDevtools initialIsOpen={false} />
+          <ReactQueryDevtools buttonPosition="top-left" />
           <FriendStoreMounter />
           <PeerConnector />
           <PeerMessageReceiver />
