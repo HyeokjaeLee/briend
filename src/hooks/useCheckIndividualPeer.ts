@@ -33,16 +33,14 @@ export const useCheckIndividualPeer = (
     ]),
   );
 
-  const interval = options?.interval ?? 5_000;
+  const interval = options?.interval ?? 10_000;
 
   const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
-
-  const [friendPeer, setFriendPeer] = useState<FriendPeer>();
 
   useEffect(() => {
     if (!isMounted || !myUserId) return;
 
-    const checkPeer = () => {
+    const checkingInterval = setInterval(() => {
       requestedPingPongMap.forEach((userId, requestId) => {
         const friendPeer = friendConnectionsData.get(userId);
 
@@ -76,13 +74,7 @@ export const useCheckIndividualPeer = (
           id,
         } satisfies PeerData);
       }
-
-      setFriendPeer(friendPeer);
-    };
-
-    checkPeer();
-
-    const checkingInterval = setInterval(checkPeer, interval);
+    }, interval);
 
     return () => clearInterval(checkingInterval);
   }, [
@@ -94,6 +86,8 @@ export const useCheckIndividualPeer = (
     setFriendConnections,
     userId,
   ]);
+
+  const friendPeer = friendConnectionsData.get(userId);
 
   return {
     isLoading: !friendPeer,
