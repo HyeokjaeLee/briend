@@ -7,7 +7,7 @@ import { headers } from 'next/headers';
 
 import type { ReactElement } from 'react';
 
-import { LANGUAGE } from '@/constants';
+import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
 import { Theme } from '@radix-ui/themes';
 
@@ -19,7 +19,7 @@ import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
-import { GlobalSuspense } from './_components/GlobalSuspense';
+import { LoadingSuspense } from './_components/LoadingSuspense';
 import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
 
@@ -90,29 +90,38 @@ const RootLayout = async ({
       dir={dir(lng)}
       lang={lng}
     >
-      <Theme asChild className="flex size-full" scaling="90%">
+      <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
         <body>
-          <GlobalSuspense>
+          <LoadingSuspense>
             <GlobalProvider>
               <aside className="hidden flex-1 bg-slate-100 xl:block" />
               <div
-                className={cn(
-                  'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
-                  'flex-1 shadow-none sm:shadow-lg',
-                )}
+                className="relative flex size-full flex-[2]"
+                id={SELECTOR.DYNAMIC_CONTAINER}
               >
-                <GlobalLoading />
-                <GlobalHeader />
-                <ToastProvider />
-                <GlobalModals />
-                <MainContainer>{children}</MainContainer>
-                <BottomNav />
+                <LoadingSuspense>
+                  <div
+                    className={cn(
+                      'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
+                      'flex-1 shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
+                    )}
+                  >
+                    <GlobalLoading />
+                    <GlobalHeader />
+                    <ToastProvider />
+                    <GlobalModals />
+                    <MainContainer>{children}</MainContainer>
+                    <BottomNav />
+                  </div>
+                </LoadingSuspense>
+                <LoadingSuspense>
+                  <aside className="hidden flex-1 bg-slate-100 sm:block">
+                    {rightSide}
+                  </aside>
+                </LoadingSuspense>
               </div>
-              <aside className="hidden flex-1 bg-slate-100 sm:block">
-                {rightSide}
-              </aside>
             </GlobalProvider>
-          </GlobalSuspense>
+          </LoadingSuspense>
         </body>
       </Theme>
     </html>

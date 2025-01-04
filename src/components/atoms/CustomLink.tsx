@@ -25,7 +25,7 @@ export const CustomLink = ({
   onClick,
   i18nOptimize = true,
   replace,
-  withLoading = true,
+  withLoading = false,
   withAnimation,
   toSidePanel,
   ...restLinkProps

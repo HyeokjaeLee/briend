@@ -3,15 +3,15 @@
 import type { HTMLMotionProps } from 'framer-motion';
 
 import { AnimatePresence, motion } from 'framer-motion';
+import { usePathname } from 'next/navigation';
 
-import { useLayoutEffect, useState, type PropsWithChildren } from 'react';
+import { memo, useLayoutEffect, useState, type PropsWithChildren } from 'react';
 
 import {
   SESSION_STORAGE,
   SELECTOR,
   type SESSION_STORAGE_TYPE,
 } from '@/constants';
-import { useUrl } from '@/hooks';
 import { useHistoryStore } from '@/stores';
 
 const transitionX = {
@@ -60,10 +60,10 @@ const ANIMATION_GROUP: Record<
   },
 };
 
-export const AnimationMain = ({ children }: PropsWithChildren) => {
-  const url = useUrl();
+export const AnimationMain = memo(({ children }: PropsWithChildren) => {
+  const pathname = usePathname();
 
-  const [key, setKey] = useState(url);
+  const [key, setKey] = useState(pathname);
   const [animation, setAnimation] =
     useState<SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION>();
 
@@ -96,13 +96,13 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
 
     setAnimation('FROM_BOTTOM');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+  }, [pathname]);
 
   useLayoutEffect(() => {
     if (!animation) return;
 
-    setKey(url);
-  }, [url, animation]);
+    setKey(pathname);
+  }, [pathname, animation]);
 
   const animationProps = ANIMATION_GROUP[animation ?? 'NONE'];
 
@@ -123,4 +123,6 @@ export const AnimationMain = ({ children }: PropsWithChildren) => {
       </motion.main>
     </AnimatePresence>
   );
-};
+});
+
+AnimationMain.displayName = 'AnimationMain';

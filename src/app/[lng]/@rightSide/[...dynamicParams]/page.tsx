@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -51,4 +51,4 @@ const RightSidePanelPage = createOnlyClientComponent(() => {
   }
 }, EmptyTemplate);
 
-export default RightSidePanelPage;
+export default memo(RightSidePanelPage);
