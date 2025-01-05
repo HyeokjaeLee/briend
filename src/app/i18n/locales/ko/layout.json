@@ -4,5 +4,7 @@
   "more": "더보기",
   "chat-title": "채팅 목록",
   "invite-chat-title": "채팅 초대",
-  "more-title": "모든 메뉴"
+  "more-title": "모든 메뉴",
+  "empty": "인스턴스 번역 채팅",
+  "empty-description": "QR 스캔 한번으로 친구와 같은 언어로 대화할 수 있어요."
 }
