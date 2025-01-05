@@ -2,9 +2,6 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-
 import { CustomBottomNav, LoadingTemplate } from '@/components';
 import { useCheckIndividualPeer } from '@/hooks';
 import { usePeerStore } from '@/stores';

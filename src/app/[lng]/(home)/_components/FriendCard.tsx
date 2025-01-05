@@ -1,12 +1,7 @@
 import type { CustomLinkProps } from '@/components';
 import { CustomLink, ProfileImage } from '@/components';
 import { ConnectionIndicator } from '@/components/molecules/ConnectionIndicator';
-import { ROUTES } from '@/routes/client';
-import {
-  usePeerStore,
-  MEDIA_QUERY_BREAK_POINT,
-  useGlobalStore,
-} from '@/stores';
+import { usePeerStore } from '@/stores';
 
 interface FriendCardProps extends Pick<CustomLinkProps, 'href'> {
   friendUserId: string;
@@ -19,20 +14,12 @@ export const FriendCard = ({
   nickname,
   href,
 }: FriendCardProps) => {
-  const hasSidePanel = useGlobalStore(
-    (state) => MEDIA_QUERY_BREAK_POINT.sm <= state.mediaQueryBreakPoint,
-  );
-
   const friendPeer = usePeerStore((state) =>
     state.friendConnections.data.get(friendUserId),
   );
 
   return (
-    <CustomLink
-      className="block px-5 py-3"
-      href={href}
-      //toSidePanel={hasSidePanel}
-    >
+    <CustomLink className="block px-5 py-3" href={href}>
       <article className="flex gap-3">
         <ProfileImage size="5" />
         <div className="flex w-full items-center justify-between">

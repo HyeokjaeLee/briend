@@ -1,16 +1,15 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
 import { memo } from 'react';
 
-import { Drawer } from '@/components/molecules/Drawer';
-import { useCustomRouter, useUserData } from '@/hooks';
+import { useUserData } from '@/hooks';
 import { useFriendStore } from '@/stores';
 import { Skeleton } from '@radix-ui/themes';
 
 import { FriendCard } from './_components/FriendCard';
+import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
 import { GuestBanner } from './_components/GuestBanner';
 import { MyProfileCard } from './_components/MyProfileCard';
 
@@ -22,12 +21,6 @@ const ChattingListPage = () => {
   );
 
   const { isLogin, isLoading, user } = useUserData();
-
-  const searchParams = useSearchParams();
-
-  const userId = searchParams.get(USER_DRAWER_PARAM);
-
-  const router = useCustomRouter();
 
   return (
     <article>
@@ -57,17 +50,7 @@ const ChattingListPage = () => {
           </li>
         ))}
       </ul>
-      <Drawer
-        open={!!userId}
-        onClose={() => {
-          const url = new URL(window.location.href);
-          url.searchParams.delete(USER_DRAWER_PARAM);
-
-          router.replace(url.href);
-        }}
-      >
-        {userId}
-      </Drawer>
+      <FriendInfoDrawer />
     </article>
   );
 };

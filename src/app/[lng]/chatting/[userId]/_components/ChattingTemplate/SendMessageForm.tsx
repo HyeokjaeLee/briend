@@ -1,16 +1,16 @@
 'use client';
 
-import type { Form } from '../UserActionSection';
+import type { useMessageForm } from './_hooks/useMessageForm';
 
 import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomBottomNav, CustomIconButton } from '@/components';
+import { CustomIconButton } from '@/components';
 import { cn } from '@/utils';
 
 interface SendMessageFormProps {
-  form: Form;
+  form: ReturnType<typeof useMessageForm>['form'];
 }
 
 export const SendMessageForm = ({

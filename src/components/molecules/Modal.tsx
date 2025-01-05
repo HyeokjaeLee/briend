@@ -31,7 +31,7 @@ export const Modal = ({
     <Portal asChild>
       <dialog
         className={cn(
-          'fixed z-20 size-full bg-zinc-900/50 backdrop-blur-sm',
+          'fixed z-30 size-full bg-zinc-900/50 backdrop-blur-sm',
           'animate-duration-150 animate-fade',
         )}
         open={open}

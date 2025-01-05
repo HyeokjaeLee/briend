@@ -1,11 +1,10 @@
 import { nanoid } from 'nanoid';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { COOKIES } from '@/constants';
 import { usePeerStore } from '@/stores';
-import type { FriendPeer } from '@/stores/peer';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
 
@@ -16,7 +15,7 @@ interface CheckIndividualPeerOptions {
 }
 
 export const useCheckIndividualPeer = (
-  userId: string,
+  userId?: string | null,
   options?: CheckIndividualPeerOptions,
 ) => {
   const [
@@ -38,7 +37,7 @@ export const useCheckIndividualPeer = (
   const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
 
   useEffect(() => {
-    if (!isMounted || !myUserId) return;
+    if (!isMounted || !myUserId || !userId) return;
 
     const checkingInterval = setInterval(() => {
       requestedPingPongMap.forEach((userId, requestId) => {
@@ -87,7 +86,7 @@ export const useCheckIndividualPeer = (
     userId,
   ]);
 
-  const friendPeer = friendConnectionsData.get(userId);
+  const friendPeer = userId ? friendConnectionsData.get(userId) : undefined;
 
   return {
     isLoading: !friendPeer,
