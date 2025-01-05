@@ -25,17 +25,19 @@ const RightSidePanelPage = createOnlyClientComponent(() => {
   const pathaname = usePathname();
 
   const { name: routeName } = findRoute(sidePanelUrl);
+
   const { name: currentRouteName } = findRoute(pathaname);
 
   const isSameRoute = routeName === currentRouteName;
+  const isDefaultRoute = routeName === 'FRIEND_LIST';
 
   const router = useCustomRouter();
 
   useEffect(() => {
-    if (!isSameRoute || !hasSidePanel) return;
+    if (!isSameRoute || !hasSidePanel || isDefaultRoute) return;
 
     router.replace(ROUTES.FRIEND_LIST.pathname);
-  }, [isSameRoute, router, hasSidePanel]);
+  }, [isSameRoute, router, hasSidePanel, isDefaultRoute]);
 
   if (!hasSidePanel) return null;
 

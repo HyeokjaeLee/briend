@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 
-interface SendMessageFormValues {
+export interface SendMessageFormValues {
   message: string;
   peerId: string;
 }

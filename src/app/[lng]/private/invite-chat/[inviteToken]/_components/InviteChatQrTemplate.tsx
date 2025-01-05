@@ -18,7 +18,7 @@ import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { type JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
-import { CustomError, ERROR_STATUS } from '@/utils';
+import { CustomError, ERROR_STATUS, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -63,7 +63,7 @@ interface InviteChatQrTemplateProps
 
 export const InviteChatQRTemplate = createOnlyClientComponent(
   ({ url, exp, hostId, guestLanguage }: InviteChatQrTemplateProps) => {
-    const expires = new Date((exp ?? 0) * 1_000);
+    const expires = expToDate(exp);
 
     const router = useCustomRouter();
 

@@ -35,6 +35,7 @@ export {
   ValidationMessage,
   type ValidationMessageProps,
 } from './molecules/ValidationMessage';
+export { Drawer, type DrawerProps } from './molecules/Drawer';
 
 /**
  * @package organisms 컴포넌트

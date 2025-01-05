@@ -20,10 +20,10 @@ import { createOnlyClientComponent } from '@/utils/client';
 
 import { CustomIconButton } from '../atoms/CustomIconButton';
 
-interface DrawerProps {
+export interface DrawerProps {
   open: boolean;
   onClose?: () => void;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
 }
 
@@ -64,17 +64,22 @@ export const Drawer = createOnlyClientComponent(
         const percentDeltaY = (e.deltaY / height) * 100;
         const percentCurrentY = lastY.current + percentDeltaY;
 
-        if (percentCurrentY <= 0) return;
+        if (percentCurrentY < 0) return;
 
         y.set(percentCurrentY + '%');
       },
       onSwiped: (e) => {
-        lastY.current += (e.deltaY / height) * 100 + 10 * e.velocity ** 2;
+        const percentDeltaY =
+          lastY.current + (e.deltaY / height) * 100 + 10 * e.velocity ** 2;
 
-        animate(y, lastY.current + '%', TRANSITION);
+        if (percentDeltaY < 0) return;
+
+        lastY.current = percentDeltaY;
+
+        animate(y, percentDeltaY + '%', TRANSITION);
 
         const isClose =
-          50 < lastY.current ||
+          50 < percentDeltaY ||
           (e.dir === 'Down' && 250 < e.deltaY && 1.5 < e.velocity);
 
         if (isClose) {
@@ -95,7 +100,7 @@ export const Drawer = createOnlyClientComponent(
       <AnimatePresence>
         {open ? (
           <motion.div
-            className="absolute z-50 flex size-full items-end bg-zinc-300/10"
+            className="absolute z-20 flex size-full items-end bg-zinc-300/10"
             exit={{ opacity: 0 }}
             style={{
               backdropFilter,
@@ -141,7 +146,7 @@ export const Drawer = createOnlyClientComponent(
               <div className="relative max-h-[calc(100dvh-5rem)] overflow-auto">
                 <motion.article
                   className={cn(
-                    'relative mx-auto max-w-screen-sm px-4',
+                    'relative mx-auto max-w-screen-sm px-4 pb-4',
                     className,
                   )}
                   style={{ opacity }}

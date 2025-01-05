@@ -96,13 +96,13 @@ const RootLayout = async ({
             <GlobalProvider>
               <aside className="hidden flex-1 bg-slate-100 xl:block" />
               <div
-                className="relative flex size-full flex-[2]"
+                className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
                 id={SELECTOR.DYNAMIC_CONTAINER}
               >
                 <LoadingSuspense>
                   <div
                     className={cn(
-                      'relative flex size-full max-h-cdvh min-h-cdvh w-full max-w-screen-sm flex-col overflow-hidden text-slate-900',
+                      'relative flex size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
                       'flex-1 shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
                     )}
                   >

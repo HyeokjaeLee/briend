@@ -5,17 +5,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 
 import type { FriendPeer } from '@/stores/peer';
-import { cn } from '@/utils';
+import { cn, getConnectionStatus } from '@/utils';
+import { CONNECTION_STATUS } from '@/utils/getConnectionStatus';
 
 export interface ConnectionIndicatorProps {
   friendPeer?: FriendPeer;
   className?: string;
-}
-
-enum CONNECTION_STATUS {
-  ONLINE = 'online',
-  OFFLINE = 'offline',
-  EXPIRED = 'expired',
 }
 
 export const ConnectionIndicator = ({
@@ -24,13 +19,17 @@ export const ConnectionIndicator = ({
 }: ConnectionIndicatorProps) => {
   const firstRenderRef = useRef(true);
 
+  const connectionStatus = getConnectionStatus(friendPeer);
+
+  const isLoading = connectionStatus === CONNECTION_STATUS.LOADING;
+
   useEffect(() => {
-    if (friendPeer) {
+    if (!isLoading) {
       firstRenderRef.current = false;
     }
-  }, [friendPeer]);
+  }, [isLoading]);
 
-  if (!friendPeer)
+  if (isLoading)
     return (
       <div
         className={cn(
@@ -39,12 +38,6 @@ export const ConnectionIndicator = ({
         )}
       />
     );
-
-  const connectionStatus = friendPeer.isExpired
-    ? CONNECTION_STATUS.EXPIRED
-    : friendPeer.isConnected
-      ? CONNECTION_STATUS.ONLINE
-      : CONNECTION_STATUS.OFFLINE;
 
   return (
     <AnimatePresence mode="wait">

@@ -6,10 +6,10 @@ export default function EmptyTemplate() {
   const { t } = useTranslation('layout');
 
   return (
-    <div className="size-full flex-col gap-4 bg-white flex-center">
+    <div className="size-full flex-col gap-2 bg-white flex-center">
       <Logo className="w-40" />
       <div className="text-center">
-        <h2 className="mb-1 text-lg font-semibold">{t('empty')}</h2>
+        <h2 className="text-lg font-semibold">{t('empty')}</h2>
         <p className="text-sm text-gray-500">{t('empty-description')}</p>
       </div>
     </div>
