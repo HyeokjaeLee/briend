@@ -54,6 +54,7 @@
     "react-i18next": "^15.4.0",
     "react-icons": "^5.4.0",
     "react-scroll": "^1.9.0",
+    "react-swipeable": "^7.0.2",
     "react-textarea-autosize": "^8.5.6",
     "react-toastify": "^10.0.6",
     "simple-peer": "^9.11.1",

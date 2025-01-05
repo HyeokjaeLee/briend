@@ -89,21 +89,31 @@ export const useSyncFriendList = (peer: Peer | null) => {
 
         const isExpired = checkExpired(friendPeer.exp);
 
+        const cleanConnection = () => {
+          const { connection } = friendPeer;
+
+          if (!connection) return;
+
+          connection.removeAllListeners();
+          connection.close();
+        };
+
         if (!isExpired) {
           if (friendPeer.isConnected) return;
 
-          return setFriendConnections((prevMap) =>
-            prevMap.set(userId, {
+          return setFriendConnections((prevMap) => {
+            cleanConnection();
+
+            return prevMap.set(userId, {
               ...friendPeer,
               connectionType: 'outgoing',
               connection: peer.connect(friendPeer.peerId),
-            }),
-          );
+            });
+          });
         }
 
         if (!friendPeer.isExpired || friendPeer.connection) {
-          friendPeer.connection?.removeAllListeners();
-          friendPeer.connection?.close();
+          cleanConnection();
 
           setFriendConnections((prevMap) =>
             prevMap.set(userId, {
