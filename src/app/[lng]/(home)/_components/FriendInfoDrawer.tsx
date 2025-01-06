@@ -1,3 +1,5 @@
+'use client';
+
 import { useSearchParams } from 'next/navigation';
 
 import { RiDeleteBinLine } from 'react-icons/ri';
@@ -24,7 +26,13 @@ import { Badge, Skeleton } from '@radix-ui/themes';
 
 export const DRAWER_SEARCH_PARAM = 'user-id';
 
-export const FriendInfoDrawer = () => {
+interface FriendInfoDrawerProps {
+  onClickDeleteFriendButton?: () => void;
+}
+
+export const FriendInfoDrawer = ({
+  onClickDeleteFriendButton,
+}: FriendInfoDrawerProps) => {
   const searchParams = useSearchParams();
 
   const userId = searchParams.get(DRAWER_SEARCH_PARAM);
@@ -99,8 +107,8 @@ export const FriendInfoDrawer = () => {
             {t('chatting-button')}
           </CustomLink>
         </CustomButton>
-        <CustomIconButton variant="outline">
-          <RiDeleteBinLine />
+        <CustomIconButton variant="outline" onClick={onClickDeleteFriendButton}>
+          <RiDeleteBinLine className="size-6" />
         </CustomIconButton>
       </footer>
     </Drawer>

@@ -19,7 +19,7 @@ export const FriendCard = ({
   );
 
   return (
-    <CustomLink className="block px-5 py-3" href={href}>
+    <CustomLink replace className="block px-5 py-3" href={href}>
       <article className="flex gap-3">
         <ProfileImage size="5" />
         <div className="flex w-full items-center justify-between">

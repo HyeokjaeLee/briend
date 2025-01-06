@@ -1,7 +1,7 @@
 import { useShallow } from 'zustand/shallow';
 
 import CountUp from 'react-countup';
-import { TbFriends, TbFriendsOff } from 'react-icons/tb';
+import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage, CustomLink } from '@/components';
@@ -35,24 +35,31 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
             <strong>{userName}</strong>
             <p className="text-zinc-500">{t('edit-profile')}</p>
           </div>
-          <div className="mb-auto flex items-center gap-2 font-bold">
-            {isLimitedAddFriend ? (
-              <TbFriendsOff className="text-red-500" />
-            ) : (
-              <TbFriends className="text-green-500" />
-            )}
-
-            <small className="min-w-11">
-              <CountUp
-                className={
-                  isLimitedAddFriend ? 'text-red-500' : 'text-green-500'
-                }
-                duration={0.3}
-                end={firendCount}
-              />{' '}
-              / <span>{MAX_FIREND_COUNT}</span>
-            </small>
-          </div>
+          <div />
+          <ul className="mt-auto flex flex-col">
+            <li className="flex items-center gap-2">
+              <RiMessage2Line />
+              <CountUp className="text-sm" duration={0.3} end={firendCount} />
+            </li>
+            <li className="flex items-center gap-2">
+              {isLimitedAddFriend ? (
+                <RiLinkUnlinkM className="text-red-500" />
+              ) : (
+                <RiLink className="text-green-500" />
+              )}
+              <small className="min-w-11 text-sm">
+                <CountUp
+                  className={
+                    isLimitedAddFriend ? 'text-red-500' : 'text-green-500'
+                  }
+                  delay={0.1}
+                  duration={0.3}
+                  end={firendCount}
+                />{' '}
+                / <span>{MAX_FIREND_COUNT}</span>
+              </small>
+            </li>
+          </ul>
         </div>
       </article>
     </CustomLink>

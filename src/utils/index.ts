@@ -1,3 +1,4 @@
+export { assert } from './assert';
 export { checkExpired } from './checkExpired';
 export { cn } from './cn';
 export { customCookies } from './cookies';
