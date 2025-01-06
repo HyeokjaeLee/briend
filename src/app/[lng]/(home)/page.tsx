@@ -2,18 +2,20 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { memo } from 'react';
+import { memo, useState } from 'react';
 
 import { useUserData } from '@/hooks';
 import { useFriendStore } from '@/stores';
 import { Skeleton } from '@radix-ui/themes';
 
 import { FriendCard } from './_components/FriendCard';
-import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
+import { FriendDeleteModal } from './_components/FriendDeleteModal';
+import {
+  DRAWER_SEARCH_PARAM,
+  FriendInfoDrawer,
+} from './_components/FriendInfoDrawer';
 import { GuestBanner } from './_components/GuestBanner';
 import { MyProfileCard } from './_components/MyProfileCard';
-
-const USER_DRAWER_PARAM = 'user-id';
 
 const ChattingListPage = () => {
   const [friendList] = useFriendStore(
@@ -21,6 +23,7 @@ const ChattingListPage = () => {
   );
 
   const { isLogin, isLoading, user } = useUserData();
+  const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
 
   return (
     <article>
@@ -44,13 +47,19 @@ const ChattingListPage = () => {
           <li key={userId}>
             <FriendCard
               friendUserId={userId}
-              href={`?${USER_DRAWER_PARAM}=${userId}`}
+              href={`?${DRAWER_SEARCH_PARAM}=${userId}`}
               nickname={nickname}
             />
           </li>
         ))}
       </ul>
-      <FriendInfoDrawer />
+      <FriendInfoDrawer
+        onClickDeleteFriendButton={() => setIsDeleteModalOpened(true)}
+      />
+      <FriendDeleteModal
+        opened={isDeleteModalOpened}
+        onClose={() => setIsDeleteModalOpened(false)}
+      />
     </article>
   );
 };
