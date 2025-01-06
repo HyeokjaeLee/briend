@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { dir } from 'i18next';
 import { headers } from 'next/headers';
 
-import type { ReactElement } from 'react';
+import { Suspense, type ReactElement } from 'react';
 
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
@@ -19,7 +19,7 @@ import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
-import { LoadingSuspense } from './_components/LoadingSuspense';
+import { GlobalSuspense } from './_components/GlobalSuspense';
 import { MainContainer } from './_components/MainContainer';
 import { ToastProvider } from './_components/ToastProvider';
 
@@ -84,6 +84,7 @@ const RootLayout = async ({
 }: Readonly<RootLayoutProps>) => {
   const { lng } = await params;
 
+  //TODO: 각 LoadingSuspense에 디자인에 맞는 레이아웃 구성해서 넣기, ex) body 밑 Suspense에 로직 없는 레이아웃만 동일한 컴포넌트 개발
   return (
     <html
       className={cn(pretendard.className, pretendard.variable, 'size-full')}
@@ -92,36 +93,34 @@ const RootLayout = async ({
     >
       <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
         <body>
-          <LoadingSuspense>
+          <GlobalSuspense>
             <GlobalProvider>
               <aside className="hidden flex-1 bg-slate-100 xl:block" />
               <div
                 className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
                 id={SELECTOR.DYNAMIC_CONTAINER}
               >
-                <LoadingSuspense>
-                  <div
-                    className={cn(
-                      'relative flex size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
-                      'flex-1 shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
-                    )}
-                  >
-                    <GlobalLoading />
-                    <GlobalHeader />
-                    <ToastProvider />
+                <div
+                  className={cn(
+                    'relative flex size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
+                    'flex-1 shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
+                  )}
+                >
+                  <GlobalLoading />
+                  <GlobalHeader />
+                  <ToastProvider />
+                  <Suspense fallback={<div className="size-full flex-1" />}>
                     <GlobalModals />
                     <MainContainer>{children}</MainContainer>
-                    <BottomNav />
-                  </div>
-                </LoadingSuspense>
-                <LoadingSuspense>
-                  <aside className="hidden flex-1 bg-slate-100 sm:block">
-                    {rightSide}
-                  </aside>
-                </LoadingSuspense>
+                  </Suspense>
+                  <BottomNav />
+                </div>
+                <aside className="hidden flex-1 bg-white sm:block">
+                  {rightSide}
+                </aside>
               </div>
             </GlobalProvider>
-          </LoadingSuspense>
+          </GlobalSuspense>
         </body>
       </Theme>
     </html>
@@ -129,3 +128,7 @@ const RootLayout = async ({
 };
 
 export default RootLayout;
+
+/**
+ *
+ */
