@@ -16,7 +16,8 @@ import { PUSHER_CHANNEL, PUSHER_EVENT, LANGUAGE } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { type JwtPayload } from '@/types/jwt';
+import { usePeerStore } from '@/stores';
+import type { JwtPayload } from '@/types/jwt';
 import type { PusherMessage } from '@/types/pusher-message';
 import { CustomError, ERROR_STATUS, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
@@ -87,6 +88,16 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
     const inviteUrl = shortUrl ?? url;
 
+    const peer = usePeerStore((state) => state.peer);
+
+    useEffect(() => {
+      if (!peer) return;
+
+      peer.on('connection', (connection) => {
+        //TODO: 인컴 유저 id 검증 로직 필요
+      });
+    }, [peer]);
+
     useEffect(() => {
       const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
 
@@ -103,6 +114,7 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
           friendTable.put({
             friendToken,
+            myToken,
             userId,
           });
 

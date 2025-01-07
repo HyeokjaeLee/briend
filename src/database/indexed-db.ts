@@ -26,7 +26,7 @@ interface MessageTableItem extends MessageData {
 }
 
 interface IndexedDB extends Dexie {
-  friend: EntityTable<PusherMessage.addFriend, 'userId'>;
+  friend: EntityTable<{ userId: string; friendToken: string }, 'userId'>;
   message: EntityTable<MessageTableItem, 'id'>;
   profileImage: EntityTable<ProfileImageTableItem, 'userId'>;
 }

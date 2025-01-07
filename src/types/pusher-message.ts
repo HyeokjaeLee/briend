@@ -5,6 +5,7 @@ export namespace PusherMessage {
 
   export interface addFriend {
     userId: string;
+    myToken: string;
     friendToken: string;
   }
 

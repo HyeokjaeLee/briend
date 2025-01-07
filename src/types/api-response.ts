@@ -1,4 +1,3 @@
-import type { PusherMessage } from './pusher-message';
 import type { JWTPayload } from 'jose';
 
 import type { LOGIN_PROVIDERS } from '@/constants';
@@ -9,7 +8,11 @@ export namespace ApiResponse {
     inviteToken: string;
   }
 
-  export type CREATE_FRIEND = PusherMessage.addFriend;
+  export interface CREATE_FRIEND {
+    friendUserId: string;
+    myToken: string;
+    friendToken: string;
+  }
 
   export interface UNLINK_ACCOUNT {
     unlinkedProvider: LOGIN_PROVIDERS;
