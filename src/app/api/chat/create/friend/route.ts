@@ -3,12 +3,9 @@ import type { NextRequest } from 'next/server';
 import { errors } from 'jose';
 import { NextResponse } from 'next/server';
 
-import { pusher } from '@/app/pusher/server';
-import { PUSHER_CHANNEL, PUSHER_EVENT } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
-import type { PusherMessage } from '@/types/pusher-message';
 import { CustomError, ERROR_STATUS } from '@/utils';
 import {
   createApiRoute,
@@ -42,31 +39,23 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
       const [{ friendToken: myToken }, { friendToken: hostToken }] =
         await Promise.all([
           createFriendToken(hostId, {
-            language: payload.hostLanguage,
-            nickname: payload.hostNickname,
+            language: payload.guestLanguage,
+            nickname: payload.guestNickname,
             userId: myId,
-            isGuest: false,
+            isGuest,
           }),
           createFriendToken(myId, {
             language: payload.hostLanguage,
             nickname: payload.hostNickname,
             userId: hostId,
-            isGuest,
+            isGuest: false,
           }),
         ]);
 
-      await pusher.trigger(
-        PUSHER_CHANNEL.WAITING,
-        PUSHER_EVENT.WAITING(payload.hostId),
-        {
-          userId: myId,
-          friendToken: myToken,
-        } satisfies PusherMessage.addFriend,
-      );
-
       return NextResponse.json({
+        myToken: myToken,
         friendToken: hostToken,
-        userId: hostId,
+        friendUserId: hostId,
       });
     } catch (e) {
       if (e instanceof errors.JWTExpired) {

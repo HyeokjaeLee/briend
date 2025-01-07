@@ -5,11 +5,12 @@ import { use, useEffect } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components';
-import { COOKIES } from '@/constants';
+import { COOKIES, PEER_PREFIX } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
 import { useCookies, useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
+import { usePeerStore } from '@/stores';
+import { assert, CustomError, ERROR } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
@@ -24,9 +25,7 @@ const ChattingJoinPage = createOnlyClientComponent(
     //! useSearchParams 사용시 초기 렌더링 값이 null
     const { inviteToken } = use(props.searchParams);
 
-    const [cookies] = useCookies([COOKIES.USER_ID]);
-
-    const userId = cookies.USER_ID;
+    const [{ USER_ID: userId }] = useCookies([COOKIES.USER_ID]);
 
     if (!inviteToken || !userId)
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken', 'userId']));
@@ -42,21 +41,40 @@ const ChattingJoinPage = createOnlyClientComponent(
 
     const { t } = useTranslation('invite-chat-qr');
 
+    const peer = usePeerStore((state) => state.peer);
+
     useEffect(() => {
-      if (!friendTable)
-        throw new CustomError({
-          status: ERROR_STATUS.UNKNOWN_VALUE,
-          message: 'friend Table not found',
+      if (!peer) return;
+
+      const peerId = PEER_PREFIX + data.friendUserId;
+
+      const connection = peer.connect(peerId);
+
+      const handleConnect = () => {
+        if (userId !== data.friendUserId) return;
+
+        assert(friendTable);
+
+        friendTable.put({
+          userId: data.friendUserId,
+          friendToken: data.friendToken,
         });
 
-      friendTable.put(data);
+        toast({
+          message: t('start-chatting'),
+        });
 
-      toast({
-        message: t('start-chatting'),
-      });
+        router.replace(
+          ROUTES.CHATTING_ROOM.pathname({ userId: data.friendUserId }),
+        );
+      };
 
-      router.replace(ROUTES.CHATTING_ROOM.pathname({ userId: data.userId }));
-    }, [data, router, t]);
+      connection.on('open', handleConnect);
+
+      return () => {
+        connection.off('open', handleConnect);
+      };
+    }, [data, router, t, peer, userId]);
 
     return <LoadingTemplate />;
   },

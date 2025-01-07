@@ -34,9 +34,9 @@ export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
     const inviteToken = await new SignJWT({
       hostId,
       hostNickname,
+      hostLanguage,
       guestNickname,
       guestLanguage,
-      hostLanguage,
     } satisfies JwtPayload.InviteToken)
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
