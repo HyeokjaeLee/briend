@@ -1,6 +1,7 @@
 'use client';
 
 import type { JWTPayload } from 'jose';
+import type { DataConnection } from 'peerjs';
 
 import { decodeJwt } from 'jose';
 
@@ -9,18 +10,22 @@ import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
-import { pusher } from '@/app/pusher/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { BottomButton, Timer, QR } from '@/components';
-import { PUSHER_CHANNEL, PUSHER_EVENT, LANGUAGE } from '@/constants';
+import { LANGUAGE } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
-import { useCustomRouter } from '@/hooks';
+import { useCustomRouter, useProfileImage } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { usePeerStore } from '@/stores';
+import { useGlobalStore, usePeerStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
-import type { PusherMessage } from '@/types/pusher-message';
-import { CustomError, ERROR_STATUS, expToDate } from '@/utils';
-import { toast, createOnlyClientComponent } from '@/utils/client';
+import type { PeerData } from '@/types/peer-data';
+import { MESSAGE_TYPE } from '@/types/peer-data';
+import { assert, CustomError, ERROR, expToDate } from '@/utils';
+import {
+  toast,
+  createOnlyClientComponent,
+  addProfileImageFromPeer,
+} from '@/utils/client';
 import { useQuery } from '@tanstack/react-query';
 
 const INVITE_TITLE = {
@@ -60,10 +65,17 @@ interface InviteChatQrTemplateProps
     'exp' | 'hostId' | 'guestLanguage'
   > {
   url: string;
+  inviteToken: string;
 }
 
 export const InviteChatQRTemplate = createOnlyClientComponent(
-  ({ url, exp, hostId, guestLanguage }: InviteChatQrTemplateProps) => {
+  ({
+    url,
+    exp,
+    hostId,
+    guestLanguage,
+    inviteToken,
+  }: InviteChatQrTemplateProps) => {
     const expires = expToDate(exp);
 
     const router = useCustomRouter();
@@ -75,9 +87,7 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
         message: t('expired-toast-message'),
       });
 
-      throw new CustomError({
-        status: ERROR_STATUS.EXPIRED_CHAT,
-      });
+      throw new CustomError(ERROR.EXPIRED_CHAT());
     };
 
     const { data: shortUrl, isFetched } = useQuery({
@@ -90,46 +100,70 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
     const peer = usePeerStore((state) => state.peer);
 
+    const { profileImage } = useProfileImage();
+
     useEffect(() => {
       if (!peer) return;
 
-      peer.on('connection', (connection) => {
-        //TODO: 인컴 유저 id 검증 로직 필요
-      });
-    }, [peer]);
+      const connectionList: DataConnection[] = [];
 
-    useEffect(() => {
-      const channel = pusher.subscribe(PUSHER_CHANNEL.WAITING);
+      const connectHandler = (connection: DataConnection) => {
+        connectionList.push(connection);
 
-      channel.bind(
-        PUSHER_EVENT.WAITING(hostId),
-        ({ friendToken }: PusherMessage.addFriend) => {
-          const { userId } = decodeJwt<JwtPayload.FriendToken>(friendToken);
+        connection.on('data', async (message) => {
+          const { data, id, type } = message as PeerData;
 
-          if (!friendTable)
-            throw new CustomError({
-              status: ERROR_STATUS.UNKNOWN_VALUE,
-              message: 'friend Table not found',
-            });
+          if (type !== MESSAGE_TYPE.ADD_FRIEND || id !== inviteToken) return;
 
-          friendTable.put({
-            friendToken,
-            myToken,
+          assert(data.token);
+
+          const { userId } = decodeJwt<JwtPayload.FriendToken>(data.token);
+
+          if (userId === hostId) throw new CustomError(ERROR.UNAUTHORIZED());
+
+          await connection.send(
+            {
+              type: MESSAGE_TYPE.ADD_FRIEND,
+              id: inviteToken,
+              data: {
+                profileImage,
+              },
+            } satisfies PeerData,
+            true,
+          );
+
+          await friendTable?.put({
+            friendToken: data.token,
             userId,
           });
+
+          await addProfileImageFromPeer(data.profileImage);
 
           toast({
             message: t('start-chatting'),
           });
 
-          router.replace(ROUTES.CHATTING_ROOM.pathname({ userId }));
-        },
-      );
+          const toSidePanel = useGlobalStore.getState().hasSidePanel;
+
+          router.replace(
+            ROUTES.CHATTING_ROOM.pathname({ userId: data.token }),
+            {
+              toSidePanel,
+            },
+          );
+
+          if (toSidePanel) router.replace(ROUTES.FRIEND_LIST.pathname);
+        });
+      };
+
+      peer.on('connection', connectHandler);
 
       return () => {
-        channel.unsubscribe();
+        peer.off('connection', connectHandler);
+
+        connectionList.forEach((connection) => connection.close());
       };
-    }, [hostId, router, t]);
+    }, [hostId, inviteToken, peer, router, t, profileImage]);
 
     const title = INVITE_TITLE[guestLanguage];
 

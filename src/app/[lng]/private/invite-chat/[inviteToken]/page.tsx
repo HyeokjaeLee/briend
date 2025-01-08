@@ -25,6 +25,7 @@ const InviteChatQRPage = async (props: InviteChatQRPageProps) => {
         exp={payload.exp}
         guestLanguage={payload.guestLanguage}
         hostId={payload.hostId}
+        inviteToken={inviteToken}
         url={
           ROUTES.JOIN_CHAT.url({
             lng: payload.guestLanguage,

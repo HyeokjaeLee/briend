@@ -60,7 +60,7 @@ export const InviteForm = () => {
   });
 
   const nicknamePlaceholder =
-    typeof friendCount === 'number' ? `Friend ${friendCount}` : '';
+    typeof friendCount === 'number' ? `Friend ${friendCount + 1}` : '';
 
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,

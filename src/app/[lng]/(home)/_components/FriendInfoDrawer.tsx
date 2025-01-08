@@ -15,11 +15,7 @@ import {
 } from '@/components';
 import { useCheckIndividualPeer, useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import {
-  MEDIA_QUERY_BREAK_POINT,
-  useFriendStore,
-  useGlobalStore,
-} from '@/stores';
+import { useFriendStore, useGlobalStore } from '@/stores';
 import { expToDate, getConnectionStatus } from '@/utils';
 import { CONNECTION_STATUS } from '@/utils/getConnectionStatus';
 import { Badge, Skeleton } from '@radix-ui/themes';
@@ -51,9 +47,7 @@ export const FriendInfoDrawer = ({
 
   const expires = expToDate(friendPeer?.exp);
 
-  const hasSidePanel = useGlobalStore(
-    (state) => MEDIA_QUERY_BREAK_POINT.sm <= state.mediaQueryBreakPoint,
-  );
+  const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
   const handleClose = () => {
     const url = new URL(window.location.href);

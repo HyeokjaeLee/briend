@@ -45,6 +45,7 @@ interface GlobalStore {
 
   mediaQuery: MEDIA_QUERY;
   mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT;
+  hasSidePanel: boolean;
   resetMediaQuery: () => void;
 
   sidePanelUrl: string;
@@ -69,18 +70,22 @@ export const useGlobalStore = create<GlobalStore>((set) => {
 
   const getMediaQuery = () => {
     let mediaQuery: MEDIA_QUERY = 'xs';
-    for (const [value, key] of Object.entries(MEDIA_QUERY_BREAK_POINT)) {
-      const mediaQueryList = window.matchMedia(`(min-width: ${value}px)`);
 
-      if (mediaQueryList.matches) {
-        mediaQuery = key as MEDIA_QUERY;
-      } else break;
+    if (IS_CLIENT) {
+      for (const [value, key] of Object.entries(MEDIA_QUERY_BREAK_POINT)) {
+        const mediaQueryList = window.matchMedia(`(min-width: ${value}px)`);
+
+        if (mediaQueryList.matches) {
+          mediaQuery = key as MEDIA_QUERY;
+        } else break;
+      }
     }
 
-    return mediaQuery;
-  };
+    const mediaQueryBreakPoint = MEDIA_QUERY_BREAK_POINT[mediaQuery];
+    const hasSidePanel = MEDIA_QUERY_BREAK_POINT.sm <= mediaQueryBreakPoint;
 
-  const mediaQuery = IS_CLIENT ? getMediaQuery() : 'xs';
+    return { mediaQuery, mediaQueryBreakPoint, hasSidePanel };
+  };
 
   const sidePanelUrl = IS_CLIENT
     ? sessionStorage.getItem(SESSION_STORAGE.SIDE_PANEL_URL) ||
@@ -101,17 +106,8 @@ export const useGlobalStore = create<GlobalStore>((set) => {
           options,
         },
       }),
-
-    mediaQuery,
-    mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT[mediaQuery],
-    resetMediaQuery: () => {
-      const mediaQueryKey = getMediaQuery();
-
-      return set({
-        mediaQuery: mediaQueryKey,
-        mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT[mediaQueryKey],
-      });
-    },
+    ...getMediaQuery(),
+    resetMediaQuery: () => set(getMediaQuery()),
 
     //TODO 전역에서 사용할 필요가 없는값인것 같음 추후 로컬 상태값으로 변경 필요
     lastInviteLanguage,
