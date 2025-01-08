@@ -1,4 +1,4 @@
-interface CustomErrorProps {
+export interface CustomErrorProps {
   message?: string;
   status?: number;
   cause?: string;

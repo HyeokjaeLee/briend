@@ -1,5 +1,6 @@
 'use client';
 
+export { useAsyncError } from './useAsyncError';
 export { useCheckIndividualPeer } from './useCheckIndividualPeer';
 export { useCookies } from './useCookies';
 export { useCustomHref } from './useCustomHref';
@@ -10,4 +11,4 @@ export { useImageBlobUrl } from './useImageBlobUrl';
 export { useIndexedDB } from './useIndexedDB';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';
-export { useMyProfileImage } from './useMyProfileImage';
+export { useProfileImage } from './useProfileImage';

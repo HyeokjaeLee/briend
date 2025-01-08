@@ -6,7 +6,7 @@ import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage, CustomLink } from '@/components';
 import { MAX_FIREND_COUNT } from '@/constants';
-import { useMyProfileImage } from '@/hooks';
+import { useProfileImage } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
 
@@ -21,7 +21,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
     useShallow((state) => [state.friendList.length, state.isLinimtedAddFriend]),
   );
 
-  const { profileImageSrc } = useMyProfileImage();
+  const { profileImageSrc } = useProfileImage();
 
   return (
     <CustomLink

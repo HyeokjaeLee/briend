@@ -7,11 +7,21 @@ import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components';
 import { COOKIES, PEER_PREFIX } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
-import { useCookies, useCustomRouter } from '@/hooks';
+import {
+  useAsyncError,
+  useCookies,
+  useCustomRouter,
+  useProfileImage,
+} from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { usePeerStore } from '@/stores';
+import { useGlobalStore, usePeerStore } from '@/stores';
+import { MESSAGE_TYPE, type PeerData } from '@/types/peer-data';
 import { assert, CustomError, ERROR } from '@/utils';
-import { toast, createOnlyClientComponent } from '@/utils/client';
+import {
+  createOnlyClientComponent,
+  toast,
+  addProfileImageFromPeer,
+} from '@/utils/client';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 interface ChattingJoinPageProps {
@@ -30,7 +40,9 @@ const ChattingJoinPage = createOnlyClientComponent(
     if (!inviteToken || !userId)
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken', 'userId']));
 
-    const { data } = useSuspenseQuery(
+    const {
+      data: { friendToken, friendUserId, myToken },
+    } = useSuspenseQuery(
       ChatQueryOptions.createFriend({
         guestId: userId,
         inviteToken,
@@ -43,38 +55,91 @@ const ChattingJoinPage = createOnlyClientComponent(
 
     const peer = usePeerStore((state) => state.peer);
 
+    const asyncError = useAsyncError();
+
+    const { profileImage } = useProfileImage();
+
     useEffect(() => {
       if (!peer) return;
 
-      const peerId = PEER_PREFIX + data.friendUserId;
+      const hostPeerId = PEER_PREFIX + friendUserId;
 
-      const connection = peer.connect(peerId);
+      const connection = peer.connect(hostPeerId);
 
-      const handleConnect = () => {
-        if (userId !== data.friendUserId) return;
+      //* 내 정보 발신
+      const checkHostHandler = async () => {
+        if (userId === friendUserId) return asyncError(ERROR.UNAUTHORIZED());
 
         assert(friendTable);
 
-        friendTable.put({
-          userId: data.friendUserId,
-          friendToken: data.friendToken,
+        await connection.send(
+          {
+            id: inviteToken,
+            type: MESSAGE_TYPE.ADD_FRIEND,
+            data: {
+              profileImage,
+              token: myToken,
+            },
+          } satisfies PeerData,
+          true,
+        );
+      };
+
+      connection.on('open', checkHostHandler);
+
+      //* 친구의 프로필 정보 수신
+      const connectHandler = (async ({ id, type, data }: PeerData) => {
+        if (type !== MESSAGE_TYPE.ADD_FRIEND || id !== inviteToken) return;
+
+        await friendTable?.put({
+          userId: friendUserId,
+          friendToken,
         });
+
+        await addProfileImageFromPeer(data.profileImage);
 
         toast({
           message: t('start-chatting'),
         });
 
-        router.replace(
-          ROUTES.CHATTING_ROOM.pathname({ userId: data.friendUserId }),
-        );
-      };
+        const toSidePanel = useGlobalStore.getState().hasSidePanel;
 
-      connection.on('open', handleConnect);
+        router.replace(
+          ROUTES.CHATTING_ROOM.pathname({ userId: friendUserId }),
+          {
+            toSidePanel,
+          },
+        );
+
+        if (toSidePanel) router.replace(ROUTES.FRIEND_LIST.pathname);
+      }) as (data: unknown) => void;
+
+      connection.on('data', connectHandler);
+
+      const timeout = setTimeout(
+        () => router.replace(ROUTES.FRIEND_LIST.pathname),
+        15_000,
+      );
 
       return () => {
-        connection.off('open', handleConnect);
+        connection.off('open', checkHostHandler);
+        connection.off('data', connectHandler);
+        connection.close();
+
+        clearTimeout(timeout);
       };
-    }, [data, router, t, peer, userId]);
+    }, [
+      asyncError,
+      friendToken,
+      friendUserId,
+      inviteToken,
+      myToken,
+      peer,
+      profileImage,
+      router,
+      t,
+      userId,
+    ]);
 
     return <LoadingTemplate />;
   },

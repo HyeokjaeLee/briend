@@ -5,7 +5,6 @@ import relationships from 'dexie-relationships';
 
 import { IS_CLIENT } from '@/constants';
 import type { MessageData } from '@/types/peer-data';
-import type { PusherMessage } from '@/types/pusher-message';
 
 export enum MESSAGE_STATE {
   SENT = 'sent',
@@ -13,7 +12,7 @@ export enum MESSAGE_STATE {
   ERROR = 'error',
 }
 
-interface ProfileImageTableItem {
+export interface ProfileImageTableItem {
   userId: string;
   blob: Blob;
   type: string;

@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage } from '@/components';
 import { LANGUAGE_NAME, type LANGUAGE } from '@/constants';
-import { useMyProfileImage, useUserData } from '@/hooks';
+import { useProfileImage, useUserData } from '@/hooks';
 import { cn } from '@/utils';
 import { Badge, Skeleton } from '@radix-ui/themes';
 
@@ -18,7 +18,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
 
   const { lng } = useParams<{ lng: LANGUAGE }>();
   const { t } = useTranslation('more');
-  const { profileImageSrc } = useMyProfileImage();
+  const { profileImageSrc } = useProfileImage();
 
   return (
     <section

@@ -84,12 +84,7 @@ const ErrorPage = (e: ErrorPageProps) => {
         className="mt-auto h-17 w-full rounded-none"
         color="red"
       >
-        <Link
-          replace
-          className="z-20"
-          href={dynamicInfo.buttonLink}
-          onClick={e.reset}
-        >
+        <Link replace className="z-20" href={dynamicInfo.buttonLink}>
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
           {dynamicInfo.buttonText}
         </Link>
