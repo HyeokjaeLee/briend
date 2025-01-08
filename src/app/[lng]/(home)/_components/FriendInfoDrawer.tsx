@@ -53,7 +53,9 @@ export const FriendInfoDrawer = ({
     const url = new URL(window.location.href);
     url.searchParams.delete(DRAWER_SEARCH_PARAM);
 
-    router.replace(url.href);
+    router.replace(url.href, {
+      scroll: false,
+    });
   };
 
   return (

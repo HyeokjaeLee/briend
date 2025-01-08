@@ -22,7 +22,7 @@ export const FriendCard = ({
   const { profileImageSrc } = useProfileImage(friendUserId);
 
   return (
-    <CustomLink replace className="block px-5 py-3" href={href}>
+    <CustomLink replace className="block px-5 py-3" href={href} scroll={false}>
       <article className="flex gap-3">
         <ProfileImage size="5" src={profileImageSrc} />
         <div className="flex w-full items-center justify-between">

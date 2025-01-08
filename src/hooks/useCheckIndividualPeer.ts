@@ -14,19 +14,20 @@ interface CheckIndividualPeerOptions {
   interval: number;
 }
 
+//TODO: 스테이트 하나에 원시 타입으로 하나만 담아서 앱 전체에서 하나만 볼 수 있게 해야함
 export const useCheckIndividualPeer = (
   userId?: string | null,
   options?: CheckIndividualPeerOptions,
 ) => {
   const [
     isMounted,
-    friendConnectionsData,
+    friendConnections,
     setFriendConnections,
     requestedPingPongMap,
   ] = usePeerStore(
     useShallow((state) => [
       state.isMounted,
-      state.friendConnections.data,
+      state.friendConnections,
       state.setFriendConnections,
       state.requestedPingPongMap,
     ]),
@@ -39,8 +40,15 @@ export const useCheckIndividualPeer = (
   useEffect(() => {
     if (!isMounted || !myUserId || !userId) return;
 
-    const checkingInterval = setInterval(() => {
-      requestedPingPongMap.forEach((userId, requestId) => {
+    const friendConnectionsData = friendConnections.data;
+
+    const checkPeer = () => {
+      requestedPingPongMap.forEach(({ userId, requestAt }, requestId) => {
+        //! hook 특성상 연속 실행되는 경우가 있음, 그런경우 연결이 끊어지지 않아야함
+        const isFresh = new Date().getTime() - requestAt.getTime() < interval;
+
+        if (isFresh) return;
+
         const friendPeer = friendConnectionsData.get(userId);
 
         //* 이전 요청에서 돌아오지 않은 응답이 있는 경우 disconnect
@@ -65,7 +73,10 @@ export const useCheckIndividualPeer = (
       if (friendPeer?.isConnected) {
         const id = nanoid();
 
-        requestedPingPongMap.set(id, userId);
+        requestedPingPongMap.set(id, {
+          userId,
+          requestAt: new Date(),
+        });
 
         return friendPeer.connection?.send({
           type: MESSAGE_TYPE.CHECK_PEER_STATUS,
@@ -73,11 +84,15 @@ export const useCheckIndividualPeer = (
           id,
         } satisfies PeerData);
       }
-    }, interval);
+    };
 
-    return () => clearInterval(checkingInterval);
+    checkPeer();
+
+    const checkPeerInterval = setInterval(checkPeer, interval);
+
+    return () => clearInterval(checkPeerInterval);
   }, [
-    friendConnectionsData,
+    friendConnections.data,
     interval,
     isMounted,
     myUserId,
@@ -86,7 +101,7 @@ export const useCheckIndividualPeer = (
     userId,
   ]);
 
-  const friendPeer = userId ? friendConnectionsData.get(userId) : undefined;
+  const friendPeer = userId ? friendConnections.data.get(userId) : undefined;
 
   return {
     isLoading: !friendPeer,
