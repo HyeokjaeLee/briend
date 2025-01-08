@@ -29,7 +29,13 @@ interface PeerStore {
   ) => void;
 
   /** 상태 관찰 필요없는 객체 */
-  requestedPingPongMap: Map<string, string>;
+  requestedPingPongMap: Map<
+    string,
+    {
+      userId: string;
+      requestAt: Date;
+    }
+  >;
 }
 
 export const usePeerStore = create<PeerStore>((set) => ({
