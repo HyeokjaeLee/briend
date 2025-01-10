@@ -124,6 +124,7 @@ const ChattingJoinPage = createOnlyClientComponent(
       return () => {
         connection.off('open', checkHostHandler);
         connection.off('data', connectHandler);
+
         connection.close();
 
         clearTimeout(timeout);

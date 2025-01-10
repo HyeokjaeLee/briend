@@ -8,7 +8,6 @@ export interface FriendPeer {
   peerId: string;
   connection: DataConnection | null;
   isConnected: boolean;
-  connectionType: 'incoming' | 'outgoing';
   isExpired: boolean;
   exp: number;
 }
