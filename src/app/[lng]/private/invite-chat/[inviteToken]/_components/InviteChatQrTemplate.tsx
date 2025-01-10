@@ -20,7 +20,7 @@ import { useGlobalStore, usePeerStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
-import { assert, CustomError, ERROR, expToDate } from '@/utils';
+import { assert, CustomError, ERROR, expToDate, isPeerData } from '@/utils';
 import {
   toast,
   createOnlyClientComponent,
@@ -105,13 +105,13 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
     useEffect(() => {
       if (!peer) return;
 
-      const connectionList: DataConnection[] = [];
+      const unmountHandlerList: (() => void)[] = [];
 
       const connectHandler = (connection: DataConnection) => {
-        connectionList.push(connection);
+        const exchangeUserInfoHandler = async (message: unknown) => {
+          if (!isPeerData(message)) return;
 
-        connection.on('data', async (message) => {
-          const { data, id, type } = message as PeerData;
+          const { data, id, type } = message;
 
           if (type !== MESSAGE_TYPE.ADD_FRIEND || id !== inviteToken) return;
 
@@ -153,15 +153,21 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
           );
 
           if (toSidePanel) router.replace(ROUTES.FRIEND_LIST.pathname);
+        };
+
+        connection.on('data', exchangeUserInfoHandler);
+
+        unmountHandlerList.push(() => {
+          connection.off('data', exchangeUserInfoHandler);
         });
       };
 
       peer.on('connection', connectHandler);
 
       return () => {
-        peer.off('connection', connectHandler);
+        unmountHandlerList.forEach((unmount) => unmount());
 
-        connectionList.forEach((connection) => connection.close());
+        peer.off('connection', connectHandler);
       };
     }, [hostId, inviteToken, peer, router, t, profileImage]);
 

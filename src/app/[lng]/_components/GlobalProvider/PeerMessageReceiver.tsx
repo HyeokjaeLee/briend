@@ -6,8 +6,8 @@ import { COOKIES } from '@/constants';
 import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
 import { useCookies } from '@/hooks';
 import { usePeerStore } from '@/stores';
-import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
+import { isPeerData } from '@/utils';
 
 export const PeerMessageReceiver = () => {
   const [friendConnections, requestedPingPongMap] = usePeerStore(
@@ -17,17 +17,26 @@ export const PeerMessageReceiver = () => {
     ]),
   );
 
-  const [{ USER_ID: userId }] = useCookies([COOKIES.USER_ID]);
+  const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
 
   useEffect(() => {
-    if (!userId) return;
+    if (!myUserId) return;
 
     const unmountHandlerList: (() => void)[] = [];
 
     friendConnections.data.forEach(({ connection }) => {
       if (!connection) return;
 
-      const dataHandler = ((peerMessage: PeerData) => {
+      const dataHandler = (peerMessage: unknown) => {
+        //* ping pong 응답
+        if (typeof peerMessage === 'string') {
+          return friendConnections.data
+            .get(peerMessage)
+            ?.connection?.send(peerMessage);
+        }
+
+        if (!isPeerData(peerMessage)) return;
+
         switch (peerMessage.type) {
           case MESSAGE_TYPE.MESSAGE:
             return messageTable?.put({
@@ -40,16 +49,8 @@ export const PeerMessageReceiver = () => {
             return messageTable?.update(peerMessage.id, {
               state: MESSAGE_STATE.RECEIVE,
             });
-
-          case MESSAGE_TYPE.CHECK_PEER_STATUS: {
-            if (peerMessage.data === userId)
-              //* 보냈던 요청이 돌아오면 다음 disconnect 이벤트에서 제외
-              return requestedPingPongMap.delete(peerMessage.id);
-
-            return connection.send(peerMessage satisfies PeerData);
-          }
         }
-      }) as (data: unknown) => void;
+      };
 
       connection.on('data', dataHandler);
 
@@ -57,7 +58,7 @@ export const PeerMessageReceiver = () => {
     });
 
     return () => unmountHandlerList.forEach((handler) => handler());
-  }, [friendConnections, userId, requestedPingPongMap]);
+  }, [friendConnections, myUserId, requestedPingPongMap]);
 
   return null;
 };

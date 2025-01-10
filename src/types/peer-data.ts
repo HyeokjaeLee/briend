@@ -5,7 +5,6 @@ export enum MESSAGE_TYPE {
   CHECK_RECEIVE_MESSAGE = 'receive-message',
   REQUEST_PROFILE = 'request-profile',
   UPDATE_PROFILE = 'update-profile',
-  CHECK_PEER_STATUS = 'check-peer-status',
   ADD_FRIEND = 'add-friend',
 }
 
@@ -40,7 +39,6 @@ type PeerDataMap = {
   [MESSAGE_TYPE.CHECK_RECEIVE_MESSAGE]: CheckReceiveMessageData;
   [MESSAGE_TYPE.REQUEST_PROFILE]: RequestProfile;
   [MESSAGE_TYPE.UPDATE_PROFILE]: UpdateProfile;
-  [MESSAGE_TYPE.CHECK_PEER_STATUS]: string;
   [MESSAGE_TYPE.ADD_FRIEND]: AddFriend;
 };
 

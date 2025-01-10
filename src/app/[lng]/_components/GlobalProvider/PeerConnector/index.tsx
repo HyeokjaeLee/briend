@@ -41,7 +41,6 @@ export const PeerConnector = () => {
         prevMap.set(userId, {
           ...firendConnection,
           connection: isExpired ? null : connection,
-          connectionType: 'incoming',
           isConnected: !isExpired,
           isExpired,
         });
@@ -58,25 +57,19 @@ export const PeerConnector = () => {
   useEffect(() => {
     if (!isPeerStoreMounted) return;
 
-    const { data } = friendConnections;
-
     const unmountHandlerList: (() => void)[] = [];
 
-    data.forEach((friendPeer, userId) => {
-      if (
-        !friendPeer.connection ||
-        friendPeer.isConnected ||
-        friendPeer.connectionType === 'incoming'
-      )
-        return;
+    friendConnections.data.forEach((friendPeer, userId) => {
+      if (!friendPeer.connection || friendPeer.isConnected) return;
 
-      const connectHandler = () =>
+      const connectHandler = () => {
         setFriendConnections((prevMap) => {
           prevMap.set(userId, {
             ...friendPeer,
             isConnected: true,
           });
         });
+      };
 
       friendPeer.connection.on('open', connectHandler);
 
@@ -91,21 +84,21 @@ export const PeerConnector = () => {
   }, [friendConnections, isPeerStoreMounted, peer, setFriendConnections]);
 
   useEffect(() => {
-    const { data } = friendConnections;
-
     const unmountHandlerList: (() => void)[] = [];
 
-    //TODO: 추가적으로 채팅방에서 실시간으로 온라인 상태를 보여주는 핑퐁 메커니즘 구현해야함
-    data.forEach((friendPeer, userId) => {
+    friendConnections.data.forEach((friendPeer, userId) => {
       if (!friendPeer.connection || !friendPeer.isConnected) return;
 
-      const disconnectHandler = () =>
+      const disconnectHandler = (e?: Error) => {
+        if (e) console.error(e);
+
         setFriendConnections((prevMap) => {
           prevMap.set(userId, {
             ...friendPeer,
             isConnected: false,
           });
         });
+      };
 
       friendPeer.connection.on('close', disconnectHandler);
       friendPeer.connection.on('error', disconnectHandler);
@@ -116,7 +109,7 @@ export const PeerConnector = () => {
       });
 
       return () => {
-        unmountHandlerList.forEach((handler) => handler());
+        unmountHandlerList.forEach((unmount) => unmount());
       };
     });
   }, [friendConnections, setFriendConnections]);

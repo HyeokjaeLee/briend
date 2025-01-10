@@ -14,3 +14,4 @@ export { hasObjectKey } from './hasObjectKey';
 export { isArrayItem } from './isArrayItem';
 export { isCurrentHref } from './isCurrentHref';
 export { isEnumValue } from './isEnumValue';
+export { isPeerData } from './isPeerData';

@@ -13,7 +13,6 @@ export const useSyncFriendList = (peer: Peer | null) => {
   const [
     isPeerStoreMounted,
     mountPeerStore,
-
     friendConnectionsData,
     setFriendConnections,
   ] = usePeerStore(
@@ -48,7 +47,6 @@ export const useSyncFriendList = (peer: Peer | null) => {
           isExpired,
           connection: isExpired ? null : peer.connect(PEER_PREFIX + userId),
           isConnected: false,
-          connectionType: 'outgoing',
           peerId: PEER_PREFIX + userId,
           exp,
         });
@@ -63,6 +61,7 @@ export const useSyncFriendList = (peer: Peer | null) => {
         if (isExistedFriend) return;
 
         connection?.removeAllListeners();
+
         connection?.close();
 
         prevMap.delete(userId);
@@ -106,7 +105,6 @@ export const useSyncFriendList = (peer: Peer | null) => {
 
             return prevMap.set(userId, {
               ...friendPeer,
-              connectionType: 'outgoing',
               connection: peer.connect(friendPeer.peerId),
             });
           });
