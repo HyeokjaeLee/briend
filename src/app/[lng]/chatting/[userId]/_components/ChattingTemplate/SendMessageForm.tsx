@@ -7,6 +7,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomIconButton } from '@/components';
+import { useCheckIndividualPeer } from '@/hooks';
 import { cn } from '@/utils';
 
 interface SendMessageFormProps {
@@ -18,8 +19,14 @@ export const SendMessageForm = ({
 }: SendMessageFormProps) => {
   const { t } = useTranslation('chatting');
 
+  const { friendPeer } = useCheckIndividualPeer();
+
   return (
-    <form onSubmit={handleSubmit(() => {})}>
+    <form
+      onSubmit={handleSubmit(() => {
+        friendPeer;
+      })}
+    >
       <section className="flex items-end gap-2">
         <div
           className={cn(
