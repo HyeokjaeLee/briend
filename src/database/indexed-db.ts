@@ -19,9 +19,10 @@ export interface ProfileImageTableItem {
   updatedAt: number;
 }
 
-interface MessageTableItem extends MessageData {
+export interface MessageTableItem extends MessageData {
   id: string;
   state: MESSAGE_STATE;
+  toUserId: string;
 }
 
 interface IndexedDB extends Dexie {
@@ -42,7 +43,7 @@ if (IS_CLIENT) {
   db.version(1).stores({
     friend: 'userId, friendToken',
     message:
-      'id, fromUserId -> friend.userId, message, translatedMessage, timestamp, state',
+      'id, fromUserId -> friend.userId, *toUserId, timestamp, message, translatedMessage, state',
     profileImage: 'userId, blob, type, updatedAt',
   });
 }

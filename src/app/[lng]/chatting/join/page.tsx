@@ -5,13 +5,13 @@ import { use, useEffect } from 'react';
 import { useTranslation } from '@/app/i18n/client';
 import { ChatQueryOptions } from '@/app/query-options/chat';
 import { LoadingTemplate } from '@/components';
-import { COOKIES, PEER_PREFIX } from '@/constants';
+import { PEER_PREFIX } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
 import {
   useAsyncError,
-  useCookies,
   useCustomRouter,
   useProfileImage,
+  useUserId,
 } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore, usePeerStore } from '@/stores';
@@ -35,7 +35,7 @@ const ChattingJoinPage = createOnlyClientComponent(
     //! useSearchParams 사용시 초기 렌더링 값이 null
     const { inviteToken } = use(props.searchParams);
 
-    const [{ USER_ID: userId }] = useCookies([COOKIES.USER_ID]);
+    const userId = useUserId();
 
     if (!inviteToken || !userId)
       throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken', 'userId']));

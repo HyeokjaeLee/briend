@@ -57,6 +57,7 @@
     "react-swipeable": "^7.0.2",
     "react-textarea-autosize": "^8.5.7",
     "react-toastify": "^10.0.6",
+    "react-virtuoso": "^4.12.3",
     "simple-peer": "^9.11.1",
     "swiper": "^11.2.0",
     "tailwind-merge": "^2.6.0",

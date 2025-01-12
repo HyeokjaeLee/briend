@@ -25,6 +25,8 @@ const ChattingListPage = () => {
   const { isLogin, isLoading, user } = useUserData();
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
 
+  const sortedFriendList = [...friendList].reverse();
+
   return (
     <article>
       <ul>
@@ -43,7 +45,7 @@ const ChattingListPage = () => {
             <GuestBanner />
           )}
         </li>
-        {friendList.map(({ userId, nickname }) => (
+        {sortedFriendList.map(({ userId, nickname }) => (
           <li key={userId}>
             <FriendCard
               friendUserId={userId}

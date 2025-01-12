@@ -15,10 +15,11 @@ import { ChattingTemplate } from './_components/ChattingTemplate';
 import EmptyTemplate from './_components/Empty';
 
 const RightSidePanelPage = createOnlyClientComponent(() => {
-  const [hasSidePanel, sidePanelUrl] = useGlobalStore(
+  const [hasSidePanel, sidePanelUrl, setSidePanelUrl] = useGlobalStore(
     useShallow((state) => [
       MEDIA_QUERY_BREAK_POINT.sm <= state.mediaQueryBreakPoint,
       state.sidePanelUrl,
+      state.setSidePanelUrl,
     ]),
   );
 
@@ -34,12 +35,12 @@ const RightSidePanelPage = createOnlyClientComponent(() => {
   const router = useCustomRouter();
 
   useEffect(() => {
-    if (!isSameRoute || !hasSidePanel || isDefaultRoute) return;
+    if (!hasSidePanel) return setSidePanelUrl(ROUTES.FRIEND_LIST.pathname);
+
+    if (!isSameRoute || isDefaultRoute) return;
 
     router.replace(ROUTES.FRIEND_LIST.pathname);
-  }, [isSameRoute, router, hasSidePanel, isDefaultRoute]);
-
-  if (!hasSidePanel) return null;
+  }, [isSameRoute, router, hasSidePanel, isDefaultRoute, setSidePanelUrl]);
 
   switch (routeName) {
     case 'CHATTING_ROOM': {

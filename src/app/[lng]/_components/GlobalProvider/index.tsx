@@ -11,7 +11,6 @@ import { customCookies } from '@/utils';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
@@ -77,7 +76,6 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
           client={queryClient}
           persistOptions={persistOptions}
         >
-          <ReactQueryDevtools buttonPosition="top-left" />
           <FriendStoreMounter />
           <PeerConnector />
           <PeerMessageReceiver />

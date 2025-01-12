@@ -41,11 +41,37 @@ export const useCheckIndividualPeer = (
 
     if (!connection || !isConnected) return;
 
-    const sendPing = () => {
-      isSendedRef.current = true;
+    let checkInterval: ReturnType<typeof setInterval>;
 
-      connection.send(myUserId);
+    const checkIntervalHandler = () => {
+      const sendPing = () => {
+        isSendedRef.current = true;
+
+        connection.send(myUserId);
+      };
+
+      sendPing();
+
+      checkInterval = setInterval(() => {
+        if (!friendPeer) return clearInterval(checkInterval);
+
+        if (!isSendedRef.current) return sendPing();
+
+        connection.removeAllListeners();
+
+        connection.close();
+
+        setFriendConnections((prevMap) =>
+          prevMap.set(userId, {
+            ...friendPeer,
+            connection: null,
+            isConnected: false,
+          }),
+        );
+      }, interval);
     };
+
+    connection.on('open', checkIntervalHandler);
 
     const pongHandler = (data: unknown) => {
       if (data === myUserId) {
@@ -53,30 +79,12 @@ export const useCheckIndividualPeer = (
       }
     };
 
-    const checkInterval = setInterval(() => {
-      if (!friendPeer) return clearInterval(checkInterval);
-
-      if (!isSendedRef.current) return sendPing();
-
-      connection.removeAllListeners();
-
-      connection.close();
-
-      setFriendConnections((prevMap) =>
-        prevMap.set(userId, {
-          ...friendPeer,
-          connection: null,
-          isConnected: false,
-        }),
-      );
-    }, interval);
-
-    sendPing();
-
     connection.on('data', pongHandler);
 
     return () => {
-      clearInterval(checkInterval);
+      if (checkInterval) clearInterval(checkInterval);
+
+      connection.off('open', checkIntervalHandler);
 
       connection.off('data', pongHandler);
     };
