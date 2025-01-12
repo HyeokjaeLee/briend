@@ -2,8 +2,9 @@ import { SettingButton } from '@/app/[lng]/chatting/[userId]/_components/Chattin
 import { ChattingList } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/ChattingList';
 import { SendMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/SendMessageForm';
 import { useMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_hooks/useMessageForm';
-import { ConnectionIndicator } from '@/components';
-import { useFriendStore, usePeerStore } from '@/stores';
+import { ConnectionIndicator, LoadingTemplate } from '@/components';
+import { useCheckIndividualPeer } from '@/hooks';
+import { useFriendStore } from '@/stores';
 
 interface ChattingPageProps {
   userId: string;
@@ -17,9 +18,9 @@ export const ChattingTemplate = ({ userId }: ChattingPageProps) => {
       state.friendList.find((friend) => friend.userId === userId)?.nickname,
   );
 
-  const friendPeer = usePeerStore((state) =>
-    state.friendConnections.data.get(userId),
-  );
+  const { friendPeer } = useCheckIndividualPeer(userId);
+
+  if (!friendPeer) return <LoadingTemplate />;
 
   return (
     <article className="flex size-full flex-col bg-white">
@@ -32,7 +33,7 @@ export const ChattingTemplate = ({ userId }: ChattingPageProps) => {
       </nav>
       <ChattingList />
       <footer className="p-3">
-        <SendMessageForm form={form} />
+        <SendMessageForm form={form} friendPeer={friendPeer} />
       </footer>
     </article>
   );

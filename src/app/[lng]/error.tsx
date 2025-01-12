@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
@@ -60,7 +61,9 @@ const ErrorPage = (e: ErrorPageProps) => {
     }
   }
 
-  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
+  const [setIsErrorRoute, setSidePanelUrl] = useGlobalStore(
+    useShallow((state) => [state.setIsErrorRoute, state.setSidePanelUrl]),
+  );
 
   useEffect(() => {
     setIsErrorRoute(true);
@@ -84,7 +87,15 @@ const ErrorPage = (e: ErrorPageProps) => {
         className="mt-auto h-17 w-full rounded-none"
         color="red"
       >
-        <Link replace className="z-20" href={dynamicInfo.buttonLink}>
+        <Link
+          replace
+          className="z-20"
+          href={dynamicInfo.buttonLink}
+          onClick={() => {
+            setSidePanelUrl('/');
+            e.reset();
+          }}
+        >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
           {dynamicInfo.buttonText}
         </Link>

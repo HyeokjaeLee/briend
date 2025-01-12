@@ -145,12 +145,9 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
           const toSidePanel = useGlobalStore.getState().hasSidePanel;
 
-          router.replace(
-            ROUTES.CHATTING_ROOM.pathname({ userId: data.token }),
-            {
-              toSidePanel,
-            },
-          );
+          router.replace(ROUTES.CHATTING_ROOM.pathname({ userId }), {
+            toSidePanel,
+          });
 
           if (toSidePanel) router.replace(ROUTES.FRIEND_LIST.pathname);
         };
