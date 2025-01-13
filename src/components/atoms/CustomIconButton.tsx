@@ -19,8 +19,7 @@ export const CustomIconButton = ({
       className={cn(
         'disabled:cursor-not-allowed enabled:cursor-pointer outline-none',
         {
-          'active:scale-90 active:bg-slate-100 transition-all duration-75':
-            activeScaleDown,
+          'active:scale-90 transition-all duration-75': activeScaleDown,
           'size-14': size === '4',
         },
         className,

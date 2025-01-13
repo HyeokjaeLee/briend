@@ -6,7 +6,7 @@ import { Avatar } from '@radix-ui/themes';
 export interface ProfileImageProps {
   src?: string;
   className?: string;
-  size?: '7' | '8' | '5' | '6';
+  size?: '7' | '8' | '6' | '5' | '4';
 }
 
 export const ProfileImage = ({
@@ -22,6 +22,7 @@ export const ProfileImage = ({
         className={cn(
           'text-white',
           {
+            4: 'size-6',
             5: 'size-8',
             6: 'size-10',
             7: 'size-12',

@@ -41,7 +41,6 @@ export const PeerMessageReceiver = () => {
           case MESSAGE_TYPE.MESSAGE:
             return messageTable?.put({
               id: peerMessage.id,
-
               ...peerMessage.data,
               state: MESSAGE_STATE.RECEIVE,
             });

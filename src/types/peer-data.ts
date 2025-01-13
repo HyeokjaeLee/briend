@@ -10,6 +10,7 @@ export enum MESSAGE_TYPE {
 
 export interface MessageData {
   fromUserId: string;
+  toUserId: string;
   message: string;
   translatedMessage: string;
   timestamp: number;
