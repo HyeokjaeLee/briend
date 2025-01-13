@@ -1,6 +1,6 @@
-import { SettingButton } from '@/app/[lng]/chatting/[userId]/_components/ChattingPageHeader/SettingButton';
-import { ChattingList } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/ChattingList';
-import { SendMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/SendMessageForm';
+import { SettingButton } from '@/app/[lng]/chatting/[userId]/_components/ChattingPageHeader/_components/SettingButton';
+import { ChattingList } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_components/ChattingList';
+import { SendMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_components/SendMessageForm';
 import { useMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_hooks/useMessageForm';
 import { ConnectionIndicator, LoadingTemplate } from '@/components';
 import { useCheckIndividualPeer } from '@/hooks';
@@ -31,7 +31,7 @@ export const ChattingTemplate = ({ userId }: ChattingPageProps) => {
         </div>
         <SettingButton />
       </nav>
-      <ChattingList />
+      <ChattingList friendUserId={userId} />
       <footer className="p-3">
         <SendMessageForm form={form} friendPeer={friendPeer} />
       </footer>

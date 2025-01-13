@@ -12,7 +12,7 @@ export const useMessageSync = (friendUserId: string) => {
   const messageListRef = useRef<MessageTableItem[]>([]);
 
   const messageList = useIndexedDB(messageTable, (table) => {
-    if (!myUserId) return;
+    if (!friendUserId) return;
 
     return table
       .where('fromUserId')

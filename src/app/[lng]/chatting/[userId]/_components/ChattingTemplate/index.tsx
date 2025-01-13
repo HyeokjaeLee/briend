@@ -3,8 +3,8 @@
 import { CustomBottomNav, LoadingTemplate } from '@/components';
 import { useCheckIndividualPeer } from '@/hooks';
 
-import { ChattingList } from './ChattingList';
-import { SendMessageForm } from './SendMessageForm';
+import { ChattingList } from './_components/ChattingList';
+import { SendMessageForm } from './_components/SendMessageForm';
 import { useMessageForm } from './_hooks/useMessageForm';
 
 interface ChattingTemplateProps {

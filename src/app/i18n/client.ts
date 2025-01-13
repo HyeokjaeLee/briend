@@ -5,7 +5,6 @@ import type { FlatNamespace, KeyPrefix } from 'i18next';
 import { use as i18next } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
-import { useParams } from 'next/navigation';
 
 import { useLayoutEffect, useState } from 'react';
 import type {
@@ -19,6 +18,7 @@ import {
 } from 'react-i18next';
 
 import { IS_CLIENT } from '@/constants';
+import { useLanguage } from '@/hooks';
 import { CustomError, ERROR } from '@/utils';
 
 import { getOptions, languages } from './settings';
@@ -49,7 +49,7 @@ export const useTranslation = <
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> => {
   const translation = useOriginalTranslation(ns, options);
   const { i18n } = translation;
-  const lng = useParams().lng;
+  const { lng } = useLanguage();
 
   if (typeof lng !== 'string')
     throw new CustomError(ERROR.UNKNOWN_VALUE('lng'));

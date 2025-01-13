@@ -3,7 +3,7 @@
 import { BackHeader, ConnectionIndicator } from '@/components';
 import { useFriendStore, usePeerStore } from '@/stores';
 
-import { SettingButton } from './SettingButton';
+import { SettingButton } from './_components/SettingButton';
 
 interface ChattingPageHeaderProps {
   userId: string;
