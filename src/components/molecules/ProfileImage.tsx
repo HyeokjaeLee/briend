@@ -16,7 +16,7 @@ export const ProfileImage = ({
   size = '7',
 }: ProfileImageProps) => (
   <Avatar
-    className={className}
+    className={cn('border border-gray-100', className)}
     fallback={
       <FaUser
         className={cn(

@@ -1,8 +1,12 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import type { VirtuosoHandle } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
-import { useProfileImage } from '@/hooks';
+import { useProfileImage, useUserData } from '@/hooks';
+import { useFriendStore } from '@/stores';
+import { assert } from '@/utils';
 
 import { EmptyTemplate } from './_components/EmptyTemplate';
 import { MessageItem } from './_components/MessageItem';
@@ -14,20 +18,50 @@ interface ChattingListProps {
 export const ChattingList = ({ friendUserId }: ChattingListProps) => {
   const { messageList } = useMessageSync(friendUserId);
 
-  const { profileImageSrc } = useProfileImage();
+  const { profileImageSrc: myProfileImageSrc } = useProfileImage();
+  const { profileImageSrc: friendProfileImageSrc } =
+    useProfileImage(friendUserId);
+  const isAtBottomRef = useRef(true);
+  const friendNickname = useFriendStore(
+    (state) =>
+      state.friendList.find((friend) => friend.userId === friendUserId)
+        ?.nickname,
+  );
 
-  return messageList?.length ? (
+  const { user } = useUserData();
+
+  const virtuosoRef = useRef<VirtuosoHandle>(null);
+
+  const myNickname = user?.name ?? 'Me';
+
+  if (!messageList) return <EmptyTemplate />;
+
+  return (
     <Virtuoso
-      as="ul"
-      className="mx-4 flex h-full flex-col"
+      ref={virtuosoRef}
       data={messageList}
       followOutput="smooth"
-      initialTopMostItemIndex={messageList.length - 1} // 최신 메시지부터 보여주기
-      itemContent={(index, message) => (
-        <MessageItem {...message} profileImageSrc={profileImageSrc} />
-      )}
+      initialItemCount={messageList.length - 1}
+      initialTopMostItemIndex={messageList.length - 1}
+      itemContent={(index, message) => {
+        assert(friendNickname);
+
+        const isMine = message.fromUserId !== friendUserId;
+
+        const isSameUser = index
+          ? message.fromUserId === messageList[index - 1].fromUserId
+          : false;
+
+        return (
+          <MessageItem
+            {...message}
+            isMine={isMine}
+            isSameUser={isSameUser}
+            nickname={isMine ? myNickname : friendNickname}
+            profileImageSrc={isMine ? myProfileImageSrc : friendProfileImageSrc}
+          />
+        );
+      }}
     />
-  ) : (
-    <EmptyTemplate />
   );
 };
