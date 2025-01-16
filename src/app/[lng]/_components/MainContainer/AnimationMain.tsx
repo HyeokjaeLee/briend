@@ -1,8 +1,8 @@
 'use client';
 
-import type { HTMLMotionProps } from 'framer-motion';
+import type { HTMLMotionProps } from 'motion/react';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { usePathname } from 'next/navigation';
 
 import { memo, useLayoutEffect, useState, type PropsWithChildren } from 'react';
