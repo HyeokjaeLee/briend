@@ -6,7 +6,7 @@ import {
   useMotionValue,
   useTransform,
   animate,
-} from 'framer-motion';
+} from 'motion/react';
 
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
