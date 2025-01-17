@@ -14,13 +14,13 @@ import {
 } from '@/constants';
 import { useHistoryStore } from '@/stores';
 
-const transitionX = {
-  duration: 0.05,
+const transitionIn = {
+  duration: 0.15,
   ease: 'linear',
 };
 
-const transitionY = {
-  duration: 0.05,
+const transitionOut = {
+  duration: 0.075,
   ease: 'linear',
 };
 
@@ -30,27 +30,23 @@ const ANIMATION_GROUP: Record<
 > = {
   FROM_LEFT: {
     initial: { x: -200, opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-    exit: { x: 200, opacity: 0 },
-    transition: transitionX,
+    animate: { x: 0, opacity: 1, transition: transitionIn },
+    exit: { x: 200, opacity: 0, transition: transitionOut },
   },
   FROM_RIGHT: {
     initial: { x: 200, opacity: 0 },
-    animate: { x: 0, opacity: 1 },
-    exit: { x: -200, opacity: 0 },
-    transition: transitionX,
+    animate: { x: 0, opacity: 1, transition: transitionIn },
+    exit: { x: -200, opacity: 0, transition: transitionOut },
   },
   FROM_TOP: {
     initial: { y: '-50dvh', opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: '50dvh', opacity: 0 },
-    transition: transitionY,
+    animate: { y: 0, opacity: 1, transition: transitionIn },
+    exit: { y: '50dvh', opacity: 0, transition: transitionOut },
   },
   FROM_BOTTOM: {
     initial: { y: '50dvh', opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: '-50dvh', opacity: 0 },
-    transition: transitionY,
+    animate: { y: 0, opacity: 1, transition: transitionIn },
+    exit: { y: '-50dvh', opacity: 0, transition: transitionOut },
   },
   NONE: {
     initial: { opacity: 1 },
@@ -95,7 +91,6 @@ export const AnimationMain = memo(({ children }: PropsWithChildren) => {
     }
 
     setAnimation('FROM_BOTTOM');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   useLayoutEffect(() => {
