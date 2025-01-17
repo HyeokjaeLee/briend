@@ -1,16 +1,15 @@
 'use client';
 
 import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import { usePathname } from 'next/navigation';
 
 import { useContext, useEffect, useRef, type PropsWithChildren } from 'react';
-
-import { useUrl } from '@/hooks';
 
 export const FrozenRouter = ({ children }: PropsWithChildren) => {
   const context = useContext(LayoutRouterContext);
   const prevContextRef = useRef<typeof context>(null);
 
-  const url = useUrl();
+  const url = usePathname();
   const prevUrlRef = useRef<string>(undefined);
 
   useEffect(() => {
