@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import type { VirtuosoHandle } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import { useProfileImage, useUserData } from '@/hooks';
@@ -21,7 +19,7 @@ export const ChattingList = ({ friendUserId }: ChattingListProps) => {
   const { profileImageSrc: myProfileImageSrc } = useProfileImage();
   const { profileImageSrc: friendProfileImageSrc } =
     useProfileImage(friendUserId);
-  const isAtBottomRef = useRef(true);
+
   const friendNickname = useFriendStore(
     (state) =>
       state.friendList.find((friend) => friend.userId === friendUserId)
@@ -30,19 +28,14 @@ export const ChattingList = ({ friendUserId }: ChattingListProps) => {
 
   const { user } = useUserData();
 
-  const virtuosoRef = useRef<VirtuosoHandle>(null);
-
   const myNickname = user?.name ?? 'Me';
 
   if (!messageList) return <EmptyTemplate />;
 
   return (
     <Virtuoso
-      ref={virtuosoRef}
       data={messageList}
       followOutput="smooth"
-      initialItemCount={messageList.length - 1}
-      initialTopMostItemIndex={messageList.length - 1}
       itemContent={(index, message) => {
         assert(friendNickname);
 

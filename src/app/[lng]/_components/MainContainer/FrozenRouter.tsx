@@ -9,21 +9,21 @@ export const FrozenRouter = ({ children }: PropsWithChildren) => {
   const context = useContext(LayoutRouterContext);
   const prevContextRef = useRef<typeof context>(null);
 
-  const url = usePathname();
-  const prevUrlRef = useRef<string>(undefined);
+  const pathname = usePathname();
+  const prevPathnameRef = useRef<string | null>(null);
 
   useEffect(() => {
-    prevUrlRef.current = url;
+    prevPathnameRef.current = pathname;
     prevContextRef.current = context;
 
     return () => {
-      prevUrlRef.current = undefined;
+      prevPathnameRef.current = null;
       prevContextRef.current = null;
     };
-  }, [context, url]);
+  }, [context, pathname]);
 
   const changed =
-    url !== prevUrlRef.current && prevUrlRef.current !== undefined;
+    prevPathnameRef.current && prevPathnameRef.current !== pathname;
 
   return (
     <LayoutRouterContext.Provider
