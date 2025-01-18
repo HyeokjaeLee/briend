@@ -34,6 +34,8 @@ export type NAVIGATION_ANIMATION =
   | 'FROM_BOTTOM'
   | 'NONE';
 
+export type ANIMATION_TYPE = 'EXIT' | 'ENTER';
+
 interface GlobalStore {
   isMounted: boolean;
   mount: () => void;
@@ -62,6 +64,9 @@ interface GlobalStore {
   setIsErrorRoute: (isErrorRoute: boolean) => void;
 
   pusher: Pusher;
+
+  animationType: ANIMATION_TYPE;
+  setAnimationType: (animationType: ANIMATION_TYPE) => void;
 
   navigationAnimation: NAVIGATION_ANIMATION;
   setNavigationAnimation: (animation: NAVIGATION_ANIMATION) => void;
@@ -140,8 +145,13 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       cluster: PUBLIC_ENV.PUSHER_CLUSTER,
     }),
 
+    animationType: 'ENTER',
+    setAnimationType: (animationType) => set({ animationType }),
+
     navigationAnimation: 'NONE',
-    setNavigationAnimation: (animation) =>
-      set({ navigationAnimation: animation }),
+    setNavigationAnimation: (navigationAnimation) =>
+      set({
+        navigationAnimation,
+      }),
   };
 });

@@ -1,62 +1,84 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect, useRef, type PropsWithChildren } from 'react';
+import {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  type PropsWithChildren,
+} from 'react';
 
+import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
 export const MainContainer = ({ children }: PropsWithChildren) => {
-  const pathname = usePathname();
-  const isMountedRef = useRef(false);
+  const url = useUrl();
 
-  const [navigationAnimation, setNavigationAnimation] = useGlobalStore(
+  const [
+    navigationAnimation,
+    setNavigationAnimation,
+    animationType,
+    setAnimationType,
+  ] = useGlobalStore(
     useShallow((state) => [
       state.navigationAnimation,
       state.setNavigationAnimation,
+      state.animationType,
+      state.setAnimationType,
     ]),
   );
 
+  const isPendingRef = useRef(false);
+
   useEffect(() => {
-    isMountedRef.current = true;
+    if (animationType === 'EXIT') {
+      isPendingRef.current = true;
+    }
+  }, [animationType]);
+
+  useLayoutEffect(() => {
+    if (!isPendingRef.current) return;
+
+    isPendingRef.current = false;
+    setAnimationType('ENTER');
 
     const timer = setTimeout(() => {
       setNavigationAnimation('NONE');
     }, 150);
 
-    return () => {
-      isMountedRef.current = false;
-      setNavigationAnimation('NONE');
-      clearTimeout(timer);
-    };
-  }, [pathname, setNavigationAnimation]);
+    return () => clearTimeout(timer);
+  }, [url, setAnimationType, setNavigationAnimation]);
+
+  const hasAnimation = navigationAnimation !== 'NONE';
 
   return (
     <main
       className={cn(
-        'flex size-full flex-col overflow-hidden',
-        navigationAnimation === 'NONE'
-          ? 'overflow-auto'
-          : isMountedRef.current
+        'flex size-full flex-col overflow-auto',
+        isPendingRef.current
+          ? 'invisible overflow-hidden'
+          : animationType === 'ENTER'
             ? [
-                'animate-duration-75 animate-reverse',
-                {
-                  'animate-fade-down': navigationAnimation === 'FROM_TOP',
-                  'animate-fade-up': navigationAnimation === 'FROM_BOTTOM',
-                  'animate-fade-left': navigationAnimation === 'FROM_LEFT',
-                  'animate-fade-right': navigationAnimation === 'FROM_RIGHT',
-                },
+                'animate-duration-150',
+                hasAnimation &&
+                  {
+                    FROM_LEFT: 'animate-fade-left',
+                    FROM_RIGHT: 'animate-fade-right',
+                    FROM_TOP: 'animate-fade-down',
+                    FROM_BOTTOM: 'animate-fade-up',
+                  }[navigationAnimation],
               ]
             : [
-                'animate-duration-150',
-                {
-                  'animate-fade-down': navigationAnimation === 'FROM_TOP',
-                  'animate-fade-up': navigationAnimation === 'FROM_BOTTOM',
-                  'animate-fade-left': navigationAnimation === 'FROM_LEFT',
-                  'animate-fade-right': navigationAnimation === 'FROM_RIGHT',
-                },
+                'animate-reverse animate-duration-75',
+                hasAnimation &&
+                  {
+                    FROM_LEFT: 'animate-fade-right',
+                    FROM_RIGHT: 'animate-fade-left',
+                    FROM_TOP: 'animate-fade-up',
+                    FROM_BOTTOM: 'animate-fade-down',
+                  }[navigationAnimation],
               ],
       )}
     >
