@@ -27,6 +27,13 @@ export enum MEDIA_QUERY_BREAK_POINT {
 
 type MEDIA_QUERY = keyof typeof MEDIA_QUERY_BREAK_POINT;
 
+export type NAVIGATION_ANIMATION =
+  | 'FROM_LEFT'
+  | 'FROM_RIGHT'
+  | 'FROM_TOP'
+  | 'FROM_BOTTOM'
+  | 'NONE';
+
 interface GlobalStore {
   isMounted: boolean;
   mount: () => void;
@@ -55,6 +62,9 @@ interface GlobalStore {
   setIsErrorRoute: (isErrorRoute: boolean) => void;
 
   pusher: Pusher;
+
+  navigationAnimation: NAVIGATION_ANIMATION;
+  setNavigationAnimation: (animation: NAVIGATION_ANIMATION) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => {
@@ -129,5 +139,9 @@ export const useGlobalStore = create<GlobalStore>((set) => {
     pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {
       cluster: PUBLIC_ENV.PUSHER_CLUSTER,
     }),
+
+    navigationAnimation: 'NONE',
+    setNavigationAnimation: (animation) =>
+      set({ navigationAnimation: animation }),
   };
 });
