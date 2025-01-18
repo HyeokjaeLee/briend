@@ -44,14 +44,19 @@ let memoizedCustomRouter: CustomRouter;
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const [setGlobalLoading, setSidePanelUrl, setNavigationAnimation] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.setGlobalLoading,
-        state.setSidePanelUrl,
-        state.setNavigationAnimation,
-      ]),
-    );
+  const [
+    setGlobalLoading,
+    setSidePanelUrl,
+    setNavigationAnimation,
+    setAnimationType,
+  ] = useGlobalStore(
+    useShallow((state) => [
+      state.setGlobalLoading,
+      state.setSidePanelUrl,
+      state.setNavigationAnimation,
+      state.setAnimationType,
+    ]),
+  );
 
   if (memoizedCustomRouter) return memoizedCustomRouter;
 
@@ -75,6 +80,8 @@ export const useCustomRouter = () => {
 
     setNavigationAnimation(withAnimation);
 
+    setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+
     return router.replace(customHref, {
       scroll,
     });
@@ -87,6 +94,8 @@ export const useCustomRouter = () => {
       if (withLoading) setGlobalLoading(true);
 
       setNavigationAnimation(withAnimation);
+
+      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
 
       return router.forward();
     },
@@ -113,6 +122,8 @@ export const useCustomRouter = () => {
 
       setNavigationAnimation(withAnimation);
 
+      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+
       return router.back();
     },
     push: (href, options) => {
@@ -132,6 +143,8 @@ export const useCustomRouter = () => {
       if (withLoading) setGlobalLoading(true);
 
       setNavigationAnimation(withAnimation);
+
+      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
 
       return router.push(customHref, {
         scroll,

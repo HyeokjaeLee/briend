@@ -26,7 +26,7 @@ export const CustomLink = ({
   i18nOptimize = true,
   replace,
   withLoading = false,
-  withAnimation,
+  withAnimation = 'NONE',
   toSidePanel,
   ...restLinkProps
 }: CustomLinkProps) => {
@@ -36,14 +36,19 @@ export const CustomLink = ({
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const [setGlobalLoading, setSidePanelUrl, setNavigationAnimation] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.setGlobalLoading,
-        state.setSidePanelUrl,
-        state.setNavigationAnimation,
-      ]),
-    );
+  const [
+    setGlobalLoading,
+    setSidePanelUrl,
+    setNavigationAnimation,
+    setAnimationType,
+  ] = useGlobalStore(
+    useShallow((state) => [
+      state.setGlobalLoading,
+      state.setSidePanelUrl,
+      state.setNavigationAnimation,
+      state.setAnimationType,
+    ]),
+  );
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -76,7 +81,9 @@ export const CustomLink = ({
 
           if (withLoading) setGlobalLoading(true);
 
-          setNavigationAnimation(withAnimation || 'NONE');
+          setNavigationAnimation(withAnimation);
+
+          setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
 
           if (replace)
             sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
