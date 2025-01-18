@@ -7,16 +7,21 @@ import type {
 import { useRouter } from 'next/navigation';
 import { useShallow } from 'zustand/shallow';
 
-import { SESSION_STORAGE, type SESSION_STORAGE_TYPE } from '@/constants';
+import { SESSION_STORAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore, useGlobalModalStore, useHistoryStore } from '@/stores';
+import {
+  useGlobalStore,
+  useGlobalModalStore,
+  useHistoryStore,
+  type NAVIGATION_ANIMATION,
+} from '@/stores';
 import { isCurrentHref } from '@/utils';
 
 import { useCustomHref } from './useCustomHref';
 
 interface CustomNavigationOptions {
   withLoading?: boolean;
-  withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
+  withAnimation?: NAVIGATION_ANIMATION;
   toSidePanel?: boolean;
 }
 
@@ -39,9 +44,14 @@ let memoizedCustomRouter: CustomRouter;
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
-    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
-  );
+  const [setGlobalLoading, setSidePanelUrl, setNavigationAnimation] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.setGlobalLoading,
+        state.setSidePanelUrl,
+        state.setNavigationAnimation,
+      ]),
+    );
 
   if (memoizedCustomRouter) return memoizedCustomRouter;
 
@@ -63,7 +73,7 @@ export const useCustomRouter = () => {
 
     if (withLoading) setGlobalLoading(true);
 
-    sessionStorage.setItem(SESSION_STORAGE.NAVIGATION_ANIMATION, withAnimation);
+    setNavigationAnimation(withAnimation);
 
     return router.replace(customHref, {
       scroll,
@@ -76,10 +86,7 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      sessionStorage.setItem(
-        SESSION_STORAGE.NAVIGATION_ANIMATION,
-        withAnimation,
-      );
+      setNavigationAnimation(withAnimation);
 
       return router.forward();
     },
@@ -104,10 +111,7 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      sessionStorage.setItem(
-        SESSION_STORAGE.NAVIGATION_ANIMATION,
-        withAnimation,
-      );
+      setNavigationAnimation(withAnimation);
 
       return router.back();
     },
@@ -127,10 +131,7 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      sessionStorage.setItem(
-        SESSION_STORAGE.NAVIGATION_ANIMATION,
-        withAnimation,
-      );
+      setNavigationAnimation(withAnimation);
 
       return router.push(customHref, {
         scroll,

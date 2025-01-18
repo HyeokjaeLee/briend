@@ -5,9 +5,9 @@ import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useState } from 'react';
 
-import { SESSION_STORAGE, type SESSION_STORAGE_TYPE } from '@/constants';
+import { SESSION_STORAGE } from '@/constants';
 import { useCustomHref } from '@/hooks';
-import { useGlobalStore } from '@/stores';
+import { useGlobalStore, type NAVIGATION_ANIMATION } from '@/stores';
 import { isCurrentHref } from '@/utils';
 
 export interface CustomLinkProps extends LinkProps {
@@ -15,7 +15,7 @@ export interface CustomLinkProps extends LinkProps {
   className?: string;
   i18nOptimize?: boolean;
   withLoading?: boolean;
-  withAnimation?: SESSION_STORAGE_TYPE.NAVIGATION_ANIMATION;
+  withAnimation?: NAVIGATION_ANIMATION;
   toSidePanel?: boolean;
 }
 
@@ -36,9 +36,14 @@ export const CustomLink = ({
 
   const [customHref, setCustomHref] = useState(stringHref);
 
-  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
-    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
-  );
+  const [setGlobalLoading, setSidePanelUrl, setNavigationAnimation] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.setGlobalLoading,
+        state.setSidePanelUrl,
+        state.setNavigationAnimation,
+      ]),
+    );
 
   useEffect(() => {
     if (!i18nOptimize) return;
@@ -71,12 +76,7 @@ export const CustomLink = ({
 
           if (withLoading) setGlobalLoading(true);
 
-          if (withAnimation) {
-            sessionStorage.setItem(
-              SESSION_STORAGE.NAVIGATION_ANIMATION,
-              withAnimation,
-            );
-          }
+          setNavigationAnimation(withAnimation || 'NONE');
 
           if (replace)
             sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
