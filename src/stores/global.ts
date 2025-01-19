@@ -58,7 +58,10 @@ interface GlobalStore {
   resetMediaQuery: () => void;
 
   sidePanelUrl: string;
-  setSidePanelUrl: (url: string) => void;
+  /**
+   * @returns 같은 페이지일 경우 false를 반환
+   */
+  setSidePanelUrl: (url: string) => boolean;
 
   isErrorRoute: boolean;
   setIsErrorRoute: (isErrorRoute: boolean) => void;
@@ -72,7 +75,7 @@ interface GlobalStore {
   setNavigationAnimation: (animation: NAVIGATION_ANIMATION) => void;
 }
 
-export const useGlobalStore = create<GlobalStore>((set) => {
+export const useGlobalStore = create<GlobalStore>((set, get) => {
   const lastInviteLanguage =
     (IS_CLIENT && localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
     LANGUAGE.ENGLISH;
@@ -134,8 +137,20 @@ export const useGlobalStore = create<GlobalStore>((set) => {
 
     sidePanelUrl,
     setSidePanelUrl: (url) => {
+      const { sidePanelUrl } = get();
+
+      const isSameSidePanelUrl = sidePanelUrl === url;
+
+      if (isSameSidePanelUrl) {
+        console.info('blocked by same href');
+
+        return false;
+      }
+
       sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, url);
       set({ sidePanelUrl: url });
+
+      return true;
     },
 
     isErrorRoute: false,

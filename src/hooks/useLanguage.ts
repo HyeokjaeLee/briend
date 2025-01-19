@@ -1,10 +1,16 @@
 import { useParams } from 'next/navigation';
 
-import { LANGUAGE } from '@/constants';
+import { COOKIES, LANGUAGE } from '@/constants';
 import { CustomError, ERROR, isEnumValue } from '@/utils';
 
+import { useCookies } from './useCookies';
+
 export const useLanguage = () => {
-  const { lng } = useParams();
+  const { lng: paramsLng } = useParams();
+
+  const [{ I18N: cookieLng }] = useCookies([COOKIES.I18N]);
+
+  const lng = paramsLng || cookieLng;
 
   if (!isEnumValue(LANGUAGE, lng))
     throw new CustomError(ERROR.UNKNOWN_VALUE('lng'));

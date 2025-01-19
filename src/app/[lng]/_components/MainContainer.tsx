@@ -12,6 +12,7 @@ import {
 import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
+import { getNavigationAnimationClasses } from '@/utils/client';
 
 export const MainContainer = ({ children }: PropsWithChildren) => {
   const url = useUrl();
@@ -51,35 +52,16 @@ export const MainContainer = ({ children }: PropsWithChildren) => {
     return () => clearTimeout(timer);
   }, [url, setAnimationType, setNavigationAnimation]);
 
-  const hasAnimation = navigationAnimation !== 'NONE';
-
   return (
     <main
       className={cn(
         'flex size-full flex-col overflow-auto',
         isPendingRef.current
           ? 'invisible overflow-hidden'
-          : animationType === 'ENTER'
-            ? [
-                'animate-duration-150',
-                hasAnimation &&
-                  {
-                    FROM_LEFT: 'animate-fade-left',
-                    FROM_RIGHT: 'animate-fade-right',
-                    FROM_TOP: 'animate-fade-down',
-                    FROM_BOTTOM: 'animate-fade-up',
-                  }[navigationAnimation],
-              ]
-            : [
-                'animate-reverse animate-duration-75',
-                hasAnimation &&
-                  {
-                    FROM_LEFT: 'animate-fade-right',
-                    FROM_RIGHT: 'animate-fade-left',
-                    FROM_TOP: 'animate-fade-up',
-                    FROM_BOTTOM: 'animate-fade-down',
-                  }[navigationAnimation],
-              ],
+          : getNavigationAnimationClasses({
+              animationType,
+              navigationAnimation,
+            }),
       )}
     >
       {children}

@@ -1,7 +1,5 @@
 'use client';
 
-import type { useMessageForm } from '../_hooks/useMessageForm';
-
 import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
@@ -22,7 +20,6 @@ import { toast } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SendMessageFormProps {
-  form: ReturnType<typeof useMessageForm>['form'];
   friendUserId: string;
   friendPeer: FriendPeer;
 }

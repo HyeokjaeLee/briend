@@ -1,18 +1,16 @@
-import { SettingButton } from '@/app/[lng]/chatting/[userId]/_components/ChattingPageHeader/_components/SettingButton';
-import { ChattingList } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_components/ChattingList';
-import { SendMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_components/SendMessageForm';
-import { useMessageForm } from '@/app/[lng]/chatting/[userId]/_components/ChattingTemplate/_hooks/useMessageForm';
 import { ConnectionIndicator, LoadingTemplate } from '@/components';
 import { useCheckIndividualPeer } from '@/hooks';
 import { useFriendStore } from '@/stores';
 
-interface ChattingPageProps {
+import { SettingButton } from './_components/ChattingPageHeader/_components/SettingButton';
+import { ChattingList } from './_components/ChattingTemplate/_components/ChattingList';
+import { SendMessageForm } from './_components/ChattingTemplate/_components/SendMessageForm';
+
+interface ChattingSideProps {
   userId: string;
 }
 
-export const ChattingTemplate = ({ userId }: ChattingPageProps) => {
-  const { form } = useMessageForm();
-
+export const ChattingSide = ({ userId }: ChattingSideProps) => {
   const nickname = useFriendStore(
     (state) =>
       state.friendList.find((friend) => friend.userId === userId)?.nickname,
@@ -33,7 +31,7 @@ export const ChattingTemplate = ({ userId }: ChattingPageProps) => {
       </nav>
       <ChattingList friendUserId={userId} />
       <footer className="p-3">
-        <SendMessageForm form={form} friendPeer={friendPeer} />
+        <SendMessageForm friendPeer={friendPeer} friendUserId={userId} />
       </footer>
     </article>
   );
