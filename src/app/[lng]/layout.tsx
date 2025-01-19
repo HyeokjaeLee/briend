@@ -115,9 +115,7 @@ const RootLayout = async ({
                   </Suspense>
                   <BottomNav />
                 </div>
-                <aside className="hidden flex-1 bg-white sm:block">
-                  {rightSide}
-                </aside>
+                {rightSide}
               </div>
             </GlobalProvider>
           </GlobalSuspense>

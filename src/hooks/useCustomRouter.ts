@@ -16,6 +16,7 @@ import {
   type NAVIGATION_ANIMATION,
 } from '@/stores';
 import { isCurrentHref } from '@/utils';
+import { setExitNavigationAnimation } from '@/utils/client';
 
 import { useCustomHref } from './useCustomHref';
 
@@ -44,26 +45,26 @@ let memoizedCustomRouter: CustomRouter;
 export const useCustomRouter = () => {
   const router = useRouter();
   const getCustomHref = useCustomHref();
-  const [
-    setGlobalLoading,
-    setSidePanelUrl,
-    setNavigationAnimation,
-    setAnimationType,
-  ] = useGlobalStore(
-    useShallow((state) => [
-      state.setGlobalLoading,
-      state.setSidePanelUrl,
-      state.setNavigationAnimation,
-      state.setAnimationType,
-    ]),
+  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
+    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
   );
 
   if (memoizedCustomRouter) return memoizedCustomRouter;
 
+  const blockSameHref = (href: string) => {
+    const isSameHref = isCurrentHref(href);
+
+    if (isSameHref) {
+      console.info('blocked by same href');
+    }
+
+    return isSameHref;
+  };
+
   const replace: CustomRouter['replace'] = (href, options) => {
     const customHref = getCustomHref(href);
 
-    if (isCurrentHref(customHref)) return;
+    if (blockSameHref(customHref)) return;
 
     const {
       withLoading,
@@ -78,9 +79,7 @@ export const useCustomRouter = () => {
 
     if (withLoading) setGlobalLoading(true);
 
-    setNavigationAnimation(withAnimation);
-
-    setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+    setExitNavigationAnimation(withAnimation);
 
     return router.replace(customHref, {
       scroll,
@@ -93,9 +92,7 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      setNavigationAnimation(withAnimation);
-
-      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+      setExitNavigationAnimation(withAnimation);
 
       return router.forward();
     },
@@ -120,16 +117,14 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      setNavigationAnimation(withAnimation);
-
-      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+      setExitNavigationAnimation(withAnimation);
 
       return router.back();
     },
     push: (href, options) => {
       const customHref = getCustomHref(href);
 
-      if (isCurrentHref(customHref)) return;
+      if (blockSameHref(customHref)) return;
 
       const {
         scroll,
@@ -142,9 +137,7 @@ export const useCustomRouter = () => {
 
       if (withLoading) setGlobalLoading(true);
 
-      setNavigationAnimation(withAnimation);
-
-      setAnimationType(withAnimation === 'NONE' ? 'ENTER' : 'EXIT');
+      setExitNavigationAnimation(withAnimation);
 
       return router.push(customHref, {
         scroll,
@@ -154,7 +147,7 @@ export const useCustomRouter = () => {
     prefetch: (href, options) => {
       const customHref = getCustomHref(href);
 
-      if (isCurrentHref(customHref)) return;
+      if (blockSameHref(customHref)) return;
 
       return router.prefetch(customHref, options);
     },

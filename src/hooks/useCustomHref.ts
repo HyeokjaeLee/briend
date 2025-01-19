@@ -1,37 +1,26 @@
-import { usePathname } from 'next/navigation';
-
 import { useCallback } from 'react';
 
-import { COOKIES, LANGUAGE } from '@/constants';
+import { LANGUAGE, PUBLIC_ENV } from '@/constants';
 import { isEnumValue } from '@/utils';
 
-import { useCookies } from './useCookies';
+import { useLanguage } from './useLanguage';
 
 /**
  * @returns i18n 언어 정보가 있으면 기본 href에 lng path를 추가한 값을 반환하는 함수
  */
 export const useCustomHref = () => {
-  const [cookies] = useCookies([COOKIES.I18N]);
-  const pathname = usePathname();
-
-  let i18n = cookies.I18N;
-
-  const [, i18nPath] = pathname.split('/');
-
-  if (isEnumValue(LANGUAGE, i18nPath)) {
-    i18n = i18nPath;
-  }
+  const { lng: i18n } = useLanguage();
 
   const getCustomHref = useCallback(
     (href: string | URL) => {
       if (typeof href === 'string' && href.startsWith('?')) return href;
 
       const url =
-        typeof href === 'string' ? new URL(href, location.origin) : href;
+        typeof href === 'string' ? new URL(href, PUBLIC_ENV.BASE_URL) : href;
 
-      if (url.origin !== location.origin) return url.href;
+      if (url.origin !== PUBLIC_ENV.BASE_URL) return url.href;
 
-      let customHref = url.href.replace(location.origin, '');
+      let customHref = url.href.replace(PUBLIC_ENV.BASE_URL, '');
       const [, i18nPath] = customHref.split('/');
 
       const includedI18nPath = isEnumValue(LANGUAGE, i18nPath);
