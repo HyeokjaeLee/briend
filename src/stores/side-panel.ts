@@ -24,7 +24,10 @@ export const useSidePanelStore = create<SidePanelStore>((set) => {
 
   return {
     sidePanelUrl,
-    setSidePanelUrl: (sidePanelUrl) => set({ sidePanelUrl }),
+    setSidePanelUrl: (sidePanelUrl) => {
+      sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, sidePanelUrl);
+      set({ sidePanelUrl });
+    },
 
     animationType: 'ENTER',
     setAnimationType: (animationType) => set({ animationType }),
