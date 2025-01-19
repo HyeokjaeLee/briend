@@ -3,12 +3,12 @@ import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
-import { COOKIES, PEER_PREFIX } from '@/constants';
-import { useCookies } from '@/hooks';
+import { PEER_PREFIX } from '@/constants';
+import { useUserId } from '@/hooks';
 import { usePeerStore } from '@/stores';
 
 export const usePeer = () => {
-  const [{ USER_ID: userId }] = useCookies([COOKIES.USER_ID]);
+  const userId = useUserId();
   const [peer, setPeer] = usePeerStore(
     useShallow((state) => [state.peer, state.setPeer]),
   );

@@ -1,23 +1,15 @@
-import { useShallow } from 'zustand/shallow';
-
 import { useEffect } from 'react';
 
-import { COOKIES } from '@/constants';
 import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
-import { useCookies } from '@/hooks';
+import { useUserId } from '@/hooks';
 import { usePeerStore } from '@/stores';
 import { MESSAGE_TYPE } from '@/types/peer-data';
 import { isPeerData } from '@/utils';
 
 export const PeerMessageReceiver = () => {
-  const [friendConnections, requestedPingPongMap] = usePeerStore(
-    useShallow((state) => [
-      state.friendConnections,
-      state.requestedPingPongMap,
-    ]),
-  );
+  const friendConnections = usePeerStore((state) => state.friendConnections);
 
-  const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
+  const myUserId = useUserId();
 
   useEffect(() => {
     if (!myUserId) return;
@@ -58,7 +50,7 @@ export const PeerMessageReceiver = () => {
     });
 
     return () => unmountHandlerList.forEach((handler) => handler());
-  }, [friendConnections, myUserId, requestedPingPongMap]);
+  }, [friendConnections, myUserId]);
 
   return null;
 };
