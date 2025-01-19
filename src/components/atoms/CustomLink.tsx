@@ -1,10 +1,9 @@
 'use client';
 
 import Link, { type LinkProps } from 'next/link';
-import { useShallow } from 'zustand/shallow';
 
 import { SESSION_STORAGE } from '@/constants';
-import { useCustomHref } from '@/hooks';
+import { useCustomHref, useSidePanel } from '@/hooks';
 import { useGlobalStore, type NAVIGATION_ANIMATION } from '@/stores';
 import { isCurrentHref } from '@/utils';
 import { setExitNavigationAnimation } from '@/utils/client';
@@ -25,7 +24,7 @@ export const CustomLink = ({
   i18nOptimize = true,
   replace,
   withLoading = false,
-  withAnimation = 'NONE',
+  withAnimation: forceAnimation,
   toSidePanel,
   ...restLinkProps
 }: CustomLinkProps) => {
@@ -33,11 +32,13 @@ export const CustomLink = ({
 
   const stringHref = href.toString();
 
-  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
-    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
-  );
+  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
+
+  const sidePanel = useSidePanel();
 
   const customHref = i18nOptimize ? getCustomHref(stringHref) : stringHref;
+
+  const withAnimation = forceAnimation ?? (replace ? 'NONE' : 'FROM_BOTTOM');
 
   return (
     <Link
@@ -46,15 +47,15 @@ export const CustomLink = ({
       href={customHref}
       replace={replace}
       onClick={(e) => {
-        if (toSidePanel) {
-          e.preventDefault();
-
-          setSidePanelUrl(customHref);
-
-          return;
-        }
-
         try {
+          if (toSidePanel) {
+            e.preventDefault();
+
+            return sidePanel.push(customHref, {
+              withAnimation,
+            });
+          }
+
           if (isCurrentHref(customHref)) {
             console.info('blocked by same href');
 

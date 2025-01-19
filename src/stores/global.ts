@@ -3,14 +3,7 @@
 import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
-import {
-  IS_CLIENT,
-  LANGUAGE,
-  LOCAL_STORAGE,
-  SESSION_STORAGE,
-  PUBLIC_ENV,
-} from '@/constants';
-import { ROUTES } from '@/routes/client';
+import { IS_CLIENT, LANGUAGE, LOCAL_STORAGE, PUBLIC_ENV } from '@/constants';
 import { CustomError, isEnumValue } from '@/utils';
 
 interface GlobalLoadingOptions {
@@ -57,12 +50,6 @@ interface GlobalStore {
   hasSidePanel: boolean;
   resetMediaQuery: () => void;
 
-  sidePanelUrl: string;
-  /**
-   * @returns 같은 페이지일 경우 false를 반환
-   */
-  setSidePanelUrl: (url: string) => boolean;
-
   isErrorRoute: boolean;
   setIsErrorRoute: (isErrorRoute: boolean) => void;
 
@@ -75,7 +62,7 @@ interface GlobalStore {
   setNavigationAnimation: (animation: NAVIGATION_ANIMATION) => void;
 }
 
-export const useGlobalStore = create<GlobalStore>((set, get) => {
+export const useGlobalStore = create<GlobalStore>((set) => {
   const lastInviteLanguage =
     (IS_CLIENT && localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
     LANGUAGE.ENGLISH;
@@ -105,11 +92,6 @@ export const useGlobalStore = create<GlobalStore>((set, get) => {
     return { mediaQuery, mediaQueryBreakPoint, hasSidePanel };
   };
 
-  const sidePanelUrl = IS_CLIENT
-    ? sessionStorage.getItem(SESSION_STORAGE.SIDE_PANEL_URL) ||
-      ROUTES.FRIEND_LIST.pathname
-    : ROUTES.FRIEND_LIST.pathname;
-
   return {
     isMounted: false,
     mount: () => set({ isMounted: true }),
@@ -133,24 +115,6 @@ export const useGlobalStore = create<GlobalStore>((set, get) => {
       localStorage.setItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE, language);
 
       return set({ lastInviteLanguage: language });
-    },
-
-    sidePanelUrl,
-    setSidePanelUrl: (url) => {
-      const { sidePanelUrl } = get();
-
-      const isSameSidePanelUrl = sidePanelUrl === url;
-
-      if (isSameSidePanelUrl) {
-        console.info('blocked by same href');
-
-        return false;
-      }
-
-      sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, url);
-      set({ sidePanelUrl: url });
-
-      return true;
     },
 
     isErrorRoute: false,

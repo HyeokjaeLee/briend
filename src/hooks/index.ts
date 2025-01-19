@@ -13,4 +13,5 @@ export { useLanguage } from './useLanguage';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';
 export { useProfileImage } from './useProfileImage';
+export { useSidePanel } from './useSidePanel';
 export { useUserId } from './useUserId';
