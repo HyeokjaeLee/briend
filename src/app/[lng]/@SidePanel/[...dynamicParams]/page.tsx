@@ -2,7 +2,7 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 
 import { useSidePanelStore } from '@/stores';
 import { cn, findRoute } from '@/utils';
@@ -14,7 +14,7 @@ import {
 import { SideContents } from './_components/SideContents';
 import { useInitRoute } from './_hooks/useInitRoute';
 
-export default function RightSidePanelPage() {
+const SidePanel = () => {
   const [
     sidePanelUrl,
     navigationAnimation,
@@ -62,4 +62,6 @@ export default function RightSidePanelPage() {
       <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
     </aside>
   );
-}
+};
+
+export default memo(SidePanel);

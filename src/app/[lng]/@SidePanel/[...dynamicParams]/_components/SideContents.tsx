@@ -1,5 +1,3 @@
-import { memo } from 'react';
-
 import { ChattingSide } from '@/app/[lng]/chatting/[userId]/side';
 import { createOnlyClientComponent } from '@/utils/client';
 
@@ -10,7 +8,7 @@ interface ContentTemplateProps {
   routeName: string;
 }
 
-const Contents = createOnlyClientComponent(
+export const SideContents = createOnlyClientComponent(
   ({ sidePanelUrl, routeName }: ContentTemplateProps) => {
     switch (routeName) {
       case 'CHATTING_ROOM': {
@@ -25,5 +23,3 @@ const Contents = createOnlyClientComponent(
   },
   EmptyTemplate,
 );
-
-export const SideContents = memo(Contents);

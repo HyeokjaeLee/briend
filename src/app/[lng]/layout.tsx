@@ -74,13 +74,13 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
-  rightSide: ReactElement;
+  SidePanel: ReactElement;
 }
 
 const RootLayout = async ({
   children,
   params,
-  rightSide,
+  SidePanel,
 }: Readonly<RootLayoutProps>) => {
   const { lng } = await params;
 
@@ -115,7 +115,7 @@ const RootLayout = async ({
                   </Suspense>
                   <BottomNav />
                 </div>
-                {rightSide}
+                {SidePanel}
               </div>
             </GlobalProvider>
           </GlobalSuspense>

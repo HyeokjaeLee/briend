@@ -2,11 +2,10 @@ import { useShallow } from 'zustand/shallow';
 
 import { useEffect, useRef } from 'react';
 
-import { COOKIES } from '@/constants';
 import { usePeerStore } from '@/stores';
 import type { FriendPeer } from '@/stores/peer';
 
-import { useCookies } from './useCookies';
+import { useUserId } from './useUserId';
 
 interface CheckIndividualPeerOptions {
   interval: number;
@@ -22,7 +21,7 @@ export const useCheckIndividualPeer = (
     ]),
   );
 
-  const [{ USER_ID: myUserId }] = useCookies([COOKIES.USER_ID]);
+  const myUserId = useUserId();
 
   let friendPeer: FriendPeer | undefined;
 
