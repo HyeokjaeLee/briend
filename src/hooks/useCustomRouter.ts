@@ -5,7 +5,6 @@ import type {
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 import { useRouter } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
 
 import { SESSION_STORAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
@@ -19,6 +18,7 @@ import { isCurrentHref } from '@/utils';
 import { setExitNavigationAnimation } from '@/utils/client';
 
 import { useCustomHref } from './useCustomHref';
+import { useSidePanel } from './useSidePanel';
 
 interface CustomNavigationOptions {
   withLoading?: boolean;
@@ -40,118 +40,126 @@ interface CustomRouter extends AppRouterInstance {
   forward: (options?: Omit<CustomNavigationOptions, 'toSidePanel'>) => void;
 }
 
-let memoizedCustomRouter: CustomRouter;
+let memoizedCustomRouter: CustomRouter | undefined;
 
-export const useCustomRouter = () => {
-  const router = useRouter();
-  const getCustomHref = useCustomHref();
-  const [setGlobalLoading, setSidePanelUrl] = useGlobalStore(
-    useShallow((state) => [state.setGlobalLoading, state.setSidePanelUrl]),
-  );
+export const useCustomRouter = memoizedCustomRouter
+  ? () => memoizedCustomRouter!
+  : () => {
+      const router = useRouter();
+      const getCustomHref = useCustomHref();
+      const setGlobalLoading = useGlobalStore(
+        (state) => state.setGlobalLoading,
+      );
 
-  if (memoizedCustomRouter) return memoizedCustomRouter;
+      const sidePanel = useSidePanel();
 
-  const blockSameHref = (href: string) => {
-    const isSameHref = isCurrentHref(href);
+      const blockSameHref = (href: string) => {
+        const isSameHref = isCurrentHref(href);
 
-    if (isSameHref) {
-      console.info('blocked by same href');
-    }
+        if (isSameHref) {
+          console.info('blocked by same href');
+        }
 
-    return isSameHref;
-  };
+        return isSameHref;
+      };
 
-  const replace: CustomRouter['replace'] = (href, options) => {
-    const customHref = getCustomHref(href);
+      const replace: CustomRouter['replace'] = (href, options) => {
+        const customHref = getCustomHref(href);
 
-    if (blockSameHref(customHref)) return;
+        if (blockSameHref(customHref)) return;
 
-    const {
-      withLoading,
-      withAnimation = 'NONE',
-      scroll,
-      toSidePanel,
-    } = options ?? {};
-
-    if (toSidePanel) return setSidePanelUrl(customHref);
-
-    sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
-
-    if (withLoading) setGlobalLoading(true);
-
-    setExitNavigationAnimation(withAnimation);
-
-    return router.replace(customHref, {
-      scroll,
-    });
-  };
-
-  memoizedCustomRouter = {
-    forward: (options) => {
-      const { withLoading, withAnimation = 'FROM_BOTTOM' } = options ?? {};
-
-      if (withLoading) setGlobalLoading(true);
-
-      setExitNavigationAnimation(withAnimation);
-
-      return router.forward();
-    },
-    refresh: router.refresh,
-    back: (options) => {
-      const { setIsGlobalModalOpen, backNoticeInfo } =
-        useGlobalModalStore.getState();
-
-      if (backNoticeInfo) return setIsGlobalModalOpen(true);
-
-      const { withLoading, withAnimation = 'FROM_TOP' } = options ?? {};
-
-      const { historyIndex } = useHistoryStore.getState();
-
-      const hasBack = 0 < historyIndex;
-
-      if (!hasBack)
-        return replace(ROUTES.FRIEND_LIST.pathname, {
-          withAnimation,
+        const {
           withLoading,
+          withAnimation = 'NONE',
+          scroll,
+          toSidePanel,
+        } = options ?? {};
+
+        if (toSidePanel)
+          return sidePanel.push(customHref, {
+            withAnimation,
+          });
+
+        sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
+
+        if (withLoading) setGlobalLoading(true);
+
+        setExitNavigationAnimation(withAnimation);
+
+        return router.replace(customHref, {
+          scroll,
         });
+      };
 
-      if (withLoading) setGlobalLoading(true);
+      memoizedCustomRouter = {
+        forward: (options) => {
+          const { withLoading, withAnimation = 'FROM_BOTTOM' } = options ?? {};
 
-      setExitNavigationAnimation(withAnimation);
+          if (withLoading) setGlobalLoading(true);
 
-      return router.back();
-    },
-    push: (href, options) => {
-      const customHref = getCustomHref(href);
+          setExitNavigationAnimation(withAnimation);
 
-      if (blockSameHref(customHref)) return;
+          return router.forward();
+        },
+        refresh: router.refresh,
+        back: (options) => {
+          const { setIsGlobalModalOpen, backNoticeInfo } =
+            useGlobalModalStore.getState();
 
-      const {
-        scroll,
-        toSidePanel,
-        withAnimation = 'FROM_BOTTOM',
-        withLoading,
-      } = options ?? {};
+          if (backNoticeInfo) return setIsGlobalModalOpen(true);
 
-      if (toSidePanel) return setSidePanelUrl(customHref);
+          const { withLoading, withAnimation = 'FROM_TOP' } = options ?? {};
 
-      if (withLoading) setGlobalLoading(true);
+          const { historyIndex } = useHistoryStore.getState();
 
-      setExitNavigationAnimation(withAnimation);
+          const hasBack = 0 < historyIndex;
 
-      return router.push(customHref, {
-        scroll,
-      });
-    },
-    replace,
-    prefetch: (href, options) => {
-      const customHref = getCustomHref(href);
+          if (!hasBack)
+            return replace(ROUTES.FRIEND_LIST.pathname, {
+              withAnimation,
+              withLoading,
+            });
 
-      if (blockSameHref(customHref)) return;
+          if (withLoading) setGlobalLoading(true);
 
-      return router.prefetch(customHref, options);
-    },
-  };
+          setExitNavigationAnimation(withAnimation);
 
-  return memoizedCustomRouter;
-};
+          return router.back();
+        },
+        push: (href, options) => {
+          const customHref = getCustomHref(href);
+
+          if (blockSameHref(customHref)) return;
+
+          const {
+            scroll,
+            toSidePanel,
+            withAnimation = 'FROM_BOTTOM',
+            withLoading,
+          } = options ?? {};
+
+          if (toSidePanel)
+            return sidePanel.push(customHref, {
+              withAnimation,
+            });
+
+          if (withLoading) setGlobalLoading(true);
+
+          setExitNavigationAnimation(withAnimation);
+
+          return router.push(customHref, {
+            scroll,
+          });
+        },
+        replace,
+        prefetch: (href, options) => {
+          const customHref = getCustomHref(href);
+
+          if (blockSameHref(customHref)) return;
+
+          return router.prefetch(customHref, options);
+        },
+      };
+
+      return memoizedCustomRouter;
+    };

@@ -2,18 +2,32 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { useGlobalStore } from '@/stores';
-import { findRoute } from '@/utils';
+import { useEffect } from 'react';
+
+import { useSidePanelStore } from '@/stores';
+import { cn, findRoute } from '@/utils';
+import {
+  getNavigationAnimationClasses,
+  NAVIGATION_ANIMATION_DURATION,
+} from '@/utils/client';
 
 import { SideContents } from './_components/SideContents';
 import { useInitRoute } from './_hooks/useInitRoute';
 
 export default function RightSidePanelPage() {
-  const [sidePanelUrl, animationType, navigationAnimation] = useGlobalStore(
+  const [
+    sidePanelUrl,
+    navigationAnimation,
+    setNavigationAnimation,
+    animationType,
+    setAnimationType,
+  ] = useSidePanelStore(
     useShallow((state) => [
       state.sidePanelUrl,
-      state.animationType,
       state.navigationAnimation,
+      state.setNavigationAnimation,
+      state.animationType,
+      state.setAnimationType,
     ]),
   );
 
@@ -21,8 +35,30 @@ export default function RightSidePanelPage() {
 
   useInitRoute({ routeName });
 
+  useEffect(() => {
+    const { navigationAnimation } = useSidePanelStore.getState();
+
+    if (navigationAnimation === 'NONE') return;
+
+    setAnimationType('ENTER');
+
+    const timer = setTimeout(() => {
+      setNavigationAnimation('NONE');
+    }, NAVIGATION_ANIMATION_DURATION.ENTER);
+
+    return () => clearTimeout(timer);
+  }, [setAnimationType, setNavigationAnimation, sidePanelUrl]);
+
   return (
-    <aside className="hidden flex-1 bg-white sm:block">
+    <aside
+      className={cn(
+        'hidden flex-1 bg-white sm:block',
+        getNavigationAnimationClasses({
+          animationType,
+          navigationAnimation,
+        }),
+      )}
+    >
       <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
     </aside>
   );

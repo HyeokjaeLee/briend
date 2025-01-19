@@ -1,9 +1,8 @@
 import { usePathname } from 'next/navigation';
-import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 
-import { useCustomRouter } from '@/hooks';
+import { useCustomRouter, useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { findRoute } from '@/utils/findRoute';
@@ -13,9 +12,9 @@ interface UseInitRouteProps {
 }
 
 export const useInitRoute = ({ routeName }: UseInitRouteProps) => {
-  const [setSidePanelUrl, hasSidePanel] = useGlobalStore(
-    useShallow((state) => [state.setSidePanelUrl, state.hasSidePanel]),
-  );
+  const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
+  const sidePanel = useSidePanel();
+
   const pathaname = usePathname();
 
   const { name: currentRouteName } = findRoute(pathaname);
@@ -26,10 +25,10 @@ export const useInitRoute = ({ routeName }: UseInitRouteProps) => {
   const router = useCustomRouter();
 
   useEffect(() => {
-    if (!hasSidePanel) return setSidePanelUrl(ROUTES.FRIEND_LIST.pathname);
+    if (!hasSidePanel) return sidePanel.push(ROUTES.FRIEND_LIST.pathname);
 
     if (!isSameRoute || isDefaultRoute) return;
 
     router.replace(ROUTES.FRIEND_LIST.pathname);
-  }, [isSameRoute, router, hasSidePanel, isDefaultRoute, setSidePanelUrl]);
+  }, [hasSidePanel, isDefaultRoute, isSameRoute, router, sidePanel]);
 };

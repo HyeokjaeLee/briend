@@ -5,6 +5,11 @@ interface GetNavigationAnimationClassesParams {
   navigationAnimation: NAVIGATION_ANIMATION;
 }
 
+export const NAVIGATION_ANIMATION_DURATION = {
+  ENTER: 150,
+  EXIT: 75,
+} as const;
+
 export const getNavigationAnimationClasses = ({
   animationType,
   navigationAnimation,
@@ -13,7 +18,7 @@ export const getNavigationAnimationClasses = ({
 
   return animationType === 'ENTER'
     ? [
-        'animate-duration-150',
+        `animate-duration-150`,
         hasAnimation &&
           {
             FROM_LEFT: 'animate-fade-left',

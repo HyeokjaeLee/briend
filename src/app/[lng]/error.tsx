@@ -1,13 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { useShallow } from 'zustand/shallow';
 
 import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton, Lottie } from '@/components';
-import { useUserData } from '@/hooks';
+import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { ERROR_STATUS } from '@/utils';
@@ -61,9 +60,9 @@ const ErrorPage = (e: ErrorPageProps) => {
     }
   }
 
-  const [setIsErrorRoute, setSidePanelUrl] = useGlobalStore(
-    useShallow((state) => [state.setIsErrorRoute, state.setSidePanelUrl]),
-  );
+  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
+
+  const sidePanel = useSidePanel();
 
   useEffect(() => {
     setIsErrorRoute(true);
@@ -92,7 +91,8 @@ const ErrorPage = (e: ErrorPageProps) => {
           className="z-20"
           href={dynamicInfo.buttonLink}
           onClick={() => {
-            setSidePanelUrl('/');
+            sidePanel.push(ROUTES.FRIEND_LIST.pathname);
+
             e.reset();
           }}
         >

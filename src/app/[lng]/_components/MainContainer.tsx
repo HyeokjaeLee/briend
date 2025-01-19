@@ -12,7 +12,10 @@ import {
 import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
-import { getNavigationAnimationClasses } from '@/utils/client';
+import {
+  getNavigationAnimationClasses,
+  NAVIGATION_ANIMATION_DURATION,
+} from '@/utils/client';
 
 export const MainContainer = ({ children }: PropsWithChildren) => {
   const url = useUrl();
@@ -47,7 +50,7 @@ export const MainContainer = ({ children }: PropsWithChildren) => {
 
     const timer = setTimeout(() => {
       setNavigationAnimation('NONE');
-    }, 150);
+    }, NAVIGATION_ANIMATION_DURATION.ENTER);
 
     return () => clearTimeout(timer);
   }, [url, setAnimationType, setNavigationAnimation]);

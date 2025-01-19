@@ -11,6 +11,7 @@ export const findRoute = (pathname: string) => {
   } = {
     point: 0,
   };
+
   const splitedCurrentPathname = pathname.split('/');
 
   //! i18n을 위한 dynmic route 정보 제거
