@@ -20,7 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@assets/*": ["./public/assets/*"]
+      "@assets/*": ["./public/assets/*"],
+      "@api/*": ["./src/app/api/*"]
     }
   },
   "include": [

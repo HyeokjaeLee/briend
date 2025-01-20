@@ -66,8 +66,6 @@ export const useCustomRouter = memoizedCustomRouter
       const replace: CustomRouter['replace'] = (href, options) => {
         const customHref = getCustomHref(href);
 
-        if (blockSameHref(customHref)) return;
-
         const {
           withLoading,
           withAnimation = 'NONE',
@@ -79,6 +77,8 @@ export const useCustomRouter = memoizedCustomRouter
           return sidePanel.push(customHref, {
             withAnimation,
           });
+
+        if (blockSameHref(customHref)) return;
 
         sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
 
@@ -129,8 +129,6 @@ export const useCustomRouter = memoizedCustomRouter
         push: (href, options) => {
           const customHref = getCustomHref(href);
 
-          if (blockSameHref(customHref)) return;
-
           const {
             scroll,
             toSidePanel,
@@ -142,6 +140,8 @@ export const useCustomRouter = memoizedCustomRouter
             return sidePanel.push(customHref, {
               withAnimation,
             });
+
+          if (blockSameHref(customHref)) return;
 
           if (withLoading) setGlobalLoading(true);
 

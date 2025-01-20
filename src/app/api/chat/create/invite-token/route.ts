@@ -3,19 +3,26 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 import { COOKIES, LANGUAGE } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import type { ApiParams } from '@/types/api-params';
-import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
 import { CustomError, ERROR, isEnumValue } from '@/utils';
 import { createApiRoute, getAuthToken } from '@/utils/api';
 
-export const POST = createApiRoute<ApiResponse.CREATE_CHAT_INVITE_TOKEN>(
+export type CreateChatInviteTokenApiParams = Pick<
+  JwtPayload.InviteToken,
+  'hostId' | 'guestLanguage' | 'guestNickname'
+>;
+
+export interface CreateChatInviteTokenApiResponse {
+  inviteToken: string;
+}
+
+export const POST = createApiRoute<CreateChatInviteTokenApiResponse>(
   async (req: NextRequest) => {
     const {
       guestNickname,
       guestLanguage,
       hostId,
-    }: ApiParams.CREATE_CHAT_INVITE_TOKEN = await req.json();
+    }: CreateChatInviteTokenApiParams = await req.json();
 
     const token = await getAuthToken({ req });
 

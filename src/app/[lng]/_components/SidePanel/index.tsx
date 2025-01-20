@@ -1,5 +1,6 @@
 'use client';
 
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import { useShallow } from 'zustand/shallow';
 
 import { memo, useEffect } from 'react';
@@ -11,10 +12,12 @@ import {
   NAVIGATION_ANIMATION_DURATION,
 } from '@/utils/client';
 
+import ErrorPage from '../../error';
+
 import { SideContents } from './_components/SideContents';
 import { useInitRoute } from './_hooks/useInitRoute';
 
-const SidePanel = () => {
+export const SidePanel = memo(() => {
   const [
     sidePanelUrl,
     navigationAnimation,
@@ -31,7 +34,7 @@ const SidePanel = () => {
     ]),
   );
 
-  const { name: routeName } = findRoute(sidePanelUrl);
+  const routeName = findRoute(sidePanelUrl).name;
 
   useInitRoute({ routeName });
 
@@ -52,16 +55,20 @@ const SidePanel = () => {
   return (
     <aside
       className={cn(
-        'hidden flex-1 bg-white sm:block',
+        'hidden flex-1 bg-white sm:flex sm:flex-col sm:overflow-auto',
         getNavigationAnimationClasses({
           animationType,
           navigationAnimation,
         }),
       )}
     >
-      <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
+      <ErrorBoundary
+        errorComponent={(error) => <ErrorPage {...error} isSidePanel />}
+      >
+        <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
+      </ErrorBoundary>
     </aside>
   );
-};
+});
 
-export default memo(SidePanel);
+SidePanel.displayName = 'SidePanel';
