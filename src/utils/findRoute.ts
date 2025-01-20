@@ -1,6 +1,7 @@
 import { ROUTES } from '@/routes/client';
 
-import { CustomError, ERROR, ERROR_STATUS } from './customError';
+import { assert } from './assert';
+import { CustomError, ERROR_STATUS } from './customError';
 
 export const findRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
@@ -77,8 +78,7 @@ export const findRoute = (pathname: string) => {
 
   const resultRoute = allRoutes[matchedRoute.name];
 
-  if (!resultRoute)
-    throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['resultRoute']));
+  assert(resultRoute);
 
   return {
     name: matchedRoute.name,

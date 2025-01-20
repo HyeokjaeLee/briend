@@ -1,17 +1,32 @@
+import type { JWTPayload } from 'jose';
+
 import { decodeJwt, errors } from 'jose';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
 import { COOKIES } from '@/constants';
-import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
 import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
 import { createApiRoute, jwtSecretVerify } from '@/utils/api';
 
 type ChatTokenPayload = JwtPayload.InviteToken | JwtPayload.ChannelToken;
 
+export interface VerifyChatTokenApiParams<TTokenType extends TOKEN_TYPE> {
+  tokenType: TTokenType;
+  token: string;
+}
+
+export interface VerifyChatTokenApiResponse<TTokenType extends TOKEN_TYPE> {
+  isExpired: boolean;
+  tokenType: TOKEN_TYPE;
+  payload: (TTokenType extends TOKEN_TYPE.INVITE
+    ? JwtPayload.InviteToken
+    : JwtPayload.ChannelToken) &
+    JWTPayload;
+}
+
 export const GET = createApiRoute<
-  ApiResponse.VERIFY_CHAT_TOKEN<TOKEN_TYPE>,
+  VerifyChatTokenApiResponse<TOKEN_TYPE>,
   {
     tokenType: TOKEN_TYPE;
   }

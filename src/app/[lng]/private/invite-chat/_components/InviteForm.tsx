@@ -37,12 +37,14 @@ export const InviteForm = () => {
 
   const router = useCustomRouter();
 
-  const [lastInviteLanguage, setLastInviteLanguage] = useGlobalStore(
-    useShallow((state) => [
-      state.lastInviteLanguage,
-      state.setLastInviteLanguage,
-    ]),
-  );
+  const [lastInviteLanguage, setLastInviteLanguage, hasSidePanel] =
+    useGlobalStore(
+      useShallow((state) => [
+        state.lastInviteLanguage,
+        state.setLastInviteLanguage,
+        state.hasSidePanel,
+      ]),
+    );
 
   const friendCount = useLiveQuery(() => friendTable?.count());
 
@@ -65,7 +67,9 @@ export const InviteForm = () => {
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
     onSuccess: ({ inviteToken }) =>
-      router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken })),
+      router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken }), {
+        toSidePanel: hasSidePanel,
+      }),
   });
 
   return (

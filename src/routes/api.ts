@@ -7,6 +7,14 @@ import { PUBLIC_ENV } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 import { CustomError } from '@/utils';
+import type {
+  CreateChatInviteTokenApiParams,
+  CreateChatInviteTokenApiResponse,
+} from '@api/chat/create/invite-token/route';
+import type {
+  VerifyChatTokenApiParams,
+  VerifyChatTokenApiResponse,
+} from '@api/chat/verify/[tokenType]/route';
 
 const apiInstance = ky.create({
   prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
@@ -18,9 +26,9 @@ const apiInstance = ky.create({
 });
 
 export const API_ROUTES = {
-  CREATE_CHAT_INVITE_TOKEN: (params: ApiParams.CREATE_CHAT_INVITE_TOKEN) =>
+  CREATE_CHAT_INVITE_TOKEN: (params: CreateChatInviteTokenApiParams) =>
     apiInstance
-      .post<ApiResponse.CREATE_CHAT_INVITE_TOKEN>('chat/create/invite-token', {
+      .post<CreateChatInviteTokenApiResponse>('chat/create/invite-token', {
         json: params,
       })
       .json(),
@@ -61,10 +69,10 @@ export const API_ROUTES = {
       .json(),
 
   VERIFY_CHAT_TOKEN: <TTokenType extends TOKEN_TYPE>(
-    params: ApiParams.VERIFY_CHAT_TOKEN<TTokenType>,
+    params: VerifyChatTokenApiParams<TTokenType>,
   ) =>
     apiInstance
-      .get<ApiResponse.VERIFY_CHAT_TOKEN<TTokenType>>(
+      .get<VerifyChatTokenApiResponse<TTokenType>>(
         `chat/verify/${params.tokenType}`,
         {
           searchParams: {

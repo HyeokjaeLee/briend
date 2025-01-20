@@ -11,7 +11,7 @@ import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
-import { BottomButton, Timer, QR } from '@/components';
+import { BottomButton, Timer, QR, CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
 import { friendTable } from '@/database/indexed-db';
 import { useCustomRouter, useProfileImage } from '@/hooks';
@@ -20,7 +20,7 @@ import { useGlobalStore, usePeerStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
-import { assert, CustomError, ERROR, expToDate, isPeerData } from '@/utils';
+import { assert, cn, CustomError, ERROR, expToDate, isPeerData } from '@/utils';
 import {
   toast,
   createOnlyClientComponent,
@@ -66,6 +66,7 @@ interface InviteChatQrTemplateProps
   > {
   url: string;
   inviteToken: string;
+  isSidePanel?: boolean;
 }
 
 export const InviteChatQRTemplate = createOnlyClientComponent(
@@ -75,6 +76,7 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
     hostId,
     guestLanguage,
     inviteToken,
+    isSidePanel,
   }: InviteChatQrTemplateProps) => {
     const expires = expToDate(exp);
 
@@ -170,8 +172,21 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
     const title = INVITE_TITLE[guestLanguage];
 
+    const handleShare = () => {
+      navigator.share({
+        title,
+        text: INVITE_SHARE_MESSAGE[guestLanguage],
+        url: inviteUrl,
+      });
+    };
+
     return (
-      <article className="flex flex-1 flex-col p-2">
+      <article
+        className={cn(
+          'flex flex-1 flex-col p-2',
+          isSidePanel && 'items-center',
+        )}
+      >
         <div className="flex flex-1 flex-col">
           <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
             <h1 className="break-keep text-center text-xl font-bold">
@@ -206,17 +221,15 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
           expires={expires}
           onTimeout={handleExpiredToken}
         />
-        <BottomButton
-          onClick={() => {
-            navigator.share({
-              title,
-              text: INVITE_SHARE_MESSAGE[guestLanguage],
-              url: inviteUrl,
-            });
-          }}
-        >
-          <RiShareFill className="size-7" /> 공유하기
-        </BottomButton>
+        {isSidePanel ? (
+          <CustomButton className="mt-3" onClick={handleShare}>
+            <RiShareFill className="size-7" /> 공유하기
+          </CustomButton>
+        ) : (
+          <BottomButton onClick={handleShare}>
+            <RiShareFill className="size-7" /> 공유하기
+          </BottomButton>
+        )}
       </article>
     );
   },

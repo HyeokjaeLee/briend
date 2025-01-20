@@ -1,12 +1,7 @@
 import type { LOGIN_PROVIDERS } from '@/constants';
-import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
+import type { TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
-  export type CREATE_CHAT_INVITE_TOKEN = Pick<
-    JwtPayload.InviteToken,
-    'hostId' | 'guestLanguage' | 'guestNickname'
-  >;
-
   export interface CREATE_FRIEND {
     guestId: string;
     inviteToken: string;
@@ -31,11 +26,6 @@ export namespace ApiParams {
     id: string;
     channelToken: string;
     message: string;
-  }
-
-  export interface VERIFY_CHAT_TOKEN<TTokenType extends TOKEN_TYPE> {
-    tokenType: TTokenType;
-    token: string;
   }
 
   export interface AUTHENTICATE_PUSHER {

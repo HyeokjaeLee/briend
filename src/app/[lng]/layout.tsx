@@ -21,6 +21,7 @@ import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { GlobalSuspense } from './_components/GlobalSuspense';
 import { MainContainer } from './_components/MainContainer';
+import { SidePanel } from './_components/SidePanel';
 import { ToastProvider } from './_components/ToastProvider';
 
 interface PropsWithParams {
@@ -74,14 +75,12 @@ export const generateStaticParams = () => languages.map((lng) => ({ lng }));
 
 interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
-  SidePanel: ReactElement;
 }
 
-const RootLayout = async ({
+export default async function RootLayout({
   children,
   params,
-  SidePanel,
-}: Readonly<RootLayoutProps>) => {
+}: Readonly<RootLayoutProps>) {
   const { lng } = await params;
 
   //TODO: 각 LoadingSuspense에 디자인에 맞는 레이아웃 구성해서 넣기, ex) body 밑 Suspense에 로직 없는 레이아웃만 동일한 컴포넌트 개발
@@ -115,7 +114,7 @@ const RootLayout = async ({
                   </Suspense>
                   <BottomNav />
                 </div>
-                {SidePanel}
+                <SidePanel />
               </div>
             </GlobalProvider>
           </GlobalSuspense>
@@ -123,10 +122,4 @@ const RootLayout = async ({
       </Theme>
     </html>
   );
-};
-
-export default RootLayout;
-
-/**
- *
- */
+}
