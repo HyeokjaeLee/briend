@@ -1,12 +1,10 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
-
 import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton, CustomLink, Lottie } from '@/components';
-import { useCustomRouter, useUserData } from '@/hooks';
+import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { ERROR_STATUS } from '@/utils';
@@ -23,8 +21,8 @@ interface ErrorPageProps {
   isSidePanel?: boolean;
 }
 
-const ErrorPage = (error: ErrorPageProps) => {
-  const [errorStatus] = error.error.message.match(/<[^>]+>/g) ?? [];
+export default function ErrorPage({ error, isSidePanel }: ErrorPageProps) {
+  const [errorStatus] = error.message.match(/<[^>]+>/g) ?? [];
 
   const errorStatusNumber = errorStatus
     ? Number(errorStatus.slice(1, -1))
@@ -61,21 +59,19 @@ const ErrorPage = (error: ErrorPageProps) => {
     }
   }
 
-  const [setIsErrorRoute, hasSidePanel] = useGlobalStore(
-    useShallow((state) => [state.setIsErrorRoute, state.hasSidePanel]),
-  );
+  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
 
-  const router = useCustomRouter();
+  const sidePanel = useSidePanel();
 
   useEffect(() => {
-    if (error.isSidePanel) return;
+    if (isSidePanel) return;
 
     setIsErrorRoute(true);
 
     return () => {
       setIsErrorRoute(false);
     };
-  }, [setIsErrorRoute, error.isSidePanel]);
+  }, [setIsErrorRoute, isSidePanel]);
 
   return (
     <article className="relative size-full flex-1 flex-col gap-8 flex-center">
@@ -94,10 +90,11 @@ const ErrorPage = (error: ErrorPageProps) => {
         <CustomLink
           replace
           href={dynamicInfo.buttonLink}
-          onClick={() => {
-            router.push(dynamicInfo.buttonLink, {
-              toSidePanel: hasSidePanel || error.isSidePanel,
-            });
+          onClick={(e) => {
+            if (isSidePanel) {
+              e.preventDefault();
+              sidePanel.push(ROUTES.FRIEND_LIST.pathname);
+            }
           }}
         >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
@@ -106,6 +103,4 @@ const ErrorPage = (error: ErrorPageProps) => {
       </CustomButton>
     </article>
   );
-};
-
-export default ErrorPage;
+}
