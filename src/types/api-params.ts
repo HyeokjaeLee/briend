@@ -1,5 +1,4 @@
 import type { LOGIN_PROVIDERS } from '@/constants';
-import type { TOKEN_TYPE } from '@/types/jwt';
 
 export namespace ApiParams {
   export interface CREATE_FRIEND {

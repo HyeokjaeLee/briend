@@ -23,7 +23,6 @@ export const MessageItem = ({
   profileImageSrc,
   nickname,
   isMine,
-  isSameUser,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
 
