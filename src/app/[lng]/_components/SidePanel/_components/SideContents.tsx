@@ -42,5 +42,4 @@ export const SideContents = createOnlyClientComponent(
       sidePanel.push(ROUTES.FRIEND_LIST.pathname);
     }
   },
-  EmptyTemplate,
 );

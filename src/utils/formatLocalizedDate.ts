@@ -17,9 +17,7 @@ export const formatLocalizedDate = (
   lng: LANGUAGE,
   options: DateFormatOptions = {},
 ) => {
-  let dayjsLocale: string = lng;
-
-  if (lng === LANGUAGE.CHINESE) dayjsLocale = 'zh-cn';
+  const dayjsLocale: string = lng;
 
   const localeDate = date.locale(dayjsLocale);
 
@@ -46,7 +44,7 @@ export const formatLocalizedDate = (
   extend(localizedFormat);
 
   if (!day) {
-    if (time) return localeDate.format('LT');
+    if (time) return localeDate.format('A h:mm');
 
     return '';
   }

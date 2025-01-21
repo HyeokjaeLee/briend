@@ -1,13 +1,16 @@
 'use client';
 
+import dayjs from 'dayjs';
+
 import { Virtuoso } from 'react-virtuoso';
 
-import { useProfileImage, useUserData } from '@/hooks';
+import { useProfileImage } from '@/hooks';
 import { useFriendStore } from '@/stores';
 import { assert } from '@/utils';
 
 import { EmptyTemplate } from './_components/EmptyTemplate';
-import { MessageItem } from './_components/MessageItem';
+import { FriendMessageItem } from './_components/FriendMessageItem';
+import { MyMessageItem } from './_components/MyMessageItem';
 import { useMessageSync } from './_hooks/useMessageSync';
 interface ChattingListProps {
   friendUserId: string;
@@ -16,7 +19,6 @@ interface ChattingListProps {
 export const ChattingList = ({ friendUserId }: ChattingListProps) => {
   const { messageList } = useMessageSync(friendUserId);
 
-  const { profileImageSrc: myProfileImageSrc } = useProfileImage();
   const { profileImageSrc: friendProfileImageSrc } =
     useProfileImage(friendUserId);
 
@@ -26,33 +28,46 @@ export const ChattingList = ({ friendUserId }: ChattingListProps) => {
         ?.nickname,
   );
 
-  const { user } = useUserData();
+  if (!messageList) return null;
 
-  const myNickname = user?.name ?? 'Me';
-
-  if (!messageList) return <EmptyTemplate />;
+  if (!messageList.length) return <EmptyTemplate />;
 
   return (
     <Virtuoso
+      className="animate-fade animate-duration-1000"
       data={messageList}
       followOutput="smooth"
       itemContent={(index, message) => {
         assert(friendNickname);
 
         const isMine = message.fromUserId !== friendUserId;
+        const prevMessage = index ? messageList[index - 1] : null;
 
-        const isSameUser = index
-          ? message.fromUserId === messageList[index - 1].fromUserId
+        const isSameUser = prevMessage
+          ? message.fromUserId === prevMessage.fromUserId
           : false;
 
-        return (
-          <MessageItem
-            {...message}
-            isMine={isMine}
+        const date = dayjs(message.timestamp);
+
+        const isSameTime = prevMessage
+          ? dayjs(message.timestamp).isSame(
+              dayjs(prevMessage.timestamp),
+              'minute',
+            )
+          : false;
+
+        return isMine ? (
+          <MyMessageItem {...message} isMine={isMine} isSameUser={isSameUser} />
+        ) : (
+          <FriendMessageItem
+            date={date}
+            isSameTime={isSameTime}
             isSameUser={isSameUser}
-            nickname={isMine ? myNickname : friendNickname}
-            profileImageSrc={isMine ? myProfileImageSrc : friendProfileImageSrc}
-          />
+            nickname={friendNickname}
+            profileImageSrc={friendProfileImageSrc}
+          >
+            {message.message}
+          </FriendMessageItem>
         );
       }}
     />
