@@ -2,9 +2,8 @@ import { CustomError, ERROR } from '@/utils';
 
 const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-  PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
+  //TODO: 삭제 필요 PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
   NODE_ENV: process.env.NODE_ENV,
-  PUSHER_CLUSTER: 'ap3',
 };
 
 const unsetKeys = Object.entries(publicEnv)
