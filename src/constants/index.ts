@@ -1,4 +1,3 @@
-export { PUSHER_CHANNEL, PUSHER_EVENT } from './channel';
 export {
   COOKIES,
   type COOKIES_KEY_TYPE,

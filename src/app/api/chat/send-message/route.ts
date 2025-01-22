@@ -2,12 +2,10 @@ import { Translator } from 'deepl-node';
 import { errors } from 'jose';
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { pusher } from '@/app/pusher/server';
-import { PUSHER_CHANNEL, PUSHER_EVENT, LANGUAGE } from '@/constants';
+import { LANGUAGE } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import type { ApiParams } from '@/types/api-params';
 import type { JwtPayload } from '@/types/jwt';
-import type { PusherMessage } from '@/types/pusher-message';
 import { isArrayItem } from '@/utils';
 import { createApiRoute, jwtSecretVerify } from '@/utils/api';
 
@@ -63,7 +61,10 @@ export const POST = createApiRoute(async (req: NextRequest) => {
       translatedMessage = message;
     }
 
-    await pusher.trigger(
+    console.info(translatedMessage, id);
+
+    /**
+   *   await pusher.trigger(
       PUSHER_CHANNEL.CHATTING(payload.hostId),
       PUSHER_EVENT.CHATTING_SEND_MESSAGE(payload.channelId),
       {
@@ -74,6 +75,7 @@ export const POST = createApiRoute(async (req: NextRequest) => {
         timestamp: Date.now(),
       } satisfies PusherMessage.sendMessage,
     );
+   */
 
     return new NextResponse(null, { status: 200 });
   } catch (e) {

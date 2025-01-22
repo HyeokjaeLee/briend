@@ -1,9 +1,8 @@
 'use client';
 
-import Pusher from 'pusher-js';
 import { create } from 'zustand';
 
-import { IS_CLIENT, LANGUAGE, LOCAL_STORAGE, PUBLIC_ENV } from '@/constants';
+import { IS_CLIENT, LANGUAGE, LOCAL_STORAGE } from '@/constants';
 import { CustomError, isEnumValue } from '@/utils';
 
 interface GlobalLoadingOptions {
@@ -52,8 +51,6 @@ interface GlobalStore {
 
   isErrorRoute: boolean;
   setIsErrorRoute: (isErrorRoute: boolean) => void;
-
-  pusher: Pusher;
 
   animationType: ANIMATION_TYPE;
   setAnimationType: (animationType: ANIMATION_TYPE) => void;
@@ -119,10 +116,6 @@ export const useGlobalStore = create<GlobalStore>((set) => {
 
     isErrorRoute: false,
     setIsErrorRoute: (isErrorRoute) => set({ isErrorRoute }),
-
-    pusher: new Pusher(PUBLIC_ENV.PUSHER_KEY, {
-      cluster: PUBLIC_ENV.PUSHER_CLUSTER,
-    }),
 
     animationType: 'ENTER',
     setAnimationType: (animationType) => set({ animationType }),

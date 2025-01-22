@@ -25,9 +25,9 @@ export const useInitRoute = ({ routeName }: UseInitRouteProps) => {
   const router = useCustomRouter();
 
   useEffect(() => {
-    if (!hasSidePanel) return sidePanel.push(ROUTES.FRIEND_LIST.pathname);
-
     if (!isSameRoute || isDefaultRoute) return;
+
+    if (!hasSidePanel) return sidePanel.push(ROUTES.FRIEND_LIST.pathname);
 
     router.replace(ROUTES.FRIEND_LIST.pathname);
   }, [hasSidePanel, isDefaultRoute, isSameRoute, router, sidePanel]);

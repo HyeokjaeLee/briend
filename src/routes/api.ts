@@ -1,5 +1,4 @@
 import type { ApiResponse } from '../types/api-response';
-import type { UserAuthResponse } from 'pusher';
 
 import ky from 'ky';
 
@@ -80,13 +79,6 @@ export const API_ROUTES = {
           },
         },
       )
-      .json(),
-
-  AUTHENTICATE_PUSHER: (params: ApiParams.AUTHENTICATE_PUSHER) =>
-    apiInstance
-      .post<UserAuthResponse>('auth/pusher', {
-        json: params,
-      })
       .json(),
 
   SHORT_URL: async (url: string) => {
