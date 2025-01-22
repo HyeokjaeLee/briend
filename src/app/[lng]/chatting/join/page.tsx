@@ -87,11 +87,19 @@ const ChattingJoinPage = createOnlyClientComponent(
 
       connection.on('open', checkHostHandler);
 
-      const errorHandler = (e: Error) => {
-        console.error(e);
-      };
+      const events = [
+        'open',
+        'close',
+        'error',
+        'data',
+        'iceStateChanged',
+      ] as const;
 
-      connection.on('error', errorHandler);
+      events.forEach((event) => {
+        connection.on(event, (...args) => {
+          console.info(`Connection ${event}:`, ...args);
+        });
+      });
 
       //* 친구의 프로필 정보 수신
       const connectHandler = (async ({ id, type, data }: PeerData) => {
@@ -130,8 +138,6 @@ const ChattingJoinPage = createOnlyClientComponent(
       return () => {
         connection.off('open', checkHostHandler);
         connection.off('data', connectHandler);
-
-        connection.off('error', errorHandler);
 
         connection.close();
 
