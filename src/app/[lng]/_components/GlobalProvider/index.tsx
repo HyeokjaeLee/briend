@@ -9,49 +9,37 @@ import 'dayjs/locale/vi';
 
 import { SessionProvider } from 'next-auth/react';
 
-import { type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
-import { DEFAULT_COOKIES_OPTIONS, IS_CLIENT, QUERY_KEYS } from '@/constants';
+import { DEFAULT_COOKIES_OPTIONS } from '@/constants';
 import { customCookies } from '@/utils';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import type { OmitKeyof } from '@tanstack/react-query';
-import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
+import { trpc } from '@api/trpc';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import { PeerConnector } from './PeerConnector';
-import { TrpcProvider } from './TrpcProvider';
 import { FriendStoreMounter } from './_components/FriendStoreMounter';
 import { GlobalEventListener } from './_components/GlobalEventListener';
 import { HistoryObserver } from './_components/HistoryObserver';
 import { PeerMessageReceiver } from './_components/PeerMessageReceiver';
 import { initFirebase } from './_configs/initFirebase';
 import { initQueryClient } from './_configs/initQueryClient';
+import { initTrpc } from './_configs/initTrpc';
 
 initFirebase();
-
-const queryClient = initQueryClient();
-
-const persistOptions: OmitKeyof<PersistQueryClientOptions, 'queryClient'> = {
-  persister: createSyncStoragePersister({
-    storage: IS_CLIENT ? window.sessionStorage : null,
-  }),
-  dehydrateOptions: {
-    shouldDehydrateQuery: (query) =>
-      query.queryKey.includes(QUERY_KEYS.SESSION),
-  },
-};
+const trpcClient = initTrpc();
+const { persistOptions, queryClient } = initQueryClient();
 
 export const GlobalProvider = ({ children }: PropsWithChildren) => {
   return (
     <SessionProvider>
-      <TrpcProvider>
-        <CookiesProvider
-          cookies={customCookies}
-          defaultSetOptions={DEFAULT_COOKIES_OPTIONS}
-        >
-          <HistoryObserver />
-          <GlobalEventListener />
+      <CookiesProvider
+        cookies={customCookies}
+        defaultSetOptions={DEFAULT_COOKIES_OPTIONS}
+      >
+        <HistoryObserver />
+        <GlobalEventListener />
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <PersistQueryClientProvider
             client={queryClient}
             persistOptions={persistOptions}
@@ -61,8 +49,8 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
             <PeerMessageReceiver />
             {children}
           </PersistQueryClientProvider>
-        </CookiesProvider>
-      </TrpcProvider>
+        </trpc.Provider>
+      </CookiesProvider>
     </SessionProvider>
   );
 };

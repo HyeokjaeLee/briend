@@ -1,4 +1,8 @@
+import { QUERY_KEYS, IS_CLIENT } from '@/constants';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
+import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
 
 export const initQueryClient = () => {
   const queryClient = new QueryClient({
@@ -31,5 +35,19 @@ export const initQueryClient = () => {
     },
   });
 
-  return queryClient;
+  //* 🛠️ 캐시 세션 스토리지에 저장
+  const persistOptions: OmitKeyof<PersistQueryClientOptions, 'queryClient'> = {
+    persister: createSyncStoragePersister({
+      storage: IS_CLIENT ? window.sessionStorage : null,
+    }),
+    dehydrateOptions: {
+      shouldDehydrateQuery: (query) =>
+        query.queryKey.includes(QUERY_KEYS.SESSION),
+    },
+  };
+
+  return {
+    queryClient,
+    persistOptions,
+  };
 };

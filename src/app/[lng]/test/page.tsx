@@ -1,6 +1,6 @@
 'use client';
 
-import { trpc } from '@/utils/trpc';
+import { trpc } from '@api/trpc';
 
 const TestPage = () => {
   const hello = trpc.hello.useQuery({ text: 'TRPC' });
