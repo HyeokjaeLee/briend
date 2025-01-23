@@ -29,9 +29,6 @@ export type NAVIGATION_ANIMATION =
 export type ANIMATION_TYPE = 'EXIT' | 'ENTER';
 
 interface GlobalStore {
-  isMounted: boolean;
-  mount: () => void;
-
   globalLoading: {
     value: boolean;
     options?: GlobalLoadingOptions;
@@ -90,9 +87,6 @@ export const useGlobalStore = create<GlobalStore>((set) => {
   };
 
   return {
-    isMounted: false,
-    mount: () => set({ isMounted: true }),
-
     globalLoading: {
       value: false,
     },
