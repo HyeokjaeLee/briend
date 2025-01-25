@@ -1,6 +1,8 @@
 import { getTranslation } from '@/app/i18n/server';
+import { signIn } from '@/auth';
 import { LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import Logo from '@/svgs/logo.svg';
+import { CustomError, isEnumValue } from '@/utils';
 
 import { LoginButton } from './_components/LoginButton';
 
@@ -21,18 +23,38 @@ const LoginPage = async (props: LoginPageProps) => {
         <Logo className="w-40" />
         <h1 className="ml-2 text-lg font-semibold">{t('title')}</h1>
       </header>
-      <section>
-        <LoginButton fullSize provider={LOGIN_PROVIDERS.GOOGLE} />
-      </section>
-      <div className="m-4 gap-2 text-slate-300 flex-center">
-        <hr className="flex-1 border-slate-300" />
-        또는
-        <hr className="flex-1 border-slate-300" />
-      </div>
-      <section className="gap-4 flex-center">
-        <LoginButton provider={LOGIN_PROVIDERS.KAKAO} />
-        <LoginButton provider={LOGIN_PROVIDERS.NAVER} />
-      </section>
+      <form
+        action={async (formData) => {
+          'use server';
+
+          const provider = formData.get('provider');
+
+          if (!isEnumValue(LOGIN_PROVIDERS, provider)) throw new CustomError();
+
+          await signIn(provider);
+        }}
+      >
+        <LoginButton
+          fullSize
+          provider={LOGIN_PROVIDERS.GOOGLE}
+          text={t(`google-login`)}
+        />
+        <div className="m-4 gap-2 text-slate-300 flex-center">
+          <hr className="flex-1 border-slate-300" />
+          또는
+          <hr className="flex-1 border-slate-300" />
+        </div>
+        <section className="gap-4 flex-center">
+          <LoginButton
+            provider={LOGIN_PROVIDERS.KAKAO}
+            text={t(`kakao-login`)}
+          />
+          <LoginButton
+            provider={LOGIN_PROVIDERS.NAVER}
+            text={t(`naver-login`)}
+          />
+        </section>
+      </form>
     </article>
   );
 };
