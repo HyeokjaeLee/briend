@@ -3,14 +3,9 @@ import type { NextRequest } from 'next/server';
 import acceptLanguage from 'accept-language';
 import { NextResponse } from 'next/server';
 
-import { fallbackLng, languages } from '../app/i18n/settings';
+import { COOKIES } from '@/constants';
 
-enum COOKIES {
-  I18N = 'I18N',
-  USER_ID = 'USER_ID',
-  PRIVATE_REFERER = 'PRIVATE_REFERER',
-  PROVIDER_TO_CONNECT = 'PROVIDER_TO_CONNECT',
-}
+import { fallbackLng, languages } from '../app/i18n/settings';
 
 acceptLanguage.languages(languages);
 

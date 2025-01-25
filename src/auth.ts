@@ -6,6 +6,7 @@ import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 
+import { trpc } from './app/trpc/server';
 import { COOKIES } from './constants/cookies';
 import { LOGIN_PROVIDERS } from './constants/etc';
 import { PRIVATE_ENV } from './constants/private-env';
@@ -14,7 +15,7 @@ import { ROUTES } from './routes/client';
 import { createId } from './utils/createId';
 import { ERROR } from './utils/customError';
 import { isEnumValue } from './utils/isEnumValue';
-import { getFirebaseAdminAuth } from './utils/server';
+
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
   updatedProfile?: {
@@ -79,7 +80,14 @@ export const {
 
         return token;
       }
+
+      user.;
+
       if (!user) return token;
+
+      const cookieStore = await cookies();
+
+      const clientId = cookieStore.get(COOKIES.USER_ID)?.value || createId();
 
       const { provider, providerAccountId: providerId } = account ?? {};
 
@@ -88,6 +96,12 @@ export const {
 
       if (!provider || !providerId)
         throw ERROR.NOT_ENOUGH_PARAMS(['provider', 'providerId']);
+
+      await trpc.user.login({
+        provider,
+        providerId,
+        userId: clientId,
+      });
 
       const idKey = `${provider}_id` as const;
 
@@ -98,7 +112,6 @@ export const {
           where: email ? { email } : { [idKey]: providerId },
         })
         .then(async (existedAccount) => {
-          const cookieStore = await cookies();
           const clientId =
             cookieStore.get(COOKIES.USER_ID)?.value || createId();
 

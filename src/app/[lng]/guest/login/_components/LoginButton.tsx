@@ -2,30 +2,27 @@
 
 import Image from 'next/image';
 
-import { useTranslation } from '@/app/i18n/client';
 import { LOGIN_PROVIDERS } from '@/constants';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
-export interface LoginButtonContentsProps {
+export interface LoginButtonProps {
   provider: LOGIN_PROVIDERS;
   fullSize?: boolean;
+
+  text?: string;
 }
 
-export const LoginButtonContents = ({
-  provider,
-  fullSize,
-}: LoginButtonContentsProps) => {
-  const { t } = useTranslation('login');
-  const setGlobalLoading = useGlobalStore((state) => state.setGlobalLoading);
+export const LoginButton = ({ provider, fullSize, text }: LoginButtonProps) => {
+  const setLoading = useGlobalStore((state) => state.setGlobalLoading);
 
   return (
     <button
       className={cn(
-        'flex-center',
+        'flex-center h-14',
         fullSize
-          ? 'font-semibold rounded-lg px-7 text-lg size-full'
-          : 'h-full w-14 rounded-full',
+          ? 'font-semibold rounded-lg px-7 text-lg w-full'
+          : 'w-14 rounded-full',
         {
           [LOGIN_PROVIDERS.GOOGLE]:
             'bg-white text-slate-850 border-slate-200 border',
@@ -33,11 +30,11 @@ export const LoginButtonContents = ({
           [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
         }[provider],
       )}
-      onClick={() =>
-        setGlobalLoading(true, {
-          delay: 0,
-        })
-      }
+      name="provider"
+      value={provider}
+      onClick={() => {
+        setLoading(true);
+      }}
     >
       <div
         className={
@@ -51,7 +48,7 @@ export const LoginButtonContents = ({
           src={`/assets/login/${provider}.png`}
           width={28}
         />
-        {fullSize ? t(`${provider}-login`) : null}
+        {fullSize ? text : null}
       </div>
     </button>
   );

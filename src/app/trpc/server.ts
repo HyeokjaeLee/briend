@@ -2,6 +2,6 @@ import { apiRouter } from '@/routes/server';
 
 import { createContext, createCaller } from './settings';
 
-const ctx = await createContext();
+const ctx = await createContext(null);
 
 export const trpc = createCaller(apiRouter)(ctx);
