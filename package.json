@@ -2,6 +2,9 @@
   "name": "briend",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "bun": "1.2.0"
+  },
   "scripts": {
     "predev": "bun update:env",
     "dev": "next dev --turbo",
@@ -37,6 +40,7 @@
     "dexie-relationships": "^1.2.11",
     "es-toolkit": "^1.31.0",
     "firebase": "^11.2.0",
+    "firebase-admin": "^13.0.2",
     "i18next": "^23.16.8",
     "i18next-browser-languagedetector": "^8.0.2",
     "i18next-resources-to-backend": "^1.2.1",

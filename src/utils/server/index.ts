@@ -1,0 +1,1 @@
+export { getFirebaseAdminAuth } from './getFirebaseAdminAuth';
