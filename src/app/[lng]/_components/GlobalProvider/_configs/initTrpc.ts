@@ -1,6 +1,6 @@
 import superjson from 'superjson';
 
-import { trpc } from '@/app/api/trpc';
+import { trpc } from '@/app/trpc/client';
 import { httpBatchLink } from '@trpc/client';
 
 export const initTrpc = () =>

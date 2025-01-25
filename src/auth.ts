@@ -14,7 +14,7 @@ import { ROUTES } from './routes/client';
 import { createId } from './utils/createId';
 import { ERROR } from './utils/customError';
 import { isEnumValue } from './utils/isEnumValue';
-
+import { getFirebaseAdminAuth } from './utils/server';
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
   updatedProfile?: {

@@ -3,14 +3,13 @@
 import Image from 'next/image';
 
 import { useTranslation } from '@/app/i18n/client';
+import { trpc } from '@/app/trpc/client';
 import type { SessionDataToUpdate } from '@/auth';
 import { LOGIN_PROVIDERS } from '@/constants';
 import { useUserData } from '@/hooks';
-import { API_ROUTES } from '@/routes/api';
 import { customCookies, cn } from '@/utils';
 import { toast } from '@/utils/client';
 import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
 
 interface LoginConnectButtonProps {
   provider: LOGIN_PROVIDERS;
@@ -28,8 +27,7 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
       }[provider]
     ];
 
-  const unlinkAccountMutation = useMutation({
-    mutationFn: API_ROUTES.UNLINK_ACCOUNT,
+  const unlinkAccountMutation = trpc.user.unlinkAccount.useMutation({
     onSuccess: async ({ unlinkedProvider }) => {
       await sessionUpdate({
         unlinkedProvider,

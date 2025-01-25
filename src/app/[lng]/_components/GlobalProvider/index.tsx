@@ -12,9 +12,9 @@ import { SessionProvider } from 'next-auth/react';
 import type { PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
+import { trpc } from '@/app/trpc/client';
 import { DEFAULT_COOKIES_OPTIONS } from '@/constants';
 import { customCookies } from '@/utils';
-import { trpc } from '@api/trpc';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import { PeerConnector } from './PeerConnector';

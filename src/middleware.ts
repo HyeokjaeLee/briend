@@ -1,4 +1,6 @@
-import { type NextRequest, NextResponse } from 'next/server';
+import type { RequestWithAuth } from './types/next-auth';
+
+import { NextResponse } from 'next/server';
 
 import { auth } from './auth';
 import { setI18nNextResponse } from './middleware/setI18nNextResponse';
@@ -10,14 +12,14 @@ export const config = {
   ],
 };
 
-export const middleware = auth(async (req: NextRequest) => {
+export const middleware = auth(async (req: RequestWithAuth) => {
   const { nextUrl } = req;
 
   if (nextUrl.pathname.startsWith('/_next')) return NextResponse.next();
 
-  const res = setI18nNextResponse(req);
+  let res = setI18nNextResponse(req);
 
-  await setUserIdCookie(req, res);
+  res = await setUserIdCookie(req, res);
 
   return res;
 });
