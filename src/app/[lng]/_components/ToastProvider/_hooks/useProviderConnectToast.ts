@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
-import { LOGIN_PROVIDERS } from '@/constants';
+import { COOKIES, LOGIN_PROVIDERS } from '@/constants';
 import { useUserData } from '@/hooks';
 import { customCookies, isEnumValue } from '@/utils';
 import { toast } from '@/utils/client';
@@ -9,7 +9,7 @@ import { toast } from '@/utils/client';
 export const useProviderConnectToast = () => {
   const { user } = useUserData();
 
-  const providerToConnect = customCookies.get('PROVIDER_TO_CONNECT');
+  const providerToConnect = customCookies.get(COOKIES.PROVIDER_TO_CONNECT);
 
   const [deletedProviderToConnect, setDeletedProviderToConnect] =
     useState<LOGIN_PROVIDERS | null>(null);
@@ -19,7 +19,7 @@ export const useProviderConnectToast = () => {
   useEffect(() => {
     if (!hasProviderToConnect || !providerToConnect) return;
 
-    customCookies.remove('PROVIDER_TO_CONNECT');
+    customCookies.remove(COOKIES.PROVIDER_TO_CONNECT);
     setDeletedProviderToConnect(providerToConnect);
   }, [hasProviderToConnect, providerToConnect]);
 

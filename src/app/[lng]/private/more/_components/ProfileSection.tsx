@@ -18,7 +18,6 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
 
   const { lng } = useParams<{ lng: LANGUAGE }>();
   const { t } = useTranslation('more');
-  const { profileImageSrc } = useProfileImage();
 
   return (
     <section
@@ -28,7 +27,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton loading={!user}>
-        <ProfileImage size="7" src={profileImageSrc} />
+        <ProfileImage size="7" src={user?.profileImage} />
       </Skeleton>
       <div className="mt-4 flex items-center justify-center gap-2">
         <Skeleton className="h-7 w-28" loading={!user}>
