@@ -1,15 +1,17 @@
 import type { NextRequest } from 'next/server';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type NextAuth from 'next-auth';
+import { LANGUAGE } from '@/constants';
 
 export interface UserSession {
   id: string;
   name?: string;
   email?: string;
-  isKakaoConnected: boolean;
-  isGoogleConnected: boolean;
-  isAppleConnected: boolean;
-  isNaverConnected: boolean;
+  profileImage?: string;
+  language: LANGUAGE;
+  googleId?: string;
+  kakaoId?: string;
+  naverId?: string;
 }
 
 declare module 'next-auth' {
