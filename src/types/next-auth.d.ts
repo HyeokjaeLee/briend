@@ -1,7 +1,8 @@
 import type { NextRequest } from 'next/server';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type NextAuth from 'next-auth';
-import { LANGUAGE } from '@/constants';
+
+import type { LANGUAGE } from '@/constants';
 
 export interface UserSession {
   id: string;
@@ -17,6 +18,7 @@ export interface UserSession {
 declare module 'next-auth' {
   interface Session {
     user: UserSession;
+    firebaseToken: string;
   }
 }
 

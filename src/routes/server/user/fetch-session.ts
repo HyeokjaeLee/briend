@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { publicProcedure } from '@/app/trpc/settings';
 import { LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
-import { firestore } from '@/database/firestore';
+import { firestore } from '@/database/firestore/server';
 import type { Firestore } from '@/database/firestore/type';
 import type { UserSession } from '@/types/next-auth';
 import { createId } from '@/utils';
@@ -40,6 +40,8 @@ export const fetchSession = publicProcedure
       [idKey]: input.providerId,
     };
 
+    const auth = await getFirebaseAdminAuth();
+
     if (providerAccountDoc.exists) {
       const { userId } = providerAccountDoc.data() as Firestore.ProviderAccount;
 
@@ -52,13 +54,13 @@ export const fetchSession = publicProcedure
       return {
         ...userSession,
         ...savedUserInfo,
+        firebaseToken: await auth.createCustomToken(id),
       };
     }
 
-    const auth = await getFirebaseAdminAuth();
-
     // eslint-disable-next-line no-constant-condition
     while (true) {
+      //* 존재 하지 않는 id를 생성할 때 까지 반복
       try {
         await auth.getUser(id);
 
@@ -70,28 +72,32 @@ export const fetchSession = publicProcedure
 
     userSession.id = id;
 
-    const userInfo: Firestore.UserInfo = {
-      language: input.language,
-      [idKey]: input.providerId,
-    };
-
-    const userRecord = {
-      displayName: input.name,
-      email: input.email,
-      photoURL: input.profileImage,
-      uid: id,
-    };
-
     await Promise.all([
-      auth.createUser(userRecord),
+      auth.createUser({
+        displayName: input.name,
+        email: input.email,
+        photoURL: input.profileImage,
+        uid: id,
+      }),
       firestore((db) =>
         db
           .collection('providerAccounts')
           .doc(providerAccountId)
           .set({ userId: id }),
       ),
-      firestore((db) => db.collection('users').doc(id).set(userInfo)),
+      firestore((db) =>
+        db
+          .collection('users')
+          .doc(id)
+          .set({
+            language: input.language,
+            [idKey]: input.providerId,
+          } satisfies Firestore.UserInfo),
+      ),
     ]);
 
-    return userSession;
+    return {
+      ...userSession,
+      firebaseToken: await auth.createCustomToken(id),
+    };
   });

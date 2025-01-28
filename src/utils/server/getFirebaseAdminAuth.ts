@@ -1,7 +1,7 @@
-import { getAdminApp } from './getAdminApp';
+import { getFirebaseAdminApp } from './getFirebaseAdminApp';
 
 export const getFirebaseAdminAuth = async () => {
-  const adminApp = await getAdminApp();
+  const adminApp = await getFirebaseAdminApp();
 
   const { getAuth } = await import('firebase-admin/auth');
 
