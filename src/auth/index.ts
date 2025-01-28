@@ -1,113 +1,19 @@
-import type { Firestore } from './database/firestore/type';
-import type { UserSession } from './types/next-auth';
-
 import { omit } from 'es-toolkit';
-import { decodeJwt } from 'jose';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 
-import { LANGUAGE } from './constants';
-import { COOKIES } from './constants/cookies';
-import { LOGIN_PROVIDERS } from './constants/etc';
-import { IS_NODEJS, PRIVATE_ENV } from './constants/private-env';
-import { firestore } from './database/firestore/server';
-import { assert, assertEnum, customCookies } from './utils';
-import { createId } from './utils/createId';
-import { getFirebaseAdminAuth } from './utils/server';
+import { LANGUAGE } from '@/constants';
+import { COOKIES } from '@/constants/cookies';
+import { LOGIN_PROVIDERS } from '@/constants/etc';
+import { IS_NODEJS, PRIVATE_ENV } from '@/constants/private-env';
+import { assert, assertEnum, customCookies } from '@/utils';
+import { createId } from '@/utils/createId';
+import { getFirebaseAdminAuth } from '@/utils/server';
 
-interface GetUserSessionProps {
-  provider: LOGIN_PROVIDERS;
-  providerId: string;
-  userId: string;
-  name: string;
-  email?: string;
-  profileImage?: string;
-  language: LANGUAGE;
-}
+import { getUserSession } from './getUserSession';
 
-const getUserSession = async (props: GetUserSessionProps) => {
-  const providerAccountId = `${props.provider}-${props.providerId}`;
-
-  const providerAccountDoc = await firestore((db) =>
-    db.collection('providerAccounts').doc(providerAccountId).get(),
-  );
-
-  const idKey = `${props.provider}Id` as const;
-
-  let id = props.userId;
-
-  const userSession: UserSession = {
-    id,
-    name: props.name,
-    profileImage: props.profileImage,
-    language: props.language,
-    email: props.email,
-    [idKey]: props.providerId,
-  };
-
-  const auth = await getFirebaseAdminAuth();
-
-  if (providerAccountDoc.exists) {
-    const { userId } = providerAccountDoc.data() as Firestore.ProviderAccount;
-
-    const userDoc = await firestore((db) =>
-      db.collection('users').doc(userId).get(),
-    );
-
-    const savedUserInfo = userDoc.data() as Firestore.UserInfo;
-
-    return {
-      ...userSession,
-      ...savedUserInfo,
-      firebaseToken: await auth.createCustomToken(id),
-    };
-  }
-
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
-    //* 존재 하지 않는 id를 생성할 때 까지 반복
-    try {
-      await auth.getUser(id);
-
-      id = createId();
-    } catch {
-      break;
-    }
-  }
-
-  userSession.id = id;
-
-  await Promise.all([
-    auth.createUser({
-      displayName: props.name,
-      email: props.email,
-      photoURL: props.profileImage,
-      uid: id,
-    }),
-    firestore((db) =>
-      db
-        .collection('providerAccounts')
-        .doc(providerAccountId)
-        .set({ userId: id }),
-    ),
-    firestore((db) =>
-      db
-        .collection('users')
-        .doc(id)
-        .set({
-          language: props.language,
-          [idKey]: props.providerId,
-        } satisfies Firestore.UserInfo),
-    ),
-  ]);
-
-  return {
-    ...userSession,
-    firebaseToken: await auth.createCustomToken(id),
-  };
-};
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
   updatedProfile?: {
@@ -141,26 +47,6 @@ export const {
     jwt: async ({ token, user, account, trigger, session }) => {
       const serverCookies = await customCookies.server();
 
-      if (
-        IS_NODEJS &&
-        typeof token.id === 'string' &&
-        !serverCookies.get(COOKIES.FIREBASE_TOKEN)
-      ) {
-        const auth = await getFirebaseAdminAuth();
-
-        const firebaseToken = await auth.createCustomToken(token.id);
-
-        const { exp = 0 } = decodeJwt(firebaseToken);
-
-        const expires = new Date(Date.now() + exp * 1000);
-
-        serverCookies.set(COOKIES.FIREBASE_TOKEN, firebaseToken, {
-          httpOnly: true,
-          secure: true,
-          expires,
-        });
-      }
-
       //* 단순 세션 연장
       if (!user) return token;
 
@@ -176,20 +62,16 @@ export const {
 
       const language = serverCookies.get(COOKIES.I18N) || LANGUAGE.ENGLISH;
 
-      assertEnum(LANGUAGE, language);
+      const userSession = await getUserSession({
+        provider,
+        providerId,
+        profileImage: user?.image || undefined,
+        userId,
+        name: user?.name || 'Unknown',
+        language,
+      });
 
-      if (IS_NODEJS) {
-        const userSession = await getUserSession({
-          provider,
-          providerId,
-          profileImage: user?.image || undefined,
-          userId,
-          language,
-          name: user?.name || 'Unknown',
-        });
-
-        token = Object.assign(token, userSession);
-      }
+      token = Object.assign(token, userSession);
 
       return token;
     },
@@ -197,6 +79,22 @@ export const {
       const userSession = omit(token, ['sub', 'iat', 'exp', 'jti']);
 
       session.user = Object.assign(session.user, userSession);
+
+      const serverCookies = await customCookies.server();
+
+      if (IS_NODEJS && !serverCookies.get(COOKIES.FIREBASE_TOKEN)) {
+        const auth = await getFirebaseAdminAuth();
+
+        const firebaseToken = await auth.createCustomToken(session.user.id);
+
+        if (firebaseToken) {
+          serverCookies.set(COOKIES.FIREBASE_TOKEN, firebaseToken, {
+            httpOnly: true,
+            secure: true,
+            expires: new Date(Date.now() + 55 * 60 * 1000),
+          });
+        }
+      }
 
       return session;
     },
