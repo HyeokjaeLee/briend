@@ -65,3 +65,5 @@ class CustomCookies extends Cookies {
 }
 
 export const customCookies = new CustomCookies();
+
+export type ServerCookies = Awaited<ReturnType<typeof customCookies.server>>;
