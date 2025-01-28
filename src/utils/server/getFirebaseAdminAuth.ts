@@ -1,3 +1,5 @@
+export const runtime = 'nodejs';
+
 import { getFirebaseAdminApp } from './getFirebaseAdminApp';
 
 export const getFirebaseAdminAuth = async () => {

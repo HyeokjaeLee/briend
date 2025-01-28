@@ -10,6 +10,7 @@ export {
   PEER_PREFIX,
   QUERY_KEYS,
   MAX_FIREND_COUNT,
+  HEADERS,
 } from './etc';
 export { LANGUAGE, LANGUAGE_FLAG, LANGUAGE_NAME } from './language';
 export { IS_DEV, PUBLIC_ENV } from './public-env';
