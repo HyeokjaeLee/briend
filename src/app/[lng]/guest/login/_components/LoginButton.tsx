@@ -9,11 +9,16 @@ import { cn } from '@/utils';
 export interface LoginButtonProps {
   provider: LOGIN_PROVIDERS;
   fullSize?: boolean;
-
   text?: string;
+  name: string;
 }
 
-export const LoginButton = ({ provider, fullSize, text }: LoginButtonProps) => {
+export const LoginButton = ({
+  provider,
+  fullSize,
+  text,
+  name,
+}: LoginButtonProps) => {
   const setLoading = useGlobalStore((state) => state.setGlobalLoading);
 
   return (
@@ -30,7 +35,7 @@ export const LoginButton = ({ provider, fullSize, text }: LoginButtonProps) => {
           [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
         }[provider],
       )}
-      name="provider"
+      name={name}
       value={provider}
       onClick={() => {
         setLoading(true);

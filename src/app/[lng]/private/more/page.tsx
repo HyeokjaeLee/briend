@@ -3,9 +3,10 @@ import { FaChevronRight } from 'react-icons/fa6';
 import { getTranslation } from '@/app/i18n/server';
 import { signIn, signOut } from '@/auth';
 import { CustomButton, CustomLink } from '@/components';
-import { LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
+import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
+import { assertEnum, customCookies } from '@/utils';
 
 import { LoginConnectButton } from './_components/LoginConnectButton';
 import { LogoutButton } from './_components/LogoutButton';
@@ -36,24 +37,28 @@ const MorePage = async (props: MorePageProps) => {
 
   const { t } = await getTranslation('more', lng);
 
+  const handleLinkAccount = async (event: FormData) => {
+    'use server';
+
+    const provider = event.get('provider');
+
+    assertEnum(LOGIN_PROVIDERS, provider);
+
+    const severCookies = await customCookies.server();
+
+    severCookies.set(COOKIES.PROVIDER_TO_CONNECT, provider);
+
+    await signIn(provider);
+  };
+
   return (
     <article className="mx-4 mt-8 flex flex-col">
       <ProfileSection className="p-4" />
-      <ul className="gap-4 flex-center">
+      <form action={handleLinkAccount} className="gap-4 flex-center">
         {Object.values(LOGIN_PROVIDERS).map((provider) => (
-          <li key={provider}>
-            <form
-              action={async () => {
-                'use server';
-
-                await signIn(provider);
-              }}
-            >
-              <LoginConnectButton provider={provider} />
-            </form>
-          </li>
+          <LoginConnectButton key={provider} provider={provider} />
         ))}
-      </ul>
+      </form>
       <ul className="mt-8">
         {MENU_ITEMS.map(({ title, route }) => (
           <li key={title} className="p-5">

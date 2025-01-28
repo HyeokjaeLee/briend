@@ -12,6 +12,8 @@ interface LoginPageProps {
   }>;
 }
 
+const LOGIN_BUTTON_NAME = 'provider';
+
 const LoginPage = async (props: LoginPageProps) => {
   const params = await props.params;
 
@@ -27,7 +29,7 @@ const LoginPage = async (props: LoginPageProps) => {
         action={async (formData) => {
           'use server';
 
-          const provider = formData.get('provider');
+          const provider = formData.get(LOGIN_BUTTON_NAME);
 
           if (!isEnumValue(LOGIN_PROVIDERS, provider)) throw new CustomError();
 
@@ -36,8 +38,9 @@ const LoginPage = async (props: LoginPageProps) => {
       >
         <LoginButton
           fullSize
+          name={LOGIN_BUTTON_NAME}
           provider={LOGIN_PROVIDERS.GOOGLE}
-          text={t(`google-login`)}
+          text={t('google-login')}
         />
         <div className="m-4 gap-2 text-slate-300 flex-center">
           <hr className="flex-1 border-slate-300" />
@@ -46,12 +49,14 @@ const LoginPage = async (props: LoginPageProps) => {
         </div>
         <section className="gap-4 flex-center">
           <LoginButton
+            name={LOGIN_BUTTON_NAME}
             provider={LOGIN_PROVIDERS.KAKAO}
-            text={t(`kakao-login`)}
+            text={t('kakao-login')}
           />
           <LoginButton
+            name={LOGIN_BUTTON_NAME}
             provider={LOGIN_PROVIDERS.NAVER}
-            text={t(`naver-login`)}
+            text={t('naver-login')}
           />
         </section>
       </form>

@@ -18,14 +18,9 @@ interface LoginConnectButtonProps {
 export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
   const { user, sessionUpdate } = useUserData();
   const { t } = useTranslation('more');
-  const isConnected =
-    user?.[
-      {
-        [LOGIN_PROVIDERS.GOOGLE]: 'isGoogleConnected' as const,
-        [LOGIN_PROVIDERS.KAKAO]: 'isKakaoConnected' as const,
-        [LOGIN_PROVIDERS.NAVER]: 'isNaverConnected' as const,
-      }[provider]
-    ];
+  const idKey = `${provider}Id` as const;
+
+  const isConnected = !!user?.[idKey];
 
   const unlinkAccountMutation = trpc.user.unlinkAccount.useMutation({
     onSuccess: async ({ unlinkedProvider }) => {
@@ -45,7 +40,9 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
     <button
       className="flex-col gap-2 flex-center"
       disabled={isLoading}
+      name="provider-state"
       type={isConnected ? 'button' : 'submit'}
+      value={provider}
       onClick={async () => {
         if (isConnected) return unlinkAccountMutation.mutate({ provider });
 

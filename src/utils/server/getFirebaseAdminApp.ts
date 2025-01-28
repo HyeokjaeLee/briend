@@ -1,12 +1,14 @@
 import { PUBLIC_ENV } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 
-export const getAdminApp = async () => {
+export const getFirebaseAdminApp = async () => {
   const { getApps, initializeApp, cert } = await import('firebase-admin/app');
 
   const apps = getApps();
 
-  if (apps.length) return apps[0];
+  const [app] = apps;
+
+  if (app) return app;
 
   return initializeApp({
     credential: cert({
