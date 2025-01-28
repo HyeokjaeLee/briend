@@ -9,6 +9,7 @@ export enum COOKIES {
   USER_ID = 'USER_ID',
   PRIVATE_REFERER = 'PRIVATE_REFERER',
   PROVIDER_TO_CONNECT = 'PROVIDER_TO_CONNECT',
+  FIREBASE_TOKEN = 'FIREBASE_TOKEN',
 }
 
 export interface COOKIES_VALUE {
@@ -16,6 +17,7 @@ export interface COOKIES_VALUE {
   USER_ID: string;
   PRIVATE_REFERER: string;
   PROVIDER_TO_CONNECT: LOGIN_PROVIDERS;
+  FIREBASE_TOKEN: string;
 }
 
 export type COOKIES_KEY_TYPE = keyof typeof COOKIES;

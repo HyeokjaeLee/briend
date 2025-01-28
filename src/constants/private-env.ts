@@ -13,6 +13,7 @@ const privateEnv = {
   FIREBASE_ADMIN_PRIVATE_KEY: process.env.FIREBASE_ADMIN_PRIVATE_KEY,
   FIREBASE_ADMIN_PRIVATE_KEY_ID: process.env.FIREBASE_ADMIN_PRIVATE_KEY_ID,
   FIREBASE_ADMIN_CLIENT_EMAIL: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
+  RUNTIME: process.env.NEXT_RUNTIME,
 };
 
 const unsetKeys = Object.entries(privateEnv)
@@ -27,3 +28,5 @@ export const PRIVATE_ENV = privateEnv as Record<
   keyof typeof privateEnv,
   string
 >;
+
+export const IS_NODEJS = PRIVATE_ENV.RUNTIME === 'nodejs';

@@ -34,8 +34,9 @@ class CustomCookies extends Cookies {
     const set = <TKey extends COOKIES_KEY_TYPE>(
       key: TKey,
       value: COOKIES_VALUE[TKey],
+      options?: CookieSetOptions,
     ) => {
-      nextCookies.set(COOKIES[key], value);
+      nextCookies.set(COOKIES[key], value, options);
     };
 
     const remove = <TKey extends COOKIES_KEY_TYPE>(key: TKey) => {

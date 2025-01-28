@@ -1,21 +1,113 @@
+import type { Firestore } from './database/firestore/type';
+import type { UserSession } from './types/next-auth';
+
 import { omit } from 'es-toolkit';
 import { decodeJwt } from 'jose';
-import { NextResponse } from 'next/server';
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Kakao from 'next-auth/providers/kakao';
 import Naver from 'next-auth/providers/naver';
 
-import { trpc } from './app/trpc/server';
 import { LANGUAGE } from './constants';
 import { COOKIES } from './constants/cookies';
 import { LOGIN_PROVIDERS } from './constants/etc';
-import { PRIVATE_ENV } from './constants/private-env';
-import { ROUTES } from './routes/client';
+import { IS_NODEJS, PRIVATE_ENV } from './constants/private-env';
+import { firestore } from './database/firestore/server';
 import { assert, assertEnum, customCookies } from './utils';
 import { createId } from './utils/createId';
-import { ERROR } from './utils/customError';
+import { getFirebaseAdminAuth } from './utils/server';
 
+interface GetUserSessionProps {
+  provider: LOGIN_PROVIDERS;
+  providerId: string;
+  userId: string;
+  name: string;
+  email?: string;
+  profileImage?: string;
+  language: LANGUAGE;
+}
+
+const getUserSession = async (props: GetUserSessionProps) => {
+  const providerAccountId = `${props.provider}-${props.providerId}`;
+
+  const providerAccountDoc = await firestore((db) =>
+    db.collection('providerAccounts').doc(providerAccountId).get(),
+  );
+
+  const idKey = `${props.provider}Id` as const;
+
+  let id = props.userId;
+
+  const userSession: UserSession = {
+    id,
+    name: props.name,
+    profileImage: props.profileImage,
+    language: props.language,
+    email: props.email,
+    [idKey]: props.providerId,
+  };
+
+  const auth = await getFirebaseAdminAuth();
+
+  if (providerAccountDoc.exists) {
+    const { userId } = providerAccountDoc.data() as Firestore.ProviderAccount;
+
+    const userDoc = await firestore((db) =>
+      db.collection('users').doc(userId).get(),
+    );
+
+    const savedUserInfo = userDoc.data() as Firestore.UserInfo;
+
+    return {
+      ...userSession,
+      ...savedUserInfo,
+      firebaseToken: await auth.createCustomToken(id),
+    };
+  }
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    //* 존재 하지 않는 id를 생성할 때 까지 반복
+    try {
+      await auth.getUser(id);
+
+      id = createId();
+    } catch {
+      break;
+    }
+  }
+
+  userSession.id = id;
+
+  await Promise.all([
+    auth.createUser({
+      displayName: props.name,
+      email: props.email,
+      photoURL: props.profileImage,
+      uid: id,
+    }),
+    firestore((db) =>
+      db
+        .collection('providerAccounts')
+        .doc(providerAccountId)
+        .set({ userId: id }),
+    ),
+    firestore((db) =>
+      db
+        .collection('users')
+        .doc(id)
+        .set({
+          language: props.language,
+          [idKey]: props.providerId,
+        } satisfies Firestore.UserInfo),
+    ),
+  ]);
+
+  return {
+    ...userSession,
+    firebaseToken: await auth.createCustomToken(id),
+  };
+};
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
   updatedProfile?: {
@@ -49,16 +141,28 @@ export const {
     jwt: async ({ token, user, account, trigger, session }) => {
       const serverCookies = await customCookies.server();
 
-      //* 단순 세션 연장
-      if (!user) {
-        const firebaseToken = token.firebaseToken;
+      if (
+        IS_NODEJS &&
+        typeof token.id === 'string' &&
+        !serverCookies.get(COOKIES.FIREBASE_TOKEN)
+      ) {
+        const auth = await getFirebaseAdminAuth();
 
-        if (typeof firebaseToken === 'string') {
-          console.log(decodeJwt(firebaseToken));
-        }
+        const firebaseToken = await auth.createCustomToken(token.id);
 
-        return token;
+        const { exp = 0 } = decodeJwt(firebaseToken);
+
+        const expires = new Date(Date.now() + exp * 1000);
+
+        serverCookies.set(COOKIES.FIREBASE_TOKEN, firebaseToken, {
+          httpOnly: true,
+          secure: true,
+          expires,
+        });
       }
+
+      //* 단순 세션 연장
+      if (!user) return token;
 
       const providerToConnect = serverCookies.get(COOKIES.PROVIDER_TO_CONNECT);
 
@@ -74,16 +178,18 @@ export const {
 
       assertEnum(LANGUAGE, language);
 
-      const userSession = await trpc.user.fetchSession({
-        provider,
-        providerId,
-        profileImage: user?.image || undefined,
-        userId,
-        language,
-        name: user?.name || 'Unknown',
-      });
+      if (IS_NODEJS) {
+        const userSession = await getUserSession({
+          provider,
+          providerId,
+          profileImage: user?.image || undefined,
+          userId,
+          language,
+          name: user?.name || 'Unknown',
+        });
 
-      token = Object.assign(token, userSession);
+        token = Object.assign(token, userSession);
+      }
 
       return token;
     },
@@ -93,45 +199,6 @@ export const {
       session.user = Object.assign(session.user, userSession);
 
       return session;
-    },
-    //* 🔒 Access slug redirect 🔒
-    authorized: async ({ request, auth }) => {
-      const { nextUrl } = request;
-      const accessSlug: string | undefined = nextUrl.pathname.split('/')[2];
-
-      const isPrivateRoute = accessSlug === 'private';
-
-      if (isPrivateRoute) {
-        try {
-          if (!auth?.expires) throw ERROR.UNAUTHORIZED();
-        } catch {
-          const res = NextResponse.redirect(
-            new URL(ROUTES.LOGIN.pathname, nextUrl.origin),
-          );
-
-          res.cookies.set(COOKIES.PRIVATE_REFERER, nextUrl.href);
-
-          return res;
-        }
-      }
-
-      const isGuestRoute = accessSlug === 'guest';
-
-      if (isGuestRoute && auth) {
-        const privateReferer = request.cookies.get(COOKIES.PRIVATE_REFERER);
-
-        if (privateReferer) {
-          const res = NextResponse.redirect(privateReferer.value);
-
-          res.cookies.delete(COOKIES.PRIVATE_REFERER);
-
-          return res;
-        }
-
-        return NextResponse.redirect(
-          new URL(ROUTES.FRIEND_LIST.pathname, nextUrl.origin),
-        );
-      }
     },
   },
 });
