@@ -1,7 +1,5 @@
-import type { JwtPayload } from './types/jwt';
 import type { RequestWithAuth } from './types/next-auth';
 
-import { decodeJwt } from 'jose';
 import { NextResponse } from 'next/server';
 
 import { fallbackLng, languages } from './app/i18n/settings';
@@ -72,26 +70,6 @@ export const middleware = auth(async (req: RequestWithAuth) => {
   const accessSlug = nextUrl.pathname.split('/')[2];
 
   const isAuthenticated = !!auth?.user.id;
-
-  let isInvalidFirebaseToken = false;
-
-  if (isAuthenticated) {
-    const firebaseToken = cookies.get(COOKIES.FIREBASE_TOKEN)?.value;
-
-    if (firebaseToken) {
-      const { uid } = decodeJwt<JwtPayload.FirebaseToken>(firebaseToken);
-
-      if (uid !== auth.user.id) {
-        isInvalidFirebaseToken = true;
-      }
-    }
-  } else isInvalidFirebaseToken = true;
-
-  if (isInvalidFirebaseToken) {
-    responseCallbackList.push((res) => {
-      res.cookies.delete(COOKIES.FIREBASE_TOKEN);
-    });
-  }
 
   switch (accessSlug) {
     case 'private':

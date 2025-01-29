@@ -7,7 +7,7 @@ import Naver from 'next-auth/providers/naver';
 import { LANGUAGE } from '@/constants';
 import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
-import { IS_NODEJS, PRIVATE_ENV } from '@/constants/private-env';
+import { PRIVATE_ENV } from '@/constants/private-env';
 import { firestore } from '@/database/firestore/server';
 import type { Firestore } from '@/database/firestore/type';
 import { COLLECTIONS } from '@/database/firestore/type';
@@ -57,10 +57,14 @@ export const {
       const providerToConnect = serverCookies.get(COOKIES.PROVIDER_TO_CONNECT);
 
       if (providerToConnect) {
+        const providerAccountId = account?.providerAccountId;
+
+        assert(providerAccountId);
+
         const providerAccountRef = await firestore((db) =>
           db
             .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
-            .doc(`${providerToConnect}-${account?.providerAccountId}`),
+            .doc(`${providerToConnect}-${providerAccountId}`),
         );
 
         const providerAccount = await providerAccountRef.get();
@@ -70,21 +74,62 @@ export const {
 
           assert(firebaseToken);
 
+          const auth = await getFirebaseAdminAuth();
+
           const {
-            payload: { uid },
+            payload: { uid: baseUserId },
           } =
             await jwtAuthSecret.verfiy<JwtPayload.FirebaseToken>(firebaseToken);
+
+          const usersRef = await firestore((db) =>
+            db.collection(COLLECTIONS.USERS),
+          );
 
           const { userId: existedUserId } =
             providerAccount.data() as Firestore.ProviderAccount;
 
-          const existedUserRef = await firestore((db) =>
-            db.collection(COLLECTIONS.USERS).doc(),
-          );
+          const idKey = `${providerToConnect}Id` as const;
 
-          const baseUserRef = await firestore((db) =>
-            db.collection(COLLECTIONS.USERS).doc(uid),
-          );
+          await Promise.all([
+            usersRef.doc(baseUserId).set({
+              [idKey]: providerAccountId,
+            }),
+            usersRef.doc(existedUserId).delete(),
+            providerAccountRef.set({
+              userId: baseUserId,
+            } satisfies Firestore.ProviderAccount),
+          ]);
+
+          const [baseUserAuth, existedUserAuth] = await Promise.all([
+            auth.getUser(baseUserId),
+            auth.getUser(existedUserId),
+          ]);
+
+          const displayName =
+            baseUserAuth.displayName || existedUserAuth.displayName;
+
+          const email = baseUserAuth.email || existedUserAuth.email;
+
+          const photoURL = baseUserAuth.photoURL || existedUserAuth.photoURL;
+
+          await Promise.all([
+            auth.updateUser(baseUserId, {
+              displayName,
+              email,
+              photoURL,
+            }),
+            auth.deleteUser(existedUserId),
+          ]);
+
+          token = Object.assign(token, {
+            name: displayName,
+            email,
+            profileImage: photoURL,
+          });
+
+          serverCookies.remove(COOKIES.USER_ID);
+
+          return token;
         } else {
         }
 
@@ -106,7 +151,7 @@ export const {
         providerId,
         profileImage: user?.image || undefined,
         userId,
-        name: user?.name || 'Unknown',
+        name: user?.name || undefined,
         language,
       });
 
@@ -118,22 +163,6 @@ export const {
       const userSession = omit(token, ['sub', 'iat', 'exp', 'jti']);
 
       session.user = Object.assign(session.user, userSession);
-
-      const serverCookies = await customCookies.server();
-
-      if (IS_NODEJS && !serverCookies.get(COOKIES.FIREBASE_TOKEN)) {
-        const auth = await getFirebaseAdminAuth();
-
-        const firebaseToken = await auth.createCustomToken(session.user.id);
-
-        if (firebaseToken) {
-          serverCookies.set(COOKIES.FIREBASE_TOKEN, firebaseToken, {
-            httpOnly: true,
-            secure: true,
-            expires: new Date(Date.now() + 55 * 60 * 1000),
-          });
-        }
-      }
 
       return session;
     },

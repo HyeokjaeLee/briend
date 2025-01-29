@@ -8,7 +8,7 @@ import { useCookies } from './useCookies';
 export const useLanguage = () => {
   const { lng: paramsLng } = useParams();
 
-  const [{ I18N: cookieLng }] = useCookies([COOKIES.I18N]);
+  const [{ i18n: cookieLng }] = useCookies([COOKIES.I18N]);
 
   const lng = paramsLng || cookieLng;
 

@@ -17,3 +17,4 @@ export { isArrayItem } from './isArrayItem';
 export { isCurrentHref } from './isCurrentHref';
 export { isEnumValue } from './isEnumValue';
 export { isPeerData } from './isPeerData';
+export { reverseEnum, type ReverseMap } from './reverseEnum';

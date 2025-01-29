@@ -1,22 +1,17 @@
 import { useCookies as useReactCookies } from 'react-cookie';
-
+import { CookieSetOptions, CookieGetOptions } from 'universal-cookie';
 import type { COOKIES, COOKIES_VALUE } from '@/constants';
 
-interface CookieSetOptions {
-  doNotParse?: boolean;
-  doNotUpdate?: boolean;
-}
-
 export const useCookies = <
-  T extends keyof typeof COOKIES,
+  T extends COOKIES,
   U = { [K in T]?: COOKIES_VALUE[K] },
 >(
   deps: T[],
-  options?: CookieSetOptions,
+  options?: CookieGetOptions,
 ) =>
   useReactCookies(deps, options) as [
     U,
-    (name: T, value: U, options?: CookieSetOptions) => void,
+    (name: T, value: COOKIES_VALUE[T], options?: CookieSetOptions) => void,
     (name: T, options?: CookieSetOptions) => void,
     () => void,
   ];
