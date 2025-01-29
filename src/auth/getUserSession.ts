@@ -10,7 +10,7 @@ interface GetUserSessionProps {
   provider: LOGIN_PROVIDERS;
   providerId: string;
   userId: string;
-  name: string;
+  name?: string;
   email?: string;
   profileImage?: string;
   language: LANGUAGE;
@@ -27,17 +27,6 @@ export const getUserSession = async (props: GetUserSessionProps) => {
 
   const idKey = `${props.provider}Id` as const;
 
-  let id = props.userId;
-
-  const userSession: UserSession = {
-    id,
-    name: props.name,
-    profileImage: props.profileImage,
-    language: props.language,
-    email: props.email,
-    [idKey]: props.providerId,
-  };
-
   const auth = await getFirebaseAdminAuth();
 
   const usersRef = await firestore((db) => db.collection(COLLECTIONS.USERS));
@@ -45,15 +34,27 @@ export const getUserSession = async (props: GetUserSessionProps) => {
   if (providerAccount.exists) {
     const { userId } = providerAccount.data() as Firestore.ProviderAccount;
 
-    const user = await usersRef.doc(userId).get();
+    try {
+      //! 해당 계정이 다른 계정과의 연동으로 인해 삭제된 경우 예외 발생
+      const userAuth = await auth.getUser(userId);
 
-    const userData = user.data() as Firestore.UserInfo;
+      const userData = (
+        await usersRef.doc(userId).get()
+      ).data() as Firestore.UserInfo;
 
-    return {
-      ...userSession,
-      ...userData,
-    };
+      return {
+        id: userAuth.uid,
+        name: userAuth.displayName,
+        profileImage: userAuth.photoURL,
+        email: userAuth.email,
+        ...userData,
+      } satisfies UserSession;
+    } catch {
+      await providerAccountRef.delete();
+    }
   }
+
+  let id = props.userId;
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
@@ -66,8 +67,6 @@ export const getUserSession = async (props: GetUserSessionProps) => {
       break;
     }
   }
-
-  userSession.id = id;
 
   await Promise.all([
     auth.createUser({
@@ -83,5 +82,12 @@ export const getUserSession = async (props: GetUserSessionProps) => {
     } satisfies Firestore.UserInfo),
   ]);
 
-  return userSession;
+  return {
+    id,
+    name: props.name,
+    profileImage: props.profileImage,
+    language: props.language,
+    email: props.email,
+    [idKey]: props.providerId,
+  } satisfies UserSession;
 };

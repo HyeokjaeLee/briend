@@ -1,11 +1,11 @@
 import { router } from '@/app/trpc/settings';
 
-import { getFirebaseToken } from './get-firebase-token';
+import { getFirebaseCustomToken } from './get-firebase-custom-token';
 import { user } from './user';
 
 export const apiRouter = router({
   user,
-  getFirebaseToken,
+  getFirebaseCustomToken,
 });
 
 export type ApiRouter = typeof apiRouter;

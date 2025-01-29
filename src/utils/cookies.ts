@@ -9,11 +9,8 @@ import {
 } from '@/constants';
 
 class CustomCookies extends Cookies {
-  get<TKey extends COOKIES_KEY_TYPE>(key: TKey, options?: CookieGetOptions) {
-    const value: COOKIES_VALUE[TKey] | undefined = super.get(
-      COOKIES[key],
-      options,
-    );
+  get<TKey extends COOKIES>(key: TKey, options?: CookieGetOptions) {
+    const value: COOKIES_VALUE[TKey] | undefined = super.get(key, options);
 
     return value;
   }
@@ -23,44 +20,44 @@ class CustomCookies extends Cookies {
       res.cookies(),
     );
 
-    const get = <TKey extends COOKIES_KEY_TYPE>(key: TKey) => {
-      const value = nextCookies.get(COOKIES[key])?.value as
+    const get = <TKey extends COOKIES>(key: TKey) => {
+      const value = nextCookies.get(key)?.value as
         | COOKIES_VALUE[TKey]
         | undefined;
 
       return value;
     };
 
-    const set = <TKey extends COOKIES_KEY_TYPE>(
+    const set = <TKey extends COOKIES>(
       key: TKey,
       value: COOKIES_VALUE[TKey],
       options?: CookieSetOptions,
     ) => {
-      nextCookies.set(COOKIES[key], value, options);
+      nextCookies.set(key, value, options);
     };
 
-    const remove = <TKey extends COOKIES_KEY_TYPE>(key: TKey) => {
+    const remove = <TKey extends COOKIES>(key: TKey) => {
       nextCookies.delete(COOKIES[key]);
     };
 
     return { get, set, remove };
   }
 
-  set<TKey extends COOKIES_KEY_TYPE>(
+  set<TKey extends COOKIES>(
     key: TKey,
     value: COOKIES_VALUE[TKey],
     options?: CookieSetOptions,
   ) {
-    super.set(COOKIES[key], value, options);
+    super.set(key, value, options);
   }
 
   getAll(options?: CookieGetOptions): {
-    [key in COOKIES_KEY_TYPE]: COOKIES_VALUE[key];
+    [key in COOKIES]: COOKIES_VALUE[key];
   } {
     return super.getAll(options);
   }
-  remove(key: COOKIES_KEY_TYPE, options?: CookieSetOptions) {
-    super.remove(COOKIES[key], options);
+  remove(key: COOKIES, options?: CookieSetOptions) {
+    super.remove(key, options);
   }
 }
 

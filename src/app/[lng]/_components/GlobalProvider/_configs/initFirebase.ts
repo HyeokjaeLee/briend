@@ -1,6 +1,9 @@
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import { getSession } from 'next-auth/react';
 
+import { trpcClient } from '@/app/trpc/client';
 import { IS_CLIENT, PUBLIC_ENV } from '@/constants';
 
 const firebaseConfig = {
@@ -13,8 +16,22 @@ const firebaseConfig = {
   measurementId: PUBLIC_ENV.FIREBASE_MEASUREMENT_ID,
 };
 
-export const initFirebase = () => {
-  const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-  if (IS_CLIENT) getAnalytics(app);
+const initFirebase = async () => {
+  if (!IS_CLIENT) return;
+
+  getAnalytics(app);
+
+  const isLogin = !!(await getSession());
+
+  if (!isLogin) return;
+
+  const auth = getAuth();
+
+  const customToken = await trpcClient.getFirebaseCustomToken.query();
+
+  await signInWithCustomToken(auth, customToken);
 };
+
+export const firebase = initFirebase();

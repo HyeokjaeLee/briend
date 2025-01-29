@@ -1,3 +1,5 @@
+import { getAuth } from 'firebase/auth';
+
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { getTranslation } from '@/app/i18n/server';
@@ -7,6 +9,7 @@ import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
 import { assertEnum, customCookies, CustomError } from '@/utils';
+import { jwtAuthSecret } from '@/utils/server';
 
 import { LinkAccountButton } from './_components/LinkAccountButton';
 import { LogoutButton } from './_components/LogoutButton';
@@ -59,6 +62,8 @@ const MorePage = async (props: MorePageProps) => {
     const severCookies = await customCookies.server();
 
     severCookies.set(COOKIES.PROVIDER_TO_CONNECT, provider);
+
+    await jwtAuthSecret.sign({});
 
     await signIn(provider);
   };

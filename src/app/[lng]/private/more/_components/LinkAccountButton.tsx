@@ -7,7 +7,7 @@ import { trpc } from '@/app/trpc/client';
 import type { SessionDataToUpdate } from '@/auth';
 import { LOGIN_PROVIDERS } from '@/constants';
 import { useUserData } from '@/hooks';
-import { customCookies, cn } from '@/utils';
+import { cn } from '@/utils';
 import { toast } from '@/utils/client';
 import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 
