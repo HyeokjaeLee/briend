@@ -8,9 +8,13 @@ import { LANGUAGE } from '@/constants';
 import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { IS_NODEJS, PRIVATE_ENV } from '@/constants/private-env';
+import { firestore } from '@/database/firestore/server';
+import type { Firestore } from '@/database/firestore/type';
+import { COLLECTIONS } from '@/database/firestore/type';
+import type { JwtPayload } from '@/types/jwt';
 import { assert, assertEnum, customCookies } from '@/utils';
 import { createId } from '@/utils/createId';
-import { getFirebaseAdminAuth } from '@/utils/server';
+import { getFirebaseAdminAuth, jwtAuthSecret } from '@/utils/server';
 
 import { getUserSession } from './getUserSession';
 
@@ -51,6 +55,41 @@ export const {
       if (!user) return token;
 
       const providerToConnect = serverCookies.get(COOKIES.PROVIDER_TO_CONNECT);
+
+      if (providerToConnect) {
+        const providerAccountRef = await firestore((db) =>
+          db
+            .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
+            .doc(`${providerToConnect}-${account?.providerAccountId}`),
+        );
+
+        const providerAccount = await providerAccountRef.get();
+
+        if (providerAccount.exists) {
+          const firebaseToken = serverCookies.get(COOKIES.FIREBASE_TOKEN);
+
+          assert(firebaseToken);
+
+          const {
+            payload: { uid },
+          } =
+            await jwtAuthSecret.verfiy<JwtPayload.FirebaseToken>(firebaseToken);
+
+          const { userId: existedUserId } =
+            providerAccount.data() as Firestore.ProviderAccount;
+
+          const existedUserRef = await firestore((db) =>
+            db.collection(COLLECTIONS.USERS).doc(),
+          );
+
+          const baseUserRef = await firestore((db) =>
+            db.collection(COLLECTIONS.USERS).doc(uid),
+          );
+        } else {
+        }
+
+        return token;
+      }
 
       const userId = serverCookies.get(COOKIES.USER_ID) || createId();
 

@@ -1,7 +1,7 @@
 import type { LANGUAGE } from '@/constants';
 import type { LOGIN_PROVIDERS } from '@/constants/etc';
 import { firestore } from '@/database/firestore/server';
-import type { Firestore } from '@/database/firestore/type';
+import { COLLECTIONS, type Firestore } from '@/database/firestore/type';
 import type { UserSession } from '@/types/next-auth';
 import { createId } from '@/utils/createId';
 import { getFirebaseAdminAuth } from '@/utils/server';
@@ -17,11 +17,13 @@ interface GetUserSessionProps {
 }
 
 export const getUserSession = async (props: GetUserSessionProps) => {
-  const providerAccountId = `${props.provider}-${props.providerId}`;
-
-  const providerAccountDoc = await firestore((db) =>
-    db.collection('providerAccounts').doc(providerAccountId).get(),
+  const providerAccountRef = await firestore((db) =>
+    db
+      .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
+      .doc(`${props.provider}-${props.providerId}`),
   );
+
+  const providerAccount = await providerAccountRef.get();
 
   const idKey = `${props.provider}Id` as const;
 
@@ -38,19 +40,18 @@ export const getUserSession = async (props: GetUserSessionProps) => {
 
   const auth = await getFirebaseAdminAuth();
 
-  if (providerAccountDoc.exists) {
-    const { userId } = providerAccountDoc.data() as Firestore.ProviderAccount;
+  const usersRef = await firestore((db) => db.collection(COLLECTIONS.USERS));
 
-    const userDoc = await firestore((db) =>
-      db.collection('users').doc(userId).get(),
-    );
+  if (providerAccount.exists) {
+    const { userId } = providerAccount.data() as Firestore.ProviderAccount;
 
-    const savedUserInfo = userDoc.data() as Firestore.UserInfo;
+    const user = await usersRef.doc(userId).get();
+
+    const userData = user.data() as Firestore.UserInfo;
 
     return {
       ...userSession,
-      ...savedUserInfo,
-      firebaseToken: await auth.createCustomToken(id),
+      ...userData,
     };
   }
 
@@ -75,25 +76,12 @@ export const getUserSession = async (props: GetUserSessionProps) => {
       photoURL: props.profileImage,
       uid: id,
     }),
-    firestore((db) =>
-      db
-        .collection('providerAccounts')
-        .doc(providerAccountId)
-        .set({ userId: id }),
-    ),
-    firestore((db) =>
-      db
-        .collection('users')
-        .doc(id)
-        .set({
-          language: props.language,
-          [idKey]: props.providerId,
-        } satisfies Firestore.UserInfo),
-    ),
+    providerAccountRef.set({ userId: id }),
+    usersRef.doc(id).set({
+      language: props.language,
+      [idKey]: props.providerId,
+    } satisfies Firestore.UserInfo),
   ]);
 
-  return {
-    ...userSession,
-    firebaseToken: await auth.createCustomToken(id),
-  };
+  return userSession;
 };

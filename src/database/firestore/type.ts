@@ -12,3 +12,8 @@ export namespace Firestore {
     language: LANGUAGE;
   }
 }
+
+export enum COLLECTIONS {
+  PROVIDER_ACCOUNTS = 'providerAccounts',
+  USERS = 'users',
+}

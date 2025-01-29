@@ -13,9 +13,13 @@ import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 
 interface LoginConnectButtonProps {
   provider: LOGIN_PROVIDERS;
+  name: string;
 }
 
-export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
+export const LinkAccountButton = ({
+  provider,
+  name,
+}: LoginConnectButtonProps) => {
   const { user, sessionUpdate } = useUserData();
   const { t } = useTranslation('more');
   const idKey = `${provider}Id` as const;
@@ -40,14 +44,9 @@ export const LoginConnectButton = ({ provider }: LoginConnectButtonProps) => {
     <button
       className="flex-col gap-2 flex-center"
       disabled={isLoading}
-      name="provider-state"
-      type={isConnected ? 'button' : 'submit'}
-      value={provider}
-      onClick={async () => {
-        if (isConnected) return unlinkAccountMutation.mutate({ provider });
-
-        customCookies.set('PROVIDER_TO_CONNECT', provider);
-      }}
+      name={name}
+      type="submit"
+      value={`${provider}-${isConnected}`}
     >
       <div
         className={cn(

@@ -6,9 +6,9 @@ import { CustomButton, CustomLink } from '@/components';
 import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
-import { assertEnum, customCookies } from '@/utils';
+import { assertEnum, customCookies, CustomError } from '@/utils';
 
-import { LoginConnectButton } from './_components/LoginConnectButton';
+import { LinkAccountButton } from './_components/LinkAccountButton';
 import { LogoutButton } from './_components/LogoutButton';
 import { ProfileSection } from './_components/ProfileSection';
 
@@ -30,6 +30,8 @@ const MENU_ITEMS = [
   },
 ] as const satisfies MenuItem[];
 
+const LINK_ACCOUNT_BUTTON_NAME = 'link-provider';
+
 const MorePage = async (props: MorePageProps) => {
   const params = await props.params;
 
@@ -40,9 +42,19 @@ const MorePage = async (props: MorePageProps) => {
   const handleLinkAccount = async (event: FormData) => {
     'use server';
 
-    const provider = event.get('provider');
+    const value = event.get(LINK_ACCOUNT_BUTTON_NAME);
+
+    if (typeof value !== 'string') throw new CustomError();
+
+    const [provider, isLinkedString] = value.split('-');
 
     assertEnum(LOGIN_PROVIDERS, provider);
+
+    const isLinked = isLinkedString === 'true';
+
+    if (isLinked) {
+      return;
+    }
 
     const severCookies = await customCookies.server();
 
@@ -56,7 +68,11 @@ const MorePage = async (props: MorePageProps) => {
       <ProfileSection className="p-4" />
       <form action={handleLinkAccount} className="gap-4 flex-center">
         {Object.values(LOGIN_PROVIDERS).map((provider) => (
-          <LoginConnectButton key={provider} provider={provider} />
+          <LinkAccountButton
+            key={provider}
+            name={LINK_ACCOUNT_BUTTON_NAME}
+            provider={provider}
+          />
         ))}
       </form>
       <ul className="mt-8">
