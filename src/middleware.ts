@@ -1,3 +1,4 @@
+import type { JwtPayload } from './types/jwt';
 import type { RequestWithAuth } from './types/next-auth';
 
 import { decodeJwt } from 'jose';
@@ -78,7 +79,7 @@ export const middleware = auth(async (req: RequestWithAuth) => {
     const firebaseToken = cookies.get(COOKIES.FIREBASE_TOKEN)?.value;
 
     if (firebaseToken) {
-      const { uid } = decodeJwt<{ uid: string }>(firebaseToken);
+      const { uid } = decodeJwt<JwtPayload.FirebaseToken>(firebaseToken);
 
       if (uid !== auth.user.id) {
         isInvalidFirebaseToken = true;

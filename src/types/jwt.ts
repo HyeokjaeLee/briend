@@ -6,11 +6,8 @@ export enum TOKEN_TYPE {
 }
 
 export namespace JwtPayload {
-  export interface AccessToken {
-    id: string;
-    email: string;
-    image: string;
-    name: string;
+  export interface FirebaseToken {
+    uid: string;
   }
   export interface InviteToken {
     hostId: string;
