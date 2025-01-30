@@ -43,7 +43,11 @@ export const middleware = auth(async (req: RequestWithAuth) => {
   }
 
   if (!lng)
-    lng = i18nCookie || req.headers.get('Accept-Language') || fallbackLng;
+    lng =
+      auth?.user.language ||
+      i18nCookie ||
+      req.headers.get('Accept-Language') ||
+      fallbackLng;
 
   if (!hasLngPath) {
     nextUrl.pathname = `/${lng}${nextUrl.pathname}`;

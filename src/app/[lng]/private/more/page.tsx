@@ -1,14 +1,13 @@
-import { getAuth } from 'firebase/auth';
-
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { getTranslation } from '@/app/i18n/server';
-import { signIn, signOut } from '@/auth';
+import { auth, signIn, signOut } from '@/auth';
 import { CustomButton, CustomLink } from '@/components';
 import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
-import { assertEnum, customCookies, CustomError } from '@/utils';
+import type { JwtPayload } from '@/types/jwt';
+import { assert, assertEnum, customCookies } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 
 import { LinkAccountButton } from './_components/LinkAccountButton';
@@ -42,28 +41,29 @@ const MorePage = async (props: MorePageProps) => {
 
   const { t } = await getTranslation('more', lng);
 
-  const handleLinkAccount = async (event: FormData) => {
+  const linkAccountAction = async (event: FormData) => {
     'use server';
 
-    const value = event.get(LINK_ACCOUNT_BUTTON_NAME);
-
-    if (typeof value !== 'string') throw new CustomError();
-
-    const [provider, isLinkedString] = value.split('-');
+    const provider = event.get(LINK_ACCOUNT_BUTTON_NAME);
 
     assertEnum(LOGIN_PROVIDERS, provider);
 
-    const isLinked = isLinkedString === 'true';
+    const session = await auth();
 
-    if (isLinked) {
-      return;
-    }
+    const user = session?.user;
+
+    assert(user);
+
+    const token = await jwtAuthSecret.sign({
+      ...user,
+      providerToLink: provider,
+    } satisfies JwtPayload.LinkAccountToken);
 
     const severCookies = await customCookies.server();
 
-    severCookies.set(COOKIES.PROVIDER_TO_CONNECT, provider);
-
-    await jwtAuthSecret.sign({});
+    severCookies.set(COOKIES.LINK_ACCOUNT_TOKEN, token, {
+      httpOnly: true,
+    });
 
     await signIn(provider);
   };
@@ -71,7 +71,7 @@ const MorePage = async (props: MorePageProps) => {
   return (
     <article className="mx-4 mt-8 flex flex-col">
       <ProfileSection className="p-4" />
-      <form action={handleLinkAccount} className="gap-4 flex-center">
+      <form action={linkAccountAction} className="gap-4 flex-center">
         {Object.values(LOGIN_PROVIDERS).map((provider) => (
           <LinkAccountButton
             key={provider}

@@ -3,8 +3,8 @@ import type { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
 import { Cookies } from 'react-cookie';
 
 import {
-  COOKIES,
-  type COOKIES_KEY_TYPE,
+  DEFAULT_COOKIES_OPTIONS,
+  type COOKIES,
   type COOKIES_VALUE,
 } from '@/constants';
 
@@ -33,11 +33,14 @@ class CustomCookies extends Cookies {
       value: COOKIES_VALUE[TKey],
       options?: CookieSetOptions,
     ) => {
-      nextCookies.set(key, value, options);
+      nextCookies.set(key, value, {
+        ...DEFAULT_COOKIES_OPTIONS,
+        ...options,
+      });
     };
 
     const remove = <TKey extends COOKIES>(key: TKey) => {
-      nextCookies.delete(COOKIES[key]);
+      nextCookies.delete(key);
     };
 
     return { get, set, remove };

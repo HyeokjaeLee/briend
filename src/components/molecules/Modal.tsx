@@ -1,7 +1,7 @@
 import { RiCloseLine } from 'react-icons/ri';
 
 import { cn } from '@/utils';
-import { Kbd, Portal } from '@radix-ui/themes';
+import { Kbd, Portal, Spinner } from '@radix-ui/themes';
 
 import { CustomIconButton } from '../atoms/CustomIconButton';
 
@@ -12,6 +12,7 @@ export interface ModalProps {
   onClose?: () => void;
   hasCloseButton?: boolean;
   title?: React.ReactNode;
+  loading?: boolean;
 }
 
 export const Modal = ({
@@ -21,6 +22,7 @@ export const Modal = ({
   onClose,
   hasCloseButton = false,
   title,
+  loading,
 }: ModalProps) => {
   const handleClose = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -55,6 +57,14 @@ export const Modal = ({
             e.stopPropagation();
           }}
         >
+          <dialog
+            className="z-10 size-full rounded-lg bg-white/90"
+            open={loading}
+          >
+            <div className="h-full flex-center">
+              <Spinner className="my-auto" size="3" />
+            </div>
+          </dialog>
           {hasCloseButton || title ? (
             <header className="mx-5 mt-5 flex items-center justify-end">
               {title ? (

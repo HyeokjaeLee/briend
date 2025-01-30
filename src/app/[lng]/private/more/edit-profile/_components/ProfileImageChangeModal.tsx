@@ -7,36 +7,36 @@ interface ProfileImageChangeModalProps {
   open?: boolean;
   onClose?: () => void;
   onChangeProfileImage?: (file: File | null) => void;
+  loading?: boolean;
 }
 
 export const ProfileImageChangeModal = ({
   open,
   onClose,
   onChangeProfileImage,
+  loading,
 }: ProfileImageChangeModalProps) => {
-  const { getImage, isLoading } = useGetLocalImage();
   const { t } = useTranslation('edit-profile');
 
   return (
     <Modal
       hasCloseButton
+      loading={loading}
       open={open}
       title={t('profile-image-change')}
       onClose={onClose}
     >
       <footer className="mt-auto flex w-full gap-2">
         <CustomButton
-          disabled={isLoading}
-          size="3"
+          size="4"
           variant="outline"
           onClick={() => {
             onChangeProfileImage?.(null);
-            onClose?.();
           }}
         >
           {t('use-default-image')}
         </CustomButton>
-        <CustomButton asChild disabled={isLoading} size="3">
+        <CustomButton asChild size="4">
           <label>
             {t('select-on-gallery')}
             <input
@@ -45,18 +45,12 @@ export const ProfileImageChangeModal = ({
               id="image-upload"
               type="file"
               onChange={async (e) => {
-                if (isLoading) return;
-
                 const file = e.target.files?.[0];
 
                 if (!file)
                   throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['file']));
 
-                const blob = await getImage(file);
-
-                onClose?.();
-
-                onChangeProfileImage?.(blob);
+                onChangeProfileImage?.(file);
               }}
             />
           </label>

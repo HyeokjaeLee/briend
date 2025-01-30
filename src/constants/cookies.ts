@@ -8,16 +8,18 @@ export enum COOKIES {
   I18N = 'i18n',
   USER_ID = 'userId',
   PRIVATE_REFERER = 'privateReferrer',
-  PROVIDER_TO_CONNECT = 'providerToConnect',
   FIREBASE_ID_TOKEN = 'firebaseIdToken',
+  LINK_ACCOUNT_TOKEN = 'linkAccountToken',
+  LINKED_PROVIDER = 'linkedProvider',
 }
 
 export interface COOKIES_VALUE {
   [COOKIES.I18N]: LANGUAGE;
   [COOKIES.USER_ID]: string;
   [COOKIES.PRIVATE_REFERER]: string;
-  [COOKIES.PROVIDER_TO_CONNECT]: LOGIN_PROVIDERS;
   [COOKIES.FIREBASE_ID_TOKEN]: string;
+  [COOKIES.LINK_ACCOUNT_TOKEN]: string;
+  [COOKIES.LINKED_PROVIDER]: LOGIN_PROVIDERS;
 }
 
 export type COOKIES_KEY_TYPE = keyof typeof COOKIES;
@@ -26,4 +28,5 @@ export const DEFAULT_COOKIES_OPTIONS: CookieSetOptions = {
   httpOnly: false,
   secure: !IS_DEV,
   path: '/',
+  sameSite: 'lax',
 };

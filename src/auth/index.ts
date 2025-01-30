@@ -8,15 +8,12 @@ import { LANGUAGE } from '@/constants';
 import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import { firestore } from '@/database/firestore/server';
-import type { Firestore } from '@/database/firestore/type';
-import { COLLECTIONS } from '@/database/firestore/type';
-import type { JwtPayload } from '@/types/jwt';
 import { assert, assertEnum, customCookies } from '@/utils';
 import { createId } from '@/utils/createId';
-import { getFirebaseAdminAuth, jwtAuthSecret } from '@/utils/server';
 
 import { getUserSession } from './getUserSession';
+import { linkAccount } from './linkAccount';
+import { updateSession } from './updateSession';
 
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
@@ -49,89 +46,39 @@ export const {
   },
   callbacks: {
     jwt: async ({ token, user, account, trigger, session }) => {
+      if (trigger === 'update' && session) {
+        const updatedSession = updateSession(session);
+
+        token = Object.assign(token, updatedSession);
+
+        return token;
+      }
+
       const serverCookies = await customCookies.server();
 
       //* 단순 세션 연장
       if (!user) return token;
 
-      const providerToConnect = serverCookies.get(COOKIES.PROVIDER_TO_CONNECT);
+      const linkAccountToken = serverCookies.get(COOKIES.LINK_ACCOUNT_TOKEN);
 
-      if (providerToConnect) {
+      if (linkAccountToken) {
         const providerAccountId = account?.providerAccountId;
 
         assert(providerAccountId);
 
-        const providerAccountRef = await firestore((db) =>
-          db
-            .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
-            .doc(`${providerToConnect}-${providerAccountId}`),
-        );
+        serverCookies.remove(COOKIES.LINK_ACCOUNT_TOKEN);
 
-        const providerAccount = await providerAccountRef.get();
+        const linkedSession = await linkAccount({
+          linkAccountToken,
+          newAccount: {
+            email: user.email || undefined,
+            name: user.name || undefined,
+            profileImage: user.image || undefined,
+          },
+          providerAccountId,
+        });
 
-        if (providerAccount.exists) {
-          const firebaseToken = serverCookies.get(COOKIES.FIREBASE_TOKEN);
-
-          assert(firebaseToken);
-
-          const auth = await getFirebaseAdminAuth();
-
-          const {
-            payload: { uid: baseUserId },
-          } =
-            await jwtAuthSecret.verfiy<JwtPayload.FirebaseToken>(firebaseToken);
-
-          const usersRef = await firestore((db) =>
-            db.collection(COLLECTIONS.USERS),
-          );
-
-          const { userId: existedUserId } =
-            providerAccount.data() as Firestore.ProviderAccount;
-
-          const idKey = `${providerToConnect}Id` as const;
-
-          await Promise.all([
-            usersRef.doc(baseUserId).set({
-              [idKey]: providerAccountId,
-            }),
-            usersRef.doc(existedUserId).delete(),
-            providerAccountRef.set({
-              userId: baseUserId,
-            } satisfies Firestore.ProviderAccount),
-          ]);
-
-          const [baseUserAuth, existedUserAuth] = await Promise.all([
-            auth.getUser(baseUserId),
-            auth.getUser(existedUserId),
-          ]);
-
-          const displayName =
-            baseUserAuth.displayName || existedUserAuth.displayName;
-
-          const email = baseUserAuth.email || existedUserAuth.email;
-
-          const photoURL = baseUserAuth.photoURL || existedUserAuth.photoURL;
-
-          await Promise.all([
-            auth.updateUser(baseUserId, {
-              displayName,
-              email,
-              photoURL,
-            }),
-            auth.deleteUser(existedUserId),
-          ]);
-
-          token = Object.assign(token, {
-            name: displayName,
-            email,
-            profileImage: photoURL,
-          });
-
-          serverCookies.remove(COOKIES.USER_ID);
-
-          return token;
-        } else {
-        }
+        token = Object.assign(token, linkedSession);
 
         return token;
       }

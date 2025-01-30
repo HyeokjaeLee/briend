@@ -4,13 +4,10 @@ import { ToastContainer, Slide } from 'react-toastify';
 
 import { cn } from '@/utils';
 
-import { useProviderConnectToast } from './_hooks/useProviderConnectToast';
 import { useRefreshToast } from './_hooks/useRefreshToast';
 
 export const ToastProvider = () => {
   useRefreshToast();
-
-  useProviderConnectToast();
 
   return (
     <ToastContainer

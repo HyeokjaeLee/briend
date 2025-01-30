@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 type BlobAction = { type: 'CREATE'; payload: Blob } | { type: 'REVOKE' };
 
@@ -15,12 +15,21 @@ const imageBlobUrlReducer = (state: string | undefined, action: BlobAction) => {
   }
 };
 
-export const useImageBlobUrl = () => {
+export const useImageBlobUrl = (image?: Blob) => {
   const reducer = useReducer(imageBlobUrlReducer, undefined);
+  const [blob, setBlob] = useState<Blob | undefined>(image);
 
   const [, dispatch] = reducer;
 
-  useEffect(() => () => dispatch({ type: 'REVOKE' }), [dispatch]);
+  useEffect(() => {
+    return () => dispatch({ type: 'REVOKE' });
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!image) return dispatch({ type: 'REVOKE' });
+
+    dispatch({ type: 'CREATE', payload: image });
+  }, [dispatch, image]);
 
   return reducer;
 };
