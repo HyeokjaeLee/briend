@@ -1,6 +1,5 @@
 'use client';
 
-import { omit } from 'es-toolkit';
 import { getSession } from 'next-auth/react';
 import { z } from 'zod';
 
@@ -9,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
-import type { SessionDataToUpdate } from '@/auth';
+import { trpc } from '@/app/trpc/client';
 import {
   CustomButton,
   BottomButton,
@@ -17,16 +16,13 @@ import {
   ValidationMessage,
 } from '@/components';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
-import { profileImageTable } from '@/database/indexed-db';
-import { useCustomRouter, useImageBlobUrl, useUserData } from '@/hooks';
-import { API_ROUTES } from '@/routes/api';
+import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
-import { CustomError, ERROR, isEnumValue } from '@/utils';
-import { toast } from '@/utils/client';
+import { assert, CustomError, ERROR, isEnumValue } from '@/utils';
+import { toast, uploadFirebaseStorage } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
 
 import { ProfileImageChangeModal } from './_components/ProfileImageChangeModal';
 
@@ -49,14 +45,8 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const formSchema = z.object({
     language: z.nativeEnum(LANGUAGE),
-    nickname: z.string().max(20, t('nickname-max-length')),
-    profileImage: z
-      .object({
-        type: z.string(),
-        blob: z.instanceof(Blob),
-        updatedAt: z.number(),
-      })
-      .nullable(),
+    displayName: z.string().max(20, t('nickname-max-length')),
+    photoURL: z.string().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,12 +59,10 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
       if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
 
-      const profileImage = await profileImageTable?.get(user.id);
-
       return {
         language: lng,
-        nickname: user.name ?? 'Unknown',
-        profileImage: profileImage ? omit(profileImage, ['userId']) : null,
+        displayName: user.name ?? 'Unknown',
+        photoURL: user.profileImage,
       };
     },
   });
@@ -83,28 +71,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
     (state) => state.setBackNoticeInfo,
   );
 
-  const [profileImageSrc, dispatchProfileImage] = useImageBlobUrl();
-
-  const { blob: profileImageBlob, updatedAt: profileImageUpdateAt } =
-    form.watch('profileImage') ?? {};
-
-  useEffect(() => {
-    if (!profileImageBlob) return dispatchProfileImage({ type: 'REVOKE' });
-
-    dispatchProfileImage({ type: 'CREATE', payload: profileImageBlob });
-  }, [dispatchProfileImage, profileImageBlob]);
-
-  const editProfileMutation = useMutation({
-    mutationFn: API_ROUTES.EDIT_PROFILE,
-  });
-
-  const initialProfileUpdateAt =
-    form.formState.defaultValues?.profileImage?.updatedAt;
-
-  const isNoChanged = initialProfileUpdateAt
-    ? true
-    : !form.formState.isDirty &&
-      initialProfileUpdateAt === profileImageUpdateAt;
+  const isNoChanged = !form.formState.isDirty;
 
   useEffect(() => {
     if (isNoChanged) return;
@@ -121,50 +88,49 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const router = useCustomRouter();
 
-  const handleSubmit = form.handleSubmit(async ({ nickname, profileImage }) => {
-    try {
-      if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
+  const tempProfileImage = useTempImage();
 
-      editProfileMutation.mutate(
-        {
-          nickname,
-        },
-        {
-          onSuccess: async () => {
-            await sessionUpdate({
-              updatedProfile: {
-                nickname,
-              },
-            } satisfies SessionDataToUpdate);
-          },
-        },
-      );
-
-      if (profileImage)
-        await profileImageTable?.put({
-          ...profileImage,
-          userId: user.id,
-        });
-      else await profileImageTable?.delete(user.id);
+  const editProfileMutation = trpc.user.editProfile.useMutation({
+    onSuccess: async (updatedSession) => {
+      await sessionUpdate({
+        type: 'update-profile',
+        data: updatedSession,
+      });
 
       toast({
         message: t('save-profile'),
       });
 
-      const language = form.getValues('language');
-
-      const nextPathname = `/${language}${ROUTES.MORE_MENUS.pathname}`;
-
-      if (language === lng) return router.push(nextPathname);
-
-      location.href = nextPathname;
-    } catch {
+      router.push(`/${updatedSession.language}${ROUTES.MORE_MENUS.pathname}`);
+    },
+    onError: () => {
       toast({
         message: t('error-save-profile'),
         type: 'fail',
       });
-    }
+    },
   });
+
+  const handleSubmit = form.handleSubmit(
+    async ({ displayName, language, photoURL }) => {
+      assert(user);
+
+      const tempProfileImageFile = tempProfileImage.data?.file;
+
+      const profileImageUrl = tempProfileImageFile
+        ? await uploadFirebaseStorage({
+            file: tempProfileImageFile,
+            path: (paths) => paths.profileImage(user.id),
+          })
+        : photoURL;
+
+      editProfileMutation.mutate({
+        displayName,
+        language,
+        photoURL: profileImageUrl,
+      });
+    },
+  );
 
   return (
     <article className="p-4">
@@ -179,7 +145,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
-            <ProfileImage src={profileImageSrc} />
+            <ProfileImage src={form.getValues('photoURL')} />
             <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>
@@ -189,7 +155,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         <label className="w-full font-semibold">
           {t('my-nickname')}
           <TextField.Root
-            {...form.register('nickname')}
+            {...form.register('displayName')}
             className="mt-2 h-14 w-full rounded-xl px-1"
             placeholder={t('my-nickname')}
             size="3"
@@ -234,14 +200,26 @@ const EditProfilePage = (props: ProfilePageProps) => {
         </label>
       </form>
       <ProfileImageChangeModal
+        loading={tempProfileImage.isPending}
         open={isProfileImageModalOpen}
-        onChangeProfileImage={(file) => {
-          if (!file) return form.setValue('profileImage', null);
+        onChangeProfileImage={async (file) => {
+          if (!file) {
+            tempProfileImage.reset();
+            setIsProfileImageModalOpen(false);
 
-          form.setValue('profileImage', {
-            blob: file,
-            type: file.type,
-            updatedAt: Date.now(),
+            return form.setValue('photoURL', undefined, {
+              shouldDirty: true,
+            });
+          }
+
+          const { objectUrl } = await tempProfileImage.mutateAsync(file, {
+            onSuccess: () => {
+              setIsProfileImageModalOpen(false);
+            },
+          });
+
+          form.setValue('photoURL', objectUrl, {
+            shouldDirty: true,
           });
         }}
         onClose={() => setIsProfileImageModalOpen(false)}

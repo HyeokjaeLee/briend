@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import type NextAuth from 'next-auth';
 
-import type { LANGUAGE } from '@/constants';
+import type { LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
 
 export interface UserSession {
   id: string;
@@ -10,9 +10,9 @@ export interface UserSession {
   email?: string;
   profileImage?: string;
   language: LANGUAGE;
-  googleId?: string;
-  kakaoId?: string;
-  naverId?: string;
+  googleId?: string | null;
+  kakaoId?: string | null;
+  naverId?: string | null;
 }
 
 declare module 'next-auth' {
@@ -27,3 +27,17 @@ export interface RequestWithAuth extends NextRequest {
     user: UserSession;
   };
 }
+
+export type SessionUpdateType = 'unlink-account' | 'update-profile';
+
+export type SessionUpdateInput =
+  | {
+      type: 'unlink-account';
+      data: {
+        provider: LOGIN_PROVIDERS;
+      };
+    }
+  | {
+      type: 'update-profile';
+      data: Partial<UserSession>;
+    };

@@ -1,11 +1,13 @@
 'use client';
 
+import { pick } from 'es-toolkit';
 import Image from 'next/image';
+
+import { useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc/client';
-import type { SessionDataToUpdate } from '@/auth';
-import { LOGIN_PROVIDERS } from '@/constants';
+import { LOGIN_PROVIDERS, SESSION_STORAGE } from '@/constants';
 import { useUserData } from '@/hooks';
 import { cn } from '@/utils';
 import { toast } from '@/utils/client';
@@ -22,31 +24,76 @@ export const LinkAccountButton = ({
 }: LoginConnectButtonProps) => {
   const { user, sessionUpdate } = useUserData();
   const { t } = useTranslation('more');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const idKey = `${provider}Id` as const;
 
   const isConnected = !!user?.[idKey];
 
+  const isLastOne = !!(
+    user &&
+    Object.values(pick(user, ['googleId', 'kakaoId', 'naverId'])).filter(
+      Boolean,
+    ).length === 1 &&
+    user[idKey]
+  );
+
   const unlinkAccountMutation = trpc.user.unlinkAccount.useMutation({
-    onSuccess: async ({ unlinkedProvider }) => {
-      await sessionUpdate({
-        unlinkedProvider,
-      } satisfies SessionDataToUpdate);
+    onSuccess: async (provider) => {
+      sessionUpdate({
+        type: 'unlink-account',
+        data: {
+          provider,
+        },
+      });
 
       toast({
-        message: t(`unlink-${unlinkedProvider}`),
+        message: t(`unlink-${provider}`),
       });
     },
   });
 
   const isLoading = !user || unlinkAccountMutation.isPending;
 
+  useEffect(() => {
+    const linkedProvider = sessionStorage.getItem(
+      SESSION_STORAGE.LINKED_PROVIDER,
+    );
+
+    if (linkedProvider !== provider) return;
+
+    if (isConnected) {
+      sessionStorage.removeItem(SESSION_STORAGE.LINKED_PROVIDER);
+
+      toast({
+        message: t(`link-${provider}`),
+      });
+    }
+  }, [provider, t, isConnected]);
+
   return (
     <button
-      className="flex-col gap-2 flex-center"
+      className="flex-col gap-2 break-keep flex-center"
       disabled={isLoading}
       name={name}
-      type="submit"
-      value={`${provider}-${isConnected}`}
+      type={isConnected ? 'button' : 'submit'}
+      value={provider}
+      onClick={(e) => {
+        if (isLastOne) {
+          e.preventDefault();
+
+          return toast({
+            message: t('last-account'),
+          });
+        }
+        if (isConnected) {
+          e.preventDefault();
+          unlinkAccountMutation.mutate({ provider });
+        } else {
+          setIsSubmitting(true);
+          sessionStorage.setItem(SESSION_STORAGE.LINKED_PROVIDER, provider);
+        }
+      }}
     >
       <div
         className={cn(
@@ -59,7 +106,7 @@ export const LinkAccountButton = ({
           }[provider],
         )}
       >
-        {unlinkAccountMutation.isPending ? (
+        {unlinkAccountMutation.isPending || isSubmitting ? (
           <Spinner />
         ) : (
           <Image

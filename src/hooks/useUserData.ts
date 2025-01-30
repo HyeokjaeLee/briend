@@ -1,19 +1,29 @@
+import type { Session } from 'next-auth';
+
 import { useSession } from 'next-auth/react';
+
+import type { SessionUpdateInput } from '@/types/next-auth';
 
 export const useUserData = () => {
   const session = useSession();
-  const { update: sessionUpdate } = session;
+  const { update } = session;
 
-  if (session.data?.user)
+  const sessionUpdate = update as (
+    input: SessionUpdateInput,
+  ) => Promise<Session | null>;
+
+  const user = session.data?.user;
+
+  if (user)
     return {
-      user: session.data?.user,
+      user,
       isLoading: false,
       isLogin: true,
       sessionUpdate,
     } as const;
 
   return {
-    user: session.data?.user,
+    user,
     isLoading: session.status === 'loading',
     isLogin: false,
     sessionUpdate,

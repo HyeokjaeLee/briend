@@ -1,11 +1,9 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage } from '@/components';
-import { LANGUAGE_NAME, type LANGUAGE } from '@/constants';
-import { useProfileImage, useUserData } from '@/hooks';
+import { LANGUAGE_NAME } from '@/constants';
+import { useUserData } from '@/hooks';
 import { cn } from '@/utils';
 import { Badge, Skeleton } from '@radix-ui/themes';
 
@@ -16,7 +14,6 @@ interface ProfileSectionProps {
 export const ProfileSection = ({ className }: ProfileSectionProps) => {
   const { user } = useUserData();
 
-  const { lng } = useParams<{ lng: LANGUAGE }>();
   const { t } = useTranslation('more');
 
   return (
@@ -33,9 +30,13 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
         <Skeleton className="h-7 w-28" loading={!user}>
           <p className="text-xl font-medium">{user?.name}</p>
         </Skeleton>
-        <Badge className="mt-1" color="yellow">
-          {LANGUAGE_NAME[lng]}
-        </Badge>
+        {user?.language ? (
+          <Badge className="mt-1" color="yellow">
+            {LANGUAGE_NAME[user.language]}
+          </Badge>
+        ) : (
+          <Skeleton className="h-5 w-10" />
+        )}
       </div>
       <Skeleton className="h-6 w-32" loading={!user}>
         <p className="text-slate-400">{user?.email || t('empty-email')}</p>

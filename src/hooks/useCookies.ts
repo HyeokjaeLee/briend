@@ -1,5 +1,7 @@
+import type { CookieSetOptions, CookieGetOptions } from 'universal-cookie';
+
 import { useCookies as useReactCookies } from 'react-cookie';
-import { CookieSetOptions, CookieGetOptions } from 'universal-cookie';
+
 import type { COOKIES, COOKIES_VALUE } from '@/constants';
 
 export const useCookies = <

@@ -1,8 +1,10 @@
+import { FieldValue } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
 import { privateProcedure } from '@/app/trpc/settings';
 import { LOGIN_PROVIDERS } from '@/constants';
-import { prisma } from '@/prisma';
+import { firestore } from '@/database/firestore/server';
+import { COLLECTIONS } from '@/database/firestore/type';
 
 export const unlinkAccount = privateProcedure
   .input(
@@ -10,18 +12,30 @@ export const unlinkAccount = privateProcedure
       provider: z.nativeEnum(LOGIN_PROVIDERS),
     }),
   )
-  .mutation(async ({ ctx, input }) => {
-    const { provider } = input;
+  .mutation(async ({ ctx, input: { provider } }) => {
     const { session } = ctx;
 
-    const providerIdKey = `${provider}_id` as const;
+    try {
+      const idKey = `${provider}Id` as const;
 
-    await prisma.users.update({
-      where: { id: session.user.id },
-      data: { [providerIdKey]: null },
-    });
+      await firestore((db) =>
+        db
+          .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
+          .doc(`${provider}-${session.user[idKey]}`)
+          .delete(),
+      );
 
-    return {
-      unlinkedProvider: provider,
-    };
+      await firestore((db) =>
+        db
+          .collection(COLLECTIONS.USERS)
+          .doc(session.user.id)
+          .update({
+            [idKey]: FieldValue.delete(),
+          }),
+      );
+    } catch (error) {
+      console.error(error);
+    }
+
+    return provider;
   });
