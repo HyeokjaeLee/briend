@@ -101,7 +101,15 @@ const EditProfilePage = (props: ProfilePageProps) => {
         message: t('save-profile'),
       });
 
-      router.push(`/${updatedSession.language}${ROUTES.MORE_MENUS.pathname}`);
+      const isSameLanguage = updatedSession.language === lng;
+
+      const moreMenuPathname = `/${updatedSession.language}${ROUTES.MORE_MENUS.pathname}`;
+
+      if (isSameLanguage) {
+        router.push(moreMenuPathname);
+      } else {
+        location.href = moreMenuPathname;
+      }
     },
     onError: () => {
       toast({
@@ -162,7 +170,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             variant="soft"
           />
           <ValidationMessage
-            message={form.formState.errors.nickname?.message}
+            message={form.formState.errors.displayName?.message}
           />
         </label>
         <label className="w-full font-semibold">

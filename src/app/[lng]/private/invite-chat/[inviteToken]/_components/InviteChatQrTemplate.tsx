@@ -20,7 +20,7 @@ import { useGlobalStore, usePeerStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
 import type { PeerData } from '@/types/peer-data';
 import { MESSAGE_TYPE } from '@/types/peer-data';
-import { assert, cn, CustomError, ERROR, expToDate, isPeerData } from '@/utils';
+import { assert, cn, CustomError, expToDate, isPeerData } from '@/utils';
 import {
   toast,
   createOnlyClientComponent,
@@ -89,7 +89,9 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
         message: t('expired-toast-message'),
       });
 
-      throw new CustomError(ERROR.EXPIRED_CHAT());
+      throw new CustomError({
+        code: 'EXPIRED_CHAT',
+      });
     };
 
     const { data: shortUrl, isFetched } = useQuery({

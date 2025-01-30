@@ -34,9 +34,7 @@ export const SideContents = createOnlyClientComponent(
         }
 
         default:
-          throw new CustomError({
-            message: 'Invalid Side Panel Route',
-          });
+          throw new CustomError('Invalid Side Panel Route');
       }
     } catch {
       sidePanel.push(ROUTES.FRIEND_LIST.pathname);

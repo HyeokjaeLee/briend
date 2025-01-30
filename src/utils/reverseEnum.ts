@@ -1,8 +1,8 @@
 export type ReverseMap<T> = T extends { [P in keyof T]: infer U }
-  ? { [P in U & string]: P }
+  ? { [P in U & (string | number)]: P }
   : never;
 
-export const reverseEnum = <T extends { [key: string]: string }>(
+export const reverseEnum = <T extends { [key: string]: string | number }>(
   enumObj: T,
 ): ReverseMap<T> => {
   const reversed = {} as ReverseMap<T>;

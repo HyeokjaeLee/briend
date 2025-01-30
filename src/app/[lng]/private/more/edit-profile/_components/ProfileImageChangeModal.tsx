@@ -1,6 +1,5 @@
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton, Modal } from '@/components';
-import { useGetLocalImage } from '@/hooks';
 import { CustomError, ERROR } from '@/utils';
 
 interface ProfileImageChangeModalProps {

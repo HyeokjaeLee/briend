@@ -2,7 +2,7 @@ import { errors } from 'jose';
 
 import { ROUTES } from '@/routes/client';
 import type { JwtPayload } from '@/types/jwt';
-import { CustomError, ERROR_STATUS } from '@/utils';
+import { CustomError } from '@/utils';
 import { jwtSecretVerify } from '@/utils/api';
 
 import { InviteChatQRTemplate } from './_components/InviteChatQrTemplate';
@@ -39,7 +39,7 @@ const InviteChatQRPage = async (props: InviteChatQRPageProps) => {
   } catch (e) {
     if (e instanceof errors.JWTExpired)
       throw new CustomError({
-        status: ERROR_STATUS.EXPIRED_CHAT,
+        code: 'EXPIRED_CHAT',
       });
 
     throw e;

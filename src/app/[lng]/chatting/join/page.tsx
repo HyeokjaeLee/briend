@@ -16,7 +16,7 @@ import {
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore, usePeerStore } from '@/stores';
 import { MESSAGE_TYPE, type PeerData } from '@/types/peer-data';
-import { assert, CustomError, ERROR } from '@/utils';
+import { assert } from '@/utils';
 import {
   createOnlyClientComponent,
   toast,
@@ -37,8 +37,8 @@ const ChattingJoinPage = createOnlyClientComponent(
 
     const userId = useUserId();
 
-    if (!inviteToken || !userId)
-      throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['inviteToken', 'userId']));
+    assert(inviteToken);
+    assert(userId);
 
     const {
       data: { friendToken, friendUserId, myToken },
@@ -68,7 +68,10 @@ const ChattingJoinPage = createOnlyClientComponent(
 
       //* 내 정보 발신
       const checkHostHandler = async () => {
-        if (userId === friendUserId) return asyncError(ERROR.UNAUTHORIZED());
+        if (userId === friendUserId)
+          return asyncError({
+            code: 'UNAUTHORIZED',
+          });
 
         assert(friendTable);
 
