@@ -1,48 +1,64 @@
+import { IS_CLIENT } from '@/constants';
+
+enum ERROR_CODE {
+  BAD_REQUEST = 400,
+  INTERNAL_SERVER_ERROR = 500,
+  INTERNAL_CLIENT_ERROR = 5001,
+  PARSE_ERROR = 5002,
+  NOT_IMPLEMENTED = 501,
+  BAD_GATEWAY = 502,
+  SERVICE_UNAVAILABLE = 503,
+  GATEWAY_TIMEOUT = 504,
+  UNAUTHORIZED = 401,
+  EXPIRED_CHAT = 4011,
+  FORBIDDEN = 403,
+  NOT_FOUND = 404,
+  METHOD_NOT_SUPPORTED = 405,
+  TIMEOUT = 408,
+  CONFLICT = 409,
+  PRECONDITION_FAILED = 412,
+  PAYLOAD_TOO_LARGE = 413,
+  UNSUPPORTED_MEDIA_TYPE = 415,
+  UNPROCESSABLE_CONTENT = 422,
+  UNKNOWN_VALUE = 4221,
+  TOO_MANY_REQUESTS = 429,
+  CLIENT_CLOSED_REQUEST = 499,
+}
+
 export interface CustomErrorProps {
+  code?: keyof typeof ERROR_CODE;
   message?: string;
-  status?: number;
   cause?: string;
 }
 
 export class CustomError extends Error {
-  status: number;
-  customStatus: number;
+  public readonly status: number;
+  public readonly customStatus: number;
+  public readonly code: keyof typeof ERROR_CODE;
 
-  constructor(props?: CustomErrorProps) {
-    const customStatus = props?.status ?? 500;
+  constructor(_props?: CustomErrorProps | string) {
+    const props = typeof _props === 'string' ? { message: _props } : _props;
+
+    const defaultKey = IS_CLIENT
+      ? 'INTERNAL_CLIENT_ERROR'
+      : 'INTERNAL_SERVER_ERROR';
+    const code = props?.code ? props.code : defaultKey;
+
+    const customStatus = ERROR_CODE[code];
     const httpsStatus = Number(String(customStatus).slice(0, 3));
 
-    const message = `<${customStatus}> ${props?.message ?? 'Unknown Error'}`;
+    const defaultMessage = Object.entries(ERROR_CODE).find(
+      ([, value]) => value === customStatus,
+    );
+
+    const message = `<${customStatus}> ${props?.message ?? defaultMessage?.[0] ?? defaultKey}`;
+
+    console.error(message);
 
     super(message);
     this.status = httpsStatus;
     this.customStatus = customStatus;
     this.cause = props?.cause;
+    this.code = code;
   }
 }
-
-export enum ERROR_STATUS {
-  NOT_FOUND = 404,
-  UNAUTHORIZED = 401,
-  EXPIRED_CHAT = 4011,
-  UNKNOWN_VALUE = 422,
-}
-
-export const ERROR = {
-  NOT_ENOUGH_PARAMS: (requiredParams: string[]) => ({
-    message: `${requiredParams.join(', ')} is required`,
-    status: 400,
-  }),
-  UNAUTHORIZED: (message = 'Unauthorized') => ({
-    message,
-    status: ERROR_STATUS.UNAUTHORIZED,
-  }),
-  EXPIRED_CHAT: (message = 'Expired Chat') => ({
-    message,
-    status: ERROR_STATUS.EXPIRED_CHAT,
-  }),
-  UNKNOWN_VALUE: (key: string = 'value') => ({
-    message: `${key} is unknown`,
-    status: ERROR_STATUS.UNKNOWN_VALUE,
-  }),
-};

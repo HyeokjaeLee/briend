@@ -16,12 +16,10 @@ export const uploadFirebaseStorage = async ({
   path,
 }: UploadFirebaseStorageInput) => {
   const storage = getStorage();
+  const extension = file.name.split('.').pop()?.toLowerCase() || '';
+  const fullPath = [path(PATHS), extension].join('.');
 
   try {
-    const extension = file.name.split('.').pop()?.toLowerCase() || '';
-
-    const fullPath = [path(PATHS), extension].join('.');
-
     const storageRef = ref(storage, fullPath);
 
     await uploadBytes(storageRef, file);
@@ -30,8 +28,10 @@ export const uploadFirebaseStorage = async ({
 
     return downloadUrl;
   } catch (e) {
-    console.error(e);
-
-    throw new CustomError();
+    throw new CustomError({
+      code: 'INTERNAL_SERVER_ERROR',
+      message: `Failed to upload file: ${fullPath}`,
+      cause: String(e),
+    });
   }
 };
