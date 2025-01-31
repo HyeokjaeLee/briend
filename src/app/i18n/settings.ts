@@ -21,4 +21,7 @@ export const getOptions = (
   fallbackNS: defaultNS,
   defaultNS,
   ns,
+  react: {
+    useSuspense: true, // Suspense 모드 활성화
+  },
 });

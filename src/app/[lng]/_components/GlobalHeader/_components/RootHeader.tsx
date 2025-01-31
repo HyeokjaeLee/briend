@@ -7,11 +7,11 @@ import Logo from '@/svgs/logo.svg';
 import { findRoute } from '@/utils';
 
 export const RootHeader = () => {
-  const { t } = useTranslation('layout');
-
   const pathname = usePathname();
 
   const currentRoute = findRoute(pathname);
+
+  const { t } = useTranslation('layout');
 
   const { topHeaderTitle } = currentRoute;
 

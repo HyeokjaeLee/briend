@@ -12,7 +12,7 @@ import { SessionProvider } from 'next-auth/react';
 import { use, type PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
-import { trpc, trpcClient } from '@/app/trpc/client';
+import { trpc, trpcClient } from '@/app/trpc';
 import { DEFAULT_COOKIES_OPTIONS } from '@/constants';
 import { customCookies } from '@/utils';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';

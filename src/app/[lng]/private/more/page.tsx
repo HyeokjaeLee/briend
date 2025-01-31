@@ -1,7 +1,7 @@
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { getTranslation } from '@/app/i18n/server';
-import { auth, signIn, signOut } from '@/auth';
+import { auth, signIn } from '@/auth';
 import { CustomButton, CustomLink } from '@/components';
 import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
@@ -96,15 +96,9 @@ const MorePage = async (props: MorePageProps) => {
           </li>
         ))}
         <li className="p-5">
-          <form
-            action={async () => {
-              'use server';
-
-              await signOut();
-            }}
-          >
-            <LogoutButton lng={lng} />
-          </form>
+          <LogoutButton logoutToastMessage={t('logout-toast-message')}>
+            {t('logout')}
+          </LogoutButton>
         </li>
       </ul>
     </article>

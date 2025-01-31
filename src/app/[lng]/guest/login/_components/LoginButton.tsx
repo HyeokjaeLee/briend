@@ -1,10 +1,11 @@
 'use client';
 
+import { getAuth } from 'firebase/auth';
 import Image from 'next/image';
 
-import { LOGIN_PROVIDERS } from '@/constants';
+import { COOKIES, LOGIN_PROVIDERS } from '@/constants';
 import { useGlobalStore } from '@/stores';
-import { cn } from '@/utils';
+import { cn, customCookies, CustomError } from '@/utils';
 
 export interface LoginButtonProps {
   provider: LOGIN_PROVIDERS;
@@ -37,8 +38,18 @@ export const LoginButton = ({
       )}
       name={name}
       value={provider}
-      onClick={() => {
+      onClick={(e) => {
         setLoading(true);
+
+        const { currentUser } = getAuth();
+
+        if (!currentUser?.isAnonymous) {
+          e.preventDefault();
+
+          throw new CustomError('is not anonymous');
+        }
+
+        customCookies.set(COOKIES.ANONYMOUS_ID, currentUser.uid);
       }}
     >
       <div

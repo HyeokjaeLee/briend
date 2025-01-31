@@ -41,6 +41,7 @@ export { Drawer, type DrawerProps } from './molecules/Drawer';
  * @package organisms 컴포넌트
  */
 export { BackHeader, type BackHeaderProps } from './organisms/BackHeader';
+export { ConfirmModal, type ConfirmModalProps } from './organisms/ConfirmModal';
 
 /**
  * @package templates 컴포넌트

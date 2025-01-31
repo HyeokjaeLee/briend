@@ -9,7 +9,6 @@ import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { assert, assertEnum, customCookies } from '@/utils';
-import { createId } from '@/utils/createId';
 
 import { getUserSession } from './getUserSession';
 import { linkAccount } from './linkAccount';
@@ -83,8 +82,6 @@ export const {
         return token;
       }
 
-      const userId = serverCookies.get(COOKIES.USER_ID) || createId();
-
       const { provider, providerAccountId: providerId } = account ?? {};
 
       assertEnum(LOGIN_PROVIDERS, provider);
@@ -93,13 +90,20 @@ export const {
 
       const language = serverCookies.get(COOKIES.I18N) || LANGUAGE.ENGLISH;
 
+      const anonymousId = serverCookies.get(COOKIES.ANONYMOUS_ID);
+
+      assert(anonymousId);
+
+      serverCookies.remove(COOKIES.ANONYMOUS_ID);
+
       const userSession = await getUserSession({
         provider,
         providerId,
         profileImage: user?.image || undefined,
-        userId,
         name: user?.name || undefined,
+        email: user?.email || undefined,
         language,
+        anonymousId,
       });
 
       token = Object.assign(token, userSession);

@@ -103,10 +103,10 @@ export const useCustomRouter = memoizedCustomRouter
         },
         refresh: router.refresh,
         back: (options) => {
-          const { setIsGlobalModalOpen, backNoticeInfo } =
+          const { setIsBackNoticeModalOpen, backNoticeInfo } =
             useGlobalModalStore.getState();
 
-          if (backNoticeInfo) return setIsGlobalModalOpen(true);
+          if (backNoticeInfo) return setIsBackNoticeModalOpen(true);
 
           const { withLoading, withAnimation = 'FROM_TOP' } = options ?? {};
 

@@ -43,7 +43,7 @@ class CustomCookies extends Cookies {
       nextCookies.delete(key);
     };
 
-    return { get, set, remove };
+    return { get, set, remove, getAll: nextCookies.getAll };
   }
 
   set<TKey extends COOKIES>(
@@ -51,7 +51,10 @@ class CustomCookies extends Cookies {
     value: COOKIES_VALUE[TKey],
     options?: CookieSetOptions,
   ) {
-    super.set(key, value, options);
+    super.set(key, value, {
+      ...DEFAULT_COOKIES_OPTIONS,
+      ...options,
+    });
   }
 
   getAll(options?: CookieGetOptions): {
@@ -60,7 +63,10 @@ class CustomCookies extends Cookies {
     return super.getAll(options);
   }
   remove(key: COOKIES, options?: CookieSetOptions) {
-    super.remove(key, options);
+    super.remove(key, {
+      ...DEFAULT_COOKIES_OPTIONS,
+      ...options,
+    });
   }
 }
 

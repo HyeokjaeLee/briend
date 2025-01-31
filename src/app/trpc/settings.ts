@@ -1,5 +1,3 @@
-import type { Session } from 'next-auth';
-
 import superjson from 'superjson';
 
 import { auth } from '@/auth';
@@ -7,34 +5,10 @@ import { CustomError } from '@/utils';
 import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 
-const AUTH_EXCEPTION_MESSAGES = [
-  '`headers` was called outside a request scope.',
-  `Cannot access 'auth' before initialization`,
-];
-
 export const createContext = async (
   opts: FetchCreateContextFnOptions | null,
 ) => {
-  let session: Session | null = null;
-
-  try {
-    session = await auth();
-  } catch (e) {
-    if (!(e instanceof Error))
-      throw new CustomError({
-        code: 'BAD_GATEWAY',
-        message: 'Failed to get session',
-      });
-
-    const { message } = e;
-
-    if (!AUTH_EXCEPTION_MESSAGES.some((m) => message.startsWith(m)))
-      throw new CustomError({
-        code: 'BAD_GATEWAY',
-        message: e.message,
-        cause: e.cause,
-      });
-  }
+  const session = await auth();
 
   return {
     session,

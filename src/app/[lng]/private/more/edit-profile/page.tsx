@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { FaCamera } from 'react-icons/fa';
 
 import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc/client';
+import { trpc } from '@/app/trpc';
 import {
   CustomButton,
   BottomButton,
