@@ -10,7 +10,7 @@ import type { LANGUAGE } from '@/constants';
 
 import { getOptions } from './settings';
 
-const initI18next = async (lng: LANGUAGE, ns: string | string[]) => {
+export const initI18next = async (lng: LANGUAGE, ns: string | string[]) => {
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)

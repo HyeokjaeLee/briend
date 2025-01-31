@@ -1,16 +1,12 @@
 import { FaChevronRight } from 'react-icons/fa6';
 
 import { getTranslation } from '@/app/i18n/server';
-import { auth, signIn } from '@/auth';
 import { CustomButton, CustomLink } from '@/components';
-import { COOKIES, LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
+import type { LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
 import { ROUTES } from '@/routes/client';
-import type { JwtPayload } from '@/types/jwt';
-import { assert, assertEnum, customCookies } from '@/utils';
-import { jwtAuthSecret } from '@/utils/server';
 
-import { LinkAccountButton } from './_components/LinkAccountButton';
+import { LinkAccountSection } from './_components/LinkAccountSection';
 import { LogoutButton } from './_components/LogoutButton';
 import { ProfileSection } from './_components/ProfileSection';
 
@@ -32,8 +28,6 @@ const MENU_ITEMS = [
   },
 ] as const satisfies MenuItem[];
 
-const LINK_ACCOUNT_BUTTON_NAME = 'link-provider';
-
 const MorePage = async (props: MorePageProps) => {
   const params = await props.params;
 
@@ -41,45 +35,10 @@ const MorePage = async (props: MorePageProps) => {
 
   const { t } = await getTranslation('more', lng);
 
-  const linkAccountAction = async (event: FormData) => {
-    'use server';
-
-    const provider = event.get(LINK_ACCOUNT_BUTTON_NAME);
-
-    assertEnum(LOGIN_PROVIDERS, provider);
-
-    const session = await auth();
-
-    const user = session?.user;
-
-    assert(user);
-
-    const token = await jwtAuthSecret.sign({
-      ...user,
-      providerToLink: provider,
-    } satisfies JwtPayload.LinkAccountToken);
-
-    const severCookies = await customCookies.server();
-
-    severCookies.set(COOKIES.LINK_ACCOUNT_TOKEN, token, {
-      httpOnly: true,
-    });
-
-    await signIn(provider);
-  };
-
   return (
     <article className="mx-4 mt-8 flex flex-col">
       <ProfileSection className="p-4" />
-      <form action={linkAccountAction} className="gap-4 flex-center">
-        {Object.values(LOGIN_PROVIDERS).map((provider) => (
-          <LinkAccountButton
-            key={provider}
-            name={LINK_ACCOUNT_BUTTON_NAME}
-            provider={provider}
-          />
-        ))}
-      </form>
+      <LinkAccountSection />
       <ul className="mt-8">
         {MENU_ITEMS.map(({ title, route }) => (
           <li key={title} className="p-5">

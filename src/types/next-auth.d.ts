@@ -8,7 +8,7 @@ export interface UserSession {
   id: string;
   name?: string;
   email?: string;
-  profileImage?: string;
+  profileImage?: string | null;
   language: LANGUAGE;
   googleId?: string | null;
   kakaoId?: string | null;

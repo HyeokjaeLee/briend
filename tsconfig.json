@@ -30,7 +30,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "next-i18next.config.js",
     "next.config.ts",
     "src/types/**/*.ts"
   ],

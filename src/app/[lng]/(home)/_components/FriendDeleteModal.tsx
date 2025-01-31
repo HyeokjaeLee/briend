@@ -32,7 +32,7 @@ export const FriendDeleteModal = ({
   return (
     <ConfirmModal
       footer={
-        <footer className="flex w-full gap-4">
+        <footer className="flex w-full gap-2">
           <CustomButton className="flex-1">{t('unlink-button')}</CustomButton>
           <CustomButton
             className="flex-1"

@@ -4,7 +4,7 @@ import { cn } from '@/utils';
 import { Avatar } from '@radix-ui/themes';
 
 export interface ProfileImageProps {
-  src?: string;
+  src?: string | null;
   className?: string;
   size?: '7' | '8' | '6' | '5' | '4';
 }
@@ -12,7 +12,6 @@ export interface ProfileImageProps {
 export const ProfileImage = ({
   src,
   className,
-
   size = '7',
 }: ProfileImageProps) => (
   <Avatar
@@ -33,6 +32,6 @@ export const ProfileImage = ({
     }
     radius="full"
     size={size}
-    src={src}
+    src={src || undefined}
   />
 );

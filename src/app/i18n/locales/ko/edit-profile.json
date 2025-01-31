@@ -1,12 +1,12 @@
 {
   "my-nickname": "닉네임",
-  "nickname-max-length": "닉네임은 10자 이하로 설정해야해요",
+  "nickname-max-length": "닉네임은 20자 이하로 설정해야해요",
   "friend-language": "언어",
   "save-profile": "프로필이 변경되었어요!",
   "error-save-profile": "프로필 변경에 실패했어요!",
   "save": "저장하기",
   "back-notice-title": "프로필 편집 나가기",
-  "back-notice-message": "저장하지 않으면 변경사항은 적용되지 않아요.",
+  "back-notice-message": "저장하지 않으면 변경사항은\n적용되지 않아요.",
   "profile-image-change": "프로필 이미지 변경",
   "select-on-gallery": "앨범에서 선택",
   "use-default-image": "기본 이미지 적용"
