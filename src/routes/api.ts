@@ -5,7 +5,7 @@ import ky from 'ky';
 import { PUBLIC_ENV } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
-import { CustomError } from '@/utils';
+import { assert } from '@/utils';
 import type {
   CreateChatInviteTokenApiParams,
   CreateChatInviteTokenApiResponse,
@@ -98,10 +98,7 @@ export const API_ROUTES = {
 
     const json = await res.json();
 
-    if (!json.short_url)
-      throw new CustomError({
-        message: 'Failed to shorten URL',
-      });
+    assert(json.short_url);
 
     return json.short_url;
   },

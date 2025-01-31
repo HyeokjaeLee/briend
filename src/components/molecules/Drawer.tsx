@@ -15,7 +15,7 @@ import { useSwipeable } from 'react-swipeable';
 
 import { SELECTOR } from '@/constants';
 import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores';
-import { cn, CustomError, ERROR } from '@/utils';
+import { assert, cn } from '@/utils';
 import { createOnlyClientComponent } from '@/utils/client';
 
 import { CustomIconButton } from '../atoms/CustomIconButton';
@@ -35,8 +35,7 @@ export const Drawer = createOnlyClientComponent(
       SELECTOR.DYNAMIC_CONTAINER,
     );
 
-    if (!dynamicContainer)
-      throw new CustomError(ERROR.UNKNOWN_VALUE('dynamicContainer'));
+    assert(dynamicContainer);
 
     const y = useMotionValue('100%');
 

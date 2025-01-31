@@ -64,7 +64,7 @@ export const useGlobalStore = create<GlobalStore>((set) => {
   if (!isEnumValue(LANGUAGE, lastInviteLanguage)) {
     localStorage.removeItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE);
 
-    throw new CustomError();
+    throw new CustomError('Last invite language is invalid');
   }
 
   const getMediaQuery = () => {

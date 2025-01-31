@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 import type { ApiParams } from '@/types/api-params';
 import type { ApiResponse } from '@/types/api-response';
 import type { JwtPayload } from '@/types/jwt';
-import { CustomError, ERROR_STATUS } from '@/utils';
+import { CustomError } from '@/utils';
 import {
   createApiRoute,
   createFriendToken,
@@ -26,7 +26,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
 
       if (guestId === hostId)
         throw new CustomError({
-          status: ERROR_STATUS.UNAUTHORIZED,
+          code: 'UNAUTHORIZED',
           message: 'guestId and hostId are the same',
         });
 
@@ -60,7 +60,7 @@ export const POST = createApiRoute<ApiResponse.CREATE_FRIEND>(
     } catch (e) {
       if (e instanceof errors.JWTExpired) {
         throw new CustomError({
-          status: ERROR_STATUS.EXPIRED_CHAT,
+          code: 'EXPIRED_CHAT',
         });
       }
 

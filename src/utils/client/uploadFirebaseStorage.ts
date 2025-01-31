@@ -29,7 +29,6 @@ export const uploadFirebaseStorage = async ({
     return downloadUrl;
   } catch (e) {
     throw new CustomError({
-      code: 'INTERNAL_SERVER_ERROR',
       message: `Failed to upload file: ${fullPath}`,
       cause: String(e),
     });

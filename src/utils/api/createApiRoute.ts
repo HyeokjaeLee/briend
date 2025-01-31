@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server';
 
 import { NextResponse } from 'next/server';
 
-import { CustomError, ERROR } from '../customError';
+import { CustomError } from '../customError';
 
 import { getAuthToken } from './getAuthToken';
 
@@ -30,7 +30,7 @@ export const createApiRoute =
           req,
         });
 
-        if (!token) throw new CustomError(ERROR.UNAUTHORIZED());
+        if (!token) throw new CustomError();
       }
 
       const res = await route(req, context);

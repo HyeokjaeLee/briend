@@ -2,7 +2,7 @@ import { getTranslation } from '@/app/i18n/server';
 import { signIn } from '@/auth';
 import { LOGIN_PROVIDERS, type LANGUAGE } from '@/constants';
 import Logo from '@/svgs/logo.svg';
-import { CustomError, isEnumValue } from '@/utils';
+import { assertEnum } from '@/utils';
 
 import { LoginButton } from './_components/LoginButton';
 
@@ -31,7 +31,7 @@ const LoginPage = async (props: LoginPageProps) => {
 
           const provider = formData.get(LOGIN_BUTTON_NAME);
 
-          if (!isEnumValue(LOGIN_PROVIDERS, provider)) throw new CustomError();
+          assertEnum(LOGIN_PROVIDERS, provider);
 
           await signIn(provider);
         }}

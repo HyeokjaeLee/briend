@@ -28,14 +28,15 @@ export const useHistoryStore = create<HistoryStore>((set) => {
 
     try {
       if (sessionExpire ? Number(sessionExpire) < Date.now() : true)
-        throw new CustomError();
+        throw new CustomError('History session expired');
 
       const sessionHistory = sessionStorage.getItem(SESSION_STORAGE.HISTORY);
       const sessionHistoryIndex = sessionStorage.getItem(
         SESSION_STORAGE.HISTORY_INDEX,
       );
 
-      if (!sessionHistory || !sessionHistoryIndex) throw new CustomError();
+      if (!sessionHistory || !sessionHistoryIndex)
+        throw new CustomError('History session data is missing');
 
       historyIndex = Number(sessionHistoryIndex);
 

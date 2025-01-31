@@ -4,7 +4,7 @@ import { type NextRequest, NextResponse } from 'next/server';
 import { COOKIES, LANGUAGE } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import type { JwtPayload } from '@/types/jwt';
-import { CustomError, ERROR, isEnumValue } from '@/utils';
+import { assert, assertEnum } from '@/utils';
 import { createApiRoute, getAuthToken } from '@/utils/api';
 
 export type CreateChatInviteTokenApiParams = Pick<
@@ -28,15 +28,13 @@ export const POST = createApiRoute<CreateChatInviteTokenApiResponse>(
 
     const hostNickname = token?.name;
 
-    if (!hostNickname)
-      throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['hostNickname']));
+    assert(hostNickname);
 
     const i18nCookie = req.cookies.get(COOKIES.I18N);
 
     const hostLanguage = i18nCookie?.value;
 
-    if (!isEnumValue(LANGUAGE, hostLanguage))
-      throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['hostLanguage']));
+    assertEnum(LANGUAGE, hostLanguage);
 
     const inviteToken = await new SignJWT({
       hostId,

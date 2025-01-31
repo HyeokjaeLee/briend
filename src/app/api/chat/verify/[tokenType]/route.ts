@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server';
 
 import { COOKIES } from '@/constants';
 import type { JwtPayload, TOKEN_TYPE } from '@/types/jwt';
-import { CustomError, ERROR, ERROR_STATUS } from '@/utils';
+import { assert, CustomError } from '@/utils';
 import { createApiRoute, jwtSecretVerify } from '@/utils/api';
 
 type ChatTokenPayload = JwtPayload.InviteToken | JwtPayload.ChannelToken;
@@ -37,7 +37,7 @@ export const GET = createApiRoute<
 
   const token = searchParams.get('token');
 
-  if (!token) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['token']));
+  assert(token);
 
   try {
     const { payload } = await jwtSecretVerify<ChatTokenPayload>(token);
@@ -48,7 +48,7 @@ export const GET = createApiRoute<
 
     if (![payload.hostId, payload.guestId].includes(userId)) {
       throw new CustomError({
-        status: ERROR_STATUS.UNAUTHORIZED,
+        code: 'UNAUTHORIZED',
       });
     }
 

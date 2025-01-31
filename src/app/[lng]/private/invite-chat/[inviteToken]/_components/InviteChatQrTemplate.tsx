@@ -123,7 +123,10 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
           const { userId } = decodeJwt<JwtPayload.FriendToken>(data.token);
 
-          if (userId === hostId) throw new CustomError(ERROR.UNAUTHORIZED());
+          if (userId === hostId)
+            throw new CustomError({
+              code: 'UNAUTHORIZED',
+            });
 
           await connection.send(
             {
