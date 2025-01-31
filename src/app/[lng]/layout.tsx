@@ -14,9 +14,9 @@ import { Theme } from '@radix-ui/themes';
 import { languages } from '../i18n/settings';
 
 import { BottomNav } from './_components/BottomNav';
+import { CenterContainer } from './_components/CenterContainer';
 import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
-import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { GlobalSuspense } from './_components/GlobalSuspense';
@@ -99,13 +99,7 @@ export default async function RootLayout({
                 className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
                 id={SELECTOR.DYNAMIC_CONTAINER}
               >
-                <div
-                  className={cn(
-                    'relative flex size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
-                    'flex-1 shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
-                  )}
-                >
-                  <GlobalLoading />
+                <CenterContainer>
                   <GlobalHeader />
                   <ToastProvider />
                   <Suspense fallback={<div className="size-full flex-1" />}>
@@ -113,7 +107,7 @@ export default async function RootLayout({
                     <MainContainer>{children}</MainContainer>
                   </Suspense>
                   <BottomNav />
-                </div>
+                </CenterContainer>
                 <SidePanel />
               </div>
             </GlobalProvider>

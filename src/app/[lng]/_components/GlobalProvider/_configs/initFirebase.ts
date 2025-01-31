@@ -1,9 +1,13 @@
 import { getAnalytics } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken } from 'firebase/auth';
+import {
+  getAuth,
+  signInWithCustomToken,
+  signInAnonymously,
+} from 'firebase/auth';
 import { getSession } from 'next-auth/react';
 
-import { trpcClient } from '@/app/trpc/client';
+import { trpcClient } from '@/app/trpc';
 import { IS_CLIENT, PUBLIC_ENV } from '@/constants';
 
 const firebaseConfig = {
@@ -23,15 +27,16 @@ const initFirebase = async () => {
 
   getAnalytics(app);
 
-  const isLogin = !!(await getSession());
-
-  if (!isLogin) return;
-
   const auth = getAuth();
 
-  const customToken = await trpcClient.getFirebaseCustomToken.query();
+  const isLogin = !!(await getSession());
 
-  await signInWithCustomToken(auth, customToken);
+  if (isLogin) {
+    const customToken = await trpcClient.getFirebaseCustomToken.query();
+    await signInWithCustomToken(auth, customToken);
+  } else {
+    await signInAnonymously(auth);
+  }
 };
 
 export const firebase = initFirebase();

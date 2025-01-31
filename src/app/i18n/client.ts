@@ -47,12 +47,9 @@ export const useTranslation = <
   options?: UseTranslationOptions<KPrefix>,
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> => {
   const translation = useOriginalTranslation(ns, options);
+
   const { i18n } = translation;
   const { lng } = useLanguage();
-
-  if (!IS_CLIENT && lng && i18n.resolvedLanguage !== lng) {
-    i18n.changeLanguage(lng);
-  }
 
   const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
 

@@ -8,24 +8,24 @@ export const BackNoticeModal = () => {
   const [
     backNoticeInfo,
     setBackNoticeInfo,
-    isGlobalModalOpen,
-    setIsGlobalModalOpen,
+    isBackNoticeModalOpen,
+    setIsBackNoticeModalOpen,
   ] = useGlobalModalStore(
     useShallow((state) => [
       state.backNoticeInfo,
       state.setBackNoticeInfo,
-      state.isGlobalModalOpen,
-      state.setIsGlobalModalOpen,
+      state.isBackNoticeModalOpen,
+      state.setIsBackNoticeModalOpen,
     ]),
   );
 
-  const handleClose = () => setIsGlobalModalOpen(false);
+  const handleClose = () => setIsBackNoticeModalOpen(false);
   const router = useCustomRouter();
 
   return (
     <Modal
       className="whitespace-pre-line"
-      open={isGlobalModalOpen}
+      open={isBackNoticeModalOpen}
       title={backNoticeInfo?.title}
       onClose={handleClose}
     >

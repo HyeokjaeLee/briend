@@ -6,16 +6,24 @@ interface BackNoticeInfo {
 }
 
 interface GlobalModalStore {
-  isGlobalModalOpen: boolean;
-  setIsGlobalModalOpen: (isOpen: boolean) => void;
+  isBackNoticeModalOpen: boolean;
+  setIsBackNoticeModalOpen: (isOpen: boolean) => void;
   backNoticeInfo: BackNoticeInfo | null;
   setBackNoticeInfo: (message: BackNoticeInfo | null) => void;
+
+  isEscapeErrorModalOpen: boolean;
+  setIsEscapeErrorModalOpen: (isOpen: boolean) => void;
 }
 
 export const useGlobalModalStore = create<GlobalModalStore>((set) => ({
-  isGlobalModalOpen: false,
-  setIsGlobalModalOpen: (isOpen: boolean) => set({ isGlobalModalOpen: isOpen }),
+  isBackNoticeModalOpen: false,
+  setIsBackNoticeModalOpen: (isOpen: boolean) =>
+    set({ isBackNoticeModalOpen: isOpen }),
   backNoticeInfo: null,
   setBackNoticeInfo: (backNoticeInfo: BackNoticeInfo | null) =>
     set({ backNoticeInfo }),
+
+  isEscapeErrorModalOpen: false,
+  setIsEscapeErrorModalOpen: (isOpen: boolean) =>
+    set({ isEscapeErrorModalOpen: isOpen }),
 }));

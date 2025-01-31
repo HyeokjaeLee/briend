@@ -2,10 +2,8 @@
 
 import { useSearchParams } from 'next/navigation';
 
-import { IoIosWarning } from 'react-icons/io';
-
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton, Modal } from '@/components';
+import { ConfirmModal, CustomButton } from '@/components';
 import { useCustomRouter, useDeleteFriend } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { assert } from '@/utils';
@@ -32,39 +30,31 @@ export const FriendDeleteModal = ({
   const router = useCustomRouter();
 
   return (
-    <Modal
-      hasCloseButton
-      className="flex flex-col gap-4"
-      open={opened}
+    <ConfirmModal
+      footer={
+        <footer className="flex w-full gap-4">
+          <CustomButton className="flex-1">{t('unlink-button')}</CustomButton>
+          <CustomButton
+            className="flex-1"
+            variant="outline"
+            onClick={() => {
+              assert(userId);
+
+              deleteFriend(userId);
+
+              onClose?.();
+
+              router.replace(ROUTES.FRIEND_LIST.pathname);
+            }}
+          >
+            {t('delete-button')}
+          </CustomButton>
+        </footer>
+      }
+      message={t('delete-friend-sub-message')}
+      opened={opened}
+      title={t('delete-friend-message')}
       onClose={onClose}
-    >
-      <div className="rounded-full bg-zinc-100 p-5 flex-center">
-        <IoIosWarning className="size-10 text-red-500" />
-      </div>
-      <strong className="text-center text-xl font-semibold">
-        {t('delete-friend-message')}
-      </strong>
-      <p className="mx-10 text-center text-zinc-600">
-        {t('delete-friend-sub-message')}
-      </p>
-      <footer className="mt-8 flex w-full gap-4">
-        <CustomButton className="flex-1">{t('unlink-button')}</CustomButton>
-        <CustomButton
-          className="flex-1"
-          variant="outline"
-          onClick={() => {
-            assert(userId);
-
-            deleteFriend(userId);
-
-            onClose?.();
-
-            router.replace(ROUTES.FRIEND_LIST.pathname);
-          }}
-        >
-          {t('delete-button')}
-        </CustomButton>
-      </footer>
-    </Modal>
+    />
   );
 };
