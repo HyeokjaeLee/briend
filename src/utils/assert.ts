@@ -2,9 +2,7 @@ import { CustomError } from './customError';
 
 export function assert(value: unknown): asserts value {
   if (!value) {
-    throw new CustomError({
-      message: `Assertion failed: ${value}`,
-    });
+    throw new CustomError(`Assertion failed: ${value}`);
   }
 }
 
@@ -16,7 +14,5 @@ export function assertEnum<T extends string>(
     if (enumType[key] === value) return;
   }
 
-  throw new CustomError({
-    message: `Assertion failed: ${value} is not a valid enum value`,
-  });
+  throw new CustomError(`Assertion failed: ${value} is not a valid enum value`);
 }

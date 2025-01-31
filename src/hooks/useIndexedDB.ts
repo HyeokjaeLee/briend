@@ -2,7 +2,7 @@ import type { EntityTable } from 'dexie';
 
 import { useLiveQuery } from 'dexie-react-hooks';
 
-import { CustomError, ERROR_STATUS } from '@/utils';
+import { CustomError } from '@/utils';
 
 export const useIndexedDB = <
   TTable extends EntityTable<any, any> | undefined,
@@ -13,11 +13,7 @@ export const useIndexedDB = <
   deps?: any[],
 ) =>
   useLiveQuery(() => {
-    if (!table)
-      throw new CustomError({
-        status: ERROR_STATUS.NOT_FOUND,
-        message: 'Table not found',
-      });
+    if (!table) throw new CustomError('Table not found');
 
     return callback(table);
   }, deps);

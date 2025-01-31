@@ -14,7 +14,7 @@ import { useCustomRouter, useUserData } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
-import { CustomError, ERROR, isEnumValue } from '@/utils';
+import { assert, assertEnum } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
@@ -76,7 +76,7 @@ export const InviteForm = () => {
     <form
       className="mx-auto mb-2 flex w-full flex-col items-center gap-4"
       onSubmit={handleSubmit(async ({ language, nickname }) => {
-        if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
+        assert(user);
 
         createChatMutation.mutate({
           hostId: user.id,
@@ -106,8 +106,7 @@ export const InviteForm = () => {
               size="3"
               value={field.value}
               onValueChange={(language) => {
-                if (!isEnumValue(LANGUAGE, language))
-                  throw new CustomError(ERROR.UNKNOWN_VALUE('language'));
+                assertEnum(LANGUAGE, language);
 
                 setLastInviteLanguage(language);
 

@@ -19,7 +19,6 @@ import {
 
 import { IS_CLIENT } from '@/constants';
 import { useLanguage } from '@/hooks';
-import { CustomError, ERROR } from '@/utils';
 
 import { getOptions, languages } from './settings';
 
@@ -50,9 +49,6 @@ export const useTranslation = <
   const translation = useOriginalTranslation(ns, options);
   const { i18n } = translation;
   const { lng } = useLanguage();
-
-  if (typeof lng !== 'string')
-    throw new CustomError(ERROR.UNKNOWN_VALUE('lng'));
 
   if (!IS_CLIENT && lng && i18n.resolvedLanguage !== lng) {
     i18n.changeLanguage(lng);

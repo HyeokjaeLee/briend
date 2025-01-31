@@ -3,7 +3,8 @@ import type { Session } from 'next-auth';
 import superjson from 'superjson';
 
 import { auth } from '@/auth';
-import { initTRPC, TRPCError } from '@trpc/server';
+import { CustomError } from '@/utils';
+import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 
 const AUTH_EXCEPTION_MESSAGES = [
@@ -20,7 +21,7 @@ export const createContext = async (
     session = await auth();
   } catch (e) {
     if (!(e instanceof Error))
-      throw new TRPCError({
+      throw new CustomError({
         code: 'BAD_GATEWAY',
         message: 'Failed to get session',
       });
@@ -28,7 +29,7 @@ export const createContext = async (
     const { message } = e;
 
     if (!AUTH_EXCEPTION_MESSAGES.some((m) => message.startsWith(m)))
-      throw new TRPCError({
+      throw new CustomError({
         code: 'BAD_GATEWAY',
         message: e.message,
         cause: e.cause,
@@ -53,7 +54,7 @@ export const publicProcedure = t.procedure;
 
 export const privateProcedure = t.procedure.use((opts) => {
   if (!opts.ctx.session) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' });
+    throw new CustomError({ code: 'UNAUTHORIZED' });
   }
 
   return opts.next({

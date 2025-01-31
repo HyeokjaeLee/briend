@@ -7,7 +7,7 @@ import { CustomButton, CustomLink, Lottie } from '@/components';
 import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
-import { ERROR_STATUS } from '@/utils';
+import { ERROR_CODE } from '@/utils';
 
 import { useTranslation } from '../i18n/client';
 
@@ -41,13 +41,14 @@ export default function ErrorPage({ error, isSidePanel }: ErrorPageProps) {
   };
 
   switch (errorStatusNumber) {
-    case ERROR_STATUS.UNAUTHORIZED: {
+    case ERROR_CODE.UNAUTHORIZED: {
       dynamicInfo.lottie = UnauthErrorLottie;
       dynamicInfo.text = t('not-allowed');
 
       break;
     }
-    case ERROR_STATUS.EXPIRED_CHAT: {
+
+    case ERROR_CODE.EXPIRED_CHAT: {
       dynamicInfo.lottie = TimeErrorLottie;
       dynamicInfo.text = t('expired-chat');
       dynamicInfo.buttonIcon = <RiMessage2Line />;

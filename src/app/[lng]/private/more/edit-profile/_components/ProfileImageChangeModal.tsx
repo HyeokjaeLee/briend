@@ -1,6 +1,6 @@
 import { useTranslation } from '@/app/i18n/client';
 import { CustomButton, Modal } from '@/components';
-import { CustomError, ERROR } from '@/utils';
+import { assert } from '@/utils';
 
 interface ProfileImageChangeModalProps {
   open?: boolean;
@@ -46,8 +46,7 @@ export const ProfileImageChangeModal = ({
               onChange={async (e) => {
                 const file = e.target.files?.[0];
 
-                if (!file)
-                  throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['file']));
+                assert(file);
 
                 onChangeProfileImage?.(file);
               }}

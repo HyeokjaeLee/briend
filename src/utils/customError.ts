@@ -1,6 +1,6 @@
 import { IS_CLIENT } from '@/constants';
 
-enum ERROR_CODE {
+export enum ERROR_CODE {
   BAD_REQUEST = 400,
   INTERNAL_SERVER_ERROR = 500,
   INTERNAL_CLIENT_ERROR = 5001,
@@ -28,7 +28,7 @@ enum ERROR_CODE {
 export interface CustomErrorProps {
   code?: keyof typeof ERROR_CODE;
   message?: string;
-  cause?: string;
+  cause?: string | unknown;
 }
 
 export class CustomError extends Error {

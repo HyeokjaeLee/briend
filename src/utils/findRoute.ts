@@ -1,7 +1,7 @@
 import { ROUTES } from '@/routes/client';
 
 import { assert } from './assert';
-import { CustomError, ERROR_STATUS } from './customError';
+import { CustomError } from './customError';
 
 export const findRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
@@ -72,7 +72,7 @@ export const findRoute = (pathname: string) => {
 
   if (!matchedRoute.name)
     throw new CustomError({
-      status: ERROR_STATUS.NOT_FOUND,
+      code: 'NOT_FOUND',
       cause: `route not found: ${pathname}`,
     });
 

@@ -1,6 +1,6 @@
 import { IS_CLIENT, LANGUAGE, PUBLIC_ENV } from '@/constants';
 
-import { CustomError, ERROR } from './customError';
+import { CustomError } from './customError';
 import { isEnumValue } from './isEnumValue';
 
 interface RouteOptions {
@@ -49,7 +49,10 @@ export const createRoute = <
         if ('dynamicPath' in params && params.dynamicPath) {
           url.pathname = pathname(params.dynamicPath);
         } else {
-          throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['dynamicPath']));
+          throw new CustomError({
+            code: 'INTERNAL_CLIENT_ERROR',
+            message: 'invalid pathname',
+          });
         }
       }
 

@@ -19,7 +19,7 @@ import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
-import { assert, CustomError, ERROR, isEnumValue } from '@/utils';
+import { assert, assertEnum } from '@/utils';
 import { toast, uploadFirebaseStorage } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select, TextField } from '@radix-ui/themes';
@@ -57,7 +57,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
       const user = session?.user;
 
-      if (!user) throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(['user']));
+      assert(user);
 
       return {
         language: lng,
@@ -183,8 +183,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
                 size="3"
                 value={field.value}
                 onValueChange={(language) => {
-                  if (!isEnumValue(LANGUAGE, language))
-                    throw new CustomError(ERROR.UNKNOWN_VALUE('language'));
+                  assertEnum(LANGUAGE, language);
 
                   return field.onChange(language);
                 }}

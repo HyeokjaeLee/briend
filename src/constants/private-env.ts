@@ -1,4 +1,4 @@
-import { CustomError, ERROR } from '@/utils';
+import { CustomError } from '@/utils';
 
 const privateEnv = {
   AUTH_GOOGLE_ID: process.env.AUTH_GOOGLE_ID,
@@ -21,7 +21,7 @@ const unsetKeys = Object.entries(privateEnv)
   .map(([key]) => `PRIVATE_ENV.${key}`);
 
 if (unsetKeys.length) {
-  throw new CustomError(ERROR.NOT_ENOUGH_PARAMS(unsetKeys));
+  throw new CustomError(`Not enough params: ${unsetKeys.join(', ')}`);
 }
 
 export const PRIVATE_ENV = privateEnv as Record<
