@@ -91,7 +91,7 @@ export const Modal = ({
             ) : null}
             <section
               className={cn(
-                'relative my-5 mx-10 flex flex-col items-center h-full',
+                'relative m-5 flex flex-col items-center h-full min-h-28 min-w-0 xs:min-w-96',
                 className,
               )}
             >

@@ -6,7 +6,7 @@ import { use as i18next } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
 
-import { useLayoutEffect, useState } from 'react';
+import { use, useLayoutEffect } from 'react';
 import type {
   UseTranslationOptions,
   UseTranslationResponse,
@@ -22,7 +22,7 @@ import { useLanguage } from '@/hooks';
 
 import { getOptions, languages } from './settings';
 
-i18next(initReactI18next)
+const i18nInstance = i18next(initReactI18next)
   .use(LanguageDetector)
   .use(
     resourcesToBackend(
@@ -46,18 +46,17 @@ export const useTranslation = <
   ns?: Ns,
   options?: UseTranslationOptions<KPrefix>,
 ): UseTranslationResponse<FallbackNs<Ns>, KPrefix> => {
+  use(i18nInstance);
+
+  const { lng } = useLanguage();
+
   const translation = useOriginalTranslation(ns, options);
 
   const { i18n } = translation;
-  const { lng } = useLanguage();
 
-  const [activeLng, setActiveLng] = useState(i18n.resolvedLanguage);
-
-  useLayoutEffect(() => {
-    if (activeLng === i18n.resolvedLanguage) return;
-
-    setActiveLng(i18n.resolvedLanguage);
-  }, [activeLng, i18n.resolvedLanguage]);
+  if (!IS_CLIENT && i18n.resolvedLanguage !== lng) {
+    i18n.changeLanguage(lng);
+  }
 
   useLayoutEffect(() => {
     if (!lng || i18n.resolvedLanguage === lng) return;

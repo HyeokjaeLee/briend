@@ -1,7 +1,8 @@
 'use client';
 
+import type { z } from 'zod';
+
 import { getSession } from 'next-auth/react';
-import { z } from 'zod';
 
 import { useEffect, use, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -18,6 +19,7 @@ import {
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
+import { editProfileSchema } from '@/schema/editProfileSchema';
 import { useGlobalModalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
 import { toast, uploadFirebaseStorage } from '@/utils/client';
@@ -43,14 +45,8 @@ const EditProfilePage = (props: ProfilePageProps) => {
 
   const { user, sessionUpdate } = useUserData();
 
-  const formSchema = z.object({
-    language: z.nativeEnum(LANGUAGE),
-    displayName: z.string().max(20, t('nickname-max-length')),
-    photoURL: z.string().optional(),
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof editProfileSchema>>({
+    resolver: zodResolver(editProfileSchema),
     mode: 'onChange',
     defaultValues: async () => {
       const session = await getSession();
@@ -170,7 +166,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             variant="soft"
           />
           <ValidationMessage
-            message={form.formState.errors.displayName?.message}
+            message={t(form.formState.errors.displayName?.message ?? '')}
           />
         </label>
         <label className="w-full font-semibold">
@@ -214,7 +210,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             tempProfileImage.reset();
             setIsProfileImageModalOpen(false);
 
-            return form.setValue('photoURL', undefined, {
+            return form.setValue('photoURL', null, {
               shouldDirty: true,
             });
           }
@@ -232,7 +228,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
         onClose={() => setIsProfileImageModalOpen(false)}
       />
       <BottomButton
-        disabled={isNoChanged}
+        disabled={isNoChanged || form.formState.isLoading}
         form={FORM_NAME}
         loading={form.formState.isSubmitting || editProfileMutation.isPending}
         type="submit"

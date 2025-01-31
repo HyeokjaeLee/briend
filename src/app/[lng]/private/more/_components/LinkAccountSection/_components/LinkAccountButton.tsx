@@ -1,5 +1,6 @@
 'use client';
 
+import { pick } from 'es-toolkit';
 import Image from 'next/image';
 
 import { useTranslation } from '@/app/i18n/client';
@@ -12,12 +13,12 @@ import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 
 interface LoginConnectButtonProps {
   provider: LOGIN_PROVIDERS;
-  isConnected: boolean;
+  onLink?: () => void;
 }
 
 export const LinkAccountButton = ({
   provider,
-  isConnected,
+  onLink,
 }: LoginConnectButtonProps) => {
   const { t } = useTranslation('more');
   const { user, sessionUpdate } = useUserData();
@@ -39,8 +40,33 @@ export const LinkAccountButton = ({
 
   const isLoading = !user || unlinkAccountMutation.isPending;
 
+  const idKey = `${provider}Id` as const;
+
+  const isConnected = !!user?.[idKey];
+
+  const isLastOne = !!(
+    user &&
+    Object.values(pick(user, ['googleId', 'kakaoId', 'naverId'])).filter(
+      Boolean,
+    ).length === 1 &&
+    user[idKey]
+  );
+
   return (
-    <button className="flex-col gap-2 break-keep flex-center" type="button">
+    <button
+      className="flex-col gap-2 break-keep flex-center"
+      type="button"
+      onClick={() => {
+        if (isLastOne)
+          return toast({
+            message: t('last-account'),
+          });
+
+        if (isConnected) return unlinkAccountMutation.mutate({ provider });
+
+        onLink?.();
+      }}
+    >
       <div
         className={cn(
           'size-14 flex-center rounded-full',

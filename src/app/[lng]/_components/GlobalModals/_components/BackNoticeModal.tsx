@@ -1,6 +1,7 @@
 import { useShallow } from 'zustand/shallow';
 
-import { CustomButton, Modal } from '@/components';
+import { useTranslation } from '@/app/i18n/client';
+import { ConfirmModal, CustomButton, Modal } from '@/components';
 import { useCustomRouter } from '@/hooks';
 import { useGlobalModalStore } from '@/stores';
 
@@ -21,32 +22,34 @@ export const BackNoticeModal = () => {
 
   const handleClose = () => setIsBackNoticeModalOpen(false);
   const router = useCustomRouter();
+  const { t } = useTranslation('global-modal');
 
   return (
-    <Modal
-      className="whitespace-pre-line"
-      open={isBackNoticeModalOpen}
-      title={backNoticeInfo?.title}
-      onClose={handleClose}
-    >
-      {backNoticeInfo?.message}
-      <footer className="mt-5 flex w-full justify-end gap-2">
-        <CustomButton size="3" onClick={handleClose}>
-          취소
-        </CustomButton>
-        <CustomButton
-          size="3"
-          variant="outline"
-          onClick={() => {
-            handleClose();
-            setBackNoticeInfo(null);
+    <ConfirmModal
+      footer={
+        <footer className="mt-auto flex w-full justify-end gap-2">
+          <CustomButton className="flex-1" size="4" onClick={handleClose}>
+            {t('back-notice-close-button')}
+          </CustomButton>
+          <CustomButton
+            className="flex-1"
+            size="4"
+            variant="outline"
+            onClick={() => {
+              handleClose();
+              setBackNoticeInfo(null);
 
-            router.back();
-          }}
-        >
-          나가기
-        </CustomButton>
-      </footer>
-    </Modal>
+              router.back();
+            }}
+          >
+            {t('back-notice-exit-button')}
+          </CustomButton>
+        </footer>
+      }
+      message={backNoticeInfo?.message || ''}
+      opened={isBackNoticeModalOpen}
+      title={backNoticeInfo?.title || ''}
+      onClose={handleClose}
+    />
   );
 };
