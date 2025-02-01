@@ -30,6 +30,9 @@ const config: Config = {
         shake:
           'shake-horizontal var(--tw-animate-duration, 1s) cubic-bezier(0.455, 0.030, 0.515, 0.955) var(--tw-animate-delay, 0s) both',
       },
+      backdropBlur: {
+        xs: '1px',
+      },
       boxShadow: {
         'lg-x':
           '10px 0 15px -3px rgba(0, 0, 0, 0.03), -10px 0 15px -3px rgba(0, 0, 0, 0.03)',

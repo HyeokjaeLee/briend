@@ -17,6 +17,7 @@ import { assert, assertEnum } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
+
 export interface QrInfo {
   userId: string;
   language: LANGUAGE;
@@ -61,53 +62,55 @@ export const InviteForm = () => {
   });
 
   return (
-    <form
-      className="mx-auto mb-2 flex w-full flex-col items-center gap-4"
-      onSubmit={handleSubmit(async (params) => {
-        assert(user);
+    <>
+      <form
+        className="mx-auto mb-2 flex w-full flex-col items-center gap-4"
+        onSubmit={handleSubmit(async (params) => {
+          assert(user);
 
-        createInviteTokenMutation.mutate(params);
-      })}
-    >
-      <label className="mb-10 w-full text-sm font-semibold">
-        {t('friend-language')}
-        <Controller
-          control={control}
-          name="language"
-          render={({ field }) => (
-            <Select.Root
-              size="3"
-              value={field.value}
-              onValueChange={(language) => {
-                assertEnum(LANGUAGE, language);
-
-                return field.onChange(language);
-              }}
-            >
-              <Select.Trigger
-                className="mt-2 h-14 w-full rounded-xl"
-                variant="soft"
-              />
-              <Select.Content>
-                {Object.values(LANGUAGE).map((language) => {
-                  return (
-                    <Select.Item key={language} value={language}>
-                      {t(language)}
-                    </Select.Item>
-                  );
-                })}
-              </Select.Content>
-            </Select.Root>
-          )}
-        />
-      </label>
-      <CustomButton
-        className="w-full"
-        loading={formState.isSubmitting || createChatMutation.isPending}
-        type="submit"
+          createInviteTokenMutation.mutate(params);
+        })}
       >
-        {t('invite-button')}
-      </CustomButton>
-    </form>
+        <label className="mb-10 w-full text-sm font-semibold">
+          {t('friend-language')}
+          <Controller
+            control={control}
+            name="language"
+            render={({ field }) => (
+              <Select.Root
+                size="3"
+                value={field.value}
+                onValueChange={(language) => {
+                  assertEnum(LANGUAGE, language);
+
+                  return field.onChange(language);
+                }}
+              >
+                <Select.Trigger
+                  className="mt-2 h-14 w-full rounded-xl"
+                  variant="soft"
+                />
+                <Select.Content>
+                  {Object.values(LANGUAGE).map((language) => {
+                    return (
+                      <Select.Item key={language} value={language}>
+                        {t(language)}
+                      </Select.Item>
+                    );
+                  })}
+                </Select.Content>
+              </Select.Root>
+            )}
+          />
+        </label>
+        <CustomButton
+          className="w-full"
+          loading={formState.isSubmitting || createChatMutation.isPending}
+          type="submit"
+        >
+          {t('invite-button')}
+        </CustomButton>
+      </form>
+    </>
   );
 };
