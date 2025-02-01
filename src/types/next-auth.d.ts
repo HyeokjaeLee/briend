@@ -18,7 +18,6 @@ export interface UserSession {
 declare module 'next-auth' {
   interface Session {
     user: UserSession;
-    firebaseToken: string;
   }
 }
 

@@ -29,7 +29,9 @@ const initFirebase = async () => {
 
   const auth = getAuth();
 
-  const isLogin = !!(await getSession());
+  const session = await getSession();
+
+  const isLogin = !!session;
 
   if (isLogin) {
     const customToken = await trpcClient.getFirebaseCustomToken.query();
