@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
+    "@lottiefiles/dotlottie-react": "^0.12.3",
     "@radix-ui/themes": "^3.2.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/query-sync-storage-persister": "^5.66.0",
@@ -44,7 +45,6 @@
     "i18next-resources-to-backend": "^1.2.1",
     "jose": "^5.9.6",
     "ky": "^1.7.4",
-    "lottie-react": "^2.4.1",
     "motion": "^11.18.2",
     "nanoid": "3.3.7",
     "next": "^15.1.6",

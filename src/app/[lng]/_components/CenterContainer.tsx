@@ -1,33 +1,15 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
+import { type PropsWithChildren } from 'react';
 
-import { useLayoutEffect, type PropsWithChildren } from 'react';
-
-import { LoadingTemplate } from '@/components';
-import { useUrl } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore, useSidePanelStore } from '@/stores';
+import { useSidePanelStore } from '@/stores';
 import { cn } from '@/utils';
 
 export const CenterContainer = ({ children }: PropsWithChildren) => {
   const isHome = useSidePanelStore(
     (state) => state.sidePanelUrl === ROUTES.FRIEND_LIST.pathname,
   );
-
-  const [globalLoading, setGlobalLoading] = useGlobalStore(
-    useShallow((state) => [state.globalLoading, state.setGlobalLoading]),
-  );
-
-  const { value: isLoading, options } = globalLoading;
-
-  const delay = options?.delay ?? 300;
-
-  const url = useUrl();
-
-  useLayoutEffect(() => {
-    setGlobalLoading(false);
-  }, [url, setGlobalLoading]);
 
   return (
     <div
@@ -39,20 +21,6 @@ export const CenterContainer = ({ children }: PropsWithChildren) => {
       )}
     >
       {children}
-      <LoadingTemplate
-        className={cn(
-          'absolute animate-fade bg-slate-200/50 backdrop-blur-xl animate-duration-150',
-          {
-            0: 'animate-delay-0',
-            100: 'animate-delay-100',
-            200: 'animate-delay-200',
-            300: 'animate-delay-300',
-          }[delay],
-          {
-            '!hidden': !isLoading,
-          },
-        )}
-      />
     </div>
   );
 };

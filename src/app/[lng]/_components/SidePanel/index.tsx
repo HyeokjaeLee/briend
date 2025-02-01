@@ -3,7 +3,7 @@
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import { useShallow } from 'zustand/shallow';
 
-import { memo, useEffect } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { CustomIconButton } from '@/components';
@@ -60,6 +60,8 @@ export const SidePanel = memo(() => {
 
   const { push } = useSidePanel();
 
+  const [isErrorRoute, setIsErrorRoute] = useState(false);
+
   return (
     <aside
       className={cn(
@@ -70,7 +72,7 @@ export const SidePanel = memo(() => {
         }),
       )}
     >
-      {route.topHeaderType === 'back' ? (
+      {route.topHeaderType === 'back' && !isErrorRoute ? (
         <nav className="flex h-14 items-center justify-end px-5">
           <CustomIconButton
             size="3"
@@ -85,7 +87,9 @@ export const SidePanel = memo(() => {
       ) : null}
       <section className="flex flex-1 flex-col overflow-auto">
         <ErrorBoundary
-          errorComponent={(error) => <ErrorPage {...error} isSidePanel />}
+          errorComponent={(error) => (
+            <ErrorPage {...error} onErrorSidePanel={setIsErrorRoute} />
+          )}
         >
           <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
         </ErrorBoundary>

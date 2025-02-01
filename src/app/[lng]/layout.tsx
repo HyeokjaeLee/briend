@@ -17,6 +17,7 @@ import { BottomNav } from './_components/BottomNav';
 import { CenterContainer } from './_components/CenterContainer';
 import { pretendard } from './_components/Font';
 import { GlobalHeader } from './_components/GlobalHeader';
+import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { GlobalSuspense } from './_components/GlobalSuspense';
@@ -92,6 +93,7 @@ export default async function RootLayout({
     >
       <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
         <body>
+          <GlobalLoading />
           <GlobalSuspense>
             <GlobalProvider>
               <aside className="hidden flex-1 bg-slate-100 xl:block" />

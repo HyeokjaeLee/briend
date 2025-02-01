@@ -9,7 +9,7 @@ export {
 export { CustomImage, type CustomImageProps } from './atoms/CustomImage';
 
 export { CustomLink, type CustomLinkProps } from './atoms/CustomLink';
-export { Lottie, type LottieProps } from './atoms/Lottie';
+export { DotLottie, type DotLottieProps } from './atoms/DotLottie';
 
 /**
  * @package molecules 컴포넌트
