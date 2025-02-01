@@ -9,10 +9,7 @@ export enum TOKEN_TYPE {
 
 export namespace JwtPayload {
   export interface InviteToken {
-    hostId: string;
-    hostNickname: string;
-    hostLanguage: LANGUAGE;
-    guestNickname: string;
+    hostUserId: string;
     guestLanguage: LANGUAGE;
   }
 

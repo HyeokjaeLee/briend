@@ -19,7 +19,7 @@ import {
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { editProfileSchema } from '@/schema/editProfileSchema';
+import { editProfileSchema } from '@/schema/trpc/user';
 import { useGlobalModalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
 import { toast, uploadFirebaseStorage } from '@/utils/client';

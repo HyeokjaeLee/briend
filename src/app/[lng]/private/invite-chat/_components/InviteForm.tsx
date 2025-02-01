@@ -1,22 +1,21 @@
 'use client';
 
-import { useLiveQuery } from 'dexie-react-hooks';
-import { z } from 'zod';
-import { useShallow } from 'zustand/shallow';
+import type { z } from 'zod';
 
 import { Controller, useForm } from 'react-hook-form';
 
 import { useTranslation } from '@/app/i18n/client';
-import { CustomButton, ValidationMessage } from '@/components';
+import { trpc } from '@/app/trpc';
+import { CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
-import { friendTable } from '@/database/indexed-db';
-import { useCustomRouter, useUserData } from '@/hooks';
+import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
 import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
+import { createInviteTokenSchema } from '@/schema/trpc/chat';
 import { useGlobalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Select, TextField } from '@radix-ui/themes';
+import { Select } from '@radix-ui/themes';
 import { useMutation } from '@tanstack/react-query';
 export interface QrInfo {
   userId: string;
@@ -30,39 +29,21 @@ export const InviteForm = () => {
 
   const { t } = useTranslation('invite-chat');
 
-  const formSchema = z.object({
-    language: z.nativeEnum(LANGUAGE),
-    nickname: z.string().max(20, t('nickname-max-length')),
-  });
-
   const router = useCustomRouter();
 
-  const [lastInviteLanguage, setLastInviteLanguage, hasSidePanel] =
-    useGlobalStore(
-      useShallow((state) => [
-        state.lastInviteLanguage,
-        state.setLastInviteLanguage,
-        state.hasSidePanel,
-      ]),
-    );
+  const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
-  const friendCount = useLiveQuery(() => friendTable?.count());
+  const { lng } = useLanguage();
 
-  const { control, handleSubmit, register, formState } = useForm<
-    z.infer<typeof formSchema>
+  const { control, handleSubmit, formState } = useForm<
+    z.infer<typeof createInviteTokenSchema>
   >({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(createInviteTokenSchema),
     mode: 'onChange',
-    defaultValues: async () => {
-      return {
-        language: lastInviteLanguage,
-        nickname: '',
-      };
-    },
+    defaultValues: async () => ({
+      language: lng,
+    }),
   });
-
-  const nicknamePlaceholder =
-    typeof friendCount === 'number' ? `Friend ${friendCount + 1}` : '';
 
   const createChatMutation = useMutation({
     mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
@@ -72,30 +53,22 @@ export const InviteForm = () => {
       }),
   });
 
+  const createInviteTokenMutation = trpc.chat.createInviteToken.useMutation({
+    onSuccess: (inviteToken) =>
+      router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken }), {
+        toSidePanel: hasSidePanel,
+      }),
+  });
+
   return (
     <form
       className="mx-auto mb-2 flex w-full flex-col items-center gap-4"
-      onSubmit={handleSubmit(async ({ language, nickname }) => {
+      onSubmit={handleSubmit(async (params) => {
         assert(user);
 
-        createChatMutation.mutate({
-          hostId: user.id,
-          guestLanguage: language,
-          guestNickname: nickname || nicknamePlaceholder,
-        });
+        createInviteTokenMutation.mutate(params);
       })}
     >
-      <label className="w-full text-sm font-semibold">
-        {t('friend-nickname')}
-        <TextField.Root
-          {...register('nickname')}
-          className="mt-2 h-14 w-full rounded-xl px-1"
-          placeholder={nicknamePlaceholder}
-          size="3"
-          variant="soft"
-        />
-        <ValidationMessage message={formState.errors.nickname?.message} />
-      </label>
       <label className="mb-10 w-full text-sm font-semibold">
         {t('friend-language')}
         <Controller
@@ -107,8 +80,6 @@ export const InviteForm = () => {
               value={field.value}
               onValueChange={(language) => {
                 assertEnum(LANGUAGE, language);
-
-                setLastInviteLanguage(language);
 
                 return field.onChange(language);
               }}

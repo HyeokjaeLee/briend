@@ -22,8 +22,6 @@ export namespace SESSION_STORAGE_TYPE {
   export type LINKED_PROVIDER = LOGIN_PROVIDERS;
 }
 
-export enum LOCAL_STORAGE {
-  LAST_INVITE_LANGUAGE = 'last-invite-language',
-}
+export enum LOCAL_STORAGE {}
 
 export namespace LOCAL_STORAGE_TYPE {}

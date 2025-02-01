@@ -21,7 +21,11 @@ interface ErrorPageProps {
   isSidePanel?: boolean;
 }
 
-export default function ErrorPage({ error, isSidePanel }: ErrorPageProps) {
+export default function ErrorPage({
+  error,
+  isSidePanel,
+  reset,
+}: ErrorPageProps) {
   const [errorStatus] = error.message.match(/<[^>]+>/g) ?? [];
 
   const errorStatusNumber = errorStatus
@@ -94,12 +98,14 @@ export default function ErrorPage({ error, isSidePanel }: ErrorPageProps) {
           onClick={(e) => {
             if (isSidePanel) {
               e.preventDefault();
+
               sidePanel.push(ROUTES.FRIEND_LIST.pathname);
+              reset();
             }
           }}
         >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
-          {dynamicInfo.buttonText}
+          {isSidePanel ? t('home-button-text') : dynamicInfo.buttonText}
         </CustomLink>
       </CustomButton>
     </article>

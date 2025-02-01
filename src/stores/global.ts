@@ -2,8 +2,7 @@
 
 import { create } from 'zustand';
 
-import { IS_CLIENT, LANGUAGE, LOCAL_STORAGE } from '@/constants';
-import { CustomError, isEnumValue } from '@/utils';
+import { IS_CLIENT } from '@/constants';
 
 interface GlobalLoadingOptions {
   delay?: 0 | 100 | 200 | 300;
@@ -38,9 +37,6 @@ interface GlobalStore {
     options?: GlobalLoadingOptions,
   ) => void;
 
-  lastInviteLanguage: LANGUAGE;
-  setLastInviteLanguage: (language: LANGUAGE) => void;
-
   mediaQuery: MEDIA_QUERY;
   mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT;
   hasSidePanel: boolean;
@@ -57,16 +53,6 @@ interface GlobalStore {
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => {
-  const lastInviteLanguage =
-    (IS_CLIENT && localStorage.getItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE)) ||
-    LANGUAGE.ENGLISH;
-
-  if (!isEnumValue(LANGUAGE, lastInviteLanguage)) {
-    localStorage.removeItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE);
-
-    throw new CustomError('Last invite language is invalid');
-  }
-
   const getMediaQuery = () => {
     let mediaQuery: MEDIA_QUERY = 'xs';
 
@@ -99,14 +85,6 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       }),
     ...getMediaQuery(),
     resetMediaQuery: () => set(getMediaQuery()),
-
-    //TODO 전역에서 사용할 필요가 없는값인것 같음 추후 로컬 상태값으로 변경 필요
-    lastInviteLanguage,
-    setLastInviteLanguage: (language) => {
-      localStorage.setItem(LOCAL_STORAGE.LAST_INVITE_LANGUAGE, language);
-
-      return set({ lastInviteLanguage: language });
-    },
 
     isErrorRoute: false,
     setIsErrorRoute: (isErrorRoute) => set({ isErrorRoute }),

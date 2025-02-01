@@ -1,4 +1,4 @@
-import type { LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
+import type { LANGUAGE } from '@/constants';
 
 export namespace Firestore {
   export interface ProviderAccount {
@@ -16,4 +16,5 @@ export namespace Firestore {
 export enum COLLECTIONS {
   PROVIDER_ACCOUNTS = 'providerAccounts',
   USERS = 'users',
+  CHATTING_ROOMS = 'chattingRooms',
 }

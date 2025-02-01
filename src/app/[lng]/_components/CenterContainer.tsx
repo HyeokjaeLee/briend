@@ -11,7 +11,7 @@ import { useGlobalStore, useSidePanelStore } from '@/stores';
 import { cn } from '@/utils';
 
 export const CenterContainer = ({ children }: PropsWithChildren) => {
-  const isEmpty = useSidePanelStore(
+  const isHome = useSidePanelStore(
     (state) => state.sidePanelUrl === ROUTES.FRIEND_LIST.pathname,
   );
 
@@ -32,9 +32,10 @@ export const CenterContainer = ({ children }: PropsWithChildren) => {
   return (
     <div
       className={cn(
-        'relative flex size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
-        'flex-1 shadow-none sm:border-r sm:border-slate-100',
-        isEmpty ? 'xl:shadow-lg-x' : 'xl:shadow-lg-left',
+        'relative flex flex-1 size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
+        'sm:shadow-lg-right xl:shadow-lg-x',
+        isHome ||
+          'sm:shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
       )}
     >
       {children}

@@ -7,7 +7,7 @@
   "vi": "베트남어",
   "friend-language": "언어",
   "friend-nickname": "닉네임",
-  "friend-setting-message": "친구의 언어와 닉네임을 설정 후\n친구가 QR 코드를 스캔하면 번역된 내용으로 채팅할 수 있어요.",
+  "friend-setting-message": "친구가 사용하는 언어를 설정 후\n친구가 QR 코드를 스캔하면 번역된 내용으로 채팅할 수 있어요.",
   "invite-button": "초대하기",
   "nickname-max-length": "닉네임은 10자 이하로 설정해야해요"
 }
