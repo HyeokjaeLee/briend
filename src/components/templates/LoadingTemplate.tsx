@@ -14,12 +14,7 @@ export const LoadingTemplate = ({ className }: LoadingTemplateProps) => {
         className,
       )}
     >
-      <DotLottie
-        aria-hidden="true"
-        className="h-40"
-        role="presentation"
-        src="/assets/lottie/spinner.lottie"
-      />
+      <DotLottie className="h-40" src="/assets/lottie/spinner.lottie" />
     </div>
   );
 };

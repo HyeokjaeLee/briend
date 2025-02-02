@@ -2,21 +2,43 @@ import { z } from 'zod';
 
 import { useForm } from 'react-hook-form';
 
+import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
-import { CustomButton, DotLottie, Input, Modal, Timer } from '@/components';
+import {
+  CustomButton,
+  DotLottie,
+  Input,
+  Modal,
+  Timer,
+  ValidationMessage,
+} from '@/components';
+import { useCustomRouter } from '@/hooks';
+import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores';
 import { cn, CustomError, expToDate } from '@/utils';
+import { toast } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface NoNickNameModalProps {
   exp?: number;
   inviteToken: string;
+  userId: string;
 }
 
 const formSchema = z.object({
-  nickname: z.string().min(1).max(20, 'nickname-max-length'),
+  nickname: z
+    .string()
+    .min(1, 'nickname-required')
+    .max(20, 'nickname-max-length'),
 });
 
-export const NoNickNameModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
+export const NoNickNameModal = ({
+  exp,
+  inviteToken,
+  userId,
+}: NoNickNameModalProps) => {
+  const router = useCustomRouter();
+
   const joinChatMutation = trpc.chat.joinChat.useMutation();
 
   const isSuccess = joinChatMutation.isSuccess;
@@ -24,6 +46,10 @@ export const NoNickNameModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
+
+  const { t } = useTranslation('join-chat');
+
+  const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
   return (
     <Modal open className="max-w-96">
@@ -42,16 +68,34 @@ export const NoNickNameModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
           className="size-44"
           loop={false}
           src="/assets/lottie/send-nickname.lottie"
+          onCompleted={() => {
+            router.replace(
+              ROUTES.CHATTING_ROOM.pathname({
+                userId: joinChatMutation.data.hostUserId,
+              }),
+              {
+                toSidePanel: hasSidePanel,
+              },
+            );
+
+            if (hasSidePanel) {
+              router.replace(ROUTES.FRIEND_LIST.pathname);
+            }
+
+            toast({
+              message: t('start-chatting-toast-message'),
+            });
+          }}
         />
       ) : (
         <DotLottie
-          key="qfqwfq"
+          key="write"
           className="size-44"
           src="/assets/lottie/write.lottie"
         />
       )}
       <strong className="text-center text-xl font-semibold">
-        {isSuccess ? '곧 채팅에 참여해요!' : '채팅에 초대받았어요!'}
+        {isSuccess ? t('join-soon') : t('chatting-invite')}
       </strong>
       <p
         className={cn(
@@ -59,31 +103,32 @@ export const NoNickNameModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
           isSuccess && 'invisible',
         )}
       >
-        친구에게 표시할 닉네임을 알려주세요!
+        {t('friend-nickname')}
       </p>
       <form
         className="w-full"
-        onSubmit={form.handleSubmit((data) =>
+        onSubmit={form.handleSubmit(({ nickname }) => {
           joinChatMutation.mutate({
             inviteToken,
-          }),
-        )}
+            nickname,
+            userId,
+          });
+        })}
       >
         <Input
           {...form.register('nickname')}
           disabled={isSuccess || joinChatMutation.isPending}
-          placeholder="닉네임"
+          placeholder={t('nickname')}
+        />
+        <ValidationMessage
+          message={t(form.formState.errors.nickname?.message ?? '')}
         />
         <CustomButton
-          className={cn(
-            'mt-8 w-full',
-            isSuccess && 'animate-fade-up animate-reverse',
-          )}
-          disabled={isSuccess}
-          loading={joinChatMutation.isPending}
+          className={cn('mt-8 w-full')}
+          loading={joinChatMutation.isPending || joinChatMutation.isSuccess}
           type="submit"
         >
-          대화 시작하기
+          {t('start-chatting-button')}
         </CustomButton>
       </form>
     </Modal>

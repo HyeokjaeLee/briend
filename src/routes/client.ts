@@ -40,9 +40,6 @@ export const ROUTES = {
   EDIT_PROFILE: createRoute('/private/more/edit-profile', {
     topHeaderType: 'back',
   }),
-  TEST: createRoute('/test', {
-    topHeaderType: 'back',
-  }),
 };
 
 export type RouteObject = (typeof ROUTES)[keyof typeof ROUTES];

@@ -14,6 +14,12 @@ interface SidePanelStore {
 
   navigationAnimation: NAVIGATION_ANIMATION;
   setNavigationAnimation: (animation: NAVIGATION_ANIMATION) => void;
+
+  isErrorRoute: boolean;
+  setIsErrorRoute: (isErrorRouter: boolean) => void;
+
+  resetError?: () => void;
+  setResetError: (resetError: (() => void) | undefined) => void;
 }
 
 export const useSidePanelStore = create<SidePanelStore>((set) => {
@@ -35,5 +41,10 @@ export const useSidePanelStore = create<SidePanelStore>((set) => {
     navigationAnimation: 'NONE',
     setNavigationAnimation: (animation) =>
       set({ navigationAnimation: animation }),
+
+    isErrorRoute: false,
+    setIsErrorRoute: (isErrorRoute) => set({ isErrorRoute }),
+
+    setResetError: (resetError) => set({ resetError }),
   };
 });
