@@ -83,9 +83,12 @@ export default function ErrorPage({
     <article className="relative size-full flex-1 flex-col gap-8 flex-center">
       <section className="flex-1 flex-col flex-center">
         <DotLottie loop className="h-1/2 w-full" src={dynamicInfo.lottie} />
-        <h1 className="whitespace-pre-line text-center text-lg font-semibold">
+        <strong className="mb-2 text-center text-xl font-semibold">
+          {errorStatus}
+        </strong>
+        <p className="whitespace-pre-line text-center text-zinc-600">
           {dynamicInfo.text}
-        </h1>
+        </p>
       </section>
       <CustomButton
         asChild
