@@ -11,6 +11,11 @@ export namespace Firestore {
     kakaoId?: string;
     language: LANGUAGE;
   }
+
+  export interface ChattingRoom {
+    type: 'host' | 'guest';
+    nickname?: string;
+  }
 }
 
 export enum COLLECTIONS {

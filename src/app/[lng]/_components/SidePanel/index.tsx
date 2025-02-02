@@ -3,7 +3,7 @@
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
 import { useShallow } from 'zustand/shallow';
 
-import { memo, useEffect, useState } from 'react';
+import { memo, useEffect } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { CustomIconButton } from '@/components';
@@ -12,22 +12,26 @@ import { ROUTES } from '@/routes/client';
 import { useSidePanelStore } from '@/stores';
 import { cn, findRoute } from '@/utils';
 import {
+  createOnlyClientComponent,
   getNavigationAnimationClasses,
   NAVIGATION_ANIMATION_DURATION,
 } from '@/utils/client';
 
 import ErrorPage from '../../error';
 
+import EmptyTemplate from './_components/Empty';
 import { SideContents } from './_components/SideContents';
 import { useInitRoute } from './_hooks/useInitRoute';
 
-export const SidePanel = memo(() => {
+const SidePanelContainer = () => {
   const [
     sidePanelUrl,
     navigationAnimation,
     setNavigationAnimation,
     animationType,
     setAnimationType,
+    setIsErrorRoute,
+    setResetError,
   ] = useSidePanelStore(
     useShallow((state) => [
       state.sidePanelUrl,
@@ -35,6 +39,8 @@ export const SidePanel = memo(() => {
       state.setNavigationAnimation,
       state.animationType,
       state.setAnimationType,
+      state.setIsErrorRoute,
+      state.setResetError,
     ]),
   );
 
@@ -58,9 +64,15 @@ export const SidePanel = memo(() => {
     return () => clearTimeout(timer);
   }, [setAnimationType, setNavigationAnimation, sidePanelUrl]);
 
-  const { push } = useSidePanel();
+  useEffect(() => {
+    const { resetError } = useSidePanelStore.getState();
 
-  const [isErrorRoute, setIsErrorRoute] = useState(false);
+    resetError?.();
+    setIsErrorRoute(false);
+    setResetError(undefined);
+  }, [setIsErrorRoute, setResetError, sidePanelUrl]);
+
+  const { push } = useSidePanel();
 
   return (
     <aside
@@ -72,7 +84,7 @@ export const SidePanel = memo(() => {
         }),
       )}
     >
-      {route.topHeaderType === 'back' && !isErrorRoute ? (
+      {routeName !== 'FRIEND_LIST' ? (
         <nav className="flex h-14 items-center justify-end px-5">
           <CustomIconButton
             size="3"
@@ -87,15 +99,19 @@ export const SidePanel = memo(() => {
       ) : null}
       <section className="flex flex-1 flex-col overflow-auto">
         <ErrorBoundary
-          errorComponent={(error) => (
-            <ErrorPage {...error} onErrorSidePanel={setIsErrorRoute} />
-          )}
+          errorComponent={(error) => <ErrorPage {...error} isSidePanel />}
         >
           <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
         </ErrorBoundary>
       </section>
     </aside>
   );
-});
+};
 
-SidePanel.displayName = 'SidePanel';
+export const SidePanel = memo(
+  createOnlyClientComponent(SidePanelContainer, () => (
+    <aside className="hidden flex-1 bg-white sm:flex sm:flex-col">
+      <EmptyTemplate />
+    </aside>
+  )),
+);

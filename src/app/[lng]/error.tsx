@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useShallow } from 'zustand/shallow';
+
+import { memo, useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
-import { CustomButton, CustomLink, DotLottie } from '@/components';
+import { CustomButton, DotLottie } from '@/components';
 import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useGlobalStore } from '@/stores';
+import { useGlobalStore, useSidePanelStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
 
 import { useTranslation } from '../i18n/client';
@@ -14,16 +16,15 @@ import { useTranslation } from '../i18n/client';
 interface ErrorPageProps {
   error: Error;
   reset: () => void;
-  onErrorSidePanel?: (isError: boolean) => void;
+  isSidePanel?: boolean;
 }
 
-export default function ErrorPage({
-  error,
-  onErrorSidePanel,
-  reset,
-}: ErrorPageProps) {
+const ErrorPage = ({ error, reset, isSidePanel }: ErrorPageProps) => {
   const [errorStatus] = error.message.match(/<[^>]+>/g) ?? [];
-  const isSidePanel = !!onErrorSidePanel;
+  const [setIsErrorSideRoute, setResetError] = useSidePanelStore(
+    useShallow((state) => [state.setIsErrorRoute, state.setResetError]),
+  );
+  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
 
   const errorStatusNumber = errorStatus
     ? Number(errorStatus.slice(1, -1))
@@ -61,23 +62,19 @@ export default function ErrorPage({
     }
   }
 
-  const setIsErrorRoute = useGlobalStore((state) => state.setIsErrorRoute);
-
   const sidePanel = useSidePanel();
 
-  useEffect(() => {
-    if (onErrorSidePanel) {
-      onErrorSidePanel(true);
+  if (isSidePanel) setResetError(reset);
 
-      return () => onErrorSidePanel(false);
-    }
+  useEffect(() => {
+    if (isSidePanel) return setIsErrorSideRoute(true);
 
     setIsErrorRoute(true);
 
     return () => {
       setIsErrorRoute(false);
     };
-  }, [setIsErrorRoute, onErrorSidePanel]);
+  }, [isSidePanel, setIsErrorRoute, setIsErrorSideRoute]);
 
   return (
     <article className="relative size-full flex-1 flex-col gap-8 flex-center">
@@ -90,28 +87,22 @@ export default function ErrorPage({
           {dynamicInfo.text}
         </p>
       </section>
-      <CustomButton
-        asChild
-        activeScaleDown={false}
-        className="mt-auto h-17 w-full rounded-none"
-      >
-        <CustomLink
-          replace
-          href={dynamicInfo.buttonLink}
-          onClick={(e) => {
-            if (isSidePanel) {
-              e.preventDefault();
+      {isSidePanel ? null : (
+        <CustomButton
+          activeScaleDown={false}
+          className="mt-auto h-17 w-full rounded-none"
+          onClick={() => {
+            if (isSidePanel) return sidePanel.push(ROUTES.FRIEND_LIST.pathname);
 
-              sidePanel.push(ROUTES.FRIEND_LIST.pathname);
-              reset();
-              onErrorSidePanel(false);
-            }
+            location.replace(dynamicInfo.buttonLink);
           }}
         >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
-          {isSidePanel ? t('home-button-text') : dynamicInfo.buttonText}
-        </CustomLink>
-      </CustomButton>
+          {dynamicInfo.buttonText}
+        </CustomButton>
+      )}
     </article>
   );
-}
+};
+
+export default memo(ErrorPage);

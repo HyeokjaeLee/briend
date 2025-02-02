@@ -17,10 +17,8 @@ import { DEFAULT_COOKIES_OPTIONS } from '@/constants';
 import { customCookies } from '@/utils';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
-import { FriendStoreMounter } from './_components/FriendStoreMounter';
 import { GlobalEventListener } from './_components/GlobalEventListener';
 import { HistoryObserver } from './_components/HistoryObserver';
-import { PeerMessageReceiver } from './_components/PeerMessageReceiver';
 import { firebase } from './_configs/initFirebase';
 import { initQueryClient } from './_configs/initQueryClient';
 
@@ -42,9 +40,6 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
             client={queryClient}
             persistOptions={persistOptions}
           >
-            <FriendStoreMounter />
-            <PeerMessageReceiver />
-
             {children}
           </PersistQueryClientProvider>
         </trpc.Provider>

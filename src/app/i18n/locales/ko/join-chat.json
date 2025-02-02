@@ -1,0 +1,10 @@
+{
+  "nickname-max-length": "닉네임은 20자 이하로 설정해야해요",
+  "nickname-required": "닉네임은 비워둘수 없어요",
+  "join-soon": "곧 채팅에 참여해요!",
+  "chatting-invite": "채팅에 초대받았어요!",
+  "friend-nickname": "친구에게 표시할 닉네임을 알려주세요!",
+  "start-chatting-button": "채팅 시작하기",
+  "nickname": "닉네임",
+  "start-chatting-toast-message": "친구와 연결되었어요!"
+}
