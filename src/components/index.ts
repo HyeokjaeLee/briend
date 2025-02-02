@@ -7,9 +7,9 @@ export {
   type CustomIconButtonProps,
 } from './atoms/CustomIconButton';
 export { CustomImage, type CustomImageProps } from './atoms/CustomImage';
-
 export { CustomLink, type CustomLinkProps } from './atoms/CustomLink';
 export { DotLottie, type DotLottieProps } from './atoms/DotLottie';
+export { Input, type InputProps } from './atoms/Input';
 
 /**
  * @package molecules 컴포넌트

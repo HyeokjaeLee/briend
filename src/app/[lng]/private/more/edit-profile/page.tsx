@@ -15,6 +15,7 @@ import {
   BottomButton,
   ProfileImage,
   ValidationMessage,
+  Input,
 } from '@/components';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
@@ -24,7 +25,7 @@ import { useGlobalModalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
 import { toast, uploadFirebaseStorage } from '@/utils/client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Select, TextField } from '@radix-ui/themes';
+import { Select } from '@radix-ui/themes';
 
 import { ProfileImageChangeModal } from './_components/ProfileImageChangeModal';
 
@@ -158,12 +159,10 @@ const EditProfilePage = (props: ProfilePageProps) => {
         <CustomButton asChild className="w-full" variant="outline" />
         <label className="w-full font-semibold">
           {t('my-nickname')}
-          <TextField.Root
+          <Input
             {...form.register('displayName')}
-            className="mt-2 h-14 w-full rounded-xl px-1"
+            className="mt-2"
             placeholder={t('my-nickname')}
-            size="3"
-            variant="soft"
           />
           <ValidationMessage
             message={t(form.formState.errors.displayName?.message ?? '')}

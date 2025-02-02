@@ -1,8 +1,11 @@
 import type { JWTPayload, JWTVerifyResult } from 'jose';
 
 import { jwtVerify, SignJWT } from 'jose';
+import { JWTExpired } from 'jose/errors';
 
 import { PRIVATE_ENV } from '@/constants/private-env';
+
+import { CustomError } from '../customError';
 
 interface SignJwtOptions {
   time?: number | string | Date;
@@ -29,10 +32,20 @@ const verfiy = async <T>(
 ): Promise<JWTVerifyResult<T>> => {
   const { additionalSecret = '' } = options ?? {};
 
-  return jwtVerify<T>(
-    jwtToken,
-    new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET + additionalSecret),
-  );
+  try {
+    return jwtVerify<T>(
+      jwtToken,
+      new TextEncoder().encode(PRIVATE_ENV.AUTH_SECRET + additionalSecret),
+    );
+  } catch (e) {
+    if (e instanceof JWTExpired) {
+      throw new CustomError({
+        code: 'EXPIRED_CHAT',
+      });
+    }
+
+    throw e;
+  }
 };
 
 export const jwtAuthSecret = {

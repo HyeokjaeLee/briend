@@ -1,13 +1,15 @@
-import { Suspense } from 'react';
+import { JoinTemplate } from './_components/JoinTemplate';
 
-import { LoadingTemplate } from '@/components';
+interface ChattingJoinPageProps {
+  searchParams: Promise<{
+    inviteToken: string;
+  }>;
+}
 
-import { NoNickNameModal } from './_components/NoNickNameModal';
+export default async function ChattingJoinPage({
+  searchParams,
+}: ChattingJoinPageProps) {
+  const { inviteToken } = await searchParams;
 
-export default function ChattingJoinPage() {
-  return (
-    <Suspense fallback={<LoadingTemplate />}>
-      <NoNickNameModal />
-    </Suspense>
-  );
+  return <JoinTemplate inviteToken={inviteToken} />;
 }
