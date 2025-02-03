@@ -8,7 +8,6 @@ import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, Timer, QR, CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
-import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { cn, CustomError, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
@@ -52,9 +51,14 @@ interface InviteChatQrTemplateProps {
 
 export const InviteChatQRTemplate = createOnlyClientComponent(
   ({ inviteToken, isSidePanel }: InviteChatQrTemplateProps) => {
-    const [inviteTokenPayload] = trpc.chat.verfiyInviteToken.useSuspenseQuery({
-      inviteToken,
-    });
+    const [inviteTokenPayload] = trpc.chat.verfiyInviteToken.useSuspenseQuery(
+      {
+        inviteToken,
+      },
+      {
+        retry: false,
+      },
+    );
 
     const url = ROUTES.JOIN_CHAT.url({
       lng: inviteTokenPayload.guestLanguage,
@@ -64,8 +68,6 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
     }).href;
 
     const expires = expToDate(inviteTokenPayload.exp);
-
-    const router = useCustomRouter();
 
     const { t } = useTranslation('invite-chat-qr');
 

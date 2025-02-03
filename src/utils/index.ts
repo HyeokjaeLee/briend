@@ -18,3 +18,4 @@ export { isCurrentHref } from './isCurrentHref';
 export { isEnumValue } from './isEnumValue';
 export { isPeerData } from './isPeerData';
 export { reverseEnum, type ReverseMap } from './reverseEnum';
+export { singleton } from './singleton';

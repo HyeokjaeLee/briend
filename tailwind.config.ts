@@ -43,6 +43,9 @@ const config: Config = {
         'lg-top':
           '0 -10px 15px -3px rgb(0 0 0 / 0.03), 0 -4px 6px -4px rgb(0 0 0 / 0.02)',
       },
+      zIndex: {
+        'global-loading': '35',
+      },
       colors: {
         'naver-green': '#03C75A',
         'kakao-yellow': '#FEE500',

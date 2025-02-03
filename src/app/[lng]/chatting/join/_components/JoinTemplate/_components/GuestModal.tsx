@@ -32,13 +32,11 @@ const formSchema = z.object({
     .max(20, 'nickname-max-length'),
 });
 
-export const NoNickNameModal = ({
+export const GuestModal = ({
   exp,
   inviteToken,
   userId,
 }: NoNickNameModalProps) => {
-  const router = useCustomRouter();
-
   const joinChatMutation = trpc.chat.joinChat.useMutation();
 
   const isSuccess = joinChatMutation.isSuccess;
@@ -48,6 +46,8 @@ export const NoNickNameModal = ({
   });
 
   const { t } = useTranslation('join-chat');
+
+  const router = useCustomRouter();
 
   const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 

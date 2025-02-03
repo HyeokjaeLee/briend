@@ -33,7 +33,7 @@ export const EscapeErrorModal = () => {
       }
       message={t('escape-modal-message')}
       opened={isEscapeErrorModalOpen}
-      rootClassName="z-[999]"
+      rootClassName="z-40"
       title={t('escape-modal-title')}
       onClose={() => setIsEscapeErrorModalOpen(false)}
     />

@@ -28,7 +28,7 @@ export const GlobalLoading = createOnlyClientComponent(() => {
   return isLoading ? (
     <LoadingTemplate
       className={cn(
-        'animate-fade fixed bg-black/80 backdrop-blur-sm animate-duration-150',
+        'animate-fade fixed bg-black/80 backdrop-blur-sm animate-duration-150 z-global-loading',
         {
           0: 'animate-delay-0',
           100: 'animate-delay-100',

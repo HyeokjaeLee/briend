@@ -2,10 +2,11 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { memo, useEffect } from 'react';
+import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 
 import { CustomButton, DotLottie } from '@/components';
+import { SESSION_STORAGE } from '@/constants';
 import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore, useSidePanelStore } from '@/stores';
@@ -19,7 +20,11 @@ interface ErrorPageProps {
   isSidePanel?: boolean;
 }
 
-const ErrorPage = ({ error, reset, isSidePanel }: ErrorPageProps) => {
+export default function ErrorPage({
+  error,
+  reset,
+  isSidePanel,
+}: ErrorPageProps) {
   const [errorStatus] = error.message.match(/<[^>]+>/g) ?? [];
   const [setIsErrorSideRoute, setResetError] = useSidePanelStore(
     useShallow((state) => [state.setIsErrorRoute, state.setResetError]),
@@ -67,7 +72,11 @@ const ErrorPage = ({ error, reset, isSidePanel }: ErrorPageProps) => {
   if (isSidePanel) setResetError(reset);
 
   useEffect(() => {
-    if (isSidePanel) return setIsErrorSideRoute(true);
+    if (isSidePanel) {
+      sessionStorage.removeItem(SESSION_STORAGE.SIDE_PANEL_URL);
+
+      return setIsErrorSideRoute(true);
+    }
 
     setIsErrorRoute(true);
 
@@ -103,6 +112,4 @@ const ErrorPage = ({ error, reset, isSidePanel }: ErrorPageProps) => {
       )}
     </article>
   );
-};
-
-export default memo(ErrorPage);
+}
