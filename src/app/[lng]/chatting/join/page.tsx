@@ -1,3 +1,5 @@
+import { LoadingTemplate } from '@/components';
+
 import { JoinTemplate } from './_components/JoinTemplate';
 
 interface ChattingJoinPageProps {
@@ -11,5 +13,10 @@ export default async function ChattingJoinPage({
 }: ChattingJoinPageProps) {
   const { inviteToken } = await searchParams;
 
-  return <JoinTemplate inviteToken={inviteToken} />;
+  return (
+    <>
+      <JoinTemplate inviteToken={inviteToken} />
+      <LoadingTemplate />
+    </>
+  );
 }

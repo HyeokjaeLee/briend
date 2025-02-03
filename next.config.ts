@@ -1,5 +1,7 @@
 import type { NextConfig } from 'next';
 
+const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -21,9 +23,12 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  productionBrowserSourceMaps: IS_DEVELOPMENT,
 
-  // 기존 webpack 설정은 webpack 사용 시에만 적용됨
   webpack: (config) => {
+    if (IS_DEVELOPMENT) {
+      config.devtool = 'source-map';
+    }
     config.module.rules.push({
       test: /\.svg$/,
       use: [

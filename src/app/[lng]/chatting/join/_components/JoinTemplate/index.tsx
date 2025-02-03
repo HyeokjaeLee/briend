@@ -3,29 +3,89 @@
 import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect, useMemo } from 'react';
 
+import { useTranslation } from '@/app/i18n/client';
+import { trpc } from '@/app/trpc';
+import { useCustomRouter } from '@/hooks';
+import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
-import { assert } from '@/utils';
+import { assert, CustomError } from '@/utils';
+import { createOnlyClientComponent, toast } from '@/utils/client';
 
-import { NoNickNameModal } from './_components/GuestModal';
+import { GuestModal } from './_components/GuestModal';
 
 interface JoinTemplateProps {
   inviteToken: string;
 }
 
-export const JoinTemplate = ({ inviteToken }: JoinTemplateProps) => {
-  const { exp } = decodeJwt<JwtPayload.InviteToken>(inviteToken);
+export const JoinTemplate = createOnlyClientComponent(
+  ({ inviteToken }: JoinTemplateProps) => {
+    const { hostUserId, exp } = useMemo(
+      () => decodeJwt<JwtPayload.InviteToken>(inviteToken),
+      [inviteToken],
+    );
 
-  const auth = getAuth();
+    const { currentUser } = getAuth();
 
-  const userId = auth.currentUser?.uid;
+    assert(currentUser);
 
-  assert(userId);
+    const { uid: userId, isAnonymous } = currentUser;
 
-  return (
-    <Suspense>
-      <NoNickNameModal exp={exp} inviteToken={inviteToken} userId={userId} />
-    </Suspense>
-  );
-};
+    if (userId === hostUserId)
+      throw new CustomError({
+        code: 'UNAUTHORIZED',
+        message: 'Cannot join your own room',
+      });
+
+    const joinChatMutation = trpc.chat.joinChat.useMutation();
+    const { t } = useTranslation('join-chat');
+
+    const router = useCustomRouter();
+
+    const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
+
+    useEffect(() => {
+      if (isAnonymous) return;
+
+      joinChatMutation.mutate({
+        inviteToken,
+        userId,
+      });
+    }, [inviteToken, isAnonymous, joinChatMutation, userId]);
+
+    useEffect(() => {
+      if (!joinChatMutation.isSuccess) return;
+
+      router.replace(
+        ROUTES.CHATTING_ROOM.pathname({
+          userId: joinChatMutation.data.hostUserId,
+        }),
+        {
+          toSidePanel: hasSidePanel,
+        },
+      );
+
+      if (hasSidePanel) {
+        router.replace(ROUTES.FRIEND_LIST.pathname);
+      }
+
+      toast({
+        message: t('start-chatting-toast-message'),
+      });
+    }, [
+      hasSidePanel,
+      joinChatMutation.data,
+      joinChatMutation.isSuccess,
+      router,
+      t,
+    ]);
+
+    return isAnonymous ? (
+      <Suspense>
+        <GuestModal exp={exp} inviteToken={inviteToken} userId={userId} />
+      </Suspense>
+    ) : null;
+  },
+);

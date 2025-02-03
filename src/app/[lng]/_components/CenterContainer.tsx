@@ -15,9 +15,9 @@ export const CenterContainer = ({ children }: PropsWithChildren) => {
     <div
       className={cn(
         'relative flex flex-1 size-full max-h-cdvh min-h-cdvh w-full flex-col overflow-hidden text-slate-900',
-        'sm:shadow-lg-right xl:shadow-lg-x',
-        isHome ||
-          'sm:shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
+        isHome
+          ? 'sm:shadow-lg-right xl:shadow-lg-x'
+          : 'sm:shadow-none sm:border-r sm:border-slate-100 xl:shadow-lg-left',
       )}
     >
       {children}

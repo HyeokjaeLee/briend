@@ -53,9 +53,8 @@ export class CustomError extends Error {
 
     const message = `<${customStatus}> ${props?.message ?? defaultMessage?.[0] ?? defaultKey}`;
 
-    console.error(message);
-
     super(message);
+
     this.status = httpsStatus;
     this.customStatus = customStatus;
     this.cause = props?.cause;

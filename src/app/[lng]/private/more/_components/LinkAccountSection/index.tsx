@@ -27,7 +27,8 @@ export const LinkAccountSection = () => {
 
     sessionStorage.removeItem(SESSION_STORAGE.LINKED_PROVIDER);
 
-    assert(user);
+    //! 간혹 연동 후 user session을 못불러오는 경우가 있음
+    if (!user) return location.reload();
 
     assertEnum(LOGIN_PROVIDERS, linkedProvider);
 
