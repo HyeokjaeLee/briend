@@ -38,14 +38,13 @@ export const getUserSession = async ({
 
   const usersRef = await firestore((db) => db.collection(COLLECTIONS.USERS));
 
-  if (providerAccount.exists) {
-    const { userId } = providerAccount.data() as Firestore.ProviderAccount;
-
+  const linkByUserId = async (userId: string) => {
     try {
       //! 해당 계정이 다른 계정과의 연동으로 인해 삭제된 경우 예외 발생
       const userAuth = await auth.getUser(userId);
 
-      //TODO: 비회원 동안 쌓았던 정보 이관 로직 추가
+      //TODO: 비회원 동안 쌓았던 정보 이관 로직
+
       auth.deleteUser(anonymousId);
 
       const userData = (
@@ -62,19 +61,50 @@ export const getUserSession = async ({
     } catch {
       await providerAccountRef.delete();
     }
+  };
+
+  if (providerAccount.exists) {
+    const { userId } = providerAccount.data() as Firestore.ProviderAccount;
+
+    const userSession = await linkByUserId(userId);
+
+    if (userSession) return userSession;
   }
 
-  auth.setCustomUserClaims(anonymousId, {
-    isAnonymous: false,
-  });
+  try {
+    await auth.updateUser(anonymousId, {
+      displayName: name,
+      email,
+      photoURL: profileImage,
+    });
+  } catch (e) {
+    if (
+      email &&
+      e instanceof Error &&
+      e.message === 'The email address is already in use by another account.'
+    ) {
+      const { uid: existedId } = await auth.getUserByEmail(email);
 
-  auth.updateUser(anonymousId, {
-    displayName: name,
-    email,
-    photoURL: profileImage,
-  });
+      const userSession = await linkByUserId(existedId);
+
+      if (userSession) {
+        const linkedUserSession: Partial<Firestore.UserInfo> = {
+          [idKey]: providerId,
+        };
+        await usersRef.doc(existedId).update(linkedUserSession);
+
+        return {
+          ...userSession,
+          ...linkedUserSession,
+        };
+      }
+    } else throw e;
+  }
 
   await Promise.all([
+    auth.setCustomUserClaims(anonymousId, {
+      isAnonymous: false,
+    }),
     providerAccountRef.set({ userId: anonymousId }),
     usersRef.doc(anonymousId).set({
       language,
