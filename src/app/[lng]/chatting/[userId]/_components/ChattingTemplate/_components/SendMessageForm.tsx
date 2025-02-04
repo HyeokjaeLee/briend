@@ -1,6 +1,5 @@
 'use client';
 
-import { nanoid } from 'nanoid';
 import { z } from 'zod';
 
 import { useRef } from 'react';
@@ -10,24 +9,10 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 import { useTranslation } from '@/app/i18n/client';
 import { CustomIconButton } from '@/components';
-import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
-import { useUserId } from '@/hooks';
-import type { FriendPeer } from '@/stores/peer';
-import type { MessageData, PeerData } from '@/types/peer-data';
-import { MESSAGE_TYPE } from '@/types/peer-data';
-import { assert, cn } from '@/utils';
-import { toast } from '@/utils/client';
+import { cn } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface SendMessageFormProps {
-  friendUserId: string;
-  friendPeer: FriendPeer;
-}
-
-export const SendMessageForm = ({
-  friendPeer,
-  friendUserId,
-}: SendMessageFormProps) => {
+export const SendMessageForm = () => {
   const { t } = useTranslation('chatting');
 
   const messageSchema = z.object({
@@ -42,48 +27,9 @@ export const SendMessageForm = ({
     resolver: zodResolver(messageSchema),
   });
 
-  const myUserId = useUserId();
-
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = form.handleSubmit(
-    async ({ message }) => {
-      assert(myUserId);
-
-      const id = nanoid();
-
-      const data: MessageData = {
-        fromUserId: myUserId,
-        message,
-        timestamp: Date.now(),
-        toUserId: friendUserId,
-        translatedMessage: '',
-      };
-
-      await messageTable?.add({
-        id,
-        state: MESSAGE_STATE.SENT,
-        ...data,
-      });
-
-      await friendPeer.connection?.send({
-        id,
-        type: MESSAGE_TYPE.MESSAGE,
-        data,
-      } satisfies PeerData);
-
-      form.setValue('message', '');
-
-      textareaRef.current?.focus();
-    },
-    (errors) => {
-      const message = errors.message?.message;
-      if (message)
-        toast({
-          message,
-        });
-    },
-  );
+  const handleSubmit = form.handleSubmit(async ({ message }) => {});
 
   return (
     <form onSubmit={handleSubmit}>
@@ -111,7 +57,6 @@ export const SendMessageForm = ({
         </div>
         <CustomIconButton
           className="mb-[6.5px] rounded-full"
-          disabled={!friendPeer.isConnected}
           size="3"
           title="send-message"
           type="submit"

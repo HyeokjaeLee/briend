@@ -9,6 +9,7 @@ import { getSession } from 'next-auth/react';
 
 import { trpcClient } from '@/app/trpc';
 import { IS_CLIENT, PUBLIC_ENV } from '@/constants';
+import { useGlobalStore } from '@/stores';
 
 const firebaseConfig = {
   apiKey: PUBLIC_ENV.FIREBASE_API_KEY,
@@ -24,6 +25,9 @@ const app = initializeApp(firebaseConfig);
 
 const initFirebase = async () => {
   if (!IS_CLIENT) return;
+  const { setGlobalLoading } = useGlobalStore.getState();
+
+  setGlobalLoading(true);
 
   getAnalytics(app);
 
@@ -39,6 +43,8 @@ const initFirebase = async () => {
   } else {
     await signInAnonymously(auth);
   }
+
+  setGlobalLoading(false);
 };
 
 export const firebase = initFirebase();

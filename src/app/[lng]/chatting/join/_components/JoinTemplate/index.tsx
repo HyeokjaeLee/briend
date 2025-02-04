@@ -40,6 +40,9 @@ export const JoinTemplate = createOnlyClientComponent(
       });
 
     const joinChatMutation = trpc.chat.joinChat.useMutation();
+
+    const { mutate: mutateJoinChat } = joinChatMutation;
+
     const { t } = useTranslation('join-chat');
 
     const router = useCustomRouter();
@@ -49,11 +52,11 @@ export const JoinTemplate = createOnlyClientComponent(
     useEffect(() => {
       if (isAnonymous) return;
 
-      joinChatMutation.mutate({
+      mutateJoinChat({
         inviteToken,
         userId,
       });
-    }, [inviteToken, isAnonymous, joinChatMutation, userId]);
+    }, [inviteToken, isAnonymous, mutateJoinChat, userId]);
 
     useEffect(() => {
       if (!joinChatMutation.isSuccess) return;

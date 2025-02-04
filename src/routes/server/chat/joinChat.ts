@@ -5,6 +5,7 @@ import { firestore } from '@/database/firestore/server';
 import type { Firestore } from '@/database/firestore/type';
 import { COLLECTIONS } from '@/database/firestore/type';
 import type { JwtPayload } from '@/types/jwt';
+import { objectWithoutUndefined } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 
 export const joinChat = publicProcedure
@@ -20,28 +21,28 @@ export const joinChat = publicProcedure
       payload: { hostUserId },
     } = await jwtAuthSecret.verfiy<JwtPayload.InviteToken>(inviteToken);
 
-    firestore(async (db) => {
+    await firestore(async (db) => {
       const batch = db.batch();
 
-      const hostChattingRoomRef = db
-        .collection(COLLECTIONS.USERS)
+      const userCollectionRef = db.collection(COLLECTIONS.USERS);
+
+      const hostChattingRoomRef = userCollectionRef
         .doc(hostUserId)
         .collection(COLLECTIONS.CHATTING_ROOMS)
         .doc(userId);
 
       batch.set(
         hostChattingRoomRef,
-        {
+        objectWithoutUndefined({
           type: 'host',
           nickname,
-        } satisfies Firestore.ChattingRoom,
+        } satisfies Firestore.ChattingRoom),
         {
           merge: true,
         },
       );
 
-      const guestChattingRoomRef = db
-        .collection(COLLECTIONS.USERS)
+      const guestChattingRoomRef = userCollectionRef
         .doc(userId)
         .collection(COLLECTIONS.CHATTING_ROOMS)
         .doc(hostUserId);
@@ -55,6 +56,8 @@ export const joinChat = publicProcedure
           merge: true,
         },
       );
+
+      await batch.commit();
     });
 
     return {

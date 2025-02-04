@@ -31,7 +31,7 @@ export const ChattingSide = ({ userId }: ChattingSideProps) => {
       </nav>
       <ChattingList friendUserId={userId} />
       <footer className="p-3">
-        <SendMessageForm friendPeer={friendPeer} friendUserId={userId} />
+        <SendMessageForm />
       </footer>
     </article>
   );
