@@ -1,5 +1,14 @@
 'use client';
 
+import {
+  collection,
+  doc,
+  getFirestore,
+  onSnapshot,
+  query,
+} from 'firebase/firestore';
+
+import { useEffect } from 'react';
 import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
@@ -8,8 +17,10 @@ import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, Timer, QR, CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
+import { COLLECTIONS } from '@/database/firestore/type';
+import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { cn, CustomError, expToDate } from '@/utils';
+import { assert, cn, CustomError, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useQuery } from '@tanstack/react-query';
 
@@ -66,6 +77,35 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
         inviteToken,
       },
     }).href;
+
+    const { user } = useUserData();
+
+    assert(user);
+
+    const userId = user.id;
+
+    useEffect(() => {
+      const db = getFirestore();
+
+      const chattingRoomsRef = collection(
+        db,
+        COLLECTIONS.USERS,
+        userId,
+        COLLECTIONS.CHATTING_ROOMS,
+      );
+
+      const unsubscribe = onSnapshot(
+        chattingRoomsRef,
+        (snapshot) => {
+          console.log(snapshot.docs);
+        },
+        (error) => {
+          console.error(error);
+        },
+      );
+
+      return unsubscribe;
+    }, [userId]);
 
     const expires = expToDate(inviteTokenPayload.exp);
 
