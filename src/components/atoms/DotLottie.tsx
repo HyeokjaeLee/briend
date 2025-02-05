@@ -1,11 +1,11 @@
 'use client';
 
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
-  DotLottieReact,
   type DotLottie as DotLottieType,
   type DotLottieReactProps,
+  DotLottieReact,
 } from '@lottiefiles/dotlottie-react';
 
 export interface DotLottieProps
@@ -13,7 +13,7 @@ export interface DotLottieProps
   onCompleted?: () => void;
 }
 
-export const DotLottie = memo(({ onCompleted, ...props }: DotLottieProps) => {
+export const DotLottie = ({ onCompleted, ...props }: DotLottieProps) => {
   const [dotLottie, setDotLottie] = useState<DotLottieType | null>(null);
 
   useEffect(() => {
@@ -36,6 +36,4 @@ export const DotLottie = memo(({ onCompleted, ...props }: DotLottieProps) => {
       {...props}
     />
   );
-});
-
-DotLottie.displayName = 'DotLottie';
+};

@@ -10,6 +10,7 @@ export interface TimerProps {
   onChangeLeftSeconds?: (leftSeconds: number) => void;
   onTimeout?: () => void;
   className?: string;
+  stop?: boolean;
 }
 
 export const Timer = ({
@@ -17,6 +18,7 @@ export const Timer = ({
   onChangeLeftSeconds,
   onTimeout,
   className,
+  stop,
 }: TimerProps) => {
   const [leftSeconds, setLeftSeconds] = useState<number>(-1);
 
@@ -27,7 +29,7 @@ export const Timer = ({
   if (error) throw error;
 
   useEffect(() => {
-    if (leftSeconds === 0) return;
+    if (leftSeconds === 0 || stop) return;
 
     const handleNextLeftSeconds = () => {
       const timerAction = (leftSec: number) => {
@@ -64,7 +66,7 @@ export const Timer = ({
     }, 1_000);
 
     return () => clearTimeout(timer);
-  }, [leftSeconds, onChangeLeftSeconds, onTimeout, timeoutSec]);
+  }, [leftSeconds, onChangeLeftSeconds, onTimeout, timeoutSec, stop]);
 
   const notEnoughTime = leftSeconds < 60;
 

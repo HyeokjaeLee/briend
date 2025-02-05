@@ -2,23 +2,23 @@
 
 import {
   collection,
-  doc,
   getFirestore,
   onSnapshot,
   query,
+  where,
 } from 'firebase/firestore';
 
-import { useEffect } from 'react';
-import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
+import { useEffect, useState } from 'react';
+import { FcCollaboration, FcAdvertising } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
-import { BottomButton, Timer, QR, CustomButton } from '@/components';
+import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
 import { LANGUAGE } from '@/constants';
 import { COLLECTIONS } from '@/database/firestore/type';
-import { useUserData } from '@/hooks';
+import { useAsyncError, useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { assert, cn, CustomError, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
@@ -84,9 +84,12 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
     const userId = user.id;
 
+    const asyncError = useAsyncError();
+
+    const [connectedGuestId, setConnectedGuestId] = useState<string>();
+
     useEffect(() => {
       const db = getFirestore();
-
       const chattingRoomsRef = collection(
         db,
         COLLECTIONS.USERS,
@@ -94,18 +97,29 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
         COLLECTIONS.CHATTING_ROOMS,
       );
 
-      const unsubscribe = onSnapshot(
+      const filteredQuery = query(
         chattingRoomsRef,
+        where('roomId', '==', inviteTokenPayload.roomId),
+      );
+
+      const unsubscribe = onSnapshot(
+        filteredQuery,
         (snapshot) => {
-          console.log(snapshot.docs);
+          snapshot.docs.forEach((doc) => {
+            setConnectedGuestId(doc.id);
+          });
         },
         (error) => {
-          console.error(error);
+          asyncError({
+            code: 'INTERNAL_FIRESTORE_ERROR',
+            cause: error.cause,
+            message: error.message,
+          });
         },
       );
 
       return unsubscribe;
-    }, [userId]);
+    }, [asyncError, inviteTokenPayload.roomId, userId]);
 
     const expires = expToDate(inviteTokenPayload.exp);
 
@@ -139,6 +153,8 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
       });
     };
 
+    const router = useCustomRouter();
+
     return (
       <article
         className={cn(
@@ -159,14 +175,38 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
               {INVITE_MESSAGE[inviteTokenPayload.guestLanguage]}
             </p>
           </section>
-          <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
-            <QR
-              alt="invite-qr"
-              href={inviteUrl}
-              loading={!isFetched}
-              size={150}
+          {connectedGuestId ? (
+            <DotLottie
+              className="mx-auto max-w-80 flex-1"
+              loop={false}
+              src="/assets/lottie/receive-message.lottie"
+              onCompleted={() => {
+                router.replace(
+                  ROUTES.CHATTING_ROOM.pathname({ userId: connectedGuestId }),
+                  {
+                    toSidePanel: isSidePanel,
+                  },
+                );
+
+                if (isSidePanel) {
+                  router.replace(ROUTES.FRIEND_LIST.pathname);
+                }
+
+                toast({
+                  message: t('start-chatting-toast-message'),
+                });
+              }}
             />
-          </section>
+          ) : (
+            <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
+              <QR
+                alt="invite-qr"
+                href={inviteUrl}
+                loading={!isFetched}
+                size={150}
+              />
+            </section>
+          )}
           <section className="flex-1 flex-col gap-2 flex-center">
             <h2 className="text-center text-xl font-bold text-slate-900">
               <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
@@ -178,14 +218,21 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
         <Timer
           className="mx-auto"
           expires={expires}
+          stop={!!connectedGuestId}
           onTimeout={handleExpiredToken}
         />
         {isSidePanel ? (
-          <CustomButton className="mt-3" onClick={handleShare}>
+          <CustomButton
+            className={cn(
+              'mt-3',
+              connectedGuestId && 'animate-fade-up animate-reverse',
+            )}
+            onClick={handleShare}
+          >
             <RiShareFill className="size-7" /> {t('share-button-text')}
           </CustomButton>
         ) : (
-          <BottomButton onClick={handleShare}>
+          <BottomButton loading={!!connectedGuestId} onClick={handleShare}>
             <RiShareFill className="size-7" /> {t('share-button-text')}
           </BottomButton>
         )}

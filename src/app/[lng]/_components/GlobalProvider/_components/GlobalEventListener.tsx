@@ -3,14 +3,9 @@ import { throttle } from 'es-toolkit';
 import { useLayoutEffect } from 'react';
 
 import { SELECTOR } from '@/constants';
-import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 
 export const GlobalEventListener = () => {
-  const url = useUrl({
-    origin: false,
-  });
-
   const resetMediaQuery = useGlobalStore((state) => state.resetMediaQuery);
 
   useLayoutEffect(() => {
@@ -40,19 +35,31 @@ export const GlobalEventListener = () => {
 
     const debouncedResizeHandler = throttle(resizeHandler, 33);
 
-    resizeHandler();
+    const observer = new MutationObserver((mutationsList) => {
+      mutationsList.forEach((mutation) => {
+        if (mutation.type === 'childList') {
+          debouncedResizeHandler();
+        }
+      });
+    });
+
+    observer.observe(window.document.body, {
+      childList: true,
+      subtree: true,
+    });
 
     window.addEventListener('resize', debouncedResizeHandler);
     window.visualViewport?.addEventListener('resize', debouncedResizeHandler);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', debouncedResizeHandler);
       window.visualViewport?.removeEventListener(
         'resize',
         debouncedResizeHandler,
       );
     };
-  }, [resetMediaQuery, url]);
+  }, [resetMediaQuery]);
 
   return null;
 };
