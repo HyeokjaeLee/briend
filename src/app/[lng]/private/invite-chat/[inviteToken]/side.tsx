@@ -1,6 +1,6 @@
 'use client';
 
-import { InviteChatQRTemplate } from './_components/InviteChatQrTemplate';
+import { InviteChatQRTemplate } from './_components/InviteChatQRTemplate';
 
 interface InviteChatQRSideProps {
   inviteToken: string;

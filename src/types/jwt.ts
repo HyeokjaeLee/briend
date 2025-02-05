@@ -2,15 +2,11 @@ import type { UserSession } from './next-auth';
 
 import type { LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
 
-export enum TOKEN_TYPE {
-  INVITE = 'invite',
-  CHANNEL = 'channel',
-}
-
 export namespace JwtPayload {
   export interface InviteToken {
     hostUserId: string;
     guestLanguage: LANGUAGE;
+    roomId: string;
   }
 
   export interface FriendToken {

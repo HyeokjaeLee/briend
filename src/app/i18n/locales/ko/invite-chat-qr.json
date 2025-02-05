@@ -1,6 +1,6 @@
 {
   "expired-toast-message": "QR 코드가 만료되었어요",
-  "start-chatting": "상대방과 채팅이 시작되요",
+  "start-chatting-toast-message": "친구와 연결되었어요!",
   "notice-message": "QR 코드를 상대방에게 보여주세요.\n해당 페이지는 상대방 방향에 맞게 회전되어 있어요",
   "warning-message": "친구가 채팅방에 참여하기 전에 페이지를 벗어나지 마세요!",
   "share-button-text": "공유하기"

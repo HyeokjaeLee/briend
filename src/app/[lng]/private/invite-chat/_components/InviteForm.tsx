@@ -9,14 +9,12 @@ import { trpc } from '@/app/trpc';
 import { CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
 import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
-import { API_ROUTES } from '@/routes/api';
 import { ROUTES } from '@/routes/client';
 import { createInviteTokenSchema } from '@/schema/trpc/chat';
 import { useGlobalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Select } from '@radix-ui/themes';
-import { useMutation } from '@tanstack/react-query';
 
 export interface QrInfo {
   userId: string;
@@ -46,16 +44,8 @@ export const InviteForm = () => {
     }),
   });
 
-  const createChatMutation = useMutation({
-    mutationFn: API_ROUTES.CREATE_CHAT_INVITE_TOKEN,
-    onSuccess: ({ inviteToken }) =>
-      router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken }), {
-        toSidePanel: hasSidePanel,
-      }),
-  });
-
   const createInviteTokenMutation = trpc.chat.createInviteToken.useMutation({
-    onSuccess: (inviteToken) =>
+    onSuccess: ({ inviteToken }) =>
       router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken }), {
         toSidePanel: hasSidePanel,
       }),
@@ -105,7 +95,9 @@ export const InviteForm = () => {
         </label>
         <CustomButton
           className="w-full"
-          loading={formState.isSubmitting || createChatMutation.isPending}
+          loading={
+            formState.isSubmitting || createInviteTokenMutation.isPending
+          }
           type="submit"
         >
           {t('invite-button')}

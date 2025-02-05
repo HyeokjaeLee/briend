@@ -7,6 +7,7 @@ import { Suspense, useEffect, useMemo } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
+import { DotLottie, LoadingTemplate } from '@/components';
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
@@ -58,37 +59,41 @@ export const JoinTemplate = createOnlyClientComponent(
       });
     }, [inviteToken, isAnonymous, mutateJoinChat, userId]);
 
-    useEffect(() => {
-      if (!joinChatMutation.isSuccess) return;
+    return (
+      <>
+        {joinChatMutation.isSuccess ? (
+          <DotLottie
+            className="m-auto max-w-96"
+            loop={false}
+            src="/assets/lottie/send-nickname.lottie"
+            onCompleted={() => {
+              router.replace(
+                ROUTES.CHATTING_ROOM.pathname({
+                  userId: joinChatMutation.data.hostUserId,
+                }),
+                {
+                  toSidePanel: hasSidePanel,
+                },
+              );
 
-      router.replace(
-        ROUTES.CHATTING_ROOM.pathname({
-          userId: joinChatMutation.data.hostUserId,
-        }),
-        {
-          toSidePanel: hasSidePanel,
-        },
-      );
+              if (hasSidePanel) {
+                router.replace(ROUTES.FRIEND_LIST.pathname);
+              }
 
-      if (hasSidePanel) {
-        router.replace(ROUTES.FRIEND_LIST.pathname);
-      }
-
-      toast({
-        message: t('start-chatting-toast-message'),
-      });
-    }, [
-      hasSidePanel,
-      joinChatMutation.data,
-      joinChatMutation.isSuccess,
-      router,
-      t,
-    ]);
-
-    return isAnonymous ? (
-      <Suspense>
-        <GuestModal exp={exp} inviteToken={inviteToken} userId={userId} />
-      </Suspense>
-    ) : null;
+              toast({
+                message: t('start-chatting-toast-message'),
+              });
+            }}
+          />
+        ) : (
+          <LoadingTemplate />
+        )}
+        {isAnonymous ? (
+          <Suspense>
+            <GuestModal exp={exp} inviteToken={inviteToken} userId={userId} />
+          </Suspense>
+        ) : null}
+      </>
+    );
   },
 );

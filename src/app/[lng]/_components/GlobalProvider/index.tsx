@@ -34,12 +34,13 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
         defaultSetOptions={DEFAULT_COOKIES_OPTIONS}
       >
         <HistoryObserver />
-        <GlobalEventListener />
+
         <trpc.Provider client={trpcClient} queryClient={queryClient}>
           <PersistQueryClientProvider
             client={queryClient}
             persistOptions={persistOptions}
           >
+            <GlobalEventListener />
             {children}
           </PersistQueryClientProvider>
         </trpc.Provider>

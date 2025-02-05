@@ -12,10 +12,22 @@ export namespace Firestore {
     language: LANGUAGE;
   }
 
-  export interface ChattingRoom {
-    type: 'host' | 'guest';
-    nickname?: string;
-  }
+  /**
+   * @description docId는 상대방 Id, type은 본인의 타입
+   */
+  export type ChattingRoom =
+    | {
+        type: 'host';
+        /**
+         * @description guest가 anonymous 계정인 경우 nickname을 저장함
+         */
+        nickname?: string;
+        roomId: string;
+        messages?: any[];
+      }
+    | {
+        type: 'guest';
+      };
 }
 
 export enum COLLECTIONS {

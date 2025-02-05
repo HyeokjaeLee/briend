@@ -18,7 +18,7 @@ export const joinChat = publicProcedure
   )
   .mutation(async ({ input: { inviteToken, nickname, userId } }) => {
     const {
-      payload: { hostUserId },
+      payload: { hostUserId, roomId },
     } = await jwtAuthSecret.verfiy<JwtPayload.InviteToken>(inviteToken);
 
     await firestore(async (db) => {
@@ -36,6 +36,7 @@ export const joinChat = publicProcedure
         objectWithoutUndefined({
           type: 'host',
           nickname,
+          roomId,
         } satisfies Firestore.ChattingRoom),
         {
           merge: true,

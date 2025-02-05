@@ -7,10 +7,6 @@ import type { ApiParams } from '@/types/api-params';
 import type { TOKEN_TYPE } from '@/types/jwt';
 import { assert } from '@/utils';
 import type {
-  CreateChatInviteTokenApiParams,
-  CreateChatInviteTokenApiResponse,
-} from '@api/chat/create/invite-token/route';
-import type {
   VerifyChatTokenApiParams,
   VerifyChatTokenApiResponse,
 } from '@api/chat/verify/[tokenType]/route';
@@ -25,30 +21,9 @@ const apiInstance = ky.create({
 });
 
 export const API_ROUTES = {
-  CREATE_CHAT_INVITE_TOKEN: (params: CreateChatInviteTokenApiParams) =>
-    apiInstance
-      .post<CreateChatInviteTokenApiResponse>('chat/create/invite-token', {
-        json: params,
-      })
-      .json(),
-
   CREATE_FRIEND: (params: ApiParams.CREATE_FRIEND) =>
     apiInstance
       .post<ApiResponse.CREATE_FRIEND>('chat/create/friend', {
-        json: params,
-      })
-      .json(),
-
-  UNLINK_ACCOUNT: (params: ApiParams.UNLINK_ACCOUNT) =>
-    apiInstance
-      .post<ApiResponse.UNLINK_ACCOUNT>('auth/unlink-account', {
-        json: params,
-      })
-      .json(),
-
-  EDIT_PROFILE: (params: ApiParams.EDIT_PROFILE) =>
-    apiInstance
-      .post<ApiResponse.EDIT_PROFILE>('edit-profile', {
         json: params,
       })
       .json(),
