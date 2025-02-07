@@ -18,50 +18,58 @@ export const joinChat = publicProcedure
   )
   .mutation(async ({ input: { inviteToken, nickname, userId } }) => {
     const {
-      payload: { hostUserId, roomId },
+      payload: { inviterId, roomId },
     } = await jwtAuthSecret.verfiy<JwtPayload.InviteToken>(inviteToken);
 
     await firestore(async (db) => {
-      const batch = db.batch();
-
       const userCollectionRef = db.collection(COLLECTIONS.USERS);
 
-      const hostChattingRoomRef = userCollectionRef
-        .doc(hostUserId)
+      const inviteeChattingRoomRef = userCollectionRef
+        .doc(userId)
+        .collection(COLLECTIONS.CHATTING_ROOMS)
+        .doc(inviterId);
+
+      const inviteeChattingRoomData = (
+        await inviteeChattingRoomRef.get()
+      ).data() as Firestore.ChattingRoom;
+
+      const inviterChattingRoomRef = userCollectionRef
+        .doc(inviterId)
         .collection(COLLECTIONS.CHATTING_ROOMS)
         .doc(userId);
 
-      batch.set(
-        hostChattingRoomRef,
-        objectWithoutUndefined({
-          type: 'host',
-          nickname,
-          roomId,
-        } satisfies Firestore.ChattingRoom),
-        {
-          merge: true,
-        },
-      );
+      const batch = db.batch();
 
-      const guestChattingRoomRef = userCollectionRef
-        .doc(userId)
-        .collection(COLLECTIONS.CHATTING_ROOMS)
-        .doc(hostUserId);
-
-      batch.set(
-        guestChattingRoomRef,
-        {
+      //* 과거에 연결된적이 있고 내가 host 였던 경우
+      if (inviteeChattingRoomData.type === 'host') {
+        batch.set(inviterChattingRoomRef, {
           type: 'guest',
-        } satisfies Firestore.ChattingRoom,
-        {
-          merge: true,
-        },
-      );
+          roomId,
+        } satisfies Firestore.ChattingRoom);
+
+        batch.set(inviteeChattingRoomRef, {
+          type: 'host',
+        } satisfies Firestore.ChattingRoom);
+      } else {
+        console.info('test');
+        batch.set(
+          inviterChattingRoomRef,
+          objectWithoutUndefined({
+            type: 'host',
+            nickname,
+            roomId,
+          } satisfies Firestore.ChattingRoom),
+        );
+
+        batch.set(inviteeChattingRoomRef, {
+          type: 'guest',
+        } satisfies Firestore.ChattingRoom);
+      }
 
       await batch.commit();
     });
 
     return {
-      hostUserId,
+      inviterId,
     };
   });

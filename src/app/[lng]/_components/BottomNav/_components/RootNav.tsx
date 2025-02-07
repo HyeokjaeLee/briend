@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
   RiAddCircleLine,
@@ -61,6 +61,10 @@ export const RootNav = ({ pathname }: RootNavProps) => {
   const { isLogin } = useUserData();
 
   const { t } = useTranslation('layout');
+
+  useLayoutEffect(() => {
+    setActiveIndex(currentRouteIndex);
+  }, [currentRouteIndex]);
 
   return (
     <nav className="flex justify-center border-t border-t-slate-100">

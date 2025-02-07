@@ -13,8 +13,8 @@ export const createInviteToken = privateProcedure
 
     const inviteToken = await jwtAuthSecret.sign(
       {
-        hostUserId: id,
-        guestLanguage: language,
+        inviterId: id,
+        inviteeLanguage: language,
         roomId,
       } satisfies JwtPayload.InviteToken,
       {

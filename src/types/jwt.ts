@@ -4,8 +4,8 @@ import type { LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
 
 export namespace JwtPayload {
   export interface InviteToken {
-    hostUserId: string;
-    guestLanguage: LANGUAGE;
+    inviterId: string;
+    inviteeLanguage: LANGUAGE;
     roomId: string;
   }
 
