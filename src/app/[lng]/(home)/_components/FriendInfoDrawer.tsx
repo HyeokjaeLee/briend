@@ -20,11 +20,11 @@ import { expToDate, getConnectionStatus } from '@/utils';
 import { CONNECTION_STATUS } from '@/utils/getConnectionStatus';
 import { Badge, Skeleton } from '@radix-ui/themes';
 
-export const DRAWER_SEARCH_PARAM = 'user-id';
-
 interface FriendInfoDrawerProps {
   onClickDeleteFriendButton?: () => void;
 }
+
+export const DRAWER_SEARCH_PARAM = 'user-id';
 
 export const FriendInfoDrawer = ({
   onClickDeleteFriendButton,
