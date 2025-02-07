@@ -10,7 +10,10 @@ export const createContext = async (
 ) => {
   const session = await auth();
 
+  const firebaseIdToken = opts?.req.headers.get('firebaseIdToken');
+
   return {
+    firebaseIdToken,
     session,
     opts,
   };

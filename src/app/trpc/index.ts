@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import superjson from 'superjson';
 
 import type { ApiRouter } from '@/routes/server';
@@ -50,6 +51,15 @@ export const trpcClient = trpc.createClient({
     httpBatchLink({
       url: '/api/trpc',
       transformer: superjson,
+      async headers() {
+        const auth = getAuth();
+
+        const firebaseIdToken = await auth.currentUser?.getIdToken();
+
+        return {
+          firebaseIdToken,
+        };
+      },
     }),
   ],
 });

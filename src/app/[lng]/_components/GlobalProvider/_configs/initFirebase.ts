@@ -45,6 +45,8 @@ const initFirebase = async () => {
   }
 
   setGlobalLoading(false);
+
+  return auth;
 };
 
 export const firebase = initFirebase();

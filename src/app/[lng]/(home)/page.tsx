@@ -1,31 +1,19 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
-
 import { memo, useState } from 'react';
 
 import { useUserData } from '@/hooks';
-import { useFriendStore } from '@/stores';
 import { Skeleton } from '@radix-ui/themes';
 
-import { FriendCard } from './_components/FriendCard';
 import { FriendDeleteModal } from './_components/FriendDeleteModal';
-import {
-  DRAWER_SEARCH_PARAM,
-  FriendInfoDrawer,
-} from './_components/FriendInfoDrawer';
+import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
+import { FrinedListItems } from './_components/FrinedListItems';
 import { GuestBanner } from './_components/GuestBanner';
 import { MyProfileCard } from './_components/MyProfileCard';
 
 const ChattingListPage = () => {
-  const [friendList] = useFriendStore(
-    useShallow((state) => [state.friendList]),
-  );
-
   const { isLogin, isLoading, user } = useUserData();
   const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
-
-  const sortedFriendList = [...friendList].reverse();
 
   return (
     <article>
@@ -45,15 +33,7 @@ const ChattingListPage = () => {
             <GuestBanner />
           )}
         </li>
-        {sortedFriendList.map(({ userId, nickname }) => (
-          <li key={userId}>
-            <FriendCard
-              friendUserId={userId}
-              href={`?${DRAWER_SEARCH_PARAM}=${userId}`}
-              nickname={nickname}
-            />
-          </li>
-        ))}
+        <FrinedListItems />
       </ul>
       <FriendInfoDrawer
         onClickDeleteFriendButton={() => setIsDeleteModalOpened(true)}
