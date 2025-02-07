@@ -3,12 +3,12 @@
 import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
 
-import { Suspense, useEffect, useMemo } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
 import { DotLottie, LoadingTemplate } from '@/components';
-import { useCustomRouter } from '@/hooks';
+import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import type { JwtPayload } from '@/types/jwt';
@@ -27,6 +27,29 @@ export const JoinTemplate = createOnlyClientComponent(
       () => decodeJwt<JwtPayload.InviteToken>(inviteToken),
       [inviteToken],
     );
+
+    const { lng } = useLanguage();
+
+    const { user, isLoading } = useUserData();
+
+    const [isLanguageChecked, setIsLanguageChecked] = useState(false);
+
+    const userLanguage = user?.language;
+
+    useEffect(() => {
+      if (isLoading || !userLanguage) return;
+
+      if (userLanguage === lng) return setIsLanguageChecked(true);
+
+      location.replace(
+        ROUTES.JOIN_CHAT.url({
+          lng: userLanguage,
+          searchParams: {
+            inviteToken,
+          },
+        }),
+      );
+    }, [userLanguage, isLoading, lng, inviteToken]);
 
     const { currentUser } = getAuth();
 
@@ -51,13 +74,13 @@ export const JoinTemplate = createOnlyClientComponent(
     const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
     useEffect(() => {
-      if (isAnonymous) return;
+      if (isAnonymous || !isLanguageChecked) return;
 
       mutateJoinChat({
         inviteToken,
         userId,
       });
-    }, [inviteToken, isAnonymous, mutateJoinChat, userId]);
+    }, [inviteToken, isAnonymous, mutateJoinChat, userId, isLanguageChecked]);
 
     return (
       <>
@@ -69,7 +92,7 @@ export const JoinTemplate = createOnlyClientComponent(
             onCompleted={() => {
               router.replace(
                 ROUTES.CHATTING_ROOM.pathname({
-                  userId: joinChatMutation.data.hostUserId,
+                  userId: joinChatMutation.data.inviterId,
                 }),
                 {
                   toSidePanel: hasSidePanel,
@@ -88,7 +111,7 @@ export const JoinTemplate = createOnlyClientComponent(
         ) : (
           <LoadingTemplate />
         )}
-        {isAnonymous ? (
+        {isLanguageChecked && isAnonymous ? (
           <Suspense>
             <GuestModal exp={exp} inviteToken={inviteToken} userId={userId} />
           </Suspense>

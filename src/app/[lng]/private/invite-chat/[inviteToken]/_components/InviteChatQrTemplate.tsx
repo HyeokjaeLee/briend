@@ -16,7 +16,6 @@ import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
-import { LANGUAGE } from '@/constants';
 import { COLLECTIONS } from '@/database/firestore/type';
 import { useAsyncError, useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -24,36 +23,11 @@ import { assert, cn, CustomError, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
 import { useQuery } from '@tanstack/react-query';
 
-const INVITE_TITLE = {
-  [LANGUAGE.KOREAN]: '채팅에 초대받았어요!',
-  [LANGUAGE.ENGLISH]: 'You have been invited to chat!',
-  [LANGUAGE.JAPANESE]: 'チャットに招待されました！',
-  [LANGUAGE.CHINESE]: '您已被邀请加入聊天！',
-  [LANGUAGE.THAI]: 'คุณได้รับการเชิญชวนไปที่สนทนา！',
-  [LANGUAGE.VIETNAMESE]: 'Bạn đã được mời vào cuộc trò chuyện！',
-};
-
-const INVITE_MESSAGE = {
-  [LANGUAGE.KOREAN]: 'QR 코드를 스캔하면 친구와 같은 언어로 채팅 할 수 있어요.',
-  [LANGUAGE.ENGLISH]:
-    'Scan the QR code to chat with your friend in the same language.',
-  [LANGUAGE.JAPANESE]:
-    'QR コードをスキャンして、同じ言語で友達とチャットできます。',
-  [LANGUAGE.CHINESE]: '扫描二维码，与您的朋友用相同的语言聊天。',
-  [LANGUAGE.THAI]: 'สแกน QR สำหรับการสนทนาด้วยภาษาที่เหมือนกันกับเพื่อนของคุณ',
-  [LANGUAGE.VIETNAMESE]:
-    'Quét mã QR để trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
-};
-
-const INVITE_SHARE_MESSAGE = {
-  [LANGUAGE.KOREAN]: '친구와 같은 언어로 채팅할 수 있어요.',
-  [LANGUAGE.ENGLISH]: 'You can chat with your friend in the same language.',
-  [LANGUAGE.JAPANESE]: '同じ言語で友達とチャットできます。',
-  [LANGUAGE.CHINESE]: '您可以与您的朋友用相同的语言聊天。',
-  [LANGUAGE.THAI]: 'คุณสามารถสนทนาด้วยภาษาที่เหมือนกันกับเพื่อนของคุณ',
-  [LANGUAGE.VIETNAMESE]:
-    'Bạn có thể trò chuyện với bạn bè bằng cùng một ngôn ngữ.',
-};
+import {
+  INVITE_MESSAGE,
+  INVITE_SHARE_MESSAGE,
+  INVITE_TITLE,
+} from '../_constants/invite-language-text';
 
 interface InviteChatQrTemplateProps {
   inviteToken: string;
@@ -72,7 +46,7 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
     );
 
     const url = ROUTES.JOIN_CHAT.url({
-      lng: inviteTokenPayload.guestLanguage,
+      lng: inviteTokenPayload.inviteeLanguage,
       searchParams: {
         inviteToken,
       },
@@ -143,12 +117,12 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
 
     const inviteUrl = shortUrl ?? url;
 
-    const title = INVITE_TITLE[inviteTokenPayload.guestLanguage];
+    const title = INVITE_TITLE[inviteTokenPayload.inviteeLanguage];
 
     const handleShare = () => {
       navigator.share({
         title,
-        text: INVITE_SHARE_MESSAGE[inviteTokenPayload.guestLanguage],
+        text: INVITE_SHARE_MESSAGE[inviteTokenPayload.inviteeLanguage],
         url: inviteUrl,
       });
     };
@@ -172,7 +146,7 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
               {title}
             </h1>
             <p className="px-4 text-center text-sm text-slate-500">
-              {INVITE_MESSAGE[inviteTokenPayload.guestLanguage]}
+              {INVITE_MESSAGE[inviteTokenPayload.inviteeLanguage]}
             </p>
           </section>
           {connectedGuestId ? (

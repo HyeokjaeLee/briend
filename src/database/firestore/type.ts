@@ -22,11 +22,12 @@ export namespace Firestore {
          * @description guest가 anonymous 계정인 경우 nickname을 저장함
          */
         nickname?: string;
-        roomId: string;
+        roomId?: string;
         messages?: any[];
       }
     | {
         type: 'guest';
+        roomId?: string;
       };
 }
 

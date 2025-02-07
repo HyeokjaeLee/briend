@@ -27,12 +27,6 @@ export const ROUTES = {
     topHeaderType: 'none',
     bottomNavType: 'none',
   }),
-  INVITED_CHAT_ENTER: createRoute<'hostId', 'expires' | 'accessToken'>(
-    ({ hostId }) => `/enter/${hostId}`,
-    {
-      topHeaderType: 'back',
-    },
-  ),
   LOGIN: createRoute('/guest/login', {
     topHeaderType: 'back',
     bottomNavType: 'none',
