@@ -10,13 +10,19 @@ export const createContext = async (
 ) => {
   const session = await auth();
 
-  const firebaseIdToken = opts?.req.headers.get('firebaseIdToken');
+  const headers = opts?.req.headers;
+  const isClient = headers?.get('isClient') === 'true';
 
-  return {
-    firebaseIdToken,
+  const commonContext = {
     session,
     opts,
   };
+
+  if (!isClient) return { ...commonContext, isClient: false as const };
+
+  const firebaseIdToken = headers.get('firebaseIdToken');
+
+  return { ...commonContext, isClient: true as const, firebaseIdToken };
 };
 
 const t = initTRPC.context<typeof createContext>().create({

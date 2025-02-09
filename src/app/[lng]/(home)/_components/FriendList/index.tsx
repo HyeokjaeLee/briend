@@ -7,30 +7,31 @@ import { createSuspensedComponent } from '@/utils/client';
 
 import { FriendCard, FriendCardSkeleton } from './_components/FriendCard';
 import { FriendDeleteModal } from './_components/FriendDeleteModal';
-import {
-  DRAWER_SEARCH_PARAM,
-  FriendInfoDrawer,
-} from './_components/FriendInfoDrawer';
+import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
 
 export const FriendList = createSuspensedComponent(
   () => {
     const [{ friendList }] = trpc.friend.getFriendList.useSuspenseQuery();
 
     const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
+    const [openedFriendId, setOpenedFriendId] = useState<string | null>(null);
+
+    const handleClose = () => {
+      setOpenedFriendId(null);
+      setIsDeleteModalOpened(false);
+    };
 
     return (
       <ul>
-        {friendList.map(({ id, name = '' }) => (
+        {friendList.map(({ id, ...restInfo }) => (
           <li key={id}>
-            <FriendCard
-              href={`?${DRAWER_SEARCH_PARAM}=${id}`}
-              id={id}
-              name={name}
-            />
+            <FriendCard {...restInfo} onClick={() => setOpenedFriendId(id)} />
           </li>
         ))}
         <FriendInfoDrawer
+          friendId={openedFriendId}
           onClickDeleteFriendButton={() => setIsDeleteModalOpened(true)}
+          onClose={handleClose}
         />
         <FriendDeleteModal
           opened={isDeleteModalOpened}
@@ -39,15 +40,18 @@ export const FriendList = createSuspensedComponent(
       </ul>
     );
   },
-  () => {
-    const EMPTY_FRIEND_LIST = new Array(20).fill(null);
+  {
+    fallback: () => {
+      const EMPTY_FRIEND_LIST = new Array(20).fill(null);
 
-    return (
-      <div>
-        {EMPTY_FRIEND_LIST.map((_, index) => (
-          <FriendCardSkeleton key={index} />
-        ))}
-      </div>
-    );
+      return (
+        <div>
+          {EMPTY_FRIEND_LIST.map((_, index) => (
+            <FriendCardSkeleton key={index} />
+          ))}
+        </div>
+      );
+    },
+    ssrFallback: true,
   },
 );

@@ -1,12 +1,6 @@
 'use client';
 
-import {
-  collection,
-  getFirestore,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore';
+import { onSnapshot, query, where } from 'firebase/firestore';
 
 import { useEffect, useState } from 'react';
 import { FcCollaboration, FcAdvertising } from 'react-icons/fc';
@@ -16,6 +10,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
+import { firestore } from '@/database/firestore/client';
 import { COLLECTIONS } from '@/database/firestore/type';
 import { useAsyncError, useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -63,34 +58,34 @@ export const InviteChatQRTemplate = createOnlyClientComponent(
     const [connectedGuestId, setConnectedGuestId] = useState<string>();
 
     useEffect(() => {
-      const db = getFirestore();
-      const chattingRoomsRef = collection(
-        db,
-        COLLECTIONS.USERS,
-        userId,
-        COLLECTIONS.CHATTING_ROOMS,
-      );
+      const unsubscribe = firestore(({ collection }) => {
+        const chattingRoomsRef = collection(
+          COLLECTIONS.USERS,
+          userId,
+          COLLECTIONS.CHATTING_ROOMS,
+        );
 
-      const filteredQuery = query(
-        chattingRoomsRef,
-        where('roomId', '==', inviteTokenPayload.roomId),
-      );
+        const filteredQuery = query(
+          chattingRoomsRef,
+          where('roomId', '==', inviteTokenPayload.roomId),
+        );
 
-      const unsubscribe = onSnapshot(
-        filteredQuery,
-        (snapshot) => {
-          snapshot.docs.forEach((doc) => {
-            setConnectedGuestId(doc.id);
-          });
-        },
-        (error) => {
-          asyncError({
-            code: 'INTERNAL_FIRESTORE_ERROR',
-            cause: error.cause,
-            message: error.message,
-          });
-        },
-      );
+        return onSnapshot(
+          filteredQuery,
+          (snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              setConnectedGuestId(doc.id);
+            });
+          },
+          (error) => {
+            asyncError({
+              code: 'INTERNAL_FIRESTORE_ERROR',
+              cause: error.cause,
+              message: error.message,
+            });
+          },
+        );
+      });
 
       return unsubscribe;
     }, [asyncError, inviteTokenPayload.roomId, userId]);
