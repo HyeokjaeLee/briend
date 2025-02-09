@@ -37,9 +37,10 @@ export const JoinTemplate = createOnlyClientComponent(
     const userLanguage = user?.language;
 
     useEffect(() => {
-      if (isLoading || !userLanguage) return;
+      if (isLoading) return;
 
-      if (userLanguage === lng) return setIsLanguageChecked(true);
+      if (userLanguage === lng || !userLanguage)
+        return setIsLanguageChecked(true);
 
       location.replace(
         ROUTES.JOIN_CHAT.url({

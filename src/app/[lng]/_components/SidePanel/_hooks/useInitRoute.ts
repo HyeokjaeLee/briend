@@ -1,7 +1,8 @@
 import { usePathname } from 'next/navigation';
 
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 
+import { SESSION_STORAGE } from '@/constants';
 import { useCustomRouter, useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
@@ -23,6 +24,16 @@ export const useInitRoute = ({ routeName }: UseInitRouteProps) => {
   const isDefaultRoute = routeName === 'FRIEND_LIST';
 
   const router = useCustomRouter();
+
+  useLayoutEffect(() => {
+    const sidePanelUrlSession = sessionStorage.getItem(
+      SESSION_STORAGE.SIDE_PANEL_URL,
+    );
+
+    if (!sidePanelUrlSession) return;
+
+    sidePanel.push(sidePanelUrlSession);
+  }, [sidePanel]);
 
   useEffect(() => {
     if (!isSameRoute || isDefaultRoute) return;

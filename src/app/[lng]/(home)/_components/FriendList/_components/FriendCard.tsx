@@ -24,14 +24,14 @@ export const FriendCard = ({
   const { t } = useTranslation('friend-list');
 
   return (
-    <button className="px-5 py-3" type="button" onClick={onClick}>
+    <button className="w-full px-5 py-3" type="button" onClick={onClick}>
       <article className="flex gap-3">
         <ProfileImage size="5" src={profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong
-              className={cn('font-medium', {
-                'text-slate-400': isUnsubscribed,
+              className={cn('font-semibold text-start', {
+                'text-slate-400 font-medium': isUnsubscribed,
               })}
             >
               {isUnsubscribed ? t('unsubscribed-user') : name}

@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useSidePanelStore, type NAVIGATION_ANIMATION } from '@/stores';
 import {
   NAVIGATION_ANIMATION_DURATION,
@@ -23,27 +25,30 @@ export const useSidePanel = memoizedSidePanel
         (state) => state.setSidePanelUrl,
       );
 
-      memoizedSidePanel = {
-        push: (href, options) => {
-          const { sidePanelUrl } = useSidePanelStore.getState();
+      memoizedSidePanel = useMemo(
+        () => ({
+          push: (href, options) => {
+            const { sidePanelUrl } = useSidePanelStore.getState();
 
-          if (timer) clearTimeout(timer);
+            if (timer) clearTimeout(timer);
 
-          const isSameHref = sidePanelUrl === href;
+            const isSameHref = sidePanelUrl === href;
 
-          if (isSameHref) return console.info('blocked by same href');
+            if (isSameHref) return console.info('blocked by same href');
 
-          const { withAnimation = 'NONE' } = options ?? {};
+            const { withAnimation = 'NONE' } = options ?? {};
 
-          setExitNavigationAnimation(withAnimation, true);
+            setExitNavigationAnimation(withAnimation, true);
 
-          if (withAnimation === 'NONE') return setSidePanelUrl(href);
+            if (withAnimation === 'NONE') return setSidePanelUrl(href);
 
-          timer = setTimeout(() => {
-            setSidePanelUrl(href);
-          }, NAVIGATION_ANIMATION_DURATION.EXIT);
-        },
-      };
+            timer = setTimeout(() => {
+              setSidePanelUrl(href);
+            }, NAVIGATION_ANIMATION_DURATION.EXIT);
+          },
+        }),
+        [setSidePanelUrl],
+      );
 
       return memoizedSidePanel;
     };

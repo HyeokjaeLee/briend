@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 import { Virtuoso } from 'react-virtuoso';
 
-import { useProfileImage } from '@/hooks';
 import { useFriendStore } from '@/stores';
 import { assert } from '@/utils';
 
@@ -18,9 +17,6 @@ interface ChattingListProps {
 
 export const ChattingList = ({ friendUserId }: ChattingListProps) => {
   const { messageList } = useMessageSync(friendUserId);
-
-  const { profileImageSrc: friendProfileImageSrc } =
-    useProfileImage(friendUserId);
 
   const friendNickname = useFriendStore(
     (state) =>
@@ -64,7 +60,7 @@ export const ChattingList = ({ friendUserId }: ChattingListProps) => {
             isSameTime={isSameTime}
             isSameUser={isSameUser}
             nickname={friendNickname}
-            profileImageSrc={friendProfileImageSrc}
+            profileImageSrc=""
           >
             {message.message}
           </FriendMessageItem>
