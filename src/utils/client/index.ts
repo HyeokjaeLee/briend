@@ -1,6 +1,7 @@
 export { toast, type ToastOptions } from './toast';
 
 export { createOnlyClientComponent } from './createOnlyClientComponent';
+export { createSuspensedComponent } from './createSuspensedComponent';
 export {
   getNavigationAnimationClasses,
   NAVIGATION_ANIMATION_DURATION,
