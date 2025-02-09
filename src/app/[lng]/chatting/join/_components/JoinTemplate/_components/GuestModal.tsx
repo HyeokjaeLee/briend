@@ -71,7 +71,7 @@ export const GuestModal = ({
           onCompleted={() => {
             router.replace(
               ROUTES.CHATTING_ROOM.pathname({
-                userId: joinChatMutation.data.hostUserId,
+                userId: joinChatMutation.data.inviterId,
               }),
               {
                 toSidePanel: hasSidePanel,

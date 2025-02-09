@@ -6,7 +6,7 @@ import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage, CustomLink } from '@/components';
 import { MAX_FIREND_COUNT } from '@/constants';
-import { useProfileImage } from '@/hooks';
+import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
 import { Skeleton } from '@radix-ui/themes';
@@ -22,7 +22,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
     useShallow((state) => [state.friendList.length, state.isLinimtedAddFriend]),
   );
 
-  const { profileImageSrc } = useProfileImage();
+  const { user } = useUserData();
 
   return (
     <CustomLink
@@ -30,7 +30,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
       href={ROUTES.EDIT_PROFILE.pathname}
     >
       <article className="flex gap-3">
-        <ProfileImage size="6" src={profileImageSrc} />
+        <ProfileImage size="6" src={user?.profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong>{userName}</strong>

@@ -31,7 +31,7 @@ export const joinChat = publicProcedure
 
       const inviteeChattingRoomData = (
         await inviteeChattingRoomRef.get()
-      ).data() as Firestore.ChattingRoom;
+      ).data() as Firestore.ChattingRoom | undefined;
 
       const inviterChattingRoomRef = userCollectionRef
         .doc(inviterId)
@@ -41,7 +41,7 @@ export const joinChat = publicProcedure
       const batch = db.batch();
 
       //* 과거에 연결된적이 있고 내가 host 였던 경우
-      if (inviteeChattingRoomData.type === 'host') {
+      if (inviteeChattingRoomData?.type === 'host') {
         batch.set(inviterChattingRoomRef, {
           type: 'guest',
           roomId,
@@ -51,7 +51,6 @@ export const joinChat = publicProcedure
           type: 'host',
         } satisfies Firestore.ChattingRoom);
       } else {
-        console.info('test');
         batch.set(
           inviterChattingRoomRef,
           objectWithoutUndefined({

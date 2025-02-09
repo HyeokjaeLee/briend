@@ -1,20 +1,28 @@
-import { Suspense } from 'react';
+'use client';
+
+import { Suspense, useLayoutEffect, useState, type ComponentType } from 'react';
 
 import { IS_CLIENT } from '@/constants';
 
 interface CreateSuspensedComponentOptions<T> {
-  fallback?: React.ComponentType<T>;
+  fallback?: ComponentType<T>;
   ssrFallback?: boolean;
 }
 
 export const createSuspensedComponent = <T extends object>(
-  Component: React.ComponentType<T>,
+  Component: ComponentType<T>,
   options?: CreateSuspensedComponentOptions<T>,
 ) => {
   const { fallback: Fallback, ssrFallback } = options ?? {};
 
   const SuspensedComponent: React.ComponentType<T> = (props) => {
-    if (ssrFallback && !IS_CLIENT && Fallback) return <Fallback {...props} />;
+    const [isLoading, setIsLoading] = useState(!!(ssrFallback && Fallback));
+
+    useLayoutEffect(() => {
+      if (ssrFallback && Fallback && IS_CLIENT) setIsLoading(false);
+    }, []);
+
+    if (isLoading && Fallback) return <Fallback {...props} />;
 
     return (
       <Suspense fallback={Fallback ? <Fallback {...props} /> : null}>

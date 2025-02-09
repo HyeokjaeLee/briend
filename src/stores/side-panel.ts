@@ -2,7 +2,7 @@ import type { ANIMATION_TYPE, NAVIGATION_ANIMATION } from './global';
 
 import { create } from 'zustand';
 
-import { IS_CLIENT, SESSION_STORAGE } from '@/constants';
+import { SESSION_STORAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
 
 interface SidePanelStore {
@@ -23,13 +23,8 @@ interface SidePanelStore {
 }
 
 export const useSidePanelStore = create<SidePanelStore>((set) => {
-  const sidePanelUrl = IS_CLIENT
-    ? sessionStorage.getItem(SESSION_STORAGE.SIDE_PANEL_URL) ||
-      ROUTES.FRIEND_LIST.pathname
-    : ROUTES.FRIEND_LIST.pathname;
-
   return {
-    sidePanelUrl,
+    sidePanelUrl: ROUTES.FRIEND_LIST.pathname,
     setSidePanelUrl: (sidePanelUrl) => {
       sessionStorage.setItem(SESSION_STORAGE.SIDE_PANEL_URL, sidePanelUrl);
       set({ sidePanelUrl });

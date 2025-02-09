@@ -37,11 +37,15 @@ export const getFriendList = publicProcedure.query(async ({ ctx }) => {
         isUnsubscribed: true,
       };
 
+    const name =
+      user.displayName ||
+      chattingRooms.docs.find((doc) => doc.id === uid)?.data().nickname;
+
     return {
       id: user.uid,
-      name: user.displayName,
+      name,
       profileImage: user.photoURL,
-      isAnonymous: !!user.customClaims?.isAnonymous,
+      isAnonymous: user.customClaims?.isAnonymous ?? true,
       isUnsubscribed: false,
     };
   });

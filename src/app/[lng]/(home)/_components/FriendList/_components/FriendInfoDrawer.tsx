@@ -48,8 +48,8 @@ export const FriendInfoDrawer = ({
             <ProfileImage size="7" src={friendInfo.profileImage} />
             <div className="flex items-center gap-2">
               <h2
-                className={cn('font-medium text-lg', {
-                  'text-slate-400': friendInfo.isUnsubscribed,
+                className={cn('font-semibold text-lg', {
+                  'text-slate-400 font-medium': friendInfo.isUnsubscribed,
                 })}
               >
                 {friendInfo.isUnsubscribed
