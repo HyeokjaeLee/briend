@@ -1,6 +1,7 @@
 import { getAuth } from 'firebase/auth';
 import superjson from 'superjson';
 
+import { IS_CLIENT, PATH, PUBLIC_ENV } from '@/constants';
 import type { ApiRouter } from '@/routes/server';
 import { useGlobalModalStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
@@ -49,15 +50,20 @@ export const trpcClient = trpc.createClient({
   links: [
     errorHandlingLink,
     httpBatchLink({
-      url: '/api/trpc',
+      url: IS_CLIENT ? PATH.TRPC : PUBLIC_ENV.BASE_URL + PATH.TRPC,
       transformer: superjson,
       async headers() {
-        const auth = getAuth();
+        let firebaseIdToken: string | undefined;
 
-        const firebaseIdToken = await auth.currentUser?.getIdToken();
+        if (IS_CLIENT) {
+          const auth = getAuth();
+
+          firebaseIdToken = await auth.currentUser?.getIdToken();
+        }
 
         return {
           firebaseIdToken,
+          isClient: String(IS_CLIENT),
         };
       },
     }),

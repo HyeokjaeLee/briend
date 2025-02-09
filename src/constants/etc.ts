@@ -16,3 +16,7 @@ export const MAX_FIREND_COUNT = 10;
 export enum HEADERS {
   PURE_PATH = 'pure-path',
 }
+
+export enum PATH {
+  TRPC = '/api/trpc',
+}

@@ -1,112 +1,91 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-
-import { RiDeleteBinLine } from 'react-icons/ri';
+import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
+import { trpc } from '@/app/trpc';
 import {
   CustomButton,
   CustomIconButton,
   CustomLink,
   Drawer,
   ProfileImage,
-  Timer,
 } from '@/components';
-import { useCheckIndividualPeer, useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useFriendStore, useGlobalStore } from '@/stores';
-import { expToDate, getConnectionStatus } from '@/utils';
-import { CONNECTION_STATUS } from '@/utils/getConnectionStatus';
-import { Badge, Skeleton } from '@radix-ui/themes';
+import { useGlobalStore } from '@/stores';
+import { cn } from '@/utils';
 
 interface FriendInfoDrawerProps {
   onClickDeleteFriendButton?: () => void;
+  friendId: string | null;
+  onClose: () => void;
 }
 
 export const DRAWER_SEARCH_PARAM = 'user-id';
 
 export const FriendInfoDrawer = ({
   onClickDeleteFriendButton,
+  friendId,
+  onClose,
 }: FriendInfoDrawerProps) => {
-  const searchParams = useSearchParams();
-
-  const userId = searchParams.get(DRAWER_SEARCH_PARAM);
-
-  const router = useCustomRouter();
-
-  const friendInfo = useFriendStore((state) =>
-    state.friendList.find((friend) => friend.userId === userId),
-  );
-
-  const { friendPeer } = useCheckIndividualPeer(userId);
-
-  const connectionStatus = getConnectionStatus(friendPeer);
+  const [{ friendList }] = trpc.friend.getFriendList.useSuspenseQuery();
 
   const { t } = useTranslation('friend-list');
 
-  const expires = expToDate(friendPeer?.exp);
-
   const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
-  const handleClose = () => {
-    const url = new URL(window.location.href);
-    url.searchParams.delete(DRAWER_SEARCH_PARAM);
-
-    router.replace(url.href, {
-      scroll: false,
-    });
-  };
+  const friendInfo = friendList.find((friend) => friend.id === friendId);
 
   return (
     <Drawer
       className="h-80 flex-col gap-4 flex-center"
-      open={!!userId}
-      onClose={handleClose}
+      open={!!friendId}
+      onClose={onClose}
     >
-      <header className="flex flex-col items-center gap-2">
-        <ProfileImage size="7" />
-        <div className="flex items-center gap-2">
-          <h2 className="text-lg font-semibold">{friendInfo?.nickname}</h2>
-          <Skeleton loading={connectionStatus === CONNECTION_STATUS.LOADING}>
-            <Badge
-              color={
-                connectionStatus === CONNECTION_STATUS.ONLINE ? 'green' : 'gray'
-              }
+      {friendInfo ? (
+        <>
+          <header className="flex flex-col items-center gap-2">
+            <ProfileImage size="7" src={friendInfo.profileImage} />
+            <div className="flex items-center gap-2">
+              <h2
+                className={cn('font-medium text-lg', {
+                  'text-slate-400': friendInfo.isUnsubscribed,
+                })}
+              >
+                {friendInfo.isUnsubscribed
+                  ? t('unsubscribed-user')
+                  : friendInfo.name}
+              </h2>
+              <RiShieldCheckFill
+                className={cn('size-5 text-green-500', {
+                  hidden: friendInfo.isAnonymous,
+                })}
+              />
+            </div>
+          </header>
+          {/** TODO: 마지막 채팅 업데이트 기준으로 만료시키기
+           * <Timer expires={expires} /> */}
+          <footer className="mt-auto flex w-full gap-2">
+            <CustomButton asChild className="flex-1">
+              <CustomLink
+                href={ROUTES.CHATTING_ROOM.pathname({
+                  userId: friendId!,
+                })}
+                toSidePanel={hasSidePanel}
+                onClick={onClose}
+              >
+                {t('chatting-button')}
+              </CustomLink>
+            </CustomButton>
+            <CustomIconButton
+              variant="outline"
+              onClick={onClickDeleteFriendButton}
             >
-              {
-                {
-                  [CONNECTION_STATUS.LOADING]: t('expired-badge'),
-                  [CONNECTION_STATUS.EXPIRED]: t('expired-badge'),
-                  [CONNECTION_STATUS.ONLINE]: t('online-badge'),
-                  [CONNECTION_STATUS.OFFLINE]: t('offline-badge'),
-                }[connectionStatus]
-              }
-            </Badge>
-          </Skeleton>
-        </div>
-      </header>
-      <Timer expires={expires} />
-      <footer className="mt-auto flex w-full gap-2">
-        <CustomButton asChild className="flex-1">
-          <CustomLink
-            href={ROUTES.CHATTING_ROOM.pathname({
-              userId: userId!,
-            })}
-            toSidePanel={hasSidePanel}
-            onClick={() => {
-              if (hasSidePanel) {
-                handleClose();
-              }
-            }}
-          >
-            {t('chatting-button')}
-          </CustomLink>
-        </CustomButton>
-        <CustomIconButton variant="outline" onClick={onClickDeleteFriendButton}>
-          <RiDeleteBinLine className="size-6" />
-        </CustomIconButton>
-      </footer>
+              <RiDeleteBinLine className="size-6" />
+            </CustomIconButton>
+          </footer>
+        </>
+      ) : null}
     </Drawer>
   );
 };

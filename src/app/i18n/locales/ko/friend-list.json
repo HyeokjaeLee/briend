@@ -7,7 +7,7 @@
   "online-badge": "온라인",
   "offline-badge": "오프라인",
   "chatting-button": "대화하기",
-
+  "unsubscribed-user": "탈퇴한 회원",
   "delete-friend-message": "친구를 삭제하면\n대화목록도 함께 삭제되요!",
   "delete-friend-sub-message": "친구와의 연결만 끊으면\n원할때 언제든 다시 연결 요청을 보낼 수 있어요.",
   "delete-button": "삭제하기",

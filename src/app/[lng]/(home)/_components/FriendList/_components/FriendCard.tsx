@@ -1,43 +1,51 @@
-import { CustomLink, ProfileImage } from '@/components';
-import { ConnectionIndicator } from '@/components/molecules/ConnectionIndicator';
+import { RiShieldCheckFill } from 'react-icons/ri';
+
+import { useTranslation } from '@/app/i18n/client';
+import type { RouterOutputs } from '@/app/trpc/type';
+import { ProfileImage } from '@/components';
+import { cn } from '@/utils';
 import { Skeleton } from '@radix-ui/themes';
 
-interface FriendCardProps {
-  id: string;
-  name: string;
-  href: string;
-  profileImage?: string;
+interface FriendCardProps
+  extends Omit<
+    RouterOutputs['friend']['getFriendList']['friendList'][number],
+    'id'
+  > {
+  onClick: () => void;
 }
 
 export const FriendCard = ({
-  id,
   name,
-  href,
   profileImage,
+  isAnonymous,
+  isUnsubscribed,
+  onClick,
 }: FriendCardProps) => {
+  const { t } = useTranslation('friend-list');
+
   return (
-    <CustomLink
-      replace
-      className="block px-5 py-3"
-      href={href ?? '#'}
-      scroll={false}
-      onClick={(e) => {
-        if (!href) e.preventDefault();
-      }}
-    >
+    <button className="px-5 py-3" type="button" onClick={onClick}>
       <article className="flex gap-3">
         <ProfileImage size="5" src={profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
-            <strong>{name}</strong>
-            <p>마지막 메시지</p>
+            <strong
+              className={cn('font-medium', {
+                'text-slate-400': isUnsubscribed,
+              })}
+            >
+              {isUnsubscribed ? t('unsubscribed-user') : name}
+            </strong>
+            <p className="text-sm text-slate-500">마지막 메시지</p>
           </div>
-          <div className="mb-auto">
-            <ConnectionIndicator />
-          </div>
+          <RiShieldCheckFill
+            className={cn('mb-auto size-4 text-green-500', {
+              hidden: isAnonymous,
+            })}
+          />
         </div>
       </article>
-    </CustomLink>
+    </button>
   );
 };
 
