@@ -9,6 +9,7 @@ import { MAX_FIREND_COUNT } from '@/constants';
 import { useProfileImage } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
+import { Skeleton } from '@radix-ui/themes';
 
 interface MyProfileCardProps {
   userName?: string;
@@ -65,3 +66,13 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
     </CustomLink>
   );
 };
+
+export const MyProfileCardSkeleton = () => (
+  <div className="flex h-28 items-center gap-4 px-5">
+    <Skeleton className="size-20 rounded-full" />
+    <div className="flex flex-col gap-1">
+      <Skeleton className="h-6 w-36" />
+      <Skeleton className="h-5 w-44" />
+    </div>
+  </div>
+);

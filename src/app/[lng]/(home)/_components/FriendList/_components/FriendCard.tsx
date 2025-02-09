@@ -1,14 +1,12 @@
-import type { CustomLinkProps } from '@/components';
 import { CustomLink, ProfileImage } from '@/components';
 import { ConnectionIndicator } from '@/components/molecules/ConnectionIndicator';
 import { Skeleton } from '@radix-ui/themes';
 
 interface FriendCardProps {
-  id?: string;
-  name?: string;
-  href?: string;
+  id: string;
+  name: string;
+  href: string;
   profileImage?: string;
-  loading?: boolean;
 }
 
 export const FriendCard = ({
@@ -16,7 +14,6 @@ export const FriendCard = ({
   name,
   href,
   profileImage,
-  loading = false,
 }: FriendCardProps) => {
   return (
     <CustomLink
@@ -29,17 +26,11 @@ export const FriendCard = ({
       }}
     >
       <article className="flex gap-3">
-        <Skeleton loading={loading}>
-          <ProfileImage size="5" src={profileImage} />
-        </Skeleton>
+        <ProfileImage size="5" src={profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
-            {loading ? (
-              <Skeleton className="mb-1 h-5 w-32" />
-            ) : (
-              <strong>{name}</strong>
-            )}
-            {loading ? <Skeleton className="h-4 w-64" /> : <p>마지막 메시지</p>}
+            <strong>{name}</strong>
+            <p>마지막 메시지</p>
           </div>
           <div className="mb-auto">
             <ConnectionIndicator />
@@ -47,5 +38,19 @@ export const FriendCard = ({
         </div>
       </article>
     </CustomLink>
+  );
+};
+
+export const FriendCardSkeleton = () => {
+  return (
+    <div className="flex gap-3 px-5 py-3">
+      <Skeleton className="size-14 shrink-0 rounded-full" />
+      <div className="flex w-full items-center justify-between">
+        <div className="flex flex-col">
+          <Skeleton className="mb-1 h-5 w-32" />
+          <Skeleton className="h-4 w-64" />
+        </div>
+      </div>
+    </div>
   );
 };

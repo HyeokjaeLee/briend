@@ -7,9 +7,10 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/th';
 import 'dayjs/locale/vi';
 
+import { doc, setDoc, serverTimestamp, onDisconnect } from 'firebase/firestore';
 import { SessionProvider } from 'next-auth/react';
 
-import { use, type PropsWithChildren } from 'react';
+import { use, useEffect, type PropsWithChildren } from 'react';
 import { CookiesProvider } from 'react-cookie';
 
 import { trpc, trpcClient } from '@/app/trpc';
@@ -21,11 +22,14 @@ import { GlobalEventListener } from './_components/GlobalEventListener';
 import { HistoryObserver } from './_components/HistoryObserver';
 import { firebase } from './_configs/initFirebase';
 import { initQueryClient } from './_configs/initQueryClient';
-
 const { persistOptions, queryClient } = initQueryClient();
 
 export const GlobalProvider = ({ children }: PropsWithChildren) => {
   use(firebase);
+
+  useEffect(() => {
+    doc(firebase);
+  }, []);
 
   return (
     <SessionProvider>
