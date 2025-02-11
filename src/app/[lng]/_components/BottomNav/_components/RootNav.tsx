@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
   RiAddCircleLine,

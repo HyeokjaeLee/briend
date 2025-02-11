@@ -25,6 +25,8 @@ export const SideContents = ({
       case 'CHATTING_ROOM': {
         const userId = sidePanelUrl.split('/')[3];
 
+        assert(userId);
+
         return <ChattingSide userId={userId} />;
       }
 
