@@ -1,10 +1,9 @@
 import { privateProcedure } from '@/app/trpc/settings';
-import { firestore } from '@/database/firestore/server';
+import { firestore, getFirebaseAdminAuth } from '@/database/firestore/server';
 import type { Firestore } from '@/database/firestore/type';
 import { COLLECTIONS } from '@/database/firestore/type';
 import { editProfileSchema } from '@/schema/trpc/user';
 import type { UserSession } from '@/types/next-auth';
-import { getFirebaseAdminAuth } from '@/utils/server';
 
 export const editProfile = privateProcedure.input(editProfileSchema).mutation(
   async ({
