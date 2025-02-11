@@ -1,14 +1,12 @@
 import { useParams } from 'next/navigation';
 
 import { COOKIES, LANGUAGE } from '@/constants';
-import { assertEnum } from '@/utils';
-
-import { useCookies } from './useCookies';
+import { assertEnum, customCookies } from '@/utils';
 
 export const useLanguage = () => {
   const { lng: paramsLng } = useParams();
 
-  const [{ i18n: cookieLng }] = useCookies([COOKIES.I18N]);
+  const cookieLng = customCookies.get(COOKIES.I18N);
 
   const lng = paramsLng || cookieLng;
 

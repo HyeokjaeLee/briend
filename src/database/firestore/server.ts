@@ -1,8 +1,9 @@
+import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { getAuth } from 'firebase-admin/auth';
+
 import { PUBLIC_ENV } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { CustomError } from '@/utils';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
-import { getAuth } from 'firebase-admin/auth';
 
 const getFirebaseAdminApp = async () => {
   const apps = getApps();
