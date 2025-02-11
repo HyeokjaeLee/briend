@@ -1,7 +1,6 @@
 import { publicProcedure } from '@/app/trpc/settings';
-import { firestore } from '@/database/firestore/server';
+import { firestore, verifyFirebaseIdToken } from '@/database/firestore/server';
 import { COLLECTIONS } from '@/database/firestore/type';
-import { verifyFirebaseIdToken } from '@/utils/server';
 
 export const getFriendList = publicProcedure.query(async ({ ctx }) => {
   if (!ctx.isClient) return { friendList: [] };
