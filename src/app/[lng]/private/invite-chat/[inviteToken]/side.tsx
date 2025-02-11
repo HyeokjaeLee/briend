@@ -1,11 +1,11 @@
 'use client';
 
-import { InviteChatQRTemplate } from './_components/InviteChatQRTemplate';
+import { InviteChatTemplate } from './_components/InviteChatTemplate';
 
 interface InviteChatQRSideProps {
   inviteToken: string;
 }
 
 export const InviteChatQRSide = ({ inviteToken }: InviteChatQRSideProps) => {
-  return <InviteChatQRTemplate isSidePanel inviteToken={inviteToken} />;
+  return <InviteChatTemplate isSidePanel inviteToken={inviteToken} />;
 };
