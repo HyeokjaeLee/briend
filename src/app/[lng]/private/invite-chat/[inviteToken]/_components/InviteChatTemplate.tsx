@@ -24,13 +24,13 @@ import {
   INVITE_TITLE,
 } from '../_constants/invite-language-text';
 
-interface InviteChatQrTemplateProps {
+interface InviteChatTemplateProps {
   inviteToken: string;
   isSidePanel?: boolean;
 }
 
-export const InviteChatQRTemplate = createOnlyClientComponent(
-  ({ inviteToken, isSidePanel }: InviteChatQrTemplateProps) => {
+export const InviteChatTemplate = createOnlyClientComponent(
+  ({ inviteToken, isSidePanel }: InviteChatTemplateProps) => {
     const [inviteTokenPayload] = trpc.chat.verfiyInviteToken.useSuspenseQuery(
       {
         inviteToken,
