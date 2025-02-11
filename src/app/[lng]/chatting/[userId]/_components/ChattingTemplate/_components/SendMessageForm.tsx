@@ -29,7 +29,9 @@ export const SendMessageForm = () => {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = form.handleSubmit(async ({ message }) => {});
+  const handleSubmit = form.handleSubmit(async ({ message }) => {
+    console.info(message);
+  });
 
   return (
     <form onSubmit={handleSubmit}>
