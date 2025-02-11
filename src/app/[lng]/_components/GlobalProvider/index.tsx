@@ -10,11 +10,8 @@ import 'dayjs/locale/vi';
 import { SessionProvider } from 'next-auth/react';
 
 import { use, type PropsWithChildren } from 'react';
-import { CookiesProvider } from 'react-cookie';
 
 import { trpc, trpcClient } from '@/app/trpc';
-import { DEFAULT_COOKIES_OPTIONS } from '@/constants';
-import { customCookies } from '@/utils';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import { GlobalEventListener } from './_components/GlobalEventListener';
@@ -29,21 +26,16 @@ export const GlobalProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <SessionProvider>
-      <CookiesProvider
-        cookies={customCookies}
-        defaultSetOptions={DEFAULT_COOKIES_OPTIONS}
-      >
-        <trpc.Provider client={trpcClient} queryClient={queryClient}>
-          <PersistQueryClientProvider
-            client={queryClient}
-            persistOptions={persistOptions}
-          >
-            <HistoryObserver />
-            <GlobalEventListener />
-            {children}
-          </PersistQueryClientProvider>
-        </trpc.Provider>
-      </CookiesProvider>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <PersistQueryClientProvider
+          client={queryClient}
+          persistOptions={persistOptions}
+        >
+          <HistoryObserver />
+          <GlobalEventListener />
+          {children}
+        </PersistQueryClientProvider>
+      </trpc.Provider>
     </SessionProvider>
   );
 };

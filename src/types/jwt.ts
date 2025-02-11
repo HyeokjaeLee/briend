@@ -21,7 +21,24 @@ export namespace JwtPayload {
     guestId: string;
   }
 
-  export interface LinkAccountToken extends UserSession {
+  export interface LinkBaseAccountToken extends UserSession {
     providerToLink: LOGIN_PROVIDERS;
+  }
+
+  export interface LinkNewAccountToken {
+    providerAccountId: string;
+    email?: string;
+    name?: string;
+    profileImage?: string;
+  }
+
+  export interface SyncUserToken {
+    provider: LOGIN_PROVIDERS;
+    providerId: string;
+    name?: string;
+    email?: string;
+    profileImage?: string;
+    language: LANGUAGE;
+    anonymousId: string;
   }
 }

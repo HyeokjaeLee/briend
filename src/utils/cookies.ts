@@ -1,6 +1,6 @@
 import type { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
 
-import { Cookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 import {
   DEFAULT_COOKIES_OPTIONS,

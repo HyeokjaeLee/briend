@@ -16,11 +16,11 @@ export const linkAccountAction = async (provider: LOGIN_PROVIDERS) => {
   const token = await jwtAuthSecret.sign({
     ...user,
     providerToLink: provider,
-  } satisfies JwtPayload.LinkAccountToken);
+  } satisfies JwtPayload.LinkBaseAccountToken);
 
   const severCookies = await customCookies.server();
 
-  severCookies.set(COOKIES.LINK_ACCOUNT_TOKEN, token, {
+  severCookies.set(COOKIES.LINK_BASE_ACCOUNT_TOKEN, token, {
     httpOnly: true,
   });
 

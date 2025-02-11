@@ -4,12 +4,8 @@ import ky from 'ky';
 
 import { PUBLIC_ENV } from '@/constants';
 import type { ApiParams } from '@/types/api-params';
-import type { TOKEN_TYPE } from '@/types/jwt';
+import type { UserSession } from '@/types/next-auth';
 import { assert } from '@/utils';
-import type {
-  VerifyChatTokenApiParams,
-  VerifyChatTokenApiResponse,
-} from '@api/chat/verify/[tokenType]/route';
 
 const apiInstance = ky.create({
   prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
@@ -21,6 +17,20 @@ const apiInstance = ky.create({
 });
 
 export const API_ROUTES = {
+  SYNC_USER_DATA: (json: ApiParams.SyncUserData) =>
+    apiInstance
+      .post<UserSession>('sync-user-data', {
+        json,
+      })
+      .json(),
+
+  LINK_ACCOUNT: (json: ApiParams.LinkAccount) =>
+    apiInstance
+      .post<UserSession>('link-account', {
+        json,
+      })
+      .json(),
+
   CREATE_FRIEND: (params: ApiParams.CREATE_FRIEND) =>
     apiInstance
       .post<ApiResponse.CREATE_FRIEND>('chat/create/friend', {
@@ -40,20 +50,6 @@ export const API_ROUTES = {
       .post<ApiResponse.RECEIVE_MESSAGE>('chat/receive-message', {
         json: params,
       })
-      .json(),
-
-  VERIFY_CHAT_TOKEN: <TTokenType extends TOKEN_TYPE>(
-    params: VerifyChatTokenApiParams<TTokenType>,
-  ) =>
-    apiInstance
-      .get<VerifyChatTokenApiResponse<TTokenType>>(
-        `chat/verify/${params.tokenType}`,
-        {
-          searchParams: {
-            token: params.token,
-          },
-        },
-      )
       .json(),
 
   SHORT_URL: async (url: string) => {

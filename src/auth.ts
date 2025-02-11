@@ -8,11 +8,10 @@ import { LANGUAGE } from '@/constants';
 import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { PRIVATE_ENV } from '@/constants/private-env';
+import { API_ROUTES } from '@/routes/api';
+import type { JwtPayload } from '@/types/jwt';
 import { assert, assertEnum, customCookies } from '@/utils';
-
-import { getUserSession } from './getUserSession';
-import { linkAccount } from './linkAccount';
-import { updateSession } from './updateSession';
+import { jwtAuthSecret } from '@/utils/server';
 
 export interface SessionDataToUpdate {
   unlinkedProvider?: LOGIN_PROVIDERS;
@@ -46,7 +45,19 @@ export const {
   callbacks: {
     jwt: async ({ token, user, account, trigger, session }) => {
       if (trigger === 'update' && session) {
-        const updatedSession = updateSession(session);
+        const updatedSession = (() => {
+          const { type, data } = session;
+
+          switch (type) {
+            case 'unlink-account':
+              return {
+                [`${data.provider}Id`]: null,
+              };
+
+            case 'update-profile':
+              return data;
+          }
+        })();
 
         token = Object.assign(token, updatedSession);
 
@@ -58,23 +69,27 @@ export const {
       //* 단순 세션 연장
       if (!user) return token;
 
-      const linkAccountToken = serverCookies.get(COOKIES.LINK_ACCOUNT_TOKEN);
+      const linkBaseAccountToken = serverCookies.get(
+        COOKIES.LINK_BASE_ACCOUNT_TOKEN,
+      );
 
-      if (linkAccountToken) {
+      if (linkBaseAccountToken) {
         const providerAccountId = account?.providerAccountId;
 
         assert(providerAccountId);
 
-        serverCookies.remove(COOKIES.LINK_ACCOUNT_TOKEN);
+        serverCookies.remove(COOKIES.LINK_BASE_ACCOUNT_TOKEN);
 
-        const linkedSession = await linkAccount({
-          linkAccountToken,
-          newAccount: {
-            email: user.email || undefined,
-            name: user.name || undefined,
-            profileImage: user.image || undefined,
-          },
+        const linkNewAccountToken = await jwtAuthSecret.sign({
           providerAccountId,
+          email: user.email || undefined,
+          name: user.name || undefined,
+          profileImage: user.image || undefined,
+        } satisfies JwtPayload.LinkNewAccountToken);
+
+        const linkedSession = await API_ROUTES.LINK_ACCOUNT({
+          linkBaseAccountToken,
+          linkNewAccountToken,
         });
 
         token = Object.assign(token, linkedSession);
@@ -96,7 +111,7 @@ export const {
 
       serverCookies.remove(COOKIES.ANONYMOUS_ID);
 
-      const userSession = await getUserSession({
+      const syncUserToken = await jwtAuthSecret.sign({
         provider,
         providerId,
         profileImage: user?.image || undefined,
@@ -104,6 +119,10 @@ export const {
         email: user?.email || undefined,
         language,
         anonymousId,
+      } satisfies JwtPayload.SyncUserToken);
+
+      const userSession = await API_ROUTES.SYNC_USER_DATA({
+        syncUserToken,
       });
 
       token = Object.assign(token, userSession);

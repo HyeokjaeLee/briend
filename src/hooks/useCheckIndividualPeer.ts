@@ -5,8 +5,6 @@ import { useEffect, useRef } from 'react';
 import { usePeerStore } from '@/stores';
 import type { FriendPeer } from '@/stores/peer';
 
-import { useUserId } from './useUserId';
-
 interface CheckIndividualPeerOptions {
   interval: number;
 }
@@ -21,7 +19,7 @@ export const useCheckIndividualPeer = (
     ]),
   );
 
-  const myUserId = useUserId();
+  const myUserId = '';
 
   let friendPeer: FriendPeer | undefined;
 

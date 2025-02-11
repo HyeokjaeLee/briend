@@ -1,8 +1,9 @@
+import type { ApiRouter } from './routes';
+
 import { getAuth } from 'firebase/auth';
 import superjson from 'superjson';
 
 import { IS_CLIENT, PATH, PUBLIC_ENV } from '@/constants';
-import type { ApiRouter } from '@/routes/server';
 import { useGlobalModalStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
 import type { TRPCLink } from '@trpc/client';

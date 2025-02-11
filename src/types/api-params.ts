@@ -31,4 +31,13 @@ export namespace ApiParams {
     socketId: string;
     userId: string;
   }
+
+  export interface SyncUserData {
+    syncUserToken: string;
+  }
+
+  export interface LinkAccount {
+    linkBaseAccountToken: string;
+    linkNewAccountToken: string;
+  }
 }

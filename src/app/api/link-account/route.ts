@@ -1,28 +1,31 @@
-import { firestore } from '@/database/firestore/server';
+import { NextResponse } from 'next/server';
+
+import { firestore, getFirebaseAdminAuth } from '@/database/firestore/server';
 import type { Firestore } from '@/database/firestore/type';
 import { COLLECTIONS } from '@/database/firestore/type';
+import type { ApiParams } from '@/types/api-params';
 import type { JwtPayload } from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
-import { getFirebaseAdminAuth, jwtAuthSecret } from '@/utils/server';
+import { createApiRoute } from '@/utils/api';
+import { jwtAuthSecret } from '@/utils/server';
 
-interface LinkAccountProps {
-  linkAccountToken: string;
-  newAccount: {
-    profileImage?: string;
-    name?: string;
-    email?: string;
-  };
-  providerAccountId: string;
-}
+export const POST = createApiRoute<UserSession>(async (req) => {
+  const { linkBaseAccountToken, linkNewAccountToken }: ApiParams.LinkAccount =
+    await req.json();
 
-export const linkAccount = async ({
-  linkAccountToken,
-  providerAccountId,
-  newAccount,
-}: LinkAccountProps): Promise<UserSession> => {
   const {
     payload: { providerToLink, ...linkAccountPayload },
-  } = await jwtAuthSecret.verfiy<JwtPayload.LinkAccountToken>(linkAccountToken);
+  } =
+    await jwtAuthSecret.verfiy<JwtPayload.LinkBaseAccountToken>(
+      linkBaseAccountToken,
+    );
+
+  const {
+    payload: { providerAccountId, ...newAccount },
+  } =
+    await jwtAuthSecret.verfiy<JwtPayload.LinkNewAccountToken>(
+      linkNewAccountToken,
+    );
 
   const providerAccountRef = await firestore((db) =>
     db
@@ -71,13 +74,13 @@ export const linkAccount = async ({
       auth.deleteUser(existedUserId),
     ]);
 
-    return {
+    return NextResponse.json({
       ...linkAccountPayload,
       [idKey]: providerAccountId,
       name: displayName,
       email,
       profileImage: photoURL,
-    };
+    });
   } else {
     const displayName = linkAccountPayload.name || newAccount.name;
 
@@ -99,12 +102,12 @@ export const linkAccount = async ({
       }),
     ]);
 
-    return {
+    return NextResponse.json({
       ...linkAccountPayload,
       [idKey]: providerAccountId,
       name: displayName,
       email,
       profileImage: photoURL,
-    };
+    });
   }
-};
+});
