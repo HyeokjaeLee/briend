@@ -3,7 +3,7 @@ import { HomeHeader } from './_components/HomeHeader';
 
 export default function HomePage() {
   return (
-    <article>
+    <article className="flex min-h-full flex-col">
       <HomeHeader />
       <FriendList />
     </article>

@@ -42,7 +42,7 @@ export const initQueryClient = () => {
     }),
     dehydrateOptions: {
       shouldDehydrateQuery: (query) =>
-        query.queryKey.includes(QUERY_KEYS.SESSION),
+        !query.queryKey.includes(QUERY_KEYS.NOT_SESSION),
     },
   };
 

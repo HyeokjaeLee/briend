@@ -7,7 +7,7 @@ export enum LOGIN_PROVIDERS {
 export const IS_CLIENT = typeof window !== 'undefined';
 
 export enum QUERY_KEYS {
-  SESSION = 'saved-session-storage',
+  NOT_SESSION = 'not-save-to-session',
 }
 
 export const PEER_PREFIX = 'briend_';

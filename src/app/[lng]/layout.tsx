@@ -21,7 +21,6 @@ import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
-import { GlobalSuspense } from './_components/GlobalSuspense';
 import { MainContainer } from './_components/MainContainer';
 import { SidePanel } from './_components/SidePanel';
 import { ToastProvider } from './_components/ToastProvider';
@@ -94,33 +93,31 @@ export default async function RootLayout({
     >
       <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
         <body>
+          <aside className="hidden flex-1 bg-slate-100 xl:block">
+            <DotLottie
+              className="mx-auto max-w-80 flex-1"
+              loop={false}
+              src="/assets/lottie/receive-message.lottie"
+            />
+          </aside>
           <GlobalLoading />
-          <GlobalSuspense>
-            <GlobalProvider>
-              <aside className="hidden flex-1 bg-slate-100 xl:block">
-                <DotLottie
-                  className="mx-auto max-w-80 flex-1"
-                  loop={false}
-                  src="/assets/lottie/receive-message.lottie"
-                />
-              </aside>
-              <div
-                className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
-                id={SELECTOR.DYNAMIC_CONTAINER}
-              >
-                <CenterContainer>
-                  <GlobalHeader />
-                  <ToastProvider />
-                  <Suspense fallback={<div className="size-full flex-1" />}>
-                    <GlobalModals />
-                    <MainContainer>{children}</MainContainer>
-                  </Suspense>
-                  <BottomNav />
-                </CenterContainer>
-                <SidePanel />
-              </div>
-            </GlobalProvider>
-          </GlobalSuspense>
+          <GlobalProvider>
+            <div
+              className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
+              id={SELECTOR.DYNAMIC_CONTAINER}
+            >
+              <CenterContainer>
+                <GlobalHeader />
+                <ToastProvider />
+                <Suspense fallback={<div className="size-full flex-1" />}>
+                  <GlobalModals />
+                  <MainContainer>{children}</MainContainer>
+                </Suspense>
+                <BottomNav />
+              </CenterContainer>
+              <SidePanel />
+            </div>
+          </GlobalProvider>
         </body>
       </Theme>
     </html>
