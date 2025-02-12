@@ -3,7 +3,7 @@
 import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
 
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
@@ -23,10 +23,7 @@ interface JoinTemplateProps {
 
 export const JoinTemplate = createOnlyClientComponent(
   ({ inviteToken }: JoinTemplateProps) => {
-    const { hostUserId, exp } = useMemo(
-      () => decodeJwt<JwtPayload.InviteToken>(inviteToken),
-      [inviteToken],
-    );
+    const { hostUserId, exp } = decodeJwt<JwtPayload.InviteToken>(inviteToken);
 
     const { lng } = useLanguage();
 

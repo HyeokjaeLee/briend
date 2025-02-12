@@ -1,0 +1,23 @@
+{
+  "users": {
+    "OuRtYUn0cvfVYgjxscfipDfLtxO2": {
+      "online": true,
+      "NygUAaQ1zzcJ2szIzGAMnZvvomE3": [
+        ["hello", "안녕"],
+        ["good", "좋아"]
+      ]
+    }
+  }
+}
+
+{
+  "rules": {
+    "users": {
+      "$userUid": {
+        "$otherUserUid": {
+          ".read": "auth != null && auth.uid == $userUid"
+        }
+      }
+    }
+  }
+}
