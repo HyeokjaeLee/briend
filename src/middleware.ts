@@ -4,9 +4,9 @@ import { NextResponse } from 'next/server';
 
 import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
-import { COOKIES, HEADERS } from './constants';
+import { COOKIES, HEADERS, LANGUAGE } from './constants';
 import { ROUTES } from './routes/client';
-import { createId } from './utils';
+import { createId, isEnumValue } from './utils';
 
 export const config = {
   matcher: [
@@ -42,12 +42,17 @@ export const middleware = auth(async (req: RequestWithAuth) => {
     }
   }
 
-  if (!lng)
-    lng =
-      auth?.user.language ||
-      i18nCookie ||
-      req.headers.get('Accept-Language') ||
-      fallbackLng;
+  if (!lng) {
+    const acceptLanguage = req.headers.get('Accept-Language');
+
+    const i18nFromAcceptLanguage = acceptLanguage?.split(',')[0];
+
+    lng = auth?.user.language || i18nCookie || i18nFromAcceptLanguage;
+
+    if (!isEnumValue(LANGUAGE, lng)) {
+      lng = fallbackLng;
+    }
+  }
 
   if (!hasLngPath) {
     nextUrl.pathname = `/${lng}${nextUrl.pathname}`;

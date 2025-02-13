@@ -3,8 +3,8 @@ import { z } from 'zod';
 
 import { privateProcedure } from '@/app/trpc/settings';
 import { LOGIN_PROVIDERS } from '@/constants';
-import { firestore } from '@/database/firestore/server';
-import { COLLECTIONS } from '@/database/firestore/type';
+import { firestore } from '@/database/firebase/server';
+import { COLLECTIONS } from '@/database/firebase/type';
 
 export const unlinkAccount = privateProcedure
   .input(
@@ -18,21 +18,17 @@ export const unlinkAccount = privateProcedure
     try {
       const idKey = `${provider}Id` as const;
 
-      await firestore((db) =>
-        db
-          .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
-          .doc(`${provider}-${session.user[idKey]}`)
-          .delete(),
-      );
+      await firestore
+        .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
+        .doc(`${provider}-${session.user[idKey]}`)
+        .delete();
 
-      await firestore((db) =>
-        db
-          .collection(COLLECTIONS.USERS)
-          .doc(session.user.id)
-          .update({
-            [idKey]: FieldValue.delete(),
-          }),
-      );
+      await firestore
+        .collection(COLLECTIONS.USERS)
+        .doc(session.user.id)
+        .update({
+          [idKey]: FieldValue.delete(),
+        });
     } catch (error) {
       console.error(error);
     }

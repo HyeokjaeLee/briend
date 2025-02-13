@@ -7,7 +7,6 @@ import { headers } from 'next/headers';
 
 import { Suspense, type ReactElement } from 'react';
 
-import { DotLottie } from '@/components';
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
 import { Theme } from '@radix-ui/themes';
@@ -94,11 +93,7 @@ export default async function RootLayout({
       <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
         <body>
           <aside className="hidden flex-1 bg-slate-100 xl:block">
-            <DotLottie
-              className="mx-auto max-w-80 flex-1"
-              loop={false}
-              src="/assets/lottie/receive-message.lottie"
-            />
+            FOR RENDING
           </aside>
           <GlobalLoading />
           <GlobalProvider>

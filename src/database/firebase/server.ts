@@ -1,47 +1,32 @@
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { getDatabase } from 'firebase-admin/database';
+import { getFirestore } from 'firebase-admin/firestore';
 
 import { PUBLIC_ENV } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { CustomError } from '@/utils';
 
-const getFirebaseAdminApp = async () => {
-  const apps = getApps();
+const apps = getApps();
 
-  const [app] = apps;
+const [app] = apps;
 
-  if (app) return app;
-
-  return initializeApp({
+if (!app) {
+  initializeApp({
     credential: cert({
       clientEmail: PRIVATE_ENV.FIREBASE_ADMIN_CLIENT_EMAIL,
       privateKey: PRIVATE_ENV.FIREBASE_ADMIN_PRIVATE_KEY,
       projectId: PUBLIC_ENV.FIREBASE_PROJECT_ID,
     }),
+    databaseURL: PUBLIC_ENV.FIREBASE_DATABASE_URL,
   });
-};
+}
 
-export const firestore = async <T>(
-  callback: (db: FirebaseFirestore.Firestore) => T,
-) => {
-  const { getFirestore } = await import('firebase-admin/firestore');
+const firestore = getFirestore();
 
-  const app = await getFirebaseAdminApp();
+const adminAuth = getAuth();
 
-  const firestore = getFirestore(app);
-
-  return callback(firestore);
-};
-
-export const getFirebaseAdminAuth = async () => {
-  const adminApp = await getFirebaseAdminApp();
-
-  return getAuth(adminApp);
-};
-
-export const verifyFirebaseIdToken = async <
-  T extends string | null | undefined,
->(
+const verifyFirebaseIdToken = async <T extends string | null | undefined>(
   firebaseToken: T,
 ) => {
   if (typeof firebaseToken !== 'string')
@@ -51,8 +36,6 @@ export const verifyFirebaseIdToken = async <
     });
 
   try {
-    const adminAuth = await getFirebaseAdminAuth();
-
     const payload = await adminAuth.verifyIdToken(firebaseToken);
 
     return {
@@ -66,3 +49,7 @@ export const verifyFirebaseIdToken = async <
     });
   }
 };
+
+const realtimeDatabase = getDatabase(app);
+
+export { firestore, adminAuth, verifyFirebaseIdToken, realtimeDatabase };
