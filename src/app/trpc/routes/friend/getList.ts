@@ -1,6 +1,6 @@
 import { publicProcedure } from '@/app/trpc/settings';
-import { firestore, verifyFirebaseIdToken } from '@/database/firestore/server';
-import { COLLECTIONS } from '@/database/firestore/type';
+import { firestore, verifyFirebaseIdToken } from '@/database/firebase/server';
+import { COLLECTIONS } from '@/database/firebase/type';
 
 export const getFriendList = publicProcedure.query(async ({ ctx }) => {
   if (!ctx.isClient) return { friendList: [] };
@@ -10,11 +10,9 @@ export const getFriendList = publicProcedure.query(async ({ ctx }) => {
     adminAuth,
   } = await verifyFirebaseIdToken(ctx.firebaseIdToken);
 
-  const chattingRooms = await firestore((db) =>
-    db
-      .collection(`${COLLECTIONS.USERS}/${uid}/${COLLECTIONS.CHATTING_ROOMS}`)
-      .get(),
-  );
+  const chattingRooms = await firestore
+    .collection(`${COLLECTIONS.USERS}/${uid}/${COLLECTIONS.CHATTING_ROOMS}`)
+    .get();
 
   const friendIdList = chattingRooms.docs.map((doc) => ({
     uid: doc.id,

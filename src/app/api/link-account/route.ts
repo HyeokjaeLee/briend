@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 
-import { firestore, getFirebaseAdminAuth } from '@/database/firestore/server';
-import type { Firestore } from '@/database/firestore/type';
-import { COLLECTIONS } from '@/database/firestore/type';
+import { firestore, adminAuth } from '@/database/firebase/server';
+import type { Firestore } from '@/database/firebase/type';
+import { COLLECTIONS } from '@/database/firebase/type';
 import type { ApiParams } from '@/types/api-params';
 import type { JwtPayload } from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
@@ -27,20 +27,17 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       linkNewAccountToken,
     );
 
-  const providerAccountRef = await firestore((db) =>
-    db
-      .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
-      .doc(`${providerToLink}-${providerAccountId}`),
-  );
+  const providerAccountRef = firestore
+    .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
+    .doc(`${providerToLink}-${providerAccountId}`);
 
   const providerAccount = await providerAccountRef.get();
 
   const baseUserId = linkAccountPayload.id;
 
-  const usersRef = await firestore((db) => db.collection(COLLECTIONS.USERS));
+  const usersRef = firestore.collection(COLLECTIONS.USERS);
 
   const idKey = `${providerToLink}Id` as const;
-  const auth = await getFirebaseAdminAuth();
 
   if (providerAccount.exists) {
     const { userId: existedUserId } =
@@ -56,7 +53,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       } satisfies Firestore.ProviderAccount),
     ]);
 
-    const existedUserAuth = await auth.getUser(existedUserId);
+    const existedUserAuth = await adminAuth.getUser(existedUserId);
 
     const displayName = linkAccountPayload.name || existedUserAuth.displayName;
 
@@ -66,12 +63,12 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       linkAccountPayload.profileImage || existedUserAuth.photoURL;
 
     await Promise.all([
-      auth.updateUser(baseUserId, {
+      adminAuth.updateUser(baseUserId, {
         displayName,
         email,
         photoURL,
       }),
-      auth.deleteUser(existedUserId),
+      adminAuth.deleteUser(existedUserId),
     ]);
 
     return NextResponse.json({
@@ -89,7 +86,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
     const photoURL = linkAccountPayload.profileImage || newAccount.profileImage;
 
     await Promise.all([
-      auth.updateUser(baseUserId, {
+      adminAuth.updateUser(baseUserId, {
         displayName,
         email,
         photoURL,

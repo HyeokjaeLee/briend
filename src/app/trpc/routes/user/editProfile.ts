@@ -1,7 +1,7 @@
 import { privateProcedure } from '@/app/trpc/settings';
-import { firestore, getFirebaseAdminAuth } from '@/database/firestore/server';
-import type { Firestore } from '@/database/firestore/type';
-import { COLLECTIONS } from '@/database/firestore/type';
+import { adminAuth, firestore } from '@/database/firebase/server';
+import type { Firestore } from '@/database/firebase/type';
+import { COLLECTIONS } from '@/database/firebase/type';
 import { editProfileSchema } from '@/schema/trpc/user';
 import type { UserSession } from '@/types/next-auth';
 
@@ -12,8 +12,6 @@ export const editProfile = privateProcedure.input(editProfileSchema).mutation(
     },
     input: { language, displayName, photoURL },
   }) => {
-    const adminAuth = await getFirebaseAdminAuth();
-
     const userId = user.id;
 
     await Promise.all([
@@ -21,14 +19,12 @@ export const editProfile = privateProcedure.input(editProfileSchema).mutation(
         displayName,
         photoURL,
       }),
-      firestore((db) =>
-        db
-          .collection(COLLECTIONS.USERS)
-          .doc(userId)
-          .update({
-            language,
-          } satisfies Partial<Firestore.UserInfo>),
-      ),
+      firestore
+        .collection(COLLECTIONS.USERS)
+        .doc(userId)
+        .update({
+          language,
+        } satisfies Partial<Firestore.UserInfo>),
     ]);
 
     return {

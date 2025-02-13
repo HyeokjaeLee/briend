@@ -31,6 +31,24 @@ export namespace Firestore {
       };
 }
 
+export interface UserRealtimeData {
+  /**
+   * @description object key는 상대방 Id
+   */
+  chat: Record<
+    string,
+    {
+      connectedAt: number;
+      /**
+       * @description [message id, created at, original message, translated message][]
+       */
+      msg: [string, number, string, string?][];
+    }
+  >;
+}
+
+export type UserRealtimeDatabase = Record<string, UserRealtimeData>;
+
 export enum COLLECTIONS {
   PROVIDER_ACCOUNTS = 'providerAccounts',
   USERS = 'users',
