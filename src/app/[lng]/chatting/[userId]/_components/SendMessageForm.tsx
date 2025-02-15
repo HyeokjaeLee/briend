@@ -12,45 +12,70 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
 import { CustomIconButton } from '@/components';
-import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
+import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
-import { cn } from '@/utils';
+import { assert, cn } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SendMessageFormProps {
-  friendUserId: string;
+  receiverId: string;
 }
 
-export const SendMessageForm = ({ friendUserId }: SendMessageFormProps) => {
+export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
   const { t } = useTranslation('chatting');
 
   const form = useForm<z.infer<typeof sendMessageSchema>>({
     resolver: zodResolver(sendMessageSchema),
     defaultValues: {
       message: '',
-      toUserId: friendUserId,
+      receiverId,
     },
   });
 
   const sendMessageMutation = trpc.chat.sendMessage.useMutation({
-    onMutate: () => {
+    onMutate: ({ message, receiverId }) => {
       const tempId = nanoid();
 
-      messageTable?.add({
+      chattingDB.messages.add({
         id: tempId,
         state: MESSAGE_STATE.SENT,
-        toUserId: friendUserId,
-        fromUserId: '',
-        message: '',
+        message,
         translatedMessage: '',
         timestamp: Date.now(),
+        isMine: true,
+        userId: receiverId,
       });
 
       return {
         tempId,
       };
     },
-    onSuccess: ({}, _, { tempId }) => {},
+    onSuccess: (
+      { id, timestamp, translatedMessage },
+      { message, receiverId },
+      { tempId },
+    ) => {
+      chattingDB.messages.delete(tempId);
+
+      chattingDB.messages.add({
+        id,
+        state: MESSAGE_STATE.RECEIVE,
+        message,
+        translatedMessage,
+        timestamp,
+        isMine: true,
+        userId: receiverId,
+      });
+    },
+    onError: (_error, _params, context) => {
+      const tempId = context?.tempId;
+
+      assert(tempId);
+
+      chattingDB.messages.update(tempId, {
+        state: MESSAGE_STATE.ERROR,
+      });
+    },
   });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 

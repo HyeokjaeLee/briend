@@ -1,30 +1,31 @@
-import { useFriendStore } from '@/stores';
-
+import { ChattingList } from './_components/ChattingList';
 import { SettingButton } from './_components/ChattingPageHeader/_components/SettingButton';
-import { ChattingList } from './_components/ChattingTemplate/_components/ChattingList';
-import { SendMessageForm } from './_components/ChattingTemplate/_components/SendMessageForm';
+import { SendMessageForm } from './_components/SendMessageForm';
+import { useReceiverData } from './_hooks/useReceiverData';
 
 interface ChattingSideProps {
   userId: string;
 }
 
 export const ChattingSide = ({ userId }: ChattingSideProps) => {
-  const nickname = useFriendStore(
-    (state) =>
-      state.friendList.find((friend) => friend.userId === userId)?.nickname,
-  );
+  const { isLoading, receiver, receiverName } = useReceiverData(userId);
 
   return (
     <article className="flex size-full flex-col bg-white">
       <nav className="flex h-14 items-center justify-between gap-5 px-5">
         <div className="w-fit gap-3 flex-center">
-          <h1 className="truncate text-nowrap font-semibold">{nickname}</h1>
+          <h1 className="truncate text-nowrap font-semibold">{receiverName}</h1>
         </div>
         <SettingButton />
       </nav>
-      <ChattingList friendUserId={userId} />
+      <ChattingList
+        isLoading={isLoading}
+        receiverId={userId}
+        receiverNickname={receiverName}
+        receiverProfileImage={receiver.profileImage}
+      />
       <footer className="p-3">
-        <SendMessageForm friendUserId={userId} />
+        <SendMessageForm receiverId={userId} />
       </footer>
     </article>
   );

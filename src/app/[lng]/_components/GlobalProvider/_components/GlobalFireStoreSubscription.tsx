@@ -7,28 +7,24 @@ import { useEffect } from 'react';
 
 import { trpc } from '@/app/trpc';
 import { realtimeDatabase } from '@/database/firebase/client';
-import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
+import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { useFirebaseStore } from '@/stores/firebase';
 import { assert } from '@/utils';
 
-const updateMessage = (
-  fromUserId: string,
-  toUserId: string,
-  snapshot: DataSnapshot,
-) => {
+const updateMessage = (receiverId: string, snapshot: DataSnapshot) => {
   const [createdAt, message, translatedMessage = ''] = snapshot.val();
   const messageId = snapshot.key;
 
   assert(messageId);
 
-  messageTable?.add({
+  chattingDB.messages.add({
     id: messageId,
-    fromUserId,
-    toUserId,
+    state: MESSAGE_STATE.RECEIVE,
     message,
     translatedMessage,
     timestamp: createdAt,
-    state: MESSAGE_STATE.RECEIVE,
+    isMine: false,
+    userId: receiverId,
   });
 
   remove(snapshot.ref);
@@ -60,12 +56,12 @@ export const GlobalFireStoreSubscription = () => {
 
       if (messageListSnapshot.exists()) {
         messageListSnapshot.forEach((snapshot) =>
-          updateMessage(currentUser.uid, friend.id, snapshot),
+          updateMessage(friend.id, snapshot),
         );
       }
 
       const unsubscribe = onChildAdded(messageRef, (snapshot) =>
-        updateMessage(currentUser.uid, friend.id, snapshot),
+        updateMessage(friend.id, snapshot),
       );
 
       return unsubscribe;

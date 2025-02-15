@@ -38,7 +38,12 @@ type RealtimeState<T> = {
 
 // 액션 타입 정의
 type RealtimeAction<T> =
-  | { type: 'DATA_UPDATED'; payload: T; previousChildName?: string | null }
+  | {
+      type: 'DATA_UPDATED';
+      payload: T;
+      previousChildName?: string | null;
+      key: string | null;
+    }
   | { type: 'LOADING' }
   | { type: 'ERROR'; payload: string };
 
@@ -68,7 +73,7 @@ type LinstenerType =
   | 'onChildMoved'
   | 'onChildRemoved';
 
-export const useRealTimeDatabase = <T>(type: LinstenerType, path: string) => {
+export const useRealtimeDatabase = <T>(type: LinstenerType, path: string) => {
   const [state, dispatch] = useReducer(realtimeDatabaseDispatcher<T>, {
     data: null,
     loading: true,
@@ -99,7 +104,12 @@ export const useRealTimeDatabase = <T>(type: LinstenerType, path: string) => {
       dataRef,
       (snapshot, previousChildName) => {
         const value = snapshot.val() as T;
-        dispatch({ type: 'DATA_UPDATED', payload: value, previousChildName });
+        dispatch({
+          type: 'DATA_UPDATED',
+          payload: value,
+          previousChildName,
+          key: snapshot.key,
+        });
       },
       (error) => {
         try {
