@@ -1,24 +1,26 @@
+import type { Dayjs } from 'dayjs';
+
 import dayjs from 'dayjs';
 
 import { useTranslation } from '@/app/i18n/client';
-import type { MessageTableItem } from '@/database/indexed-db';
+import type { Message, MESSAGE_STATE } from '@/database/indexed';
 import { useLanguage } from '@/hooks';
 import { cn, formatLocalizedDate } from '@/utils';
 import { Spinner } from '@radix-ui/themes';
 
-interface MessageItemProps extends MessageTableItem {
-  isMine: boolean;
+interface MessageItemProps
+  extends Pick<Message, 'isMine' | 'message' | 'state'> {
   isSameUser: boolean;
+  date: Dayjs;
 }
 
 export const MyMessageItem = ({
   message,
-  timestamp,
+  date,
   isMine,
+  state,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
-
-  const date = dayjs(timestamp);
 
   const isToday = date.isSame(dayjs(), 'day');
   const isThisYear = date.isSame(dayjs(), 'year');

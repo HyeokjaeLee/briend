@@ -8,7 +8,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
-import { useRealTimeDatabase } from '@/database/firebase/client';
+import { useRealtimeDatabase } from '@/database/firebase/client';
 import type { UserRealtimeData } from '@/database/firebase/type';
 import { useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -53,7 +53,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
 
     const [connectedGuestId, setConnectedGuestId] = useState<string>();
 
-    const { data } = useRealTimeDatabase<UserRealtimeData['chat']>(
+    const { data } = useRealtimeDatabase<UserRealtimeData['chat']>(
       'onValue',
       `${userId}/chat`,
     );

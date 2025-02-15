@@ -1,7 +1,4 @@
 import { Dexie, type EntityTable } from 'dexie';
-import relationships from 'dexie-relationships';
-
-import { IS_CLIENT } from '@/constants';
 
 export enum MESSAGE_STATE {
   SENT = 'sent',
@@ -20,30 +17,15 @@ export interface Message {
   timestamp: number;
 }
 
-interface IndexedDb extends Dexie {
-  messages: EntityTable<Message, 'id'>;
-}
+class ChattingDatabase extends Dexie {
+  messages!: EntityTable<Message, 'id'>;
 
-let db: IndexedDb | undefined;
-
-if (IS_CLIENT) {
-  import('dexie-observable');
-
-  db = new Dexie('briendDB', {
-    addons: [relationships],
-  }) as IndexedDb;
-
-  db.version(1).stores({
-    message: 'id, userId, timestamp',
-  });
-}
-
-/**
- *   async getMessagesByUser(userId: string): Promise<ChatMessage[]> {
-    return this.messages
-      .where('userId').equals(userId)
-      .reverse()
-      .sortBy('timestamp');
+  constructor() {
+    super('ChattingDB');
+    this.version(1).stores({
+      messages: 'id, userId, timestamp',
+    });
   }
+}
 
- */
+export const chattingDB = new ChattingDatabase();

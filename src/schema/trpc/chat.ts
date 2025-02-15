@@ -12,5 +12,5 @@ export const sendMessageSchema = z.object({
     .min(1, 'message-required')
     .max(2_000, 'message-too-long')
     .trim(),
-  toUserId: z.string(),
+  receiverId: z.string(),
 });

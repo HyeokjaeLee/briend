@@ -6,7 +6,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage } from '@/components';
 import { useLanguage } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
-import { Spinner } from '@radix-ui/themes';
+import { Skeleton, Spinner } from '@radix-ui/themes';
 
 interface MessageItemProps {
   profileImageSrc?: string;
@@ -14,16 +14,18 @@ interface MessageItemProps {
   date: Dayjs;
   isSameUser: boolean;
   isSameTime: boolean;
-  children: string;
+  message: string;
+  isLoading: boolean;
 }
 
-export const FriendMessageItem = ({
+export const RecieverMessageItem = ({
   profileImageSrc,
   nickname,
   isSameUser,
   date,
   isSameTime,
-  children,
+  message,
+  isLoading,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
 
@@ -42,22 +44,11 @@ export const FriendMessageItem = ({
     >
       <article className={cn('flex', isSameUser ? 'py-1 gap-2' : 'gap-4')}>
         {isSameUser ? (
-          <div className="flex h-5 w-14 items-center justify-end">
-            {isSameTime ? (
-              <Spinner className="mt-2" size="1" />
-            ) : (
-              <time
-                className="mt-1 text-nowrap text-xs text-slate-500"
-                dateTime={isoDate}
-              >
-                {formatLocalizedDate(date, lng, {
-                  time: true,
-                })}
-              </time>
-            )}
-          </div>
+          <div className="flex h-5 w-14 items-center justify-end" />
         ) : (
-          <ProfileImage size="4" src={profileImageSrc} />
+          <Skeleton loading={isLoading}>
+            <ProfileImage size="4" src={profileImageSrc} />
+          </Skeleton>
         )}
         <section>
           {isSameUser ? null : (
@@ -74,13 +65,25 @@ export const FriendMessageItem = ({
                       withYear: !isThisYear,
                     })}
               </time>
-              <Spinner size="1" />
             </header>
           )}
           <pre className="whitespace-pre-wrap break-all font-pretendard">
-            {children}
+            {message}
           </pre>
         </section>
+        {!isSameUser || isSameTime ? null : (
+          <div className="mt-auto h-fit flex-1 gap-2 flex-center">
+            <hr className="ml-auto h-0.5 w-full min-w-1 max-w-8 flex-1 rounded-r-full border-none bg-gradient-to-r from-transparent to-slate-500" />
+            <time
+              className="text-nowrap rounded-full text-xs text-slate-500"
+              dateTime={isoDate}
+            >
+              {formatLocalizedDate(date, lng, {
+                time: true,
+              })}
+            </time>
+          </div>
+        )}
       </article>
     </div>
   );

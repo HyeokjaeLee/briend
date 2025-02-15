@@ -2,25 +2,28 @@ import {
   realtimeDatabase,
   verifyFirebaseIdToken,
 } from '@/database/firebase/server';
+import type { Message } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
-import { CustomError } from '@/utils';
+import { assert, CustomError } from '@/utils';
 
 import { publicProcedure } from '../../settings';
 
 export const sendMessage = publicProcedure
   .input(sendMessageSchema)
-  .mutation(async ({ input: { message, toUserId }, ctx }) => {
+  .mutation(async ({ input: { message, receiverId }, ctx }) => {
     if (!ctx.isClient) throw new CustomError({ code: 'BAD_REQUEST' });
 
     const {
-      payload: { uid },
+      payload: { uid: senderId },
     } = await verifyFirebaseIdToken(ctx.firebaseIdToken);
 
     const myInviteId = await realtimeDatabase
-      .ref(`${uid}/chat/${toUserId}/inviteId`)
+      .ref(`${senderId}/chat/${receiverId}/inviteId`)
       .get();
 
-    const toUserChattingRef = realtimeDatabase.ref(`${toUserId}/chat/${uid}`);
+    const toUserChattingRef = realtimeDatabase.ref(
+      `${receiverId}/chat/${senderId}`,
+    );
 
     const toUserInviteId = await toUserChattingRef.child('inviteId').get();
 
@@ -35,5 +38,13 @@ export const sendMessage = publicProcedure
 
     const ref = await toUserChattingRef.child('msg').push([now, message]);
 
-    return {};
+    const id = ref.key;
+
+    assert(id);
+
+    return {
+      id,
+      timestamp: now,
+      translatedMessage: '',
+    } satisfies Pick<Message, 'id' | 'timestamp' | 'translatedMessage'>;
   });
