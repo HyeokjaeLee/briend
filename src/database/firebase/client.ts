@@ -1,12 +1,22 @@
+import type { DataSnapshot, Unsubscribe } from 'firebase/database';
 import type { Firestore } from 'firebase/firestore';
 
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue } from 'firebase/database';
+import {
+  getDatabase,
+  ref,
+  onValue,
+  onChildChanged,
+  onChildAdded,
+  onChildMoved,
+  onChildRemoved,
+} from 'firebase/database';
 import { collection, doc, getFirestore } from 'firebase/firestore';
 
 import { useEffect, useReducer } from 'react';
 
 import { PUBLIC_ENV } from '@/constants';
+import { CustomError } from '@/utils';
 
 export const app = initializeApp({
   apiKey: PUBLIC_ENV.FIREBASE_API_KEY,
@@ -28,7 +38,7 @@ type RealtimeState<T> = {
 
 // 액션 타입 정의
 type RealtimeAction<T> =
-  | { type: 'DATA_UPDATED'; payload: T }
+  | { type: 'DATA_UPDATED'; payload: T; previousChildName?: string | null }
   | { type: 'LOADING' }
   | { type: 'ERROR'; payload: string };
 
@@ -51,7 +61,14 @@ const realtimeDatabaseDispatcher = <T>(
 
 export const realtimeDatabase = getDatabase(app);
 
-export const useRealTimeDatabase = <T>(path: string) => {
+type LinstenerType =
+  | 'onValue'
+  | 'onChildChanged'
+  | 'onChildAdded'
+  | 'onChildMoved'
+  | 'onChildRemoved';
+
+export const useRealTimeDatabase = <T>(type: LinstenerType, path: string) => {
   const [state, dispatch] = useReducer(realtimeDatabaseDispatcher<T>, {
     data: null,
     loading: true,
@@ -59,23 +76,50 @@ export const useRealTimeDatabase = <T>(path: string) => {
   });
 
   useEffect(() => {
-    dispatch({ type: 'LOADING' });
-
     const dataRef = ref(realtimeDatabase, path);
 
-    const unsubscribe = onValue(
+    const listener: (
+      query: typeof dataRef,
+      callback: (
+        snapshot: DataSnapshot,
+        previousChildName?: string | null,
+      ) => unknown,
+      cancelCallback?: (error: Error) => unknown,
+    ) => Unsubscribe = {
+      onValue,
+      onChildChanged,
+      onChildAdded,
+      onChildMoved,
+      onChildRemoved,
+    }[type];
+
+    dispatch({ type: 'LOADING' });
+
+    const unsubscribe = listener(
       dataRef,
-      (snapshot) => {
+      (snapshot, previousChildName) => {
         const value = snapshot.val() as T;
-        dispatch({ type: 'DATA_UPDATED', payload: value });
+        dispatch({ type: 'DATA_UPDATED', payload: value, previousChildName });
       },
       (error) => {
-        dispatch({ type: 'ERROR', payload: error.message });
+        try {
+          throw new CustomError({
+            code: 'INTERNAL_REALTIME_DATABASE_ERROR',
+            message: error.message,
+            cause: error.cause,
+          });
+        } catch (err) {
+          if (err instanceof CustomError) {
+            dispatch({ type: 'ERROR', payload: err.message });
+          } else {
+            throw err;
+          }
+        }
       },
     );
 
     return () => unsubscribe();
-  }, [path]);
+  }, [path, type]);
 
   return state;
 };

@@ -24,7 +24,7 @@ export const ChattingSide = ({ userId }: ChattingSideProps) => {
       </nav>
       <ChattingList friendUserId={userId} />
       <footer className="p-3">
-        <SendMessageForm />
+        <SendMessageForm friendUserId={userId} />
       </footer>
     </article>
   );

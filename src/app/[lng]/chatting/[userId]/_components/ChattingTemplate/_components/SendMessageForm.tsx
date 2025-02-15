@@ -1,6 +1,8 @@
 'use client';
 
-import { z } from 'zod';
+import type { z } from 'zod';
+
+import { nanoid } from 'nanoid';
 
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
@@ -8,30 +10,53 @@ import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 
 import { useTranslation } from '@/app/i18n/client';
+import { trpc } from '@/app/trpc';
 import { CustomIconButton } from '@/components';
+import { MESSAGE_STATE, messageTable } from '@/database/indexed-db';
+import { sendMessageSchema } from '@/schema/trpc/chat';
 import { cn } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export const SendMessageForm = () => {
+interface SendMessageFormProps {
+  friendUserId: string;
+}
+
+export const SendMessageForm = ({ friendUserId }: SendMessageFormProps) => {
   const { t } = useTranslation('chatting');
 
-  const messageSchema = z.object({
-    message: z
-      .string()
-      .min(1, t('message-required'))
-      .max(2_000, t('message-too-long'))
-      .trim(),
+  const form = useForm<z.infer<typeof sendMessageSchema>>({
+    resolver: zodResolver(sendMessageSchema),
+    defaultValues: {
+      message: '',
+      toUserId: friendUserId,
+    },
   });
 
-  const form = useForm<z.infer<typeof messageSchema>>({
-    resolver: zodResolver(messageSchema),
-  });
+  const sendMessageMutation = trpc.chat.sendMessage.useMutation({
+    onMutate: () => {
+      const tempId = nanoid();
 
+      messageTable?.add({
+        id: tempId,
+        state: MESSAGE_STATE.SENT,
+        toUserId: friendUserId,
+        fromUserId: '',
+        message: '',
+        translatedMessage: '',
+        timestamp: Date.now(),
+      });
+
+      return {
+        tempId,
+      };
+    },
+    onSuccess: ({}, _, { tempId }) => {},
+  });
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = form.handleSubmit(async ({ message }) => {
-    console.info(message);
-  });
+  const handleSubmit = form.handleSubmit((params) =>
+    sendMessageMutation.mutate(params),
+  );
 
   return (
     <form onSubmit={handleSubmit}>

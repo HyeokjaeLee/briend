@@ -6,7 +6,7 @@ import { IS_DEV } from './public-env';
 
 export enum COOKIES {
   I18N = 'i18n',
-  USER_ID = 'userId',
+
   ANONYMOUS_ID = 'anonymousId',
   PRIVATE_REFERER = 'privateReferrer',
   FIREBASE_ID_TOKEN = 'firebaseIdToken',
@@ -16,7 +16,7 @@ export enum COOKIES {
 
 export interface COOKIES_VALUE {
   [COOKIES.I18N]: LANGUAGE;
-  [COOKIES.USER_ID]: string;
+
   [COOKIES.ANONYMOUS_ID]: string;
   [COOKIES.PRIVATE_REFERER]: string;
   [COOKIES.FIREBASE_ID_TOKEN]: string;
