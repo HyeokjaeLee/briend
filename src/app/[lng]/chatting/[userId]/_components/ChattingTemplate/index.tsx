@@ -14,7 +14,7 @@ export const ChattingTemplate = ({ userId }: ChattingTemplateProps) => {
     <article className="size-full">
       <ChattingList friendUserId={userId} />
       <CustomBottomNav className="border-t-0 bg-white p-3">
-        <SendMessageForm />
+        <SendMessageForm friendUserId={userId} />
       </CustomBottomNav>
     </article>
   );

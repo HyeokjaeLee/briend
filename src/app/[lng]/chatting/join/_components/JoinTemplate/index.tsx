@@ -61,7 +61,13 @@ export const JoinTemplate = createOnlyClientComponent(
         message: 'Cannot join your own room',
       });
 
-    const joinChatMutation = trpc.chat.joinChat.useMutation();
+    const utils = trpc.useUtils();
+
+    const joinChatMutation = trpc.chat.joinChat.useMutation({
+      onSuccess: () => {
+        utils.friend.getFriendList.reset();
+      },
+    });
 
     const { mutate: mutateJoinChat } = joinChatMutation;
 
@@ -76,9 +82,8 @@ export const JoinTemplate = createOnlyClientComponent(
 
       mutateJoinChat({
         inviteToken,
-        userId,
       });
-    }, [inviteToken, isAnonymous, mutateJoinChat, userId, isLanguageChecked]);
+    }, [inviteToken, isAnonymous, mutateJoinChat, isLanguageChecked]);
 
     return (
       <>

@@ -6,7 +6,7 @@ import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
 import { COOKIES, HEADERS, LANGUAGE } from './constants';
 import { ROUTES } from './routes/client';
-import { createId, isEnumValue } from './utils';
+import { isEnumValue } from './utils';
 
 export const config = {
   matcher: [
@@ -19,9 +19,6 @@ export const middleware = auth(async (req: RequestWithAuth) => {
 
   const originalUrl = req.nextUrl.href;
   const responseCallbackList: ((res: NextResponse) => void)[] = [];
-
-  const userId =
-    auth?.user.id || cookies.get(COOKIES.USER_ID)?.value || createId();
 
   //* 🌍 i18n
   let lng: string | undefined;
@@ -116,8 +113,6 @@ export const middleware = auth(async (req: RequestWithAuth) => {
   const isRedirect = originalUrl !== nextUrl.href;
 
   const res = isRedirect ? NextResponse.redirect(nextUrl) : NextResponse.next();
-
-  res.cookies.set(COOKIES.USER_ID, userId);
 
   responseCallbackList.forEach((callback) => callback(res));
 

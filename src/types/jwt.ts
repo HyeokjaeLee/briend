@@ -6,7 +6,7 @@ export namespace JwtPayload {
   export interface InviteToken {
     inviterId: string;
     inviteeLanguage: LANGUAGE;
-    roomId: string;
+    inviteId: string;
   }
 
   export interface FriendToken {

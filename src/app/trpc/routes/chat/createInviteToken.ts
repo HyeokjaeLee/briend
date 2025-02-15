@@ -9,21 +9,18 @@ export const createInviteToken = privateProcedure
   .input(createInviteTokenSchema)
   .mutation(async ({ ctx, input: { language } }) => {
     const id = ctx.session.user.id;
-    const roomId = nanoid();
+    const inviteId = nanoid();
 
     const inviteToken = await jwtAuthSecret.sign(
       {
         inviterId: id,
         inviteeLanguage: language,
-        roomId,
+        inviteId,
       } satisfies JwtPayload.InviteToken,
       {
         time: '5m',
       },
     );
 
-    return {
-      inviteToken,
-      roomId,
-    };
+    return inviteToken;
   });

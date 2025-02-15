@@ -31,20 +31,21 @@ export namespace Firestore {
       };
 }
 
+export interface ChatItem {
+  connectedAt: number;
+  nickname?: string;
+  inviteId?: string;
+  /**
+   * @description [created at, original message, translated message][]
+   */
+  msg: [number, string, string?][];
+}
+
 export interface UserRealtimeData {
   /**
    * @description object key는 상대방 Id
    */
-  chat: Record<
-    string,
-    {
-      connectedAt: number;
-      /**
-       * @description [message id, created at, original message, translated message][]
-       */
-      msg: [string, number, string, string?][];
-    }
-  >;
+  chat: Record<string, ChatItem>;
 }
 
 export type UserRealtimeDatabase = Record<string, UserRealtimeData>;

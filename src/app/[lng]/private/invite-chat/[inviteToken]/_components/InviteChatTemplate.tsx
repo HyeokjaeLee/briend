@@ -1,7 +1,5 @@
 'use client';
 
-import { onSnapshot, query, where } from 'firebase/firestore';
-
 import { useEffect, useState } from 'react';
 import { FcCollaboration, FcAdvertising } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
@@ -10,9 +8,9 @@ import { useTranslation } from '@/app/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
 import { trpc } from '@/app/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
-import { firestore } from '@/database/firebase/client';
-import { COLLECTIONS } from '@/database/firebase/type';
-import { useAsyncError, useCustomRouter, useUserData } from '@/hooks';
+import { useRealTimeDatabase } from '@/database/firebase/client';
+import type { UserRealtimeData } from '@/database/firebase/type';
+import { useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { assert, cn, CustomError, expToDate } from '@/utils';
 import { toast, createOnlyClientComponent } from '@/utils/client';
@@ -53,42 +51,26 @@ export const InviteChatTemplate = createOnlyClientComponent(
 
     const userId = user.id;
 
-    const asyncError = useAsyncError();
-
     const [connectedGuestId, setConnectedGuestId] = useState<string>();
 
+    const { data } = useRealTimeDatabase<UserRealtimeData['chat']>(
+      'onValue',
+      `${userId}/chat`,
+    );
+
+    const utils = trpc.useUtils();
+
     useEffect(() => {
-      const unsubscribe = firestore(({ collection }) => {
-        const chattingRoomsRef = collection(
-          COLLECTIONS.USERS,
-          userId,
-          COLLECTIONS.CHATTING_ROOMS,
-        );
+      if (!data) return;
 
-        const filteredQuery = query(
-          chattingRoomsRef,
-          where('roomId', '==', inviteTokenPayload.roomId),
-        );
+      for (const [inviteeId, chat] of Object.entries(data)) {
+        if (chat.inviteId === inviteTokenPayload.inviteId) {
+          utils.friend.getFriendList.reset();
 
-        return onSnapshot(
-          filteredQuery,
-          (snapshot) => {
-            snapshot.docs.forEach((doc) => {
-              setConnectedGuestId(doc.id);
-            });
-          },
-          (error) => {
-            asyncError({
-              code: 'INTERNAL_FIRESTORE_ERROR',
-              cause: error.cause,
-              message: error.message,
-            });
-          },
-        );
-      });
-
-      return unsubscribe;
-    }, [asyncError, inviteTokenPayload.roomId, userId]);
+          return setConnectedGuestId(inviteeId);
+        }
+      }
+    }, [data, inviteTokenPayload.inviteId, utils]);
 
     const expires = expToDate(inviteTokenPayload.exp);
 

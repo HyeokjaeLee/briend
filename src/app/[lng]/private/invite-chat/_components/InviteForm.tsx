@@ -45,7 +45,7 @@ export const InviteForm = () => {
   });
 
   const createInviteTokenMutation = trpc.chat.createInviteToken.useMutation({
-    onSuccess: ({ inviteToken }) =>
+    onSuccess: (inviteToken) =>
       router.push(ROUTES.INVITE_CHAT_QR.pathname({ inviteToken }), {
         toSidePanel: hasSidePanel,
       }),
