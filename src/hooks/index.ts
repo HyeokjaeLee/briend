@@ -8,6 +8,7 @@ export { useDeleteFriend } from './useDeleteFriend';
 export { useGetLocalImage } from './useGetLocalImage';
 export { useIndexedDB } from './useIndexedDB';
 export { useLanguage } from './useLanguage';
+export { useLongPress } from './useLongPress';
 export { useTempImage } from './useTempImage';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';
