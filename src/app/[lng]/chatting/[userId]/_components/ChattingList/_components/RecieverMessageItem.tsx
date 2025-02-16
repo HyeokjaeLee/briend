@@ -6,7 +6,7 @@ import { useTranslation } from '@/app/i18n/client';
 import { ProfileImage } from '@/components';
 import { useLanguage } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
-import { Skeleton, Spinner } from '@radix-ui/themes';
+import { Skeleton } from '@radix-ui/themes';
 
 interface MessageItemProps {
   profileImageSrc?: string;
@@ -37,12 +37,8 @@ export const RecieverMessageItem = ({
   const isoDate = formatISODate(date);
 
   return (
-    <div
-      className={cn('px-4', {
-        'py-2': !isSameUser,
-      })}
-    >
-      <article className={cn('flex', isSameUser ? 'py-1 gap-2' : 'gap-4')}>
+    <div className={cn('px-4', isSameUser ? 'py-1' : 'py-2')}>
+      <article className={cn('flex', isSameUser ? 'gap-2' : 'gap-4')}>
         {isSameUser ? (
           <div className="flex h-5 w-14 items-center justify-end" />
         ) : (
