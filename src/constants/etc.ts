@@ -6,6 +6,9 @@ export enum LOGIN_PROVIDERS {
 
 export const IS_CLIENT = typeof window !== 'undefined';
 
+export const IS_TOUCH_DEVICE =
+  IS_CLIENT && ('ontouchstart' in window || 0 < navigator.maxTouchPoints);
+
 export enum QUERY_KEYS {
   NOT_SESSION = 'not-save-to-session',
 }

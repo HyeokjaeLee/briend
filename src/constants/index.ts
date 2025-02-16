@@ -12,6 +12,7 @@ export {
   MAX_FIREND_COUNT,
   HEADERS,
   PATH,
+  IS_TOUCH_DEVICE,
 } from './etc';
 export { LANGUAGE, LANGUAGE_FLAG, LANGUAGE_NAME } from './language';
 export { IS_DEV, PUBLIC_ENV } from './public-env';

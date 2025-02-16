@@ -1,6 +1,7 @@
 /**
  * @package atoms 컴포넌트
  */
+export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
 export { CustomButton, type CustomButtonProps } from './atoms/CustomButton';
 export {
   CustomIconButton,
@@ -8,7 +9,11 @@ export {
 } from './atoms/CustomIconButton';
 export { CustomImage, type CustomImageProps } from './atoms/CustomImage';
 export { CustomLink, type CustomLinkProps } from './atoms/CustomLink';
-export { DotLottie, type DotLottieProps } from './atoms/DotLottie';
+export {
+  DotLottie,
+  type DotLottieProps,
+  type DotLottieType,
+} from './atoms/DotLottie';
 export { Input, type InputProps } from './atoms/Input';
 
 /**

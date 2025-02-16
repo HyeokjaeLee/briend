@@ -69,7 +69,7 @@ export const RecieverMessageItem = ({
         </section>
         {!isSameUser || isSameTime ? null : (
           <div className="mt-auto h-fit flex-1 gap-2 flex-center">
-            <hr className="ml-auto h-0.5 w-full min-w-1 max-w-8 flex-1 rounded-r-full border-none bg-gradient-to-r from-transparent to-slate-500" />
+            <hr className="ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none bg-gradient-to-r from-transparent to-slate-300" />
             <time
               className="text-nowrap rounded-full text-xs text-slate-500"
               dateTime={isoDate}
