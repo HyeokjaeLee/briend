@@ -46,6 +46,8 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
         userId: receiverId,
       });
 
+      form.setValue('message', '');
+
       return {
         tempId,
       };

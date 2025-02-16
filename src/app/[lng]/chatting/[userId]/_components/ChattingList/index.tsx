@@ -9,8 +9,8 @@ import { useRealtimeDatabase } from '@/database/firebase/client';
 import type { ChatItem } from '@/database/firebase/type';
 
 import { EmptyTemplate } from './_components/EmptyTemplate';
-import { MyMessageItem } from './_components/MyMessageItem';
 import { RecieverMessageItem } from './_components/RecieverMessageItem';
+import { SenderMessageItem } from './_components/SenderMessageItem';
 import { useMessageSync } from './_hooks/useMessageSync';
 interface ChattingListProps {
   receiverId: string;
@@ -55,9 +55,10 @@ export const ChattingList = ({
           : false;
 
         return isMine ? (
-          <MyMessageItem
+          <SenderMessageItem
             date={date}
             isMine={isMine}
+            isSameTime={isSameTime}
             isSameUser={isSameUser}
             message={message}
             state={state}
