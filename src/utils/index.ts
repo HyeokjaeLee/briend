@@ -16,7 +16,6 @@ export { hasObjectKey } from './hasObjectKey';
 export { isArrayItem } from './isArrayItem';
 export { isCurrentHref } from './isCurrentHref';
 export { isEnumValue } from './isEnumValue';
-export { isPeerData } from './isPeerData';
 export { objectWithoutUndefined } from './objectWithoutUndefined';
 export { reverseEnum, type ReverseMap } from './reverseEnum';
 export { singleton } from './singleton';

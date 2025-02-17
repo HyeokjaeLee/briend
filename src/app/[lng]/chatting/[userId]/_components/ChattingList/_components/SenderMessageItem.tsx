@@ -1,15 +1,13 @@
 import type { Dayjs } from 'dayjs';
 
-import dayjs from 'dayjs';
-
-import { useTranslation } from '@/app/i18n/client';
 import { IS_TOUCH_DEVICE } from '@/constants';
-import { MESSAGE_STATE, type Message } from '@/database/indexed';
+import { MESSAGE_STATE } from '@/database/indexed';
 import { useLanguage, useLongPress } from '@/hooks';
-import { cn, formatLocalizedDate } from '@/utils';
+import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 import { Spinner } from '@radix-ui/themes';
 
-interface MessageItemProps extends Pick<Message, 'message' | 'state'> {
+export interface CommonMessageItemProps {
+  message: string;
   isSameUser: boolean;
   isSameTime: boolean;
   date: Dayjs;
@@ -17,23 +15,20 @@ interface MessageItemProps extends Pick<Message, 'message' | 'state'> {
   isSelected: boolean;
   onClick: () => void;
 }
+export interface SenderMessageItemProps extends CommonMessageItemProps {
+  state: MESSAGE_STATE;
+}
 
 export const SenderMessageItem = ({
   message,
   date,
   isSameTime,
   state,
-  isSameUser,
   onLongPress,
   isSelected,
   onClick,
-}: MessageItemProps) => {
+}: SenderMessageItemProps) => {
   const { lng } = useLanguage();
-
-  const isToday = date.isSame(dayjs(), 'day');
-  const isThisYear = date.isSame(dayjs(), 'year');
-
-  const { t } = useTranslation('global');
 
   const { isPressing, register } = useLongPress({
     onLongPress,
@@ -41,26 +36,15 @@ export const SenderMessageItem = ({
   });
 
   return (
-    <article
-      className={cn(
-        'flex flex-col items-end gap-1 mx-4',
-        isSameUser ? 'my-1' : 'my-2',
-      )}
-    >
+    <article className="mx-4 my-1 flex flex-col items-end gap-1">
       {isSameTime ? null : (
         <time
           className="w-fit text-xs text-slate-500"
-          dateTime={date.format('YYYY-MM-DDTHH:mm:ss.SSSZ')}
+          dateTime={formatISODate(date)}
         >
-          {isToday
-            ? `${t('today')} ${formatLocalizedDate(date, lng, {
-                time: true,
-              })}`
-            : formatLocalizedDate(date, lng, {
-                time: true,
-                day: true,
-                withYear: !isThisYear,
-              })}
+          {formatLocalizedDate(date, lng, {
+            time: true,
+          })}
         </time>
       )}
       <div className="flex items-end gap-2">

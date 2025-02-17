@@ -1,4 +1,5 @@
 import { ChattingList } from './_components/ChattingList';
+import { useDeleteMessage } from './_components/ChattingList/_hooks/useDeleteMessage';
 import { SettingButton } from './_components/ChattingPageHeader/_components/SettingButton';
 import { SendMessageForm } from './_components/SendMessageForm';
 import { useReceiverData } from './_hooks/useReceiverData';
@@ -9,6 +10,7 @@ interface ChattingSideProps {
 
 export const ChattingSide = ({ userId }: ChattingSideProps) => {
   const { isLoading, receiver, receiverName } = useReceiverData(userId);
+  const deleteMessage = useDeleteMessage();
 
   return (
     <article className="flex size-full flex-col bg-white">
@@ -20,9 +22,12 @@ export const ChattingSide = ({ userId }: ChattingSideProps) => {
       </nav>
       <ChattingList
         isLoading={isLoading}
+        messageIdsForDelete={deleteMessage.ids}
         receiverId={userId}
         receiverNickname={receiverName}
         receiverProfileImage={receiver.profileImage}
+        onAddMessageIdForDelete={deleteMessage.add}
+        onRemoveMessageIdForDelete={deleteMessage.remove}
       />
       <footer className="p-3">
         <SendMessageForm receiverId={userId} />

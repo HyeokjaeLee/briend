@@ -61,7 +61,7 @@ export const Checkbox = ({
         autoplay={false}
         className={cn(
           'size-full',
-          'absolute left-1/2 top-1/2 -z-10 -translate-x-1/2 -translate-y-1/2',
+          'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2',
           {
             grayscale: disabled,
           },
@@ -74,15 +74,17 @@ export const Checkbox = ({
       />
       <input
         checked={finallyChecked}
-        className={cn('left-0 top-0 size-full cursor-pointer invisible', {
-          'cursor-not-allowed': disabled,
-        })}
+        className={cn(
+          'absolute left-1/2 top-1/2 z-10 -translate-x-1/2 min-w-8 min-h-8 size-full -translate-y-1/2 cursor-pointer opacity-0',
+          {
+            'cursor-not-allowed': disabled,
+          },
+        )}
         disabled={disabled}
         type="checkbox"
         onChange={({ target: { checked } }) => {
           onChange?.(checked);
           setIsChecked(checked);
-          dotLottie?.play();
         }}
       />
     </div>

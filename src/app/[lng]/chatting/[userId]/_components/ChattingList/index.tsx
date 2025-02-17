@@ -1,14 +1,17 @@
 'use client';
 
+import type { CommonMessageItemProps } from './_components/SenderMessageItem';
+
 import dayjs from 'dayjs';
-import { getAuth } from 'firebase/auth';
 
 import { useState } from 'react';
+import { RiCalendarCheckFill, RiSunFill } from 'react-icons/ri';
 import { Virtuoso } from 'react-virtuoso';
 
+import { useTranslation } from '@/app/i18n/client';
 import { Checkbox } from '@/components';
-import { useRealtimeDatabase } from '@/database/firebase/client';
-import type { ChatItem } from '@/database/firebase/type';
+import { useLanguage } from '@/hooks';
+import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
 import { EmptyTemplate } from './_components/EmptyTemplate';
 import { MessageModal } from './_components/MessageModal';
@@ -36,14 +39,11 @@ export const ChattingList = ({
 }: ChattingListProps) => {
   const { messageList } = useMessageSync(receiverId);
 
-  const auth = getAuth();
-
-  const receiverNotReadMessages = useRealtimeDatabase<ChatItem['msg']>(
-    'onValue',
-    `${receiverId}/chat/${auth.currentUser?.uid}/msg`,
-  );
+  const { t } = useTranslation('global');
 
   const [selectedMessageId, setSelectedMessageId] = useState<string>();
+
+  const { lng } = useLanguage();
 
   if (!messageList) return null;
 
@@ -51,12 +51,15 @@ export const ChattingList = ({
 
   const isDeleteMode = !!messageIdsForDelete.length;
 
+  const today = dayjs();
+
   return (
     <>
       <Virtuoso
         className="animate-fade animate-duration-1000"
         data={messageList}
         followOutput="smooth"
+        initialTopMostItemIndex={messageList.length - 1}
         itemContent={(index, { isMine, message, timestamp, state, id }) => {
           const prevMessage = index ? messageList[index - 1] : null;
 
@@ -65,14 +68,13 @@ export const ChattingList = ({
             : false;
 
           const date = dayjs(timestamp);
+          const prevDate = prevMessage ? dayjs(prevMessage.timestamp) : null;
+          const isSameDate = prevDate ? date.isSame(prevDate, 'date') : false;
 
-          const isSameTime = prevMessage
-            ? dayjs(timestamp).isSame(dayjs(prevMessage.timestamp), 'minute')
-            : false;
+          const isSameTime =
+            isSameDate && prevDate ? date.isSame(prevDate, 'minute') : false;
 
           const isSelected = selectedMessageId === id;
-
-          const handleLongPress = () => setSelectedMessageId(id);
 
           const isCheckedForDelete = messageIdsForDelete.includes(id);
 
@@ -81,42 +83,72 @@ export const ChattingList = ({
             else onAddMessageIdForDelete(id);
           };
 
-          const handleClick = isDeleteMode
-            ? handleCheckForDelete
-            : handleLongPress;
+          const isToday = date.isSame(today, 'date');
+          const isThisYear = date.isSame(today, 'year');
+
+          const handleLongPress = () => setSelectedMessageId(id);
+
+          const commonProps: CommonMessageItemProps = {
+            date,
+            isSameTime,
+            isSameUser,
+            isSelected,
+            message,
+            onClick: isDeleteMode ? handleCheckForDelete : handleLongPress,
+            onLongPress: handleLongPress,
+          };
 
           return (
-            <div className="flex w-full items-center gap-2">
-              {isDeleteMode ? (
-                <Checkbox
-                  checked={isCheckedForDelete}
-                  className="ml-2 animate-fade-right animate-duration-100"
-                  onChange={handleCheckForDelete}
-                />
-              ) : null}
-              <div className="flex-1">
-                {isMine ? (
-                  <SenderMessageItem
-                    date={date}
-                    isSameTime={isSameTime}
-                    isSameUser={isSameUser}
-                    isSelected={isSelected}
-                    message={message}
-                    state={state}
-                    onClick={handleClick}
-                    onLongPress={handleLongPress}
+            <div className="w-full flex-col">
+              {isSameDate ? null : (
+                <div
+                  className={cn(
+                    'flex-center w-fit gap-1 mt-5 mb-1 mx-2 min-w-24',
+                    'mx-auto rounded-full text-xs font-semibold',
+                    'text-slate-500',
+                    {
+                      'animate-bounce': isToday,
+                    },
+                  )}
+                >
+                  {isToday ? (
+                    <>
+                      <RiSunFill className="size-4" />
+                      <time dateTime={formatISODate(date)}>{t('today')}</time>
+                    </>
+                  ) : (
+                    <>
+                      <RiCalendarCheckFill className="size-4" />
+                      <time dateTime={formatISODate(date)}>
+                        {formatLocalizedDate(date, lng, {
+                          day: true,
+                          year: !isThisYear,
+                        })}
+                      </time>
+                    </>
+                  )}
+                </div>
+              )}
+              <div className="flex w-full items-center gap-2">
+                {isDeleteMode ? (
+                  <Checkbox
+                    checked={isCheckedForDelete}
+                    className="ml-2 animate-fade-right animate-duration-100"
+                    onChange={handleCheckForDelete}
                   />
-                ) : (
-                  <RecieverMessageItem
-                    date={date}
-                    isLoading={isLoading}
-                    isSameTime={isSameTime}
-                    isSameUser={isSameUser}
-                    message={message}
-                    nickname={receiverNickname}
-                    profileImageSrc={receiverProfileImage}
-                  />
-                )}
+                ) : null}
+                <div className="flex-1">
+                  {isMine ? (
+                    <SenderMessageItem {...commonProps} state={state} />
+                  ) : (
+                    <RecieverMessageItem
+                      {...commonProps}
+                      isLoading={isLoading}
+                      nickname={receiverNickname}
+                      profileImageSrc={receiverProfileImage}
+                    />
+                  )}
+                </div>
               </div>
             </div>
           );

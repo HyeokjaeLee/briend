@@ -2,13 +2,12 @@ import type { Dayjs } from 'dayjs';
 
 import { extend } from 'dayjs';
 import buddhistEra from 'dayjs/plugin/buddhistEra';
-import localizedFormat from 'dayjs/plugin/localizedFormat';
 
 import { LANGUAGE } from '@/constants';
 
 interface DateFormatOptions {
   day?: boolean;
-  withYear?: boolean;
+  year?: boolean;
   time?: boolean;
 }
 
@@ -21,46 +20,79 @@ export const formatLocalizedDate = (
 
   const localeDate = date.locale(dayjsLocale);
 
-  const { day, withYear, time } = options;
+  const { year, day, time } = options;
 
-  if (lng === LANGUAGE.THAI) {
-    extend(buddhistEra);
+  const timeFormat: (string | null)[] = [null, null, null];
 
-    const formatList: string[] = [];
-
-    if (day) {
-      formatList.push('D MMMM');
-
-      if (withYear) formatList.push('BBBB');
+  if (time)
+    switch (lng) {
+      case LANGUAGE.KOREAN:
+        timeFormat[2] = 'A h:mm';
+        break;
+      case LANGUAGE.JAPANESE:
+      case LANGUAGE.CHINESE:
+        timeFormat[2] = 'A h:mm';
+        break;
+      case LANGUAGE.VIETNAMESE:
+        timeFormat[0] = 'HH:mm';
+        break;
+      case LANGUAGE.THAI:
+        timeFormat[2] = 'HH:mm';
+        break;
+      case LANGUAGE.ENGLISH:
+        timeFormat[2] = 'h:mm A';
+        break;
     }
 
-    if (time) formatList.push('HH:mm น.');
+  if (day)
+    switch (lng) {
+      case LANGUAGE.KOREAN:
+        timeFormat[1] = 'M월 D일';
+        break;
+      case LANGUAGE.JAPANESE:
+      case LANGUAGE.CHINESE:
+        timeFormat[1] = 'M月 D日';
+        break;
+      case LANGUAGE.VIETNAMESE:
+        timeFormat[1] = '[ngày] D MMMM';
+        break;
+      case LANGUAGE.THAI:
+        timeFormat[0] = 'D MMMM';
+        break;
+      case LANGUAGE.ENGLISH:
+        timeFormat[0] = 'M/D';
+        break;
+    }
 
-    if (formatList.length === 0) return '';
+  if (year)
+    switch (lng) {
+      case LANGUAGE.KOREAN:
+        timeFormat[0] = 'YYYY년';
+        break;
+      case LANGUAGE.JAPANESE:
+      case LANGUAGE.CHINESE:
+        timeFormat[0] = 'YYYY年';
+        break;
+      case LANGUAGE.VIETNAMESE:
+        timeFormat[2] = '[năm] YYYY';
+        break;
+      case LANGUAGE.THAI:
+        extend(buddhistEra);
+        timeFormat[1] = 'BBBB [BE]';
+        break;
+      case LANGUAGE.ENGLISH:
+        timeFormat[1] = 'YYYY';
+        break;
+    }
 
-    return localeDate.format(formatList.join(' '));
+  let format: string;
+
+  if (lng === LANGUAGE.ENGLISH) {
+    const datePart = [timeFormat[0], timeFormat[1]].filter(Boolean).join('/');
+    format = [datePart, timeFormat[2]].join(' ');
+  } else {
+    format = timeFormat.join(' ');
   }
 
-  extend(localizedFormat);
-
-  if (!day) {
-    if (time) return localeDate.format('A h:mm');
-
-    return '';
-  }
-
-  if (time && withYear) return localeDate.format('lll');
-
-  if (withYear) return localeDate.format('ll');
-
-  switch (lng) {
-    case LANGUAGE.KOREAN:
-      return localeDate.format('M월 d일');
-    case LANGUAGE.JAPANESE:
-    case LANGUAGE.CHINESE:
-      return localeDate.format('M月 d日');
-
-    case LANGUAGE.VIETNAMESE:
-      return localeDate.format('M/d/yyyy');
-  }
+  return localeDate.format(format.trim());
 };
