@@ -14,7 +14,10 @@ export const LoadingTemplate = ({ className }: LoadingTemplateProps) => {
         className,
       )}
     >
-      <DotLottie className="h-40" src="/assets/lottie/spinner.lottie" />
+      <DotLottie
+        className="-z-10 h-40 animate-fade"
+        src="/assets/lottie/spinner.lottie"
+      />
     </div>
   );
 };
