@@ -116,7 +116,7 @@ export const JoinTemplate = createOnlyClientComponent(
         )}
         {isLanguageChecked && isAnonymous ? (
           <Suspense>
-            <GuestModal exp={exp} inviteToken={inviteToken} userId={userId} />
+            <GuestModal exp={exp} inviteToken={inviteToken} />
           </Suspense>
         ) : null}
       </>

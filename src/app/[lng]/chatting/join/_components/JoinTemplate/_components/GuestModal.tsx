@@ -22,7 +22,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 interface NoNickNameModalProps {
   exp?: number;
   inviteToken: string;
-  userId: string;
 }
 
 const formSchema = z.object({
@@ -32,11 +31,7 @@ const formSchema = z.object({
     .max(20, 'nickname-max-length'),
 });
 
-export const GuestModal = ({
-  exp,
-  inviteToken,
-  userId,
-}: NoNickNameModalProps) => {
+export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
   const joinChatMutation = trpc.chat.joinChat.useMutation();
 
   const isSuccess = joinChatMutation.isSuccess;
@@ -111,7 +106,6 @@ export const GuestModal = ({
           joinChatMutation.mutate({
             inviteToken,
             nickname,
-            userId,
           });
         })}
       >
