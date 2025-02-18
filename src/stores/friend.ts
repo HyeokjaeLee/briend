@@ -1,11 +1,10 @@
 'use client';
 
 import type { JWTPayload } from 'jose';
-
 import { create } from 'zustand';
 
 import { MAX_FIREND_COUNT } from '@/constants/etc';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 
 interface FriendStore {
   isMounted: boolean;

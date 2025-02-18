@@ -1,8 +1,6 @@
-import imageCompression from 'browser-image-compression';
-
-import { useEffect } from 'react';
-
 import { useMutation } from '@tanstack/react-query';
+import imageCompression from 'browser-image-compression';
+import { useEffect } from 'react';
 
 interface SetTempImageOptions {
   maxSizeMB?: number;

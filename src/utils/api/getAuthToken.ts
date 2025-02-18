@@ -1,5 +1,4 @@
 import type { GetTokenParams } from 'next-auth/jwt';
-
 import { getToken } from 'next-auth/jwt';
 
 import { IS_DEV } from '@/constants';

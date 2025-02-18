@@ -1,7 +1,7 @@
+import { TextField } from '@radix-ui/themes';
 import type { RefAttributes } from 'react';
 
 import { cn } from '@/utils';
-import { TextField } from '@radix-ui/themes';
 
 export type InputProps = Omit<
   TextField.RootProps & RefAttributes<HTMLInputElement>,

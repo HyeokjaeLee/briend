@@ -1,4 +1,4 @@
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
+import { cert,getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getDatabase } from 'firebase-admin/database';
 import { getFirestore } from 'firebase-admin/firestore';
@@ -52,4 +52,4 @@ const verifyFirebaseIdToken = async <T extends string | null | undefined>(
 
 const realtimeDatabase = getDatabase(app);
 
-export { firestore, adminAuth, verifyFirebaseIdToken, realtimeDatabase };
+export { adminAuth, firestore, realtimeDatabase,verifyFirebaseIdToken };

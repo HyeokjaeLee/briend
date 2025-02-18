@@ -1,5 +1,4 @@
 import type { JWTPayload, JWTVerifyResult } from 'jose';
-
 import { jwtVerify, SignJWT } from 'jose';
 import { JWTExpired } from 'jose/errors';
 

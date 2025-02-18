@@ -1,11 +1,11 @@
 import { Translator } from 'deepl-node';
 import { errors } from 'jose';
-import { NextResponse, type NextRequest } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 import { LANGUAGE } from '@/constants';
 import { PRIVATE_ENV } from '@/constants/private-env';
-import type { ApiParams } from '@/types/api-params';
-import type { JwtPayload } from '@/types/jwt';
+import type * as ApiParams from '@/types/api-params';
+import type * as JwtPayload from '@/types/jwt';
 import { isArrayItem } from '@/utils';
 import { createApiRoute, jwtSecretVerify } from '@/utils/api';
 
@@ -62,20 +62,6 @@ export const POST = createApiRoute(async (req: NextRequest) => {
     }
 
     console.info(translatedMessage, id);
-
-    /**
-   *   await pusher.trigger(
-      PUSHER_CHANNEL.CHATTING(payload.hostId),
-      PUSHER_EVENT.CHATTING_SEND_MESSAGE(payload.channelId),
-      {
-        message,
-        id,
-        fromUserId,
-        translatedMessage,
-        timestamp: Date.now(),
-      } satisfies PusherMessage.sendMessage,
-    );
-   */
 
     return new NextResponse(null, { status: 200 });
   } catch (e) {

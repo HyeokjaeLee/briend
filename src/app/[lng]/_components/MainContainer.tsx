@@ -1,13 +1,12 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
-
 import {
+  type PropsWithChildren,
   useEffect,
   useLayoutEffect,
   useRef,
-  type PropsWithChildren,
 } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';

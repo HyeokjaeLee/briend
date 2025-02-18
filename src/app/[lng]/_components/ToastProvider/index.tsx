@@ -1,6 +1,6 @@
 'use client';
 
-import { ToastContainer, Slide } from 'react-toastify';
+import { Slide, ToastContainer } from 'react-toastify';
 
 import { cn } from '@/utils';
 
@@ -12,10 +12,9 @@ export const ToastProvider = () => {
   return (
     <ToastContainer
       draggable
-      bodyClassName="p-0 whitespace-pre-line flex gap-1 text-black text-lg font-medium font-pretendard"
       className={cn(
-        'h-0 relative p-0 w-[calc(100%-2rem)]',
-        'left-4 xs:left-1/2',
+        'h-0 p-0 relative w-[calc(100%-2rem)]',
+        'sm:min-w-80 sm:fixed sm:w-fit',
       )}
       draggableDirection="x"
       draggablePercent={50}
@@ -23,9 +22,8 @@ export const ToastProvider = () => {
       position="top-center"
       theme="colored"
       toastClassName={cn(
-        'flex justify-center px-4 py-0',
-        '!bg-white/90',
-        'rounded-lg backdrop-blur-sm cursor-grab',
+        'flex justify-start w-full px-4',
+        'rounded-lg backdrop-blur-sm cursor-grab font-pretendard whitespace-pre-line font-medium text-lg',
       )}
       transition={Slide}
     />

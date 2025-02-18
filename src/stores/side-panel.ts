@@ -1,9 +1,9 @@
-import type { ANIMATION_TYPE, NAVIGATION_ANIMATION } from './global';
-
 import { create } from 'zustand';
 
 import { SESSION_STORAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
+
+import type { ANIMATION_TYPE, NAVIGATION_ANIMATION } from './global';
 
 interface SidePanelStore {
   sidePanelUrl: string;

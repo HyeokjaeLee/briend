@@ -1,12 +1,11 @@
 'use client';
 
-import { memo, useEffect, useState } from 'react';
-
 import {
   type DotLottie as DotLottieType,
-  type DotLottieReactProps,
   DotLottieReact,
+  type DotLottieReactProps,
 } from '@lottiefiles/dotlottie-react';
+import { memo, useEffect, useState } from 'react';
 
 export interface DotLottieProps
   extends Omit<DotLottieReactProps, 'role' | 'aria-hidden'> {

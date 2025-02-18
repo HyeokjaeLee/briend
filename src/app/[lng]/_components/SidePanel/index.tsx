@@ -1,10 +1,9 @@
 'use client';
 
 import { ErrorBoundary } from 'next/dist/client/components/error-boundary';
-import { useShallow } from 'zustand/shallow';
-
 import { memo, useEffect } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
+import { useShallow } from 'zustand/shallow';
 
 import { CustomIconButton } from '@/components';
 import { useSidePanel } from '@/hooks';
@@ -18,7 +17,6 @@ import {
 } from '@/utils/client';
 
 import ErrorPage from '../../error';
-
 import EmptyTemplate from './_components/Empty';
 import { SideContents } from './_components/SideContents';
 import { useInitRoute } from './_hooks/useInitRoute';

@@ -1,7 +1,8 @@
+import { queryOptions } from '@tanstack/react-query';
+
 import { IS_DEV } from '@/constants';
 import { API_ROUTES } from '@/routes/api';
 import { createQueryKeys } from '@/utils';
-import { queryOptions } from '@tanstack/react-query';
 
 export const UtilsQueryKey = createQueryKeys('utils', ['shortUrl'] as const);
 

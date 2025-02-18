@@ -1,7 +1,6 @@
 import { cn } from '@/utils';
 
 import { CustomButton, type CustomButtonProps } from '../atoms/CustomButton';
-
 import { CustomBottomNav } from './CustomBottomNav';
 
 export type BottomButtonProps = Omit<CustomButtonProps, 'activeScaleDown'>;

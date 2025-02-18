@@ -1,13 +1,12 @@
 'use client';
 
 import {
+  animate,
   AnimatePresence,
   motion,
   useMotionValue,
   useTransform,
-  animate,
 } from 'motion/react';
-
 import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { RiCloseLargeLine } from 'react-icons/ri';

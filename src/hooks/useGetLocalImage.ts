@@ -1,5 +1,4 @@
 import imageCompression from 'browser-image-compression';
-
 import { useState } from 'react';
 
 interface LocalImageOptions {

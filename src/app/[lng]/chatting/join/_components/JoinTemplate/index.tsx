@@ -2,7 +2,6 @@
 
 import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
-
 import { Suspense, useEffect, useState } from 'react';
 
 import { useTranslation } from '@/app/i18n/client';
@@ -11,7 +10,7 @@ import { DotLottie, LoadingTemplate } from '@/components';
 import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { assert, CustomError } from '@/utils';
 import { createOnlyClientComponent, toast } from '@/utils/client';
 

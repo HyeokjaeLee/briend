@@ -1,7 +1,6 @@
 'use client';
 
 import type { DataConnection, Peer } from 'peerjs';
-
 import { create } from 'zustand';
 
 export interface FriendPeer {

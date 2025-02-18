@@ -9,7 +9,7 @@ export { useGetLocalImage } from './useGetLocalImage';
 export { useIndexedDB } from './useIndexedDB';
 export { useLanguage } from './useLanguage';
 export { useLongPress } from './useLongPress';
+export { useSidePanel } from './useSidePanel';
 export { useTempImage } from './useTempImage';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';
-export { useSidePanel } from './useSidePanel';

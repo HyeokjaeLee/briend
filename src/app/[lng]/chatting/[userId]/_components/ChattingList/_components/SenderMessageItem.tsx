@@ -1,10 +1,10 @@
+import { Spinner } from '@radix-ui/themes';
 import type { Dayjs } from 'dayjs';
 
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { MESSAGE_STATE } from '@/database/indexed';
 import { useLanguage, useLongPress } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
-import { Spinner } from '@radix-ui/themes';
 
 export interface CommonMessageItemProps {
   message: string;

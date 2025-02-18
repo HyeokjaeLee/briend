@@ -1,10 +1,10 @@
+import { Skeleton } from '@radix-ui/themes';
 import { RiShieldCheckFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { RouterOutputs } from '@/app/trpc/type';
 import { ProfileImage } from '@/components';
 import { cn } from '@/utils';
-import { Skeleton } from '@radix-ui/themes';
 
 interface FriendCardProps
   extends Omit<

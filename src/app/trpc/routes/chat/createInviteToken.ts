@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 
 import { privateProcedure } from '@/app/trpc/settings';
 import { createInviteTokenSchema } from '@/schema/trpc/chat';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { jwtAuthSecret } from '@/utils/server';
 
 export const createInviteToken = privateProcedure

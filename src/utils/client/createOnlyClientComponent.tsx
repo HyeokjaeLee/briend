@@ -1,5 +1,4 @@
 import type { DynamicOptionsLoadingProps } from 'next/dynamic';
-
 import dynamic from 'next/dynamic';
 
 export const createOnlyClientComponent = <T extends object>(

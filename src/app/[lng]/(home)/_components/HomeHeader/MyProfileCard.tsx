@@ -1,15 +1,14 @@
-import { useShallow } from 'zustand/shallow';
-
+import { Skeleton } from '@radix-ui/themes';
 import CountUp from 'react-countup';
 import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
+import { useShallow } from 'zustand/shallow';
 
 import { useTranslation } from '@/app/i18n/client';
-import { ProfileImage, CustomLink } from '@/components';
+import { CustomLink,ProfileImage } from '@/components';
 import { MAX_FIREND_COUNT } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
-import { Skeleton } from '@radix-ui/themes';
 
 interface MyProfileCardProps {
   userName?: string;

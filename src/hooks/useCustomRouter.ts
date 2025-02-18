@@ -3,18 +3,16 @@ import type {
   NavigateOptions,
   PrefetchOptions,
 } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-
 import { useRouter } from 'next/navigation';
-
 import { useMemo } from 'react';
 
 import { SESSION_STORAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
 import {
-  useGlobalStore,
-  useGlobalModalStore,
-  useHistoryStore,
   type NAVIGATION_ANIMATION,
+  useGlobalModalStore,
+  useGlobalStore,
+  useHistoryStore,
 } from '@/stores';
 import { isCurrentHref } from '@/utils';
 import { setExitNavigationAnimation } from '@/utils/client';

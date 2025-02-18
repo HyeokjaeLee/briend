@@ -1,6 +1,5 @@
-import type { ImgHTMLAttributes, DetailedHTMLProps } from 'react';
-
 import { Skeleton } from '@radix-ui/themes';
+import type { DetailedHTMLProps,ImgHTMLAttributes } from 'react';
 
 import { CustomImage } from '../atoms/CustomImage';
 

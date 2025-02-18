@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
 
 import { adminAuth, firestore } from '@/database/firebase/server';
-import type { Firestore } from '@/database/firebase/type';
-import { COLLECTIONS } from '@/database/firebase/type';
-import type { ApiParams } from '@/types/api-params';
-import type { JwtPayload } from '@/types/jwt';
+import {
+  COLLECTIONS,
+  type ProviderAccount,
+  type UserInfo,
+} from '@/database/firebase/type';
+import type * as ApiParams from '@/types/api-params';
+import type * as JwtPayload from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
 import { createApiRoute } from '@/utils/api';
 import { jwtAuthSecret } from '@/utils/server';
@@ -44,9 +47,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
 
         adminAuth.deleteUser(anonymousId);
 
-        const userData = (
-          await usersRef.doc(userId).get()
-        ).data() as Firestore.UserInfo;
+        const userData = (await usersRef.doc(userId).get()).data() as UserInfo;
 
         return {
           id: userAuth.uid,
@@ -61,7 +62,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
     };
 
     if (providerAccount.exists) {
-      const { userId } = providerAccount.data() as Firestore.ProviderAccount;
+      const { userId } = providerAccount.data() as ProviderAccount;
 
       const userSession = await linkByUserId(userId);
 
@@ -85,7 +86,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
         const userSession = await linkByUserId(existedId);
 
         if (userSession) {
-          const linkedUserSession: Partial<Firestore.UserInfo> = {
+          const linkedUserSession: Partial<UserInfo> = {
             [idKey]: providerId,
           };
           await usersRef.doc(existedId).update(linkedUserSession);
@@ -106,7 +107,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       usersRef.doc(anonymousId).set({
         language,
         [idKey]: providerId,
-      } satisfies Firestore.UserInfo),
+      } satisfies UserInfo),
     ]);
 
     return {

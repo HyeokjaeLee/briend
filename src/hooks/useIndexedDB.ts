@@ -1,5 +1,4 @@
 import type { EntityTable } from 'dexie';
-
 import { useLiveQuery } from 'dexie-react-hooks';
 
 import { CustomError } from '@/utils';

@@ -32,6 +32,7 @@ export {
   CustomTopHeader,
   type CustomTopHeaderProps,
 } from './molecules/CustomTopHeader';
+export { Drawer, type DrawerProps } from './molecules/Drawer';
 export { Modal, type ModalProps } from './molecules/Modal';
 export { ProfileImage, type ProfileImageProps } from './molecules/ProfileImage';
 export { QR, type QRProps } from './molecules/QR';
@@ -40,7 +41,6 @@ export {
   ValidationMessage,
   type ValidationMessageProps,
 } from './molecules/ValidationMessage';
-export { Drawer, type DrawerProps } from './molecules/Drawer';
 
 /**
  * @package organisms 컴포넌트

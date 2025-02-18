@@ -6,7 +6,7 @@ import {
   verifyFirebaseIdToken,
 } from '@/database/firebase/server';
 import type { ChatItem } from '@/database/firebase/type';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { assert, CustomError } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 

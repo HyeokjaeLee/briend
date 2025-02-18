@@ -1,7 +1,7 @@
 import { SignJWT } from 'jose';
 
 import { PRIVATE_ENV } from '@/constants/private-env';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 
 export const createFriendToken = async (
   linkedUserId: string,

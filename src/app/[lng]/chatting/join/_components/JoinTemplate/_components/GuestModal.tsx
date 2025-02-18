@@ -1,6 +1,6 @@
-import { z } from 'zod';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
@@ -17,7 +17,6 @@ import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { cn, CustomError, expToDate } from '@/utils';
 import { toast } from '@/utils/client';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 interface NoNickNameModalProps {
   exp?: number;

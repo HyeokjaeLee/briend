@@ -2,7 +2,7 @@ import { JWTExpired } from 'jose/errors';
 import { z } from 'zod';
 
 import { publicProcedure } from '@/app/trpc/settings';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { CustomError } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 

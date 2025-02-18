@@ -1,13 +1,12 @@
 'use client';
 
-import type { z } from 'zod';
-
+import { zodResolver } from '@hookform/resolvers/zod';
 import { nanoid } from 'nanoid';
-
 import { useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
+import type { z } from 'zod';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
@@ -15,7 +14,6 @@ import { CustomIconButton } from '@/components';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
 import { assert, cn } from '@/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SendMessageFormProps {
   receiverId: string;

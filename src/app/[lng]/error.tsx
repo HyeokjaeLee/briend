@@ -1,9 +1,8 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
-
 import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
+import { useShallow } from 'zustand/shallow';
 
 import { CustomButton, DotLottie } from '@/components';
 import { SESSION_STORAGE } from '@/constants';

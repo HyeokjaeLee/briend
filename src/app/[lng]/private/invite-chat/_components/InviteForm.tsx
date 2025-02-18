@@ -1,8 +1,9 @@
 'use client';
 
-import type { z } from 'zod';
-
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Select } from '@radix-ui/themes';
 import { Controller, useForm } from 'react-hook-form';
+import type { z } from 'zod';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
@@ -13,8 +14,6 @@ import { ROUTES } from '@/routes/client';
 import { createInviteTokenSchema } from '@/schema/trpc/chat';
 import { useGlobalStore } from '@/stores';
 import { assert, assertEnum } from '@/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Select } from '@radix-ui/themes';
 
 export interface QrInfo {
   userId: string;

@@ -1,18 +1,15 @@
 import './globals.css';
 
-import type { Metadata } from 'next';
-
+import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
+import type { Metadata } from 'next';
 import { headers } from 'next/headers';
-
-import { Suspense, type ReactElement } from 'react';
+import { type ReactElement, Suspense } from 'react';
 
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
-import { Theme } from '@radix-ui/themes';
 
 import { languages } from '../i18n/settings';
-
 import { BottomNav } from './_components/BottomNav';
 import { CenterContainer } from './_components/CenterContainer';
 import { pretendard } from './_components/Font';

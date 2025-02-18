@@ -1,8 +1,9 @@
-import { QUERY_KEYS, IS_CLIENT } from '@/constants';
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
 import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
 import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
+
+import { IS_CLIENT,QUERY_KEYS } from '@/constants';
 
 export const initQueryClient = () => {
   const queryClient = new QueryClient({

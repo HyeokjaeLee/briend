@@ -1,18 +1,16 @@
-import type { DataSnapshot, Unsubscribe } from 'firebase/database';
-import type { Firestore } from 'firebase/firestore';
-
 import { initializeApp } from 'firebase/app';
+import type { DataSnapshot, Unsubscribe } from 'firebase/database';
 import {
   getDatabase,
-  ref,
-  onValue,
-  onChildChanged,
   onChildAdded,
+  onChildChanged,
   onChildMoved,
   onChildRemoved,
+  onValue,
+  ref,
 } from 'firebase/database';
+import type { Firestore } from 'firebase/firestore';
 import { collection, doc, getFirestore } from 'firebase/firestore';
-
 import { useEffect, useReducer } from 'react';
 
 import { PUBLIC_ENV } from '@/constants';

@@ -2,11 +2,8 @@
 
 import { create } from 'zustand';
 
-import {
-  IS_CLIENT,
-  SESSION_STORAGE,
-  type SESSION_STORAGE_TYPE,
-} from '@/constants';
+import { IS_CLIENT, SESSION_STORAGE } from '@/constants';
+import type { HISTORY_TYPE } from '@/constants/storage-key';
 import { CustomError } from '@/utils';
 
 interface HistoryStore {
@@ -44,7 +41,7 @@ export const useHistoryStore = create<HistoryStore>((set) => {
 
       historyIndex = Number(sessionHistoryIndex);
 
-      const history: SESSION_STORAGE_TYPE.HISTORY = JSON.parse(sessionHistory);
+      const history: HISTORY_TYPE = JSON.parse(sessionHistory);
 
       history.forEach(([index, path]) => {
         customHistory.set(index, path);

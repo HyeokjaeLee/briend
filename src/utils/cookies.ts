@@ -1,11 +1,10 @@
 import type { CookieGetOptions, CookieSetOptions } from 'universal-cookie';
-
 import Cookies from 'universal-cookie';
 
 import {
-  DEFAULT_COOKIES_OPTIONS,
   type COOKIES,
   type COOKIES_VALUE,
+  DEFAULT_COOKIES_OPTIONS,
 } from '@/constants';
 
 class CustomCookies extends Cookies {

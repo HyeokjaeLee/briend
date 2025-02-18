@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useLayoutEffect, useState, type ComponentType } from 'react';
+import { type ComponentType,Suspense, useLayoutEffect, useState } from 'react';
 
 import { IS_CLIENT } from '@/constants';
 

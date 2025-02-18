@@ -1,9 +1,7 @@
 import type { NextRequest } from 'next/server';
-
 import { NextResponse } from 'next/server';
 
 import { CustomError } from '../customError';
-
 import { getAuthToken } from './getAuthToken';
 
 type ApiRoute<

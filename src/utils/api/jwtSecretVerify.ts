@@ -1,5 +1,4 @@
 import type { JWTVerifyResult } from 'jose';
-
 import { jwtVerify } from 'jose';
 
 import { PRIVATE_ENV } from '@/constants/private-env';

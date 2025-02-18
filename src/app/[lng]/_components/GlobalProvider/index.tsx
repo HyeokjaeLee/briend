@@ -7,13 +7,12 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/th';
 import 'dayjs/locale/vi';
 
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { SessionProvider } from 'next-auth/react';
-
-import { use, type PropsWithChildren } from 'react';
+import { type PropsWithChildren,use } from 'react';
 
 import { trpc, trpcClient } from '@/app/trpc';
 import { createSuspensedComponent } from '@/utils/client';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 
 import { GlobalEventListener } from './_components/GlobalEventListener';
 import { GlobalFireStoreSubscription } from './_components/GlobalFireStoreSubscription';

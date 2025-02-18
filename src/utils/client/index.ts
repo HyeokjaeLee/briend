@@ -1,5 +1,3 @@
-export { toast, type ToastOptions } from './toast';
-
 export { createOnlyClientComponent } from './createOnlyClientComponent';
 export { createSuspensedComponent } from './createSuspensedComponent';
 export {
@@ -7,4 +5,5 @@ export {
   NAVIGATION_ANIMATION_DURATION,
 } from './getNavigationAnimationClasses';
 export { setExitNavigationAnimation } from './setExitNavigationAnimation';
+export { toast, type ToastOptions } from './toast';
 export { uploadFirebaseStorage } from './uploadFirebaseStorage';
