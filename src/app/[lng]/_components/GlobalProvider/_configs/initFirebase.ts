@@ -1,8 +1,8 @@
 import { getAnalytics } from 'firebase/analytics';
 import {
   getAuth,
-  signInWithCustomToken,
   signInAnonymously,
+  signInWithCustomToken,
 } from 'firebase/auth';
 import { getSession } from 'next-auth/react';
 

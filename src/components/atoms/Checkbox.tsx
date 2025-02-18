@@ -1,11 +1,10 @@
 'use client';
 
-import type { DotLottieType } from './DotLottie';
-
 import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/utils';
 
+import type { DotLottieType } from './DotLottie';
 import { DotLottie } from './DotLottie';
 
 export interface CheckboxProps

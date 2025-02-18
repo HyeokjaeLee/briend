@@ -1,6 +1,5 @@
-import { useShallow } from 'zustand/shallow';
-
 import { Suspense, useEffect } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import { SESSION_STORAGE } from '@/constants';
 import { useCustomRouter, useUrl } from '@/hooks';

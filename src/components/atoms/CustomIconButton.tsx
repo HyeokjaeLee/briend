@@ -1,5 +1,6 @@
-import { cn } from '@/utils';
 import { IconButton, type IconButtonProps } from '@radix-ui/themes';
+
+import { cn } from '@/utils';
 
 export interface CustomIconButtonProps extends IconButtonProps {
   activeScaleDown?: boolean;

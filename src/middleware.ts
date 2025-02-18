@@ -1,11 +1,10 @@
-import type { RequestWithAuth } from './types/next-auth';
-
 import { NextResponse } from 'next/server';
 
 import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
 import { COOKIES, HEADERS, LANGUAGE } from './constants';
 import { ROUTES } from './routes/client';
+import type { RequestWithAuth } from './types/next-auth';
 import { isEnumValue } from './utils';
 
 export const config = {

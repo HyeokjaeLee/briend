@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/routes/api';
-import type { ApiParams } from '@/types/api-params';
+import type * as ApiParams from '@/types/api-params';
 import { customQueryOption } from '@/utils';
 
 export const ChatQueryOptions = {

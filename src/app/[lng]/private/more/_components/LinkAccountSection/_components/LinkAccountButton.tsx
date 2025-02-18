@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 import { pick } from 'es-toolkit';
 import Image from 'next/image';
 
@@ -9,7 +10,6 @@ import { LOGIN_PROVIDERS } from '@/constants';
 import { useUserData } from '@/hooks';
 import { cn } from '@/utils';
 import { toast } from '@/utils/client';
-import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 
 interface LoginConnectButtonProps {
   provider: LOGIN_PROVIDERS;

@@ -1,7 +1,6 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-
 import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';

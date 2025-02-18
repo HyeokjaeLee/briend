@@ -1,8 +1,7 @@
 'use client';
 
-import { useShallow } from 'zustand/shallow';
-
 import { useLayoutEffect } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import { LoadingTemplate } from '@/components';
 import { useUrl } from '@/hooks';

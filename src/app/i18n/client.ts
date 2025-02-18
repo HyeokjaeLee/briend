@@ -1,16 +1,14 @@
 'use client';
 
 import type { FlatNamespace, KeyPrefix } from 'i18next';
-
 import { use as i18next } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
-
 import { use, useLayoutEffect } from 'react';
 import type {
+  FallbackNs,
   UseTranslationOptions,
   UseTranslationResponse,
-  FallbackNs,
 } from 'react-i18next';
 import {
   initReactI18next,

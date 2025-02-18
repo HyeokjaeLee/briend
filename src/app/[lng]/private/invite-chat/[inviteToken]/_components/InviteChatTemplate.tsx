@@ -1,7 +1,8 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { FcCollaboration, FcAdvertising } from 'react-icons/fc';
+import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
@@ -13,8 +14,7 @@ import type { UserRealtimeData } from '@/database/firebase/type';
 import { useCustomRouter, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { assert, cn, CustomError, expToDate } from '@/utils';
-import { toast, createOnlyClientComponent } from '@/utils/client';
-import { useQuery } from '@tanstack/react-query';
+import { createOnlyClientComponent, toast } from '@/utils/client';
 
 import {
   INVITE_MESSAGE,

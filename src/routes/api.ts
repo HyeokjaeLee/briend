@@ -1,9 +1,7 @@
-import type { ApiResponse } from '../types/api-response';
-
 import ky from 'ky';
 
 import { PUBLIC_ENV } from '@/constants';
-import type { ApiParams } from '@/types/api-params';
+import type * as ApiParams from '@/types/api-params';
 import type { UserSession } from '@/types/next-auth';
 import { assert } from '@/utils';
 
@@ -31,23 +29,9 @@ export const API_ROUTES = {
       })
       .json(),
 
-  CREATE_FRIEND: (params: ApiParams.CREATE_FRIEND) =>
-    apiInstance
-      .post<ApiResponse.CREATE_FRIEND>('chat/create/friend', {
-        json: params,
-      })
-      .json(),
-
   SEND_MESSAGE: (params: ApiParams.SEND_MESSAGE) =>
     apiInstance
       .post('chat/send-message', {
-        json: params,
-      })
-      .json(),
-
-  RECEIVE_MESSAGE: (params: ApiParams.RECEIVE_MESSAGE) =>
-    apiInstance
-      .post<ApiResponse.RECEIVE_MESSAGE>('chat/receive-message', {
         json: params,
       })
       .json(),

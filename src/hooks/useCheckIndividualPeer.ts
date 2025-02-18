@@ -1,6 +1,5 @@
-import { useShallow } from 'zustand/shallow';
-
 import { useEffect, useRef } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import { usePeerStore } from '@/stores';
 import type { FriendPeer } from '@/stores/peer';

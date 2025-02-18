@@ -1,10 +1,11 @@
-import type { CommonMessageItemProps } from './SenderMessageItem';
+import { Skeleton } from '@radix-ui/themes';
 
 import { ProfileImage } from '@/components';
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { useLanguage, useLongPress } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
-import { Skeleton } from '@radix-ui/themes';
+
+import type { CommonMessageItemProps } from './SenderMessageItem';
 
 interface MessageItemProps extends CommonMessageItemProps {
   profileImageSrc?: string;

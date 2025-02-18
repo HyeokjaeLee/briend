@@ -2,7 +2,7 @@
 
 import { auth, signIn } from '@/auth';
 import { COOKIES, type LOGIN_PROVIDERS } from '@/constants';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { assert, customCookies } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 

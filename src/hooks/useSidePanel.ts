@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSidePanelStore, type NAVIGATION_ANIMATION } from '@/stores';
+import { type NAVIGATION_ANIMATION,useSidePanelStore } from '@/stores';
 import {
   NAVIGATION_ANIMATION_DURATION,
   setExitNavigationAnimation,

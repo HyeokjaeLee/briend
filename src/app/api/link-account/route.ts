@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 
-import { firestore, adminAuth } from '@/database/firebase/server';
-import type { Firestore } from '@/database/firebase/type';
-import { COLLECTIONS } from '@/database/firebase/type';
-import type { ApiParams } from '@/types/api-params';
-import type { JwtPayload } from '@/types/jwt';
+import { adminAuth, firestore } from '@/database/firebase/server';
+import { COLLECTIONS, type ProviderAccount } from '@/database/firebase/type';
+import type * as ApiParams from '@/types/api-params';
+import type * as JwtPayload from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
 import { createApiRoute } from '@/utils/api';
 import { jwtAuthSecret } from '@/utils/server';
@@ -40,8 +39,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
   const idKey = `${providerToLink}Id` as const;
 
   if (providerAccount.exists) {
-    const { userId: existedUserId } =
-      providerAccount.data() as Firestore.ProviderAccount;
+    const { userId: existedUserId } = providerAccount.data() as ProviderAccount;
 
     await Promise.all([
       usersRef.doc(baseUserId).update({
@@ -50,7 +48,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       usersRef.doc(existedUserId).delete(),
       providerAccountRef.update({
         userId: baseUserId,
-      } satisfies Firestore.ProviderAccount),
+      } satisfies ProviderAccount),
     ]);
 
     const existedUserAuth = await adminAuth.getUser(existedUserId);
@@ -93,7 +91,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       }),
       providerAccountRef.set({
         userId: baseUserId,
-      } satisfies Firestore.ProviderAccount),
+      } satisfies ProviderAccount),
       usersRef.doc(baseUserId).update({
         [idKey]: providerAccountId,
       }),

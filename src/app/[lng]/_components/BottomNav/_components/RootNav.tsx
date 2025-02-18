@@ -3,12 +3,12 @@
 import { useLayoutEffect, useState } from 'react';
 import type { IconType } from 'react-icons/lib';
 import {
-  RiAddCircleLine,
-  RiAddCircleFill,
-  RiAccountCircleLine,
   RiAccountCircleFill,
-  RiMessage3Line,
+  RiAccountCircleLine,
+  RiAddCircleFill,
+  RiAddCircleLine,
   RiMessage3Fill,
+  RiMessage3Line,
 } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';

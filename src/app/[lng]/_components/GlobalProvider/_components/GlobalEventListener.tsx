@@ -1,5 +1,4 @@
 import { throttle } from 'es-toolkit';
-
 import { useLayoutEffect } from 'react';
 
 import { SELECTOR } from '@/constants';

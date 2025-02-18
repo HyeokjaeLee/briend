@@ -1,15 +1,15 @@
-import type { ApiRouter } from './routes';
-
+import type { TRPCLink } from '@trpc/client';
+import { httpBatchLink } from '@trpc/client';
+import { createTRPCReact } from '@trpc/react-query';
+import { observable } from '@trpc/server/observable';
 import { getAuth } from 'firebase/auth';
 import superjson from 'superjson';
 
 import { IS_CLIENT, PATH, PUBLIC_ENV } from '@/constants';
 import { useGlobalModalStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
-import type { TRPCLink } from '@trpc/client';
-import { httpBatchLink } from '@trpc/client';
-import { createTRPCReact } from '@trpc/react-query';
-import { observable } from '@trpc/server/observable';
+
+import type { ApiRouter } from './routes';
 
 export const trpc = createTRPCReact<ApiRouter>();
 

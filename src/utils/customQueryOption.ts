@@ -1,9 +1,8 @@
-import { nanoid } from 'nanoid';
-
 import {
   queryOptions,
   type UnusedSkipTokenOptions,
 } from '@tanstack/react-query';
+import { nanoid } from 'nanoid';
 
 export const customQueryOption = <
   TParams extends undefined | object,

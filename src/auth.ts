@@ -9,7 +9,7 @@ import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { PRIVATE_ENV } from '@/constants/private-env';
 import { API_ROUTES } from '@/routes/api';
-import type { JwtPayload } from '@/types/jwt';
+import type * as JwtPayload from '@/types/jwt';
 import { assert, assertEnum, customCookies } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 

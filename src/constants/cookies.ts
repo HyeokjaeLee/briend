@@ -1,7 +1,7 @@
-import type { LOGIN_PROVIDERS } from './etc';
-import type { LANGUAGE } from './language';
 import type { CookieSetOptions } from 'universal-cookie';
 
+import type { LOGIN_PROVIDERS } from './etc';
+import type { LANGUAGE } from './language';
 import { IS_DEV } from './public-env';
 
 export enum COOKIES {

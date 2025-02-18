@@ -1,7 +1,8 @@
 'use client';
 
-import { cn } from '@/utils';
 import { Button, type ButtonProps } from '@radix-ui/themes';
+
+import { cn } from '@/utils';
 
 export interface CustomButtonProps extends ButtonProps {
   activeScaleDown?: boolean;

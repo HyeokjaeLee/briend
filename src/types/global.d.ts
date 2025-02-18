@@ -16,6 +16,7 @@ declare module 'dexie-react-hooks' {
   ): T | undefined;
   export function useLiveQuery<T, TDefault>(
     querier: () => Promise<T> | T | undefined,
+
     deps: any[],
     defaultResult: TDefault,
   ): T | TDefault;

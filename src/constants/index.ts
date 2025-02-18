@@ -5,21 +5,20 @@ export {
   DEFAULT_COOKIES_OPTIONS,
 } from './cookies';
 export {
+  HEADERS,
   IS_CLIENT,
+  IS_TOUCH_DEVICE,
   LOGIN_PROVIDERS,
+  MAX_FIREND_COUNT,
+  PATH,
   PEER_PREFIX,
   QUERY_KEYS,
-  MAX_FIREND_COUNT,
-  HEADERS,
-  PATH,
-  IS_TOUCH_DEVICE,
 } from './etc';
 export { LANGUAGE, LANGUAGE_FLAG, LANGUAGE_NAME } from './language';
 export { IS_DEV, PUBLIC_ENV } from './public-env';
 export { SELECTOR } from './selector';
 export {
+  type HISTORY_TYPE,
   LOCAL_STORAGE,
-  type LOCAL_STORAGE_TYPE,
   SESSION_STORAGE,
-  type SESSION_STORAGE_TYPE,
 } from './storage-key';

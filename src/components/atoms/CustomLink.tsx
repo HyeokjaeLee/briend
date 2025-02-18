@@ -4,7 +4,7 @@ import Link, { type LinkProps } from 'next/link';
 
 import { SESSION_STORAGE } from '@/constants';
 import { useCustomHref, useSidePanel } from '@/hooks';
-import { useGlobalStore, type NAVIGATION_ANIMATION } from '@/stores';
+import { type NAVIGATION_ANIMATION, useGlobalStore } from '@/stores';
 import { isCurrentHref } from '@/utils';
 import { setExitNavigationAnimation } from '@/utils/client';
 

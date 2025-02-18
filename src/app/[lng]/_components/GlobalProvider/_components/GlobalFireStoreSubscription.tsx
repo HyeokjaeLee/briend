@@ -1,8 +1,6 @@
-import type { DataSnapshot } from 'firebase/database';
-
 import { getAuth } from 'firebase/auth';
-import { onChildAdded, ref, remove, get } from 'firebase/database';
-
+import type { DataSnapshot } from 'firebase/database';
+import { get, onChildAdded, ref, remove } from 'firebase/database';
 import { useEffect } from 'react';
 
 import { trpc } from '@/app/trpc';

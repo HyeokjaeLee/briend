@@ -1,7 +1,6 @@
 'use client';
 
 import { AnimatePresence, motion } from 'motion/react';
-
 import { useEffect, useRef } from 'react';
 
 import type { FriendPeer } from '@/stores/peer';

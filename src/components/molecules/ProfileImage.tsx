@@ -1,7 +1,7 @@
+import { Avatar } from '@radix-ui/themes';
 import { FaUser } from 'react-icons/fa6';
 
 import { cn } from '@/utils';
-import { Avatar } from '@radix-ui/themes';
 
 export interface ProfileImageProps {
   src?: string | null;

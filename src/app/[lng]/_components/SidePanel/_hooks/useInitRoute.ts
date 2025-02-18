@@ -1,5 +1,4 @@
 import { usePathname } from 'next/navigation';
-
 import { useEffect, useLayoutEffect } from 'react';
 
 import { SESSION_STORAGE } from '@/constants';

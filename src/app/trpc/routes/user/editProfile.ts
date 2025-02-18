@@ -1,7 +1,6 @@
 import { privateProcedure } from '@/app/trpc/settings';
 import { adminAuth, firestore } from '@/database/firebase/server';
-import type { Firestore } from '@/database/firebase/type';
-import { COLLECTIONS } from '@/database/firebase/type';
+import { COLLECTIONS, type UserInfo } from '@/database/firebase/type';
 import { editProfileSchema } from '@/schema/trpc/user';
 import type { UserSession } from '@/types/next-auth';
 
@@ -24,7 +23,7 @@ export const editProfile = privateProcedure.input(editProfileSchema).mutation(
         .doc(userId)
         .update({
           language,
-        } satisfies Partial<Firestore.UserInfo>),
+        } satisfies Partial<UserInfo>),
     ]);
 
     return {

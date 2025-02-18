@@ -1,9 +1,6 @@
 'use client';
 
-import type { CommonMessageItemProps } from './_components/SenderMessageItem';
-
 import dayjs from 'dayjs';
-
 import { useState } from 'react';
 import { RiCalendarCheckFill, RiSunFill } from 'react-icons/ri';
 import { Virtuoso } from 'react-virtuoso';
@@ -16,6 +13,7 @@ import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 import { EmptyTemplate } from './_components/EmptyTemplate';
 import { MessageModal } from './_components/MessageModal';
 import { RecieverMessageItem } from './_components/RecieverMessageItem';
+import type { CommonMessageItemProps } from './_components/SenderMessageItem';
 import { SenderMessageItem } from './_components/SenderMessageItem';
 import { useMessageSync } from './_hooks/useMessageSync';
 interface ChattingListProps {

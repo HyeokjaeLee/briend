@@ -1,5 +1,4 @@
 import type { Session } from 'next-auth';
-
 import { useSession } from 'next-auth/react';
 
 import type { SessionUpdateInput } from '@/types/next-auth';

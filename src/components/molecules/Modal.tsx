@@ -1,7 +1,7 @@
+import { Kbd, Portal, Spinner } from '@radix-ui/themes';
 import { RiCloseLine } from 'react-icons/ri';
 
 import { cn } from '@/utils';
-import { Kbd, Portal, Spinner } from '@radix-ui/themes';
 
 import { CustomIconButton } from '../atoms/CustomIconButton';
 
