@@ -63,9 +63,7 @@ export const JoinTemplate = createOnlyClientComponent(
     const utils = trpc.useUtils();
 
     const joinChatMutation = trpc.chat.joinChat.useMutation({
-      onSuccess: () => {
-        utils.friend.getFriendList.reset();
-      },
+      onSuccess: () => utils.friend.list.invalidate(),
     });
 
     const { mutate: mutateJoinChat } = joinChatMutation;
@@ -91,7 +89,7 @@ export const JoinTemplate = createOnlyClientComponent(
             className="m-auto max-w-96"
             loop={false}
             src="/assets/lottie/send-nickname.lottie"
-            onCompleted={() => {
+            onCompleted={async () => {
               router.replace(
                 ROUTES.CHATTING_ROOM.pathname({
                   userId: joinChatMutation.data.inviterId,

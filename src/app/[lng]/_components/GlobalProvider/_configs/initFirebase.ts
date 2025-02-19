@@ -4,11 +4,10 @@ import {
   signInAnonymously,
   signInWithCustomToken,
 } from 'firebase/auth';
-import { getSession } from 'next-auth/react';
 
-import { trpcClient } from '@/app/trpc';
 import { IS_CLIENT } from '@/constants';
 import { app } from '@/database/firebase/client';
+import { API_ROUTES } from '@/routes/api';
 import { useGlobalStore } from '@/stores';
 
 const initFirebase = async () => {
@@ -21,12 +20,10 @@ const initFirebase = async () => {
 
   const auth = getAuth();
 
-  const session = await getSession();
-
-  const isLogin = !!session;
+  const { customToken, isLogin } =
+    await API_ROUTES.GET_FIREBASE_CUSTOM_TOKEN().json();
 
   if (isLogin) {
-    const customToken = await trpcClient.getFirebaseCustomToken.query();
     await signInWithCustomToken(auth, customToken);
   } else {
     await signInAnonymously(auth);

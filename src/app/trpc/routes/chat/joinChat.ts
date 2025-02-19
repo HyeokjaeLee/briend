@@ -1,14 +1,11 @@
 import { z } from 'zod';
 
 import { publicProcedure } from '@/app/trpc/settings';
-import {
-  realtimeDatabase,
-  verifyFirebaseIdToken,
-} from '@/database/firebase/server';
+import { realtimeDatabase } from '@/database/firebase/server';
 import type { ChatItem } from '@/database/firebase/type';
 import type * as JwtPayload from '@/types/jwt';
-import { assert, CustomError } from '@/utils';
-import { jwtAuthSecret } from '@/utils/server';
+import { assert, objectWithoutUndefined } from '@/utils';
+import { jwtAuthSecret, onlyClientRequest } from '@/utils/server';
 
 type Update = Partial<ChatItem>;
 
@@ -20,11 +17,9 @@ export const joinChat = publicProcedure
     }),
   )
   .mutation(async ({ input: { inviteToken, nickname }, ctx }) => {
-    if (!ctx.isClient) throw new CustomError({ code: 'BAD_REQUEST' });
+    onlyClientRequest(ctx);
 
-    const {
-      payload: { uid: inviteeId },
-    } = await verifyFirebaseIdToken(ctx.firebaseIdToken);
+    const inviteeId = ctx.firebaseSession.uid;
 
     assert(inviteeId);
 
@@ -39,11 +34,11 @@ export const joinChat = publicProcedure
         connectedAt,
         inviteId,
       } satisfies Update,
-      [`${inviterId}/chat/${inviteeId}`]: {
+      [`${inviterId}/chat/${inviteeId}`]: objectWithoutUndefined({
         connectedAt,
         nickname,
         inviteId,
-      } satisfies Update,
+      }) satisfies Update,
     });
 
     return {

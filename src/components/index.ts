@@ -15,6 +15,7 @@ export {
   type DotLottieType,
 } from './atoms/DotLottie';
 export { Input, type InputProps } from './atoms/Input';
+export { Logo, type LogoProps } from './atoms/Logo';
 
 /**
  * @package molecules 컴포넌트

@@ -1,7 +1,9 @@
 import { router } from '@/app/trpc/settings';
 
-import { getFriendList } from './getList';
+import { list } from './list';
+import { remove } from './remove';
 
 export const friend = router({
-  getFriendList,
+  list,
+  remove,
 });

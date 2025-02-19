@@ -6,14 +6,19 @@ import {
   type ProviderAccount,
   type UserInfo,
 } from '@/database/firebase/type';
-import type * as ApiParams from '@/types/api-params';
 import type * as JwtPayload from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
 import { createApiRoute } from '@/utils/api';
 import { jwtAuthSecret } from '@/utils/server';
 
+export interface PostUserDataRequest {
+  syncUserToken: string;
+}
+
+export type PostUserDataResponse = UserSession;
+
 export const POST = createApiRoute<UserSession>(async (req) => {
-  const { syncUserToken }: ApiParams.SyncUserData = await req.json();
+  const { syncUserToken }: PostUserDataRequest = await req.json();
 
   const {
     payload: {

@@ -1,9 +1,13 @@
 import ky from 'ky';
 
+import type { PostAccountRequest } from '@/app/api/account/route';
+import type { GetFirebaseCustomTokenResponse } from '@/app/api/firebase-custom-token/route';
+import type {
+  PostUserDataRequest,
+  PostUserDataResponse,
+} from '@/app/api/user-data/route';
 import { PUBLIC_ENV } from '@/constants';
-import type * as ApiParams from '@/types/api-params';
 import type { UserSession } from '@/types/next-auth';
-import { assert } from '@/utils';
 
 const apiInstance = ky.create({
   prefixUrl: `${PUBLIC_ENV.BASE_URL}/api`,
@@ -15,33 +19,20 @@ const apiInstance = ky.create({
 });
 
 export const API_ROUTES = {
-  SYNC_USER_DATA: (json: ApiParams.SyncUserData) =>
-    apiInstance
-      .post<UserSession>('sync-user-data', {
-        json,
-      })
-      .json(),
-
-  LINK_ACCOUNT: (json: ApiParams.LinkAccount) =>
-    apiInstance
-      .post<UserSession>('link-account', {
-        json,
-      })
-      .json(),
-
-  SEND_MESSAGE: (params: ApiParams.SEND_MESSAGE) =>
-    apiInstance
-      .post('chat/send-message', {
-        json: params,
-      })
-      .json(),
-
-  SHORT_URL: async (url: string) => {
+  POST_USER_DATA: (json: PostUserDataRequest) =>
+    apiInstance.post<PostUserDataResponse>('user-data', {
+      json,
+    }),
+  POST_ACCOUNT: (json: PostAccountRequest) =>
+    apiInstance.post<UserSession>('account', {
+      json,
+    }),
+  POST_SHORT_URL: (url: string) => {
     const params = new URLSearchParams({
       url,
     });
 
-    const res = await ky.post<{
+    return ky.post<{
       short_url?: string;
     }>('https://spoo.me', {
       headers: {
@@ -50,11 +41,8 @@ export const API_ROUTES = {
       },
       body: params.toString(),
     });
-
-    const json = await res.json();
-
-    assert(json.short_url);
-
-    return json.short_url;
   },
+
+  GET_FIREBASE_CUSTOM_TOKEN: () =>
+    apiInstance.get<GetFirebaseCustomTokenResponse>('firebase-custom-token'),
 };

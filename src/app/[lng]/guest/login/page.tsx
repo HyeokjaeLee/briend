@@ -1,7 +1,7 @@
 import { getTranslation } from '@/app/i18n/server';
 import { signIn } from '@/auth';
-import { type LANGUAGE,LOGIN_PROVIDERS } from '@/constants';
-import Logo from '@/svgs/logo.svg';
+import { Logo } from '@/components';
+import { type LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
 import { assertEnum } from '@/utils';
 
 import { LoginButton } from './_components/LoginButton';

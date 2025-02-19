@@ -65,7 +65,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
 
       for (const [inviteeId, chat] of Object.entries(data)) {
         if (chat.inviteId === inviteTokenPayload.inviteId) {
-          utils.friend.getFriendList.reset();
+          utils.friend.list.invalidate();
 
           return setConnectedGuestId(inviteeId);
         }
@@ -131,7 +131,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
               className="mx-auto max-w-80 flex-1"
               loop={false}
               src="/assets/lottie/receive-message.lottie"
-              onCompleted={() => {
+              onCompleted={async () => {
                 router.replace(
                   ROUTES.CHATTING_ROOM.pathname({ userId: connectedGuestId }),
                   {
