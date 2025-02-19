@@ -10,7 +10,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "tsc --noEmit && next lint",
     "update:env": "vercel env pull"
   },
   "dependencies": {

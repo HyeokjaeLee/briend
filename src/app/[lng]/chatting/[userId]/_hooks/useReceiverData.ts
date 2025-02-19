@@ -2,7 +2,7 @@ import { trpc } from '@/app/trpc';
 import { assert } from '@/utils';
 
 export const useReceiverData = (userId: string) => {
-  const { data, isLoading } = trpc.friend.getFriendList.useQuery(undefined, {
+  const { data, isLoading } = trpc.friend.list.useQuery(undefined, {
     select: ({ friendList }) =>
       friendList.find((friend) => friend.id === userId),
   });

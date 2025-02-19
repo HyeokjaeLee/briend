@@ -31,7 +31,13 @@ const formSchema = z.object({
 });
 
 export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
-  const joinChatMutation = trpc.chat.joinChat.useMutation();
+  const utils = trpc.useUtils();
+
+  const joinChatMutation = trpc.chat.joinChat.useMutation({
+    onSuccess: () => {
+      utils.friend.list.invalidate();
+    },
+  });
 
   const isSuccess = joinChatMutation.isSuccess;
 

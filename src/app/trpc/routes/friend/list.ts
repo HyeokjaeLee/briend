@@ -1,16 +1,13 @@
 import { publicProcedure } from '@/app/trpc/settings';
-import {
-  realtimeDatabase,
-  verifyFirebaseIdToken,
-} from '@/database/firebase/server';
+import { realtimeDatabase } from '@/database/firebase/server';
+import { onlyClientRequest } from '@/utils/server';
 
-export const getFriendList = publicProcedure.query(async ({ ctx }) => {
-  if (!ctx.isClient) return { friendList: [] };
+export const list = publicProcedure.query(async ({ ctx }) => {
+  onlyClientRequest(ctx);
 
-  const {
-    payload: { uid },
-    adminAuth,
-  } = await verifyFirebaseIdToken(ctx.firebaseIdToken);
+  const { uid } = ctx.firebaseSession;
+
+  const adminAuth = ctx.firebaseAdminAuth;
 
   const chattingPath = `${uid}/chat`;
   const userChattingDataSnapshot = await realtimeDatabase

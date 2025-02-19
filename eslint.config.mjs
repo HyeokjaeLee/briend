@@ -97,6 +97,6 @@ export default [
   },
   eslintConfigPrettier,
   {
-    ignores: ['node_modules/', './next/'],
+    ignores: ['node_modules/', '.next'],
   },
 ];

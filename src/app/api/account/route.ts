@@ -2,29 +2,28 @@ import { NextResponse } from 'next/server';
 
 import { adminAuth, firestore } from '@/database/firebase/server';
 import { COLLECTIONS, type ProviderAccount } from '@/database/firebase/type';
-import type * as ApiParams from '@/types/api-params';
-import type * as JwtPayload from '@/types/jwt';
+import type { LinkBaseAccountToken, LinkNewAccountToken } from '@/types/jwt';
 import type { UserSession } from '@/types/next-auth';
 import { createApiRoute } from '@/utils/api';
 import { jwtAuthSecret } from '@/utils/server';
 
-export const POST = createApiRoute<UserSession>(async (req) => {
-  const { linkBaseAccountToken, linkNewAccountToken }: ApiParams.LinkAccount =
+export interface PostAccountRequest {
+  linkBaseAccountToken: string;
+  linkNewAccountToken: string;
+}
+export type PostAccountResponse = UserSession;
+
+export const POST = createApiRoute<PostAccountResponse>(async (req) => {
+  const { linkBaseAccountToken, linkNewAccountToken }: PostAccountRequest =
     await req.json();
 
   const {
     payload: { providerToLink, ...linkAccountPayload },
-  } =
-    await jwtAuthSecret.verfiy<JwtPayload.LinkBaseAccountToken>(
-      linkBaseAccountToken,
-    );
+  } = await jwtAuthSecret.verfiy<LinkBaseAccountToken>(linkBaseAccountToken);
 
   const {
     payload: { providerAccountId, ...newAccount },
-  } =
-    await jwtAuthSecret.verfiy<JwtPayload.LinkNewAccountToken>(
-      linkNewAccountToken,
-    );
+  } = await jwtAuthSecret.verfiy<LinkNewAccountToken>(linkNewAccountToken);
 
   const providerAccountRef = firestore
     .collection(COLLECTIONS.PROVIDER_ACCOUNTS)

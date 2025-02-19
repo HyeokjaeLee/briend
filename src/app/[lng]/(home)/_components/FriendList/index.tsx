@@ -15,7 +15,7 @@ import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
 
 export const FriendList = createSuspensedComponent(
   () => {
-    const [{ friendList }] = trpc.friend.getFriendList.useSuspenseQuery();
+    const [{ friendList }] = trpc.friend.list.useSuspenseQuery();
 
     const [isDeleteModalOpened, setIsDeleteModalOpened] = useState(false);
     const [openedFriendId, setOpenedFriendId] = useState<string | null>(null);
@@ -62,8 +62,10 @@ export const FriendList = createSuspensedComponent(
           onClose={handleClose}
         />
         <FriendDeleteModal
+          friendId={openedFriendId}
           opened={isDeleteModalOpened}
           onClose={() => setIsDeleteModalOpened(false)}
+          onSuccess={handleClose}
         />
       </ul>
     );

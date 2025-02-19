@@ -87,10 +87,10 @@ export const {
           profileImage: user.image || undefined,
         } satisfies JwtPayload.LinkNewAccountToken);
 
-        const linkedSession = await API_ROUTES.LINK_ACCOUNT({
+        const linkedSession = await API_ROUTES.POST_ACCOUNT({
           linkBaseAccountToken,
           linkNewAccountToken,
-        });
+        }).json();
 
         token = Object.assign(token, linkedSession);
 
@@ -121,9 +121,9 @@ export const {
         anonymousId,
       } satisfies JwtPayload.SyncUserToken);
 
-      const userSession = await API_ROUTES.SYNC_USER_DATA({
+      const userSession = await API_ROUTES.POST_USER_DATA({
         syncUserToken,
-      });
+      }).json();
 
       token = Object.assign(token, userSession);
 

@@ -1,21 +1,17 @@
-import {
-  realtimeDatabase,
-  verifyFirebaseIdToken,
-} from '@/database/firebase/server';
+import { realtimeDatabase } from '@/database/firebase/server';
 import type { Message } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
 import { assert, CustomError } from '@/utils';
+import { onlyClientRequest } from '@/utils/server';
 
 import { publicProcedure } from '../../settings';
 
 export const sendMessage = publicProcedure
   .input(sendMessageSchema)
   .mutation(async ({ input: { message, receiverId }, ctx }) => {
-    if (!ctx.isClient) throw new CustomError({ code: 'BAD_REQUEST' });
+    onlyClientRequest(ctx);
 
-    const {
-      payload: { uid: senderId },
-    } = await verifyFirebaseIdToken(ctx.firebaseIdToken);
+    const senderId = ctx.firebaseSession.uid;
 
     const myInviteId = await realtimeDatabase
       .ref(`${senderId}/chat/${receiverId}/inviteId`)

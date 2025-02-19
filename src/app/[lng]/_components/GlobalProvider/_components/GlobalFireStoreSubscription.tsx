@@ -33,7 +33,7 @@ export const GlobalFireStoreSubscription = () => {
     (state) => state.setRealtimeChattingData,
   );
 
-  const getFriendListQuery = trpc.friend.getFriendList.useQuery();
+  const getFriendListQuery = trpc.friend.list.useQuery();
 
   const friendList = getFriendListQuery.data?.friendList;
 

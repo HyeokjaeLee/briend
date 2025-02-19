@@ -1,33 +1,49 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
-
 import { useTranslation } from '@/app/i18n/client';
+import { trpc } from '@/app/trpc';
 import { ConfirmModal, CustomButton } from '@/components';
-import { useCustomRouter, useDeleteFriend } from '@/hooks';
+import { useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
+import { useSidePanelStore } from '@/stores';
 import { assert } from '@/utils';
-
-import { DRAWER_SEARCH_PARAM } from './FriendInfoDrawer';
+import { toast } from '@/utils/client';
 
 interface FriendDeleteModalProps {
+  friendId: string | null;
   opened: boolean;
-  onClose?: () => void;
+  onClose: () => void;
+  onSuccess: () => void;
 }
 
 export const FriendDeleteModal = ({
+  friendId,
   opened,
   onClose,
+  onSuccess,
 }: FriendDeleteModalProps) => {
   const { t } = useTranslation('friend-list');
 
-  const searchParams = useSearchParams();
+  const sidePanel = useSidePanel();
 
-  const userId = searchParams.get(DRAWER_SEARCH_PARAM);
+  const sidePanelUrl = useSidePanelStore((state) => state.sidePanelUrl);
 
-  const { deleteFriend } = useDeleteFriend();
+  const utils = trpc.useUtils();
 
-  const router = useCustomRouter();
+  const deleteFriendMutation = trpc.friend.remove.useMutation({
+    onSuccess: (_, { uid, type }) => {
+      if (type === 'delete' && sidePanelUrl.includes(uid))
+        sidePanel.push(ROUTES.FRIEND_LIST.pathname);
+
+      utils.friend.list.invalidate();
+
+      onSuccess?.();
+
+      toast({
+        message: t('delete-friend-toast-message'),
+      });
+    },
+  });
 
   return (
     <ConfirmModal
@@ -38,13 +54,14 @@ export const FriendDeleteModal = ({
             className="flex-1"
             variant="outline"
             onClick={() => {
-              assert(userId);
+              assert(friendId);
 
-              deleteFriend(userId);
+              deleteFriendMutation.mutate({
+                type: 'delete',
+                uid: friendId,
+              });
 
               onClose?.();
-
-              router.replace(ROUTES.FRIEND_LIST.pathname);
             }}
           >
             {t('delete-button')}

@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import Logo from '@/svgs/logo.svg';
+import { Logo } from '@/components';
 
 export default function EmptyTemplate() {
   const { t } = useTranslation('layout');

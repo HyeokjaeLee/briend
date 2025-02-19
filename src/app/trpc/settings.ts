@@ -1,9 +1,18 @@
 import { initTRPC } from '@trpc/server';
 import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
+import type { Auth } from 'firebase-admin/auth';
 import superjson from 'superjson';
 
 import { auth } from '@/auth';
+import { verifyFirebaseIdToken } from '@/database/firebase/server';
 import { CustomError } from '@/utils';
+
+export interface FirebaseSession {
+  email?: string | null;
+  uid: string;
+  name?: string | null;
+  isAnonymous: boolean;
+}
 
 export const createContext = async (
   opts: FetchCreateContextFnOptions | null,
@@ -18,11 +27,25 @@ export const createContext = async (
     opts,
   };
 
-  if (!isClient) return { ...commonContext, isClient: false as const };
+  let firebaseSession: FirebaseSession | null = null;
+  let firebaseAdminAuth: Auth | undefined;
 
-  const firebaseIdToken = headers.get('firebaseIdToken');
+  if (isClient) {
+    const firebaseIdToken = headers.get('firebaseIdToken');
 
-  return { ...commonContext, isClient: true as const, firebaseIdToken };
+    const { payload, adminAuth } = await verifyFirebaseIdToken(firebaseIdToken);
+
+    firebaseAdminAuth = adminAuth;
+
+    firebaseSession = {
+      email: payload.email,
+      uid: payload.uid,
+      name: payload.name,
+      isAnonymous: !!payload.isAnonymous,
+    };
+  }
+
+  return { ...commonContext, isClient, firebaseSession, firebaseAdminAuth };
 };
 
 const t = initTRPC.context<typeof createContext>().create({

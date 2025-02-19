@@ -28,7 +28,7 @@ export const FriendInfoDrawer = ({
   friendId,
   onClose,
 }: FriendInfoDrawerProps) => {
-  const [{ friendList }] = trpc.friend.getFriendList.useSuspenseQuery();
+  const [{ friendList }] = trpc.friend.list.useSuspenseQuery();
 
   const { t } = useTranslation('friend-list');
 

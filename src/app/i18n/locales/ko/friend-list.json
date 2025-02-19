@@ -13,5 +13,6 @@
   "empty-friend-list": "아직 친구가 없네요",
   "add-friend-button": "초대하기",
   "delete-button": "삭제하기",
-  "unlink-button": "연결끊기"
+  "unlink-button": "연결끊기",
+  "delete-friend-toast-message": "친구를 삭제했어요."
 }
