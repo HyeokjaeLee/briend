@@ -10,9 +10,10 @@ export const list = publicProcedure.query(async ({ ctx }) => {
   const adminAuth = ctx.firebaseAdminAuth;
 
   const chattingPath = `${uid}/chat`;
-  const userChattingDataSnapshot = await realtimeDatabase
-    .ref(chattingPath)
-    .once('value');
+
+  const chattingDataRef = realtimeDatabase.ref(chattingPath);
+
+  const userChattingDataSnapshot = await chattingDataRef.once('value');
 
   const friendIdList: {
     uid: string;
@@ -39,14 +40,22 @@ export const list = publicProcedure.query(async ({ ctx }) => {
           profileImage: undefined,
           isAnonymous: true,
           isUnsubscribed: true,
+          isLinked: false,
         };
 
       let name = user.displayName;
 
+      const chattingItemRef = chattingDataRef.child(uid);
+
+      const [inviteIdSnapshot, nameSnapshot] = await Promise.all([
+        chattingItemRef.child('inviteId').get(),
+        name ? null : chattingItemRef.child('nickname').get(),
+      ]);
+
+      if (nameSnapshot) name = nameSnapshot.val();
+
       if (!name) {
-        const nicknameSnapshot = await realtimeDatabase
-          .ref(`${chattingPath}/${uid}/nickname`)
-          .get();
+        const nicknameSnapshot = await chattingItemRef.child('nickname').get();
 
         name = nicknameSnapshot.val();
       }
@@ -57,6 +66,7 @@ export const list = publicProcedure.query(async ({ ctx }) => {
         profileImage: user.photoURL,
         isAnonymous: user.customClaims?.isAnonymous ?? true,
         isUnsubscribed: false,
+        isLinked: inviteIdSnapshot.exists(),
       };
     }),
   );
