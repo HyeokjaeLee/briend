@@ -30,6 +30,10 @@ export const FriendDeleteModal = ({
 
   const utils = trpc.useUtils();
 
+  const isUnlinked = !utils.friend.list
+    .getData()
+    ?.friendList.find((friend) => friend.id === friendId)?.isLinked;
+
   const deleteFriendMutation = trpc.friend.remove.useMutation({
     onSuccess: (_, { uid, type }) => {
       if (type === 'delete' && sidePanelUrl.includes(uid))
@@ -40,8 +44,13 @@ export const FriendDeleteModal = ({
       onSuccess?.();
 
       toast({
-        message: t('delete-friend-toast-message'),
+        message:
+          type === 'delete'
+            ? t('delete-friend-toast-message')
+            : t('unlink-friend-toast-message'),
       });
+
+      onClose?.();
     },
   });
 
@@ -49,10 +58,24 @@ export const FriendDeleteModal = ({
     <ConfirmModal
       footer={
         <footer className="flex w-full gap-2">
-          <CustomButton className="flex-1">{t('unlink-button')}</CustomButton>
+          <CustomButton
+            className="flex-1"
+            disabled={isUnlinked || deleteFriendMutation.isPending}
+            onClick={() => {
+              assert(friendId);
+
+              deleteFriendMutation.mutate({
+                type: 'unsubscribe',
+                uid: friendId,
+              });
+            }}
+          >
+            {t('unlink-button')}
+          </CustomButton>
           <CustomButton
             className="flex-1"
             variant="outline"
+            loading={deleteFriendMutation.isPending}
             onClick={() => {
               assert(friendId);
 
@@ -60,15 +83,17 @@ export const FriendDeleteModal = ({
                 type: 'delete',
                 uid: friendId,
               });
-
-              onClose?.();
             }}
           >
             {t('delete-button')}
           </CustomButton>
         </footer>
       }
-      message={t('delete-friend-sub-message')}
+      message={
+        isUnlinked
+          ? t('delete-friend-sub-message2')
+          : t('delete-friend-sub-message')
+      }
       opened={opened}
       title={t('delete-friend-message')}
       onClose={onClose}

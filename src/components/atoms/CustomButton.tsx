@@ -14,18 +14,20 @@ export const CustomButton = ({
   type = 'button',
   size = '4',
   activeScaleDown = true,
+  disabled,
   ...restProps
 }: CustomButtonProps) => {
   return (
     <Button
       {...restProps}
+      disabled={disabled}
       className={cn(
         'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-none',
         'text-nowrap',
         {
-          'active:scale-95 transition-transform duration-75 ease-out':
-            activeScaleDown,
+          'transition-transform duration-150 ease-out': activeScaleDown,
           'h-14': size === '4',
+          'active:scale-95': !disabled,
         },
         className,
       )}

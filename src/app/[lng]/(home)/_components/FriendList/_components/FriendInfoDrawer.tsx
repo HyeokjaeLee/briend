@@ -1,6 +1,6 @@
 'use client';
 
-import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
+import { RiDeleteBinLine, RiLinkM, RiShieldCheckFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import { trpc } from '@/app/trpc';
@@ -10,6 +10,7 @@ import {
   CustomLink,
   Drawer,
   ProfileImage,
+  Timer,
 } from '@/components';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
@@ -36,9 +37,11 @@ export const FriendInfoDrawer = ({
 
   const friendInfo = friendList.find((friend) => friend.id === friendId);
 
+  const isUnlinked = !friendInfo?.isLinked;
+
   return (
     <Drawer
-      className="h-80 flex-col gap-4 flex-center"
+      className="flex-col gap-4 flex-center"
       open={!!friendId}
       onClose={onClose}
     >
@@ -63,9 +66,13 @@ export const FriendInfoDrawer = ({
               />
             </div>
           </header>
-          {/** TODO: 마지막 채팅 업데이트 기준으로 만료시키기
-           * <Timer expires={expires} /> */}
+          <Timer expires={new Date('2025-05-01')} />
           <footer className="mt-auto flex w-full gap-2">
+            {isUnlinked ? (
+              <CustomIconButton variant="outline">
+                <RiLinkM className="size-6" />
+              </CustomIconButton>
+            ) : null}
             <CustomButton asChild className="flex-1">
               <CustomLink
                 href={ROUTES.CHATTING_ROOM.pathname({
@@ -74,7 +81,9 @@ export const FriendInfoDrawer = ({
                 toSidePanel={hasSidePanel}
                 onClick={onClose}
               >
-                {t('chatting-button')}
+                {isUnlinked
+                  ? t('unlinked-chatting-button')
+                  : t('chatting-button')}
               </CustomLink>
             </CustomButton>
             <CustomIconButton

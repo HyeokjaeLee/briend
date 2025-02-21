@@ -1,5 +1,5 @@
 import { Skeleton } from '@radix-ui/themes';
-import { RiShieldCheckFill } from 'react-icons/ri';
+import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
 import { useTranslation } from '@/app/i18n/client';
 import type { RouterOutputs } from '@/app/trpc/type';
@@ -19,6 +19,7 @@ export const FriendCard = ({
   profileImage,
   isAnonymous,
   isUnsubscribed,
+  isLinked,
   onClick,
 }: FriendCardProps) => {
   const { t } = useTranslation('friend-list');
@@ -38,11 +39,18 @@ export const FriendCard = ({
             </strong>
             <p className="text-sm text-slate-500">마지막 메시지</p>
           </div>
-          <RiShieldCheckFill
-            className={cn('mb-auto size-4 text-green-500', {
-              hidden: isAnonymous,
-            })}
-          />
+          <div className="flex gap-1">
+            <RiLinkUnlinkM
+              className={cn('mb-auto size-4 text-red-500', {
+                hidden: isLinked,
+              })}
+            />
+            <RiShieldCheckFill
+              className={cn('mb-auto size-4 text-green-500', {
+                hidden: isAnonymous,
+              })}
+            />
+          </div>
         </div>
       </article>
     </button>
