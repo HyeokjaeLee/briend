@@ -28,7 +28,7 @@ const updateMessage = (receiverId: string, snapshot: DataSnapshot) => {
   remove(snapshot.ref);
 };
 
-export const GlobalFireStoreSubscription = () => {
+export const useChattingListener = () => {
   const setRealtimeChattingData = useFirebaseStore(
     (state) => state.setRealtimeChattingData,
   );
@@ -71,6 +71,4 @@ export const GlobalFireStoreSubscription = () => {
       );
     };
   }, [setRealtimeChattingData, friendList]);
-
-  return null;
 };

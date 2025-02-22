@@ -9,14 +9,12 @@ import 'dayjs/locale/vi';
 
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { SessionProvider } from 'next-auth/react';
-import { type PropsWithChildren,use } from 'react';
+import { type PropsWithChildren, use } from 'react';
 
 import { trpc, trpcClient } from '@/app/trpc';
 import { createSuspensedComponent } from '@/utils/client';
 
-import { GlobalEventListener } from './_components/GlobalEventListener';
-import { GlobalFireStoreSubscription } from './_components/GlobalFireStoreSubscription';
-import { HistoryObserver } from './_components/HistoryObserver';
+import { GlobalListener } from './_components/GlobalListener';
 import { firebase } from './_configs/initFirebase';
 import { initQueryClient } from './_configs/initQueryClient';
 
@@ -33,9 +31,7 @@ export const GlobalProvider = createSuspensedComponent(
           persistOptions={persistOptions}
         >
           <trpc.Provider client={trpcClient} queryClient={queryClient}>
-            <GlobalFireStoreSubscription />
-            <HistoryObserver />
-            <GlobalEventListener />
+            <GlobalListener />
             {children}
           </trpc.Provider>
         </PersistQueryClientProvider>

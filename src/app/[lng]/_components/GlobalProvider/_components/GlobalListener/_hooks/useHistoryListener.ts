@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
 
 import { SESSION_STORAGE } from '@/constants';
@@ -12,7 +12,7 @@ const setHistoryExpire = () => {
   );
 };
 
-const HistoryObserverController = () => {
+export const useHistoryListener = () => {
   const url = useUrl({
     origin: false,
   });
@@ -58,14 +58,4 @@ const HistoryObserverController = () => {
       window.removeEventListener('beforeunload', setHistoryExpire);
     };
   }, [url, setCustomHistory, setHistoryIndex, router]);
-
-  return null;
-};
-
-export const HistoryObserver = () => {
-  return (
-    <Suspense>
-      <HistoryObserverController />
-    </Suspense>
-  );
 };
