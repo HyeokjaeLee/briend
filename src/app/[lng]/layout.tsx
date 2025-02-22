@@ -2,7 +2,7 @@ import './globals.css';
 
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import { type ReactElement, Suspense } from 'react';
 
@@ -74,20 +74,28 @@ interface RootLayoutProps extends PropsWithParams {
   children: ReactElement;
 }
 
+export const viewport: Viewport = {
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export default async function RootLayout({
   children,
   params,
 }: Readonly<RootLayoutProps>) {
   const { lng } = await params;
 
-  //TODO: 각 LoadingSuspense에 디자인에 맞는 레이아웃 구성해서 넣기, ex) body 밑 Suspense에 로직 없는 레이아웃만 동일한 컴포넌트 개발
   return (
     <html
       className={cn(pretendard.className, pretendard.variable, 'size-full')}
       dir={dir(lng)}
       lang={lng}
     >
-      <Theme asChild className="flex size-full overflow-hidden" scaling="90%">
+      <Theme
+        asChild
+        className="flex h-cdvh w-full overflow-hidden"
+        scaling="90%"
+      >
         <body>
           <aside className="hidden flex-1 bg-slate-100 xl:block">
             FOR RENDING

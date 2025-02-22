@@ -4,7 +4,7 @@ import { useLayoutEffect } from 'react';
 import { SELECTOR } from '@/constants';
 import { useGlobalStore } from '@/stores';
 
-export const GlobalEventListener = () => {
+export const useViewportListener = () => {
   const resetMediaQuery = useGlobalStore((state) => state.resetMediaQuery);
 
   useLayoutEffect(() => {
@@ -59,6 +59,4 @@ export const GlobalEventListener = () => {
       );
     };
   }, [resetMediaQuery]);
-
-  return null;
 };
