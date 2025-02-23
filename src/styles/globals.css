@@ -3,10 +3,7 @@
 @import 'tailwindcss';
 @import 'tailwindcss-animated';
 
-@custom-variant dark (&:is(.dark *));
 @import '@radix-ui/themes/styles.css' layer(base);
-
-@import 'tailwindcss';
 
 @theme {
   --breakpoint-xs: 480px;
@@ -33,12 +30,7 @@
   --color-sky-50: #e6edfb;
   --color-sky-500: #0090ff;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: #f0c160;
-
   --font-pretendard: var(--font-pretendard);
-  --font-bmdohyeon: var(--font-bmdohyeon);
 
   --spacing-14_4: 3.6rem;
   --spacing-cdvh: var(--viewport-height);

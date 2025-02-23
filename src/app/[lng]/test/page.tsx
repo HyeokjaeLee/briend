@@ -1,6 +1,9 @@
 'use client';
 
+import { Ri24HoursFill } from 'react-icons/ri';
+
 import { CustomButton } from '@/components';
+import { Button } from '@/components/_shadcn/button';
 import { toast } from '@/utils/client';
 
 export default function TestPage() {
@@ -13,8 +16,13 @@ export default function TestPage() {
           })
         }
       >
+        <Ri24HoursFill />
         Toast
       </CustomButton>
+      <Button>
+        <Ri24HoursFill />
+        Toast
+      </Button>
     </article>
   );
 }

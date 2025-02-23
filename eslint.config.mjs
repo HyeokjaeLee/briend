@@ -11,7 +11,6 @@ import importSortPluginSimple from 'eslint-plugin-simple-import-sort';
 import globals from 'globals';
 
 export default [
-  ,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
@@ -40,7 +39,6 @@ export default [
       import: importPlugin,
       'jsx-a11y': jsxA11yPlugin,
       'simple-import-sort': importSortPluginSimple,
-      'readable-tailwind': readableTailwindPlugin,
       '@next/next': nextPlugin,
     },
     rules: {
@@ -66,6 +64,13 @@ export default [
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react/self-closing-comp': [
+        'error',
+        {
+          component: true,
+          html: true,
+        },
+      ],
 
       // Import rules
       ...importPlugin.configs.recommended.rules,
