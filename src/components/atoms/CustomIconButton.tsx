@@ -18,7 +18,7 @@ export const CustomIconButton = ({
     <IconButton
       {...restProps}
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer outline-none',
+        'disabled:cursor-not-allowed enabled:cursor-pointer outline-hidden',
         {
           'active:scale-90 transition-all duration-75': activeScaleDown,
           'size-14': size === '4',

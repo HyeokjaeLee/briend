@@ -101,7 +101,7 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
               if (e) e.focus();
             }}
             cacheMeasurements
-            className="w-full resize-none bg-transparent outline-none hide-scrollbar"
+            className="w-full resize-none bg-transparent outline-hidden hide-scrollbar"
             maxRows={4}
             placeholder={t('send-form-placeholder')}
             title="message-input"

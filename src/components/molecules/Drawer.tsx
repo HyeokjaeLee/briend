@@ -144,7 +144,7 @@ export const Drawer = createOnlyClientComponent(
               <div className="relative max-h-[calc(100dvh-5rem)] overflow-auto">
                 <motion.article
                   className={cn(
-                    'relative mx-auto max-w-screen-sm px-4 pb-4',
+                    'relative mx-auto max-w-(--breakpoint-sm) px-4 pb-4',
                     className,
                   )}
                   style={{ opacity }}
