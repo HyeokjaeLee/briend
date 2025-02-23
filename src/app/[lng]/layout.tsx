@@ -1,4 +1,4 @@
-import './globals.css';
+import '@/styles/globals.css';
 
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';

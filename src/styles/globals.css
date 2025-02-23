@@ -1,4 +1,9 @@
 @import 'react-toastify/dist/ReactToastify.css' layer(base);
+
+@import 'tailwindcss';
+@import 'tailwindcss-animated';
+
+@custom-variant dark (&:is(.dark *));
 @import '@radix-ui/themes/styles.css' layer(base);
 
 @import 'tailwindcss';
@@ -64,21 +69,20 @@
   }
 }
 
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
+@layer utilities {
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -108,10 +112,6 @@
       outline: none;
     }
   }
-}
-
-:root {
-  --viewport-height: 100dvh;
 }
 
 .Toastify__toast-body > div {
