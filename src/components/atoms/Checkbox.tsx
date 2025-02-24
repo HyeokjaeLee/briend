@@ -49,7 +49,7 @@ export const Checkbox = ({
   return (
     <div
       className={cn(
-        'relative size-5 flex-center flex-shrink-0 rounded-full',
+        'relative size-5 flex-center shrink-0 rounded-full',
         {
           'border border-slate-300': !finallyChecked,
         },
