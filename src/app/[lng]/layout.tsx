@@ -2,6 +2,7 @@ import '@/styles/tailwind.css';
 import '@/styles/globals.css';
 import '@/styles/radix.css';
 
+
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
 import type { Metadata, Viewport } from 'next';
