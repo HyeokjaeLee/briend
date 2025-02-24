@@ -9,13 +9,13 @@
         "@radix-ui/themes": "^3.2.0",
         "@svgr/webpack": "^8.1.0",
         "@tanstack/query-sync-storage-persister": "^5.66.4",
-        "@tanstack/react-query": "^5.66.7",
-        "@tanstack/react-query-devtools": "^5.66.7",
-        "@tanstack/react-query-persist-client": "^5.66.7",
-        "@trpc/client": "^11.0.0-rc.781",
-        "@trpc/next": "^11.0.0-rc.781",
-        "@trpc/react-query": "^11.0.0-rc.781",
-        "@trpc/server": "^11.0.0-rc.781",
+        "@tanstack/react-query": "^5.66.8",
+        "@tanstack/react-query-devtools": "^5.66.8",
+        "@tanstack/react-query-persist-client": "^5.66.8",
+        "@trpc/client": "^11.0.0-rc.795",
+        "@trpc/next": "^11.0.0-rc.795",
+        "@trpc/react-query": "^11.0.0-rc.795",
+        "@trpc/server": "^11.0.0-rc.795",
         "@vercel/functions": "^1.6.0",
         "accept-language": "^3.0.20",
         "browser-image-compression": "^2.0.2",
@@ -30,7 +30,7 @@
         "firebase": "^11.3.1",
         "firebase-admin": "^13.1.0",
         "i18next": "^23.16.8",
-        "i18next-browser-languagedetector": "^8.0.3",
+        "i18next-browser-languagedetector": "^8.0.4",
         "i18next-resources-to-backend": "^1.2.1",
         "jose": "^5.10.0",
         "ky": "^1.7.5",
@@ -44,8 +44,8 @@
         "react-dom": "^19.0.0",
         "react-hook-form": "^7.54.2",
         "react-i18next": "^15.4.1",
-        "react-icons": "^5.4.0",
-        "react-scroll": "^1.9.2",
+        "react-icons": "^5.5.0",
+        "react-scroll": "^1.9.3",
         "react-swipeable": "^7.0.2",
         "react-textarea-autosize": "^8.5.7",
         "react-toastify": "^11.0.3",
@@ -79,7 +79,6 @@
         "eslint-plugin-react": "^7.37.4",
         "eslint-plugin-react-hooks": "^5.1.0",
         "eslint-plugin-simple-import-sort": "^12.1.1",
-        "eslint-plugin-tailwindcss": "^3.18.0",
         "globals": "^15.15.0",
         "prettier": "^3.5.1",
         "tailwindcss": "^3.4.17",
@@ -1067,8 +1066,6 @@
 
     "eslint-plugin-simple-import-sort": ["eslint-plugin-simple-import-sort@12.1.1", "", { "peerDependencies": { "eslint": ">=5.0.0" } }, "sha512-6nuzu4xwQtE3332Uz0to+TxDQYRLTKRESSc2hefVT48Zc8JthmN23Gx9lnYhu0FtkRSL1oxny3kJ2aveVhmOVA=="],
 
-    "eslint-plugin-tailwindcss": ["eslint-plugin-tailwindcss@3.18.0", "", { "dependencies": { "fast-glob": "^3.2.5", "postcss": "^8.4.4" }, "peerDependencies": { "tailwindcss": "^3.4.0" } }, "sha512-PQDU4ZMzFH0eb2DrfHPpbgo87Zgg2EXSMOj1NSfzdZm+aJzpuwGerfowMIaVehSREEa0idbf/eoNYAOHSJoDAQ=="],
-
     "eslint-scope": ["eslint-scope@8.2.0", "", { "dependencies": { "esrecurse": "^4.3.0", "estraverse": "^5.2.0" } }, "sha512-PHlWUfG6lvPc3yvP5A4PNyBL1W8fkDUccmI21JUu/+GKZBoH/W5u6usENXUrWFRsyoW5ACUjFGgAFQp5gUlb/A=="],
 
     "eslint-visitor-keys": ["eslint-visitor-keys@4.2.0", "", {}, "sha512-UyLnSehNt62FFhSwjZlHmeokpRK59rcz29j+F1/aDgbkbRTk7wIc9XzdoasMUbRNKDM0qQt/+BJ4BrpFeABemw=="],
@@ -1881,8 +1878,6 @@
 
     "eslint-plugin-import/debug": ["debug@3.2.7", "", { "dependencies": { "ms": "^2.1.1" } }, "sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ=="],
 
-    "eslint-plugin-tailwindcss/fast-glob": ["fast-glob@3.3.3", "", { "dependencies": { "@nodelib/fs.stat": "^2.0.2", "@nodelib/fs.walk": "^1.2.3", "glob-parent": "^5.1.2", "merge2": "^1.3.0", "micromatch": "^4.0.8" } }, "sha512-7MptL8U0cqcFdzIzwOTHoilX9x5BrNqye7Z/LuC7kCMRio1EMSyqRK3BEAUD7sXRq4iT4AzTVuZdhgQ2TCvYLg=="],
-
     "fast-glob/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
 
     "firebase-admin/@types/node": ["@types/node@22.13.4", "", { "dependencies": { "undici-types": "~6.20.0" } }, "sha512-ywP2X0DYtX3y08eFVx5fNIw7/uIv8hYUKgXoK8oayJlLnKcRfEYCxWMVE1XagUdVtCJlZT1AU4LXEABW+L1Peg=="],
@@ -1972,8 +1967,6 @@
     "csso/css-tree/mdn-data": ["mdn-data@2.0.28", "", {}, "sha512-aylIc7Z9y4yzHYAJNuESG3hfhC+0Ibp/MAMiaOZgNv4pmEdFyfZhhhny4MNiAfWdBQ1RQ2mfDWmM1x8SvGyp8g=="],
 
     "deepl-node/@types/node/undici-types": ["undici-types@6.20.0", "", {}, "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="],
-
-    "eslint-plugin-tailwindcss/fast-glob/glob-parent": ["glob-parent@5.1.2", "", { "dependencies": { "is-glob": "^4.0.1" } }, "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow=="],
 
     "firebase-admin/@types/node/undici-types": ["undici-types@6.20.0", "", {}, "sha512-Ny6QZ2Nju20vw1SRHe3d9jVu6gJ+4e3+MMpqu7pqE5HT6WsTSlce++GQmK5UXS8mzV8DSYHrQH+Xrf2jVcuKNg=="],
 
