@@ -1,0 +1,89 @@
+@import 'tailwindcss';
+
+@theme {
+  --breakpoint-xs: 480px;
+
+  --animate-shake: shake-horizontal var(--tw-animate-duration, 1s)
+    cubic-bezier(0.455, 0.03, 0.515, 0.955) var(--tw-animate-delay, 0s) both;
+
+  --backdrop-blur-xs: 1px;
+
+  --shadow-lg-x:
+    10px 0 15px -3px rgba(0, 0, 0, 0.03), -10px 0 15px -3px rgba(0, 0, 0, 0.03);
+  --shadow-lg-left:
+    -10px 0 15px -3px rgb(0 0 0 / 0.03), -4px 0 6px -4px rgb(0 0 0 / 0.03);
+  --shadow-lg-right:
+    10px 0 15px -3px rgb(0 0 0 / 0.03), 4px 0 6px -4px rgb(0 0 0 / 0.03);
+  --shadow-lg-top:
+    0 -10px 15px -3px rgb(0 0 0 / 0.03), 0 -4px 6px -4px rgb(0 0 0 / 0.02);
+
+  --z-index-global-loading: 35;
+
+  --color-naver-green: #03c75a;
+  --color-kakao-yellow: #fee500;
+
+  --color-sky-50: #e6edfb;
+  --color-sky-500: #0090ff;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: #f0c160;
+
+  --font-pretendard: var(--font-pretendard);
+  --font-bmdohyeon: var(--font-bmdohyeon);
+
+  --spacing-14_4: 3.6rem;
+  --spacing-cdvh: var(--viewport-height);
+  --spacing-cdch: var(--content-height);
+
+  @keyframes shake-horizontal {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70% {
+      transform: translateX(-10px);
+    }
+    20%,
+    40%,
+    60% {
+      transform: translateX(10px);
+    }
+    80% {
+      transform: translateX(8px);
+    }
+    90% {
+      transform: translateX(-8px);
+    }
+  }
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+@layer utilities {
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
