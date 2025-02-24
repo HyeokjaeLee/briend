@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'tailwindcss-animated';
 
 @theme {
   --breakpoint-xs: 480px;
