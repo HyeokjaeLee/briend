@@ -105,7 +105,7 @@ export default async function RootLayout({
           <GlobalLoading />
           <GlobalProvider>
             <div
-              className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
+              className="relative flex size-full w-fit max-w-(--breakpoint-xl) flex-2"
               id={SELECTOR.DYNAMIC_CONTAINER}
             >
               <CenterContainer>
