@@ -1,6 +1,5 @@
 import type { Config } from 'tailwindcss';
 import type { PluginAPI } from 'tailwindcss/types/config';
-
 import tailwindcssAnimated from 'tailwindcss-animated';
 
 const config: Config = {
@@ -9,6 +8,7 @@ const config: Config = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/utils/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/styles/*.css',
   ],
   theme: {
     extend: {

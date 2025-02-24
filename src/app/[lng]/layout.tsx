@@ -1,4 +1,6 @@
-import './globals.css';
+import '@radix-ui/themes/styles.css';
+import '@/styles/tailwind.css';
+import '@/styles/globals.css';
 
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
