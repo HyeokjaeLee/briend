@@ -5,49 +5,47 @@ import {
   DotLottieReact,
   type DotLottieReactProps,
 } from '@lottiefiles/dotlottie-react';
-import { memo, useEffect, useState } from 'react';
+import { memo, useCallback } from 'react';
 
 export interface DotLottieProps
   extends Omit<DotLottieReactProps, 'role' | 'aria-hidden'> {
   onCompleted?: () => void;
 }
 
-export const DotLottie = memo(
-  ({
-    onCompleted,
-    dotLottieRefCallback,
-    autoplay = true,
-    loop = true,
-    ...props
-  }: DotLottieProps) => {
-    const [dotLottie, setDotLottie] = useState<DotLottieType | null>(null);
+const MomorizedDotLottie = memo(DotLottieReact);
 
-    useEffect(() => {
-      if (!dotLottie) return;
+export const DotLottie = ({
+  onCompleted,
+  dotLottieRefCallback,
+  autoplay = true,
+  loop = true,
+  ...props
+}: DotLottieProps) => {
+  const callbackRef = useCallback(
+    (dotLottie: DotLottieType) => {
+      dotLottieRefCallback?.(dotLottie);
 
-      if (onCompleted) dotLottie.addEventListener('complete', onCompleted);
+      if (onCompleted) {
+        dotLottie.addEventListener('complete', onCompleted);
 
-      return () => {
-        dotLottie.removeEventListener('complete', onCompleted);
-      };
-    }, [dotLottie, onCompleted]);
+        return () => {
+          dotLottie.removeEventListener('complete', onCompleted);
+        };
+      }
+    },
+    [dotLottieRefCallback, onCompleted],
+  );
 
-    return (
-      <DotLottieReact
-        {...props}
-        aria-hidden="true"
-        autoplay={autoplay}
-        dotLottieRefCallback={(dotLottie) => {
-          setDotLottie(dotLottie);
-          dotLottieRefCallback?.(dotLottie);
-        }}
-        loop={loop}
-        role="presentation"
-      />
-    );
-  },
-);
-
-DotLottie.displayName = 'DotLottie';
+  return (
+    <MomorizedDotLottie
+      {...props}
+      aria-hidden="true"
+      autoplay={autoplay}
+      dotLottieRefCallback={callbackRef}
+      loop={loop}
+      role="presentation"
+    />
+  );
+};
 
 export type { DotLottieType };
