@@ -8,11 +8,9 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import importSortPluginSimple from 'eslint-plugin-simple-import-sort';
-import tailwindPlugin from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 
 export default [
-  ...tailwindPlugin.configs['flat/recommended'],
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
