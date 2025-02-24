@@ -2,7 +2,6 @@ import '@/styles/tailwind.css';
 import '@/styles/globals.css';
 import '@/styles/radix.css';
 
-
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
 import type { Metadata, Viewport } from 'next';
@@ -96,7 +95,7 @@ export default async function RootLayout({
     >
       <Theme
         asChild
-        className="flex h-cdvh w-full overflow-hidden"
+        className="h-cdvh flex w-full overflow-hidden"
         scaling="90%"
       >
         <body>
