@@ -1,3 +1,8 @@
 {
-  "i18n-ally.localesPaths": ["src/app/i18n", "src/app/i18n/locales"]
+  "i18n-ally.localesPaths": ["src/app/i18n", "src/app/i18n/locales"],
+  "tailwindCSS.experimental.classRegex": [
+    ["cva\\(((?:[^()]|\\([^()]*\\))*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+    ["cx\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"],
+    ["cn\\(((?:[^()]|\\([^()]*\\))*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+  ]
 }

@@ -1,0 +1,10 @@
+html {
+  font-size: 14px;
+}
+* {
+  @apply break-keep whitespace-pre-line;
+}
+
+:root {
+  --viewport-height: 100dvh;
+}

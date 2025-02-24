@@ -1,0 +1,18 @@
+.radix-themes {
+  --default-font-family: inherit;
+  --font-family-untitled: inherit;
+}
+
+.rt-TextFieldRoot,
+.rt-TextAreaRoot {
+  @apply outline-1;
+}
+
+.rt-TextFieldInput,
+.rt-TextAreaInput {
+  @supports (-moz-appearance: none) {
+    &:focus {
+      outline: none;
+    }
+  }
+}
