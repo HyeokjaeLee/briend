@@ -22,7 +22,7 @@ export const CustomButton = ({
       {...restProps}
       disabled={disabled}
       className={cn(
-        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-none',
+        'disabled:cursor-not-allowed enabled:cursor-pointer font-semibold outline-hidden',
         'text-nowrap',
         {
           'transition-transform duration-150 ease-out': activeScaleDown,

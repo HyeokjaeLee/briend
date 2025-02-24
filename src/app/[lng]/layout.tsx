@@ -1,4 +1,6 @@
-import './globals.css';
+import '@/styles/tailwind.css';
+import '@/styles/globals.css';
+import '@/styles/radix.css';
 
 import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
@@ -93,7 +95,7 @@ export default async function RootLayout({
     >
       <Theme
         asChild
-        className="flex h-cdvh w-full overflow-hidden"
+        className="h-cdvh flex w-full overflow-hidden"
         scaling="90%"
       >
         <body>
@@ -103,7 +105,7 @@ export default async function RootLayout({
           <GlobalLoading />
           <GlobalProvider>
             <div
-              className="relative flex size-full w-fit max-w-screen-xl flex-[2]"
+              className="relative flex size-full w-fit max-w-(--breakpoint-xl) flex-2"
               id={SELECTOR.DYNAMIC_CONTAINER}
             >
               <CenterContainer>
