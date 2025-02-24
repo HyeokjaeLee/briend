@@ -1,7 +1,6 @@
 html {
   font-size: 14px;
 }
-
 * {
   @apply break-keep whitespace-pre-line;
 }

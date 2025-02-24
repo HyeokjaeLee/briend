@@ -99,7 +99,7 @@ export default async function RootLayout({
     >
       <Theme
         asChild
-        className="h-cdvh flex w-full overflow-hidden overscroll-none"
+        className="h-cdvh flex w-full overflow-hidden"
         scaling="90%"
       >
         <body>

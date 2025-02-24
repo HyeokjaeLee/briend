@@ -87,8 +87,4 @@
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
-
-  .overscroll-none {
-    overscroll-behavior: none;
-  }
 }
