@@ -31,9 +31,11 @@ export const FriendList = createSuspensedComponent(
 
     if (!friendList.length)
       return (
-        <section className="flex-1 flex-col gap-2 flex-center">
-          <DotLottie className="size-52" src="/assets/lottie/empty.lottie" />
-          <h2 className="text-zinc-500">{t('empty-friend-list')}</h2>
+        <section className="flex-center flex-1 flex-col gap-2">
+          <DotLottie className="size-36" src="/assets/lottie/empty.lottie" />
+          <h3 className="text-lg font-semibold text-zinc-500">
+            {t('empty-friend-list')}
+          </h3>
           {isLogin ? (
             <CustomButton asChild>
               <CustomLink
