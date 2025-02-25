@@ -1,5 +1,7 @@
 'use client';
 
+import '@/styles/toastify.css';
+
 import { Slide, ToastContainer } from 'react-toastify';
 
 import { cn } from '@/utils';
