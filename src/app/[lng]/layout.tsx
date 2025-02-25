@@ -89,13 +89,17 @@ export default async function RootLayout({
 
   return (
     <html
-      className={cn(pretendard.className, pretendard.variable, 'size-full')}
+      className={cn(
+        pretendard.className,
+        pretendard.variable,
+        'size-full overscroll-none',
+      )}
       dir={dir(lng)}
       lang={lng}
     >
       <Theme
         asChild
-        className="h-cdvh flex w-full overflow-hidden"
+        className="h-cdvh flex w-full overflow-hidden overscroll-none"
         scaling="90%"
       >
         <body>
