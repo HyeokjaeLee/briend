@@ -6,11 +6,7 @@ import { Slide, ToastContainer } from 'react-toastify';
 
 import { cn } from '@/utils';
 
-import { useRefreshToast } from './_hooks/useRefreshToast';
-
 export const ToastProvider = () => {
-  useRefreshToast();
-
   return (
     <ToastContainer
       draggable

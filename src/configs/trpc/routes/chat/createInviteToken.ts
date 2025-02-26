@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 
-import { privateProcedure } from '@/app/trpc/settings';
+import { privateProcedure } from '@/configs/trpc/settings';
 import { createInviteTokenSchema } from '@/schema/trpc/chat';
 import type * as JwtPayload from '@/types/jwt';
 import { jwtAuthSecret } from '@/utils/server';

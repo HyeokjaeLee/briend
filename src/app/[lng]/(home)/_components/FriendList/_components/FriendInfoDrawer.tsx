@@ -2,8 +2,8 @@
 
 import { RiDeleteBinLine, RiLinkM, RiShieldCheckFill } from 'react-icons/ri';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import {
   CustomButton,
   CustomIconButton,
@@ -41,7 +41,7 @@ export const FriendInfoDrawer = ({
 
   return (
     <Drawer
-      className="flex-col gap-4 flex-center"
+      className="flex-center flex-col gap-4"
       open={!!friendId}
       onClose={onClose}
     >
@@ -51,8 +51,8 @@ export const FriendInfoDrawer = ({
             <ProfileImage size="7" src={friendInfo.profileImage} />
             <div className="flex items-center gap-2">
               <h2
-                className={cn('font-semibold text-lg', {
-                  'text-slate-400 font-medium': friendInfo.isUnsubscribed,
+                className={cn('text-lg font-semibold', {
+                  'font-medium text-slate-400': friendInfo.isUnsubscribed,
                 })}
               >
                 {friendInfo.isUnsubscribed

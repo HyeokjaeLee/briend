@@ -1,6 +1,6 @@
 import type { Auth } from 'firebase-admin/auth';
 
-import type { createContext, FirebaseSession } from '@/app/trpc/settings';
+import type { createContext, FirebaseSession } from '@/configs/trpc/settings';
 
 import { CustomError } from '../customError';
 

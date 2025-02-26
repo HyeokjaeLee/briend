@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { ConfirmModal, CustomButton } from '@/components';
 import { LOGIN_PROVIDERS, SESSION_STORAGE } from '@/constants';
 import { useUserData } from '@/hooks';
@@ -42,7 +42,7 @@ export const LinkAccountSection = () => {
   }, [t, user]);
 
   return (
-    <section className="gap-4 flex-center">
+    <section className="flex-center gap-4">
       {Object.values(LOGIN_PROVIDERS).map((provider) => (
         <LinkAccountButton
           key={provider}

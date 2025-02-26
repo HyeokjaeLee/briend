@@ -1,6 +1,6 @@
 import { FaChevronRight } from 'react-icons/fa6';
 
-import { getTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/configs/i18n/server';
 import { CustomButton, CustomLink } from '@/components';
 import type { LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';

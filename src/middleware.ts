@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
-import { fallbackLng, languages } from './app/i18n/settings';
 import { auth } from './auth';
+import { fallbackLng, languages } from './configs/i18n/settings';
 import { COOKIES, HEADERS, LANGUAGE } from './constants';
 import { ROUTES } from './routes/client';
 import type { RequestWithAuth } from './types/next-auth';

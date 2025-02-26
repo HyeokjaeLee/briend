@@ -1,5 +1,5 @@
-import { getTranslation } from '@/app/i18n/server';
 import { DotLottie } from '@/components';
+import { getTranslation } from '@/configs/i18n/server';
 import type { LANGUAGE } from '@/constants';
 
 import { InviteForm } from './_components/InviteForm';
@@ -18,7 +18,7 @@ const CreateChatPage = async ({ params }: CreateChatPageProps) => {
   return (
     <article className="flex flex-1 flex-col gap-4 p-4">
       <DotLottie
-        className="my-auto"
+        className="m-auto w-4/5"
         src="/assets/lottie/invite-friend.lottie"
         width={200}
         height={200}

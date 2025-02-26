@@ -8,14 +8,16 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import { type ReactElement, Suspense } from 'react';
 
+import { pretendard } from '@/configs/font';
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
 
-import { languages } from '../i18n/settings';
+import { languages } from '../../configs/i18n/settings';
 import { BottomNav } from './_components/BottomNav';
 import { CenterContainer } from './_components/CenterContainer';
-import { pretendard } from './_components/Font';
+import { ClientMountAction } from './_components/ClientMountAction';
 import { GlobalHeader } from './_components/GlobalHeader';
+import { GlobalListener } from './_components/GlobalListener';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
@@ -108,6 +110,8 @@ export default async function RootLayout({
           </aside>
           <GlobalLoading />
           <GlobalProvider>
+            <GlobalListener />
+            <ClientMountAction />
             <div
               className="relative flex size-full w-fit max-w-(--breakpoint-xl) flex-2"
               id={SELECTOR.DYNAMIC_CONTAINER}

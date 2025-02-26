@@ -11,7 +11,7 @@ import { ROUTES } from '@/routes/client';
 import { useGlobalStore, useSidePanelStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
 
-import { useTranslation } from '../i18n/client';
+import { useTranslation } from '../../configs/i18n/client';
 
 interface ErrorPageProps {
   error: Error;
@@ -85,13 +85,13 @@ export default function ErrorPage({
   }, [isSidePanel, setIsErrorRoute, setIsErrorSideRoute]);
 
   return (
-    <article className="relative size-full flex-1 flex-col gap-8 flex-center">
-      <section className="flex-1 flex-col flex-center">
+    <article className="flex-center relative size-full flex-1 flex-col gap-8">
+      <section className="flex-center flex-1 flex-col">
         <DotLottie loop className="h-1/2 w-full" src={dynamicInfo.lottie} />
         <strong className="mb-2 text-center text-xl font-semibold">
           {errorStatus}
         </strong>
-        <p className="whitespace-pre-line text-center text-zinc-600">
+        <p className="text-center whitespace-pre-line text-zinc-600">
           {dynamicInfo.text}
         </p>
       </section>

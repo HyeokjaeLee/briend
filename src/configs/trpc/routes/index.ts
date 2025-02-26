@@ -1,4 +1,4 @@
-import { router } from '@/app/trpc/settings';
+import { router } from '@/configs/trpc/settings';
 
 import { chat } from './chat';
 import { friend } from './friend';

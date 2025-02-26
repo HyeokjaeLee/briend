@@ -1,4 +1,4 @@
-import { router } from '@/app/trpc/settings';
+import { router } from '@/configs/trpc/settings';
 
 import { editProfile } from './editProfile';
 import { logout } from './logout';

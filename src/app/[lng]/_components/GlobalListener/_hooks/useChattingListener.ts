@@ -3,7 +3,7 @@ import type { DataSnapshot } from 'firebase/database';
 import { get, onChildAdded, ref, remove } from 'firebase/database';
 import { useEffect } from 'react';
 
-import { trpc } from '@/app/trpc';
+import { trpc } from '@/configs/trpc';
 import { realtimeDatabase } from '@/database/firebase/client';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { useFirebaseStore } from '@/stores/firebase';
