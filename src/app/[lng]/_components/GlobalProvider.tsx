@@ -11,9 +11,9 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { SessionProvider } from 'next-auth/react';
 import { type PropsWithChildren, use } from 'react';
 
-import { trpc, trpcClient } from '@/app/trpc';
 import { firebase } from '@/configs/firebase';
 import { persistOptions, queryClient } from '@/configs/query-client';
+import { trpc, trpcClient } from '@/configs/trpc';
 import { createSuspendedComponent } from '@/utils/client';
 
 export const GlobalProvider = createSuspendedComponent(

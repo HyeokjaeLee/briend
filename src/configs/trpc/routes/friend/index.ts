@@ -1,4 +1,4 @@
-import { router } from '@/app/trpc/settings';
+import { router } from '@/configs/trpc/settings';
 
 import { list } from './list';
 import { remove } from './remove';

@@ -1,4 +1,4 @@
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { toast } from '@/utils/client';
 
 export const useDeleteFriend = () => {

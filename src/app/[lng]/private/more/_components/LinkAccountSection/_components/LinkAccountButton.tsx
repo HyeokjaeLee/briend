@@ -4,8 +4,8 @@ import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
 import { pick } from 'es-toolkit';
 import Image from 'next/image';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { LOGIN_PROVIDERS } from '@/constants';
 import { useUserData } from '@/hooks';
 import { cn } from '@/utils';
@@ -54,7 +54,7 @@ export const LinkAccountButton = ({
 
   return (
     <button
-      className="flex-col gap-2 break-keep flex-center"
+      className="flex-center flex-col gap-2 break-keep"
       type="button"
       onClick={() => {
         if (isLastOne)
@@ -69,10 +69,10 @@ export const LinkAccountButton = ({
     >
       <div
         className={cn(
-          'size-14 flex-center rounded-full',
+          'flex-center size-14 rounded-full',
           {
             [LOGIN_PROVIDERS.GOOGLE]:
-              'bg-white text-slate-850 border-slate-200 border',
+              'text-slate-850 border border-slate-200 bg-white',
             [LOGIN_PROVIDERS.KAKAO]: 'bg-kakao-yellow text-slate-850',
             [LOGIN_PROVIDERS.NAVER]: 'bg-naver-green',
           }[provider],

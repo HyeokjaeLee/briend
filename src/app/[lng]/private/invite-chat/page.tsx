@@ -1,5 +1,5 @@
-import { getTranslation } from '@/app/i18n/server';
 import { DotLottie } from '@/components';
+import { getTranslation } from '@/configs/i18n/server';
 import type { LANGUAGE } from '@/constants';
 
 import { InviteForm } from './_components/InviteForm';

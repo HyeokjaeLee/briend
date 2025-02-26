@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { CustomButton, CustomLink, DotLottie } from '@/components';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';

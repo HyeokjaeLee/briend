@@ -1,4 +1,4 @@
-import { privateProcedure } from '@/app/trpc/settings';
+import { privateProcedure } from '@/configs/trpc/settings';
 import { adminAuth, firestore } from '@/database/firebase/server';
 import { COLLECTIONS, type UserInfo } from '@/database/firebase/type';
 import { editProfileSchema } from '@/schema/trpc/user';

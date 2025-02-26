@@ -1,7 +1,7 @@
 'use client';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { ConfirmModal, CustomButton } from '@/components';
 import { useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';

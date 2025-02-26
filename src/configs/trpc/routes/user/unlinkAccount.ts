@@ -1,7 +1,7 @@
 import { FieldValue } from 'firebase-admin/firestore';
 import { z } from 'zod';
 
-import { privateProcedure } from '@/app/trpc/settings';
+import { privateProcedure } from '@/configs/trpc/settings';
 import { LOGIN_PROVIDERS } from '@/constants';
 import { firestore } from '@/database/firebase/server';
 import { COLLECTIONS } from '@/database/firebase/type';

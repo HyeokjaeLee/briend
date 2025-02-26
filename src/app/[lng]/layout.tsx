@@ -12,7 +12,7 @@ import { pretendard } from '@/configs/font';
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
 
-import { languages } from '../i18n/settings';
+import { languages } from '../../configs/i18n/settings';
 import { BottomNav } from './_components/BottomNav';
 import { CenterContainer } from './_components/CenterContainer';
 import { ClientMountAction } from './_components/ClientMountAction';

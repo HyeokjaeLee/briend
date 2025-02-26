@@ -1,4 +1,4 @@
-import { getTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/configs/i18n/server';
 import { signIn } from '@/auth';
 import { Logo } from '@/components';
 import { type LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
@@ -42,12 +42,12 @@ const LoginPage = async (props: LoginPageProps) => {
           provider={LOGIN_PROVIDERS.GOOGLE}
           text={t('google-login')}
         />
-        <div className="m-4 gap-2 text-slate-300 flex-center">
+        <div className="flex-center m-4 gap-2 text-slate-300">
           <hr className="flex-1 border-slate-300" />
           또는
           <hr className="flex-1 border-slate-300" />
         </div>
-        <section className="gap-4 flex-center">
+        <section className="flex-center gap-4">
           <LoginButton
             name={LOGIN_BUTTON_NAME}
             provider={LOGIN_PROVIDERS.KAKAO}

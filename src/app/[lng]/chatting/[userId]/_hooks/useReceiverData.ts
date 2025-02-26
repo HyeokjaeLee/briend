@@ -1,4 +1,4 @@
-import { trpc } from '@/app/trpc';
+import { trpc } from '@/configs/trpc';
 import { assert } from '@/utils';
 
 export const useReceiverData = (userId: string) => {
