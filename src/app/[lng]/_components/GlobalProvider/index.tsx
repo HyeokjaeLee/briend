@@ -12,7 +12,7 @@ import { SessionProvider } from 'next-auth/react';
 import { type PropsWithChildren, use } from 'react';
 
 import { trpc, trpcClient } from '@/app/trpc';
-import { createSuspensedComponent } from '@/utils/client';
+import { createSuspendedComponent } from '@/utils/client';
 
 import { GlobalListener } from './_components/GlobalListener';
 import { firebase } from './_configs/initFirebase';
@@ -20,7 +20,7 @@ import { initQueryClient } from './_configs/initQueryClient';
 
 const { persistOptions, queryClient } = initQueryClient();
 
-export const GlobalProvider = createSuspensedComponent(
+export const GlobalProvider = createSuspendedComponent(
   ({ children }: PropsWithChildren) => {
     use(firebase);
 

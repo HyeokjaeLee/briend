@@ -7,13 +7,13 @@ import { trpc } from '@/app/trpc';
 import { CustomButton, CustomLink, DotLottie } from '@/components';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { createSuspensedComponent } from '@/utils/client';
+import { createSuspendedComponent } from '@/utils/client';
 
 import { FriendCard, FriendCardSkeleton } from './_components/FriendCard';
 import { FriendDeleteModal } from './_components/FriendDeleteModal';
 import { FriendInfoDrawer } from './_components/FriendInfoDrawer';
 
-export const FriendList = createSuspensedComponent(
+export const FriendList = createSuspendedComponent(
   () => {
     const [{ friendList }] = trpc.friend.list.useSuspenseQuery();
 
