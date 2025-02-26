@@ -8,9 +8,9 @@ import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { z } from 'zod';
 
+import { CustomIconButton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
-import { CustomIconButton } from '@/components';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
 import { assert, cn } from '@/utils';

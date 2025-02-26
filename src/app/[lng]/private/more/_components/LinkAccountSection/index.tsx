@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { ConfirmModal, CustomButton } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { LOGIN_PROVIDERS, SESSION_STORAGE } from '@/constants';
 import { useUserData } from '@/hooks';
 import { assert, assertEnum } from '@/utils';

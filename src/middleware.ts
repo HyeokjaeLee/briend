@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from './auth';
+import { auth } from './configs/auth';
 import { fallbackLng, languages } from './configs/i18n/settings';
 import { COOKIES, HEADERS, LANGUAGE } from './constants';
 import { ROUTES } from './routes/client';

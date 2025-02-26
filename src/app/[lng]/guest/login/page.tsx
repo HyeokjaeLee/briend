@@ -1,6 +1,6 @@
-import { getTranslation } from '@/configs/i18n/server';
-import { signIn } from '@/auth';
 import { Logo } from '@/components';
+import { signIn } from '@/configs/auth';
+import { getTranslation } from '@/configs/i18n/server';
 import { type LANGUAGE, LOGIN_PROVIDERS } from '@/constants';
 import { assertEnum } from '@/utils';
 

@@ -15,13 +15,13 @@ import { cn } from '@/utils';
 import { languages } from '../../configs/i18n/settings';
 import { BottomNav } from './_components/BottomNav';
 import { CenterContainer } from './_components/CenterContainer';
-import { ClientMountAction } from './_components/ClientMountAction';
 import { GlobalHeader } from './_components/GlobalHeader';
 import { GlobalListener } from './_components/GlobalListener';
 import { GlobalLoading } from './_components/GlobalLoading';
 import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { MainContainer } from './_components/MainContainer';
+import { MountAction } from './_components/MountAction';
 import { SidePanel } from './_components/SidePanel';
 import { ToastProvider } from './_components/ToastProvider';
 
@@ -111,7 +111,7 @@ export default async function RootLayout({
           <GlobalLoading />
           <GlobalProvider>
             <GlobalListener />
-            <ClientMountAction />
+            <MountAction />
             <div
               className="relative flex size-full w-fit max-w-(--breakpoint-xl) flex-2"
               id={SELECTOR.DYNAMIC_CONTAINER}

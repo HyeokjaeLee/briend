@@ -2,8 +2,8 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { ConfirmModal, CustomButton } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
 

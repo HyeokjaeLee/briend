@@ -1,9 +1,9 @@
 import { Skeleton } from '@radix-ui/themes';
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
+import { ProfileImage } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
-import { ProfileImage } from '@/components';
 import { cn } from '@/utils';
 
 interface FriendCardProps

@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 
+import { CustomButton, CustomLink, DotLottie } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
-import { CustomButton, CustomLink, DotLottie } from '@/components';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { createSuspendedComponent } from '@/utils/client';
