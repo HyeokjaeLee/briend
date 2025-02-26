@@ -25,7 +25,7 @@ interface JwtVerifyOptions {
   additionalSecret?: string;
 }
 
-const verfiy = async <T>(
+const verify = async <T>(
   jwtToken: string,
   options?: JwtVerifyOptions,
 ): Promise<JWTVerifyResult<T>> => {
@@ -49,5 +49,5 @@ const verfiy = async <T>(
 
 export const jwtAuthSecret = {
   sign,
-  verfiy,
+  verify,
 };

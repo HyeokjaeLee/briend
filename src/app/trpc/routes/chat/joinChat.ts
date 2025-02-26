@@ -25,7 +25,7 @@ export const joinChat = publicProcedure
 
     const {
       payload: { inviterId, inviteId },
-    } = await jwtAuthSecret.verfiy<JwtPayload.InviteToken>(inviteToken);
+    } = await jwtAuthSecret.verify<JwtPayload.InviteToken>(inviteToken);
 
     const connectedAt = Date.now();
 

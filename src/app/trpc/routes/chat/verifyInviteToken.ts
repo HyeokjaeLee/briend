@@ -15,7 +15,7 @@ export const verfiyInviteToken = publicProcedure
   .query(async ({ input: { inviteToken } }) => {
     try {
       const { payload } =
-        await jwtAuthSecret.verfiy<JwtPayload.InviteToken>(inviteToken);
+        await jwtAuthSecret.verify<JwtPayload.InviteToken>(inviteToken);
 
       return payload;
     } catch (e) {

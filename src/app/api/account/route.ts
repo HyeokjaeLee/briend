@@ -19,11 +19,11 @@ export const POST = createApiRoute<PostAccountResponse>(async (req) => {
 
   const {
     payload: { providerToLink, ...linkAccountPayload },
-  } = await jwtAuthSecret.verfiy<LinkBaseAccountToken>(linkBaseAccountToken);
+  } = await jwtAuthSecret.verify<LinkBaseAccountToken>(linkBaseAccountToken);
 
   const {
     payload: { providerAccountId, ...newAccount },
-  } = await jwtAuthSecret.verfiy<LinkNewAccountToken>(linkNewAccountToken);
+  } = await jwtAuthSecret.verify<LinkNewAccountToken>(linkNewAccountToken);
 
   const providerAccountRef = firestore
     .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
