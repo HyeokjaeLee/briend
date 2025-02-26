@@ -18,7 +18,7 @@ const CreateChatPage = async ({ params }: CreateChatPageProps) => {
   return (
     <article className="flex flex-1 flex-col gap-4 p-4">
       <DotLottie
-        className="my-auto"
+        className="m-auto w-4/5"
         src="/assets/lottie/invite-friend.lottie"
         width={200}
         height={200}
