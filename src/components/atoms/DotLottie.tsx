@@ -12,7 +12,7 @@ export interface DotLottieProps
   onCompleted?: () => void;
 }
 
-const MomorizedDotLottie = memo(DotLottieReact);
+const MemorizedDotLottie = memo(DotLottieReact);
 
 export const DotLottie = ({
   onCompleted,
@@ -37,7 +37,7 @@ export const DotLottie = ({
   );
 
   return (
-    <MomorizedDotLottie
+    <MemorizedDotLottie
       {...props}
       aria-hidden="true"
       autoplay={autoplay}

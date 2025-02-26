@@ -20,6 +20,8 @@ const CreateChatPage = async ({ params }: CreateChatPageProps) => {
       <DotLottie
         className="my-auto"
         src="/assets/lottie/invite-friend.lottie"
+        width={200}
+        height={200}
       />
       <p className="text-center text-sm text-slate-500">
         {t('friend-setting-message')}

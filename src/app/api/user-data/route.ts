@@ -30,7 +30,7 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       name,
       profileImage,
     },
-  } = await jwtAuthSecret.verfiy<JwtPayload.SyncUserToken>(syncUserToken);
+  } = await jwtAuthSecret.verify<JwtPayload.SyncUserToken>(syncUserToken);
 
   const providerAccountRef = firestore
     .collection(COLLECTIONS.PROVIDER_ACCOUNTS)
@@ -47,8 +47,6 @@ export const POST = createApiRoute<UserSession>(async (req) => {
       try {
         //! 해당 계정이 다른 계정과의 연동으로 인해 삭제된 경우 예외 발생
         const userAuth = await adminAuth.getUser(userId);
-
-        //TODO: 비회원 동안 쌓았던 정보 이관 로직
 
         adminAuth.deleteUser(anonymousId);
 
