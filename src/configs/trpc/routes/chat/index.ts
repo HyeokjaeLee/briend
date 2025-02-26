@@ -1,4 +1,4 @@
-import { router } from '@/app/trpc/settings';
+import { router } from '@/configs/trpc/settings';
 
 import { createInviteToken } from './createInviteToken';
 import { joinChat } from './joinChat';

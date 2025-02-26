@@ -2,7 +2,7 @@
 
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
-import { trpc } from '@/app/trpc';
+import { trpc } from '@/configs/trpc';
 import { CustomButton } from '@/components';
 import { SESSION_STORAGE } from '@/constants';
 import { useLanguage, useSidePanel } from '@/hooks';

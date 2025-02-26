@@ -1,6 +1,6 @@
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
-import { getTranslation } from '@/app/i18n/server';
+import { getTranslation } from '@/configs/i18n/server';
 import type { LANGUAGE } from '@/constants';
 
 import { FriendList } from './_components/FriendList';

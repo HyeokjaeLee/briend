@@ -5,8 +5,8 @@ import { Select } from '@radix-ui/themes';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { CustomButton } from '@/components';
 import { LANGUAGE } from '@/constants';
 import { useCustomRouter, useLanguage, useUserData } from '@/hooks';

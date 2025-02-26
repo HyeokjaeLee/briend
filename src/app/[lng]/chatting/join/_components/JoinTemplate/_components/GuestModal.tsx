@@ -2,8 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import {
   CustomButton,
   DotLottie,

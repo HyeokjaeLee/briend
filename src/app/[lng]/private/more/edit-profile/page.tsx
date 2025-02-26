@@ -8,8 +8,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { FaCamera } from 'react-icons/fa';
 import type { z } from 'zod';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import {
   BottomButton,
   CustomButton,
@@ -138,18 +138,18 @@ const EditProfilePage = (props: ProfilePageProps) => {
   return (
     <article className="p-4">
       <form
-        className="flex-col gap-8 flex-center"
+        className="flex-center flex-col gap-8"
         id={FORM_NAME}
         onSubmit={handleSubmit}
       >
-        <section className="w-full flex-col gap-8 flex-center">
+        <section className="flex-center w-full flex-col gap-8">
           <button
             className="relative cursor-pointer"
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
             <ProfileImage src={form.getValues('photoURL')} />
-            <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
+            <div className="absolute right-0 bottom-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>
           </button>

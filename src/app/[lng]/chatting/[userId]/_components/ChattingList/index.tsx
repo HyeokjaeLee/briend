@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { RiCalendarCheckFill, RiSunFill } from 'react-icons/ri';
 import { Virtuoso } from 'react-virtuoso';
 
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { Checkbox } from '@/components';
 import { useLanguage } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
@@ -101,7 +101,7 @@ export const ChattingList = ({
               {isSameDate ? null : (
                 <div
                   className={cn(
-                    'flex-center w-fit gap-1 mt-5 mb-1 mx-2 min-w-24',
+                    'flex-center mx-2 mt-5 mb-1 w-fit min-w-24 gap-1',
                     'mx-auto rounded-full text-xs font-semibold',
                     'text-slate-500',
                     {
@@ -131,7 +131,7 @@ export const ChattingList = ({
                 {isDeleteMode ? (
                   <Checkbox
                     checked={isCheckedForDelete}
-                    className="ml-2 animate-fade-right animate-duration-100"
+                    className="animate-fade-right animate-duration-100 ml-2"
                     onChange={handleCheckForDelete}
                   />
                 ) : null}

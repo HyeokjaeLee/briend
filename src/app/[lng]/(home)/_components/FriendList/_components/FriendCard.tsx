@@ -1,8 +1,8 @@
 import { Skeleton } from '@radix-ui/themes';
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
-import { useTranslation } from '@/app/i18n/client';
-import type { RouterOutputs } from '@/app/trpc/type';
+import { useTranslation } from '@/configs/i18n/client';
+import type { RouterOutputs } from '@/configs/trpc/type';
 import { ProfileImage } from '@/components';
 import { cn } from '@/utils';
 
@@ -31,8 +31,8 @@ export const FriendCard = ({
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong
-              className={cn('font-semibold text-start', {
-                'text-slate-400 font-medium': isUnsubscribed,
+              className={cn('text-start font-semibold', {
+                'font-medium text-slate-400': isUnsubscribed,
               })}
             >
               {isUnsubscribed ? t('unsubscribed-user') : name}

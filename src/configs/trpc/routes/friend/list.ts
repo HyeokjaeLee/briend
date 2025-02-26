@@ -1,4 +1,4 @@
-import { publicProcedure } from '@/app/trpc/settings';
+import { publicProcedure } from '@/configs/trpc/settings';
 import { realtimeDatabase } from '@/database/firebase/server';
 import { onlyClientRequest } from '@/utils/server';
 

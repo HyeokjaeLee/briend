@@ -1,3 +1,5 @@
+'use client';
+
 import { useChattingListener } from './_hooks/useChattingListener';
 import { useHistoryListener } from './_hooks/useHistoryListener';
 import { useScrollListener } from './_hooks/useScrollListener';

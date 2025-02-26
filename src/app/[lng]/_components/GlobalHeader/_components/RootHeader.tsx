@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { Logo } from '@/components';
 import { findRoute } from '@/utils';
 

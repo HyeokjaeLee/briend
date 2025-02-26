@@ -3,9 +3,9 @@ import type { OmitKeyof } from '@tanstack/react-query';
 import { MutationCache, QueryClient } from '@tanstack/react-query';
 import type { PersistQueryClientOptions } from '@tanstack/react-query-persist-client';
 
-import { IS_CLIENT,QUERY_KEYS } from '@/constants';
+import { IS_CLIENT, QUERY_KEYS } from '@/constants';
 
-export const initQueryClient = () => {
+const initQueryClient = () => {
   const queryClient = new QueryClient({
     mutationCache: new MutationCache({
       onSuccess: (_data, _variables, _context, mutation) => {
@@ -52,3 +52,5 @@ export const initQueryClient = () => {
     persistOptions,
   };
 };
+
+export const { persistOptions, queryClient } = initQueryClient();

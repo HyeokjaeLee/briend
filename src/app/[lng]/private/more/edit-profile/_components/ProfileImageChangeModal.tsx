@@ -1,4 +1,4 @@
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { CustomButton, Modal } from '@/components';
 import { assert } from '@/utils';
 

@@ -1,4 +1,4 @@
-import { privateProcedure } from '@/app/trpc/settings';
+import { privateProcedure } from '@/configs/trpc/settings';
 import { signOut } from '@/auth';
 
 export const logout = privateProcedure.mutation(async () => {

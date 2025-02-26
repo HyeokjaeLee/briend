@@ -8,8 +8,8 @@ import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { z } from 'zod';
 
-import { useTranslation } from '@/app/i18n/client';
-import { trpc } from '@/app/trpc';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { CustomIconButton } from '@/components';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
@@ -88,8 +88,8 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
       <section className="flex items-end gap-2">
         <div
           className={cn(
-            'rounded-md border bg-gray-50 px-3.5 py-[12.5px] flex-center flex-1',
-            'transition-colors duration-75 border-zinc-50 focus-within:border-zinc-200',
+            'flex-center flex-1 rounded-md border bg-gray-50 px-3.5 py-[12.5px]',
+            'border-zinc-50 transition-colors duration-75 focus-within:border-zinc-200',
           )}
         >
           <TextareaAutosize
@@ -101,7 +101,7 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
               if (e) e.focus();
             }}
             cacheMeasurements
-            className="w-full resize-none bg-transparent outline-hidden hide-scrollbar"
+            className="hide-scrollbar w-full resize-none bg-transparent outline-hidden"
             maxRows={4}
             placeholder={t('send-form-placeholder')}
             title="message-input"
@@ -113,7 +113,7 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
           title="send-message"
           type="submit"
         >
-          <RiSendPlane2Line className="ml-1 size-6 animate-jump-in animate-duration-300" />
+          <RiSendPlane2Line className="animate-jump-in animate-duration-300 ml-1 size-6" />
         </CustomIconButton>
       </section>
     </form>

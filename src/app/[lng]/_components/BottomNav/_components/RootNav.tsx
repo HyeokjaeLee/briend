@@ -11,7 +11,7 @@ import {
   RiMessage3Line,
 } from 'react-icons/ri';
 
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { CustomLink } from '@/components';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -81,8 +81,8 @@ export const RootNav = ({ pathname }: RootNavProps) => {
               <li key={route.index} className="flex-1">
                 <CustomLink
                   className={cn(
-                    'py-3 flex-center flex-col gap-1 text-xs rounded-md group',
-                    'active:scale-90 transition-all duration-75 ease-out',
+                    'flex-center group flex-col gap-1 rounded-md py-3 text-xs',
+                    'transition-all duration-75 ease-out active:scale-90',
                     isActive ? 'font-bold text-sky-500' : 'text-slate-400',
                   )}
                   href={route.pathname}
@@ -98,7 +98,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   onClick={() => setActiveIndex(index)}
                 >
                   <Icon
-                    className={cn('size-6 animate-duration-300', {
+                    className={cn('animate-duration-300 size-6', {
                       'animate-jump': isActive,
                     })}
                   />

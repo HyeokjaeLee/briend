@@ -5,9 +5,9 @@ import { useEffect, useState } from 'react';
 import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
-import { useTranslation } from '@/app/i18n/client';
+import { useTranslation } from '@/configs/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
-import { trpc } from '@/app/trpc';
+import { trpc } from '@/configs/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
 import { useRealtimeDatabase } from '@/database/firebase/client';
 import type { UserRealtimeData } from '@/database/firebase/type';
@@ -114,11 +114,11 @@ export const InviteChatTemplate = createOnlyClientComponent(
         )}
       >
         <div className="flex flex-1 flex-col">
-          <section className="flex-1 rotate-180 flex-col gap-2 flex-center">
-            <h1 className="break-keep text-center text-xl font-bold">
+          <section className="flex-center flex-1 rotate-180 flex-col gap-2">
+            <h1 className="text-center text-xl font-bold break-keep">
               <FcCollaboration
                 aria-hidden
-                className="mb-1 mr-2 inline size-6"
+                className="mr-2 mb-1 inline size-6"
               />
               {title}
             </h1>
@@ -149,7 +149,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
               }}
             />
           ) : (
-            <section className="w-full flex-1 rotate-180 bg-white px-4 flex-center">
+            <section className="flex-center w-full flex-1 rotate-180 bg-white px-4">
               <QR
                 alt="invite-qr"
                 href={inviteUrl}
@@ -158,9 +158,9 @@ export const InviteChatTemplate = createOnlyClientComponent(
               />
             </section>
           )}
-          <section className="flex-1 flex-col gap-2 flex-center">
+          <section className="flex-center flex-1 flex-col gap-2">
             <h2 className="text-center text-xl font-bold text-slate-900">
-              <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
+              <FcAdvertising aria-hidden className="mr-2 mb-1 inline size-6" />
               {t('warning-message')}
             </h2>
             <p className="text-center text-slate-500">{t('notice-message')}</p>
