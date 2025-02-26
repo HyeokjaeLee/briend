@@ -2,8 +2,8 @@
 
 import { Badge, Skeleton } from '@radix-ui/themes';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { ProfileImage } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { LANGUAGE_NAME } from '@/constants';
 import { useUserData } from '@/hooks';
 import { cn } from '@/utils';

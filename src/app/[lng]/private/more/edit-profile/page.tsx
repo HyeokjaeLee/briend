@@ -8,8 +8,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { FaCamera } from 'react-icons/fa';
 import type { z } from 'zod';
 
-import { useTranslation } from '@/configs/i18n/client';
-import { trpc } from '@/configs/trpc';
 import {
   BottomButton,
   CustomButton,
@@ -17,6 +15,8 @@ import {
   ProfileImage,
   ValidationMessage,
 } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';

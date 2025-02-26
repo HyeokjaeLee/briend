@@ -17,4 +17,3 @@ export { isArrayItem } from './isArrayItem';
 export { isCurrentHref } from './isCurrentHref';
 export { isEnumValue } from './isEnumValue';
 export { objectWithoutUndefined } from './objectWithoutUndefined';
-export { singleton } from './singleton';

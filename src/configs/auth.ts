@@ -73,6 +73,7 @@ export const {
         COOKIES.LINK_BASE_ACCOUNT_TOKEN,
       );
 
+      //* 계정 연동
       if (linkBaseAccountToken) {
         const providerAccountId = account?.providerAccountId;
 
@@ -126,6 +127,8 @@ export const {
       }).json();
 
       token = Object.assign(token, userSession);
+
+      serverCookies.set(COOKIES.CHANGED_SESSION, 'login');
 
       return token;
     },

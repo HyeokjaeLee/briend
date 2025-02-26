@@ -3,7 +3,7 @@ import type { FetchCreateContextFnOptions } from '@trpc/server/adapters/fetch';
 import type { Auth } from 'firebase-admin/auth';
 import superjson from 'superjson';
 
-import { auth } from '@/auth';
+import { auth } from '@/configs/auth';
 import { verifyFirebaseIdToken } from '@/database/firebase/server';
 import { CustomError } from '@/utils';
 

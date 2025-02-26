@@ -5,10 +5,10 @@ import { useEffect, useState } from 'react';
 import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { UtilsQueryOptions } from '@/app/query-options/utils';
-import { trpc } from '@/configs/trpc';
 import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { useRealtimeDatabase } from '@/database/firebase/client';
 import type { UserRealtimeData } from '@/database/firebase/type';
 import { useCustomRouter, useUserData } from '@/hooks';

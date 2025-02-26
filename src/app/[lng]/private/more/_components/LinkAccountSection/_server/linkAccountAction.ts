@@ -1,6 +1,6 @@
 'use server';
 
-import { auth, signIn } from '@/auth';
+import { auth, signIn } from '@/configs/auth';
 import { COOKIES, type LOGIN_PROVIDERS } from '@/constants';
 import type * as JwtPayload from '@/types/jwt';
 import { assert, customCookies } from '@/utils';

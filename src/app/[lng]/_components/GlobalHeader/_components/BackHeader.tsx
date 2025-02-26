@@ -3,8 +3,8 @@
 import { usePathname } from 'next/navigation';
 import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { CustomIconButton } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { cn, findRoute } from '@/utils';

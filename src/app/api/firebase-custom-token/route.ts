@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-import { auth } from '@/auth';
+import { auth } from '@/configs/auth';
 import { adminAuth } from '@/database/firebase/server';
 import { createApiRoute } from '@/utils/api';
 

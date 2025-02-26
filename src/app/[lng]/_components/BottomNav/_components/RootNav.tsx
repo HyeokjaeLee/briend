@@ -11,8 +11,8 @@ import {
   RiMessage3Line,
 } from 'react-icons/ri';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { CustomLink } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { cn, findRoute } from '@/utils';

@@ -4,9 +4,9 @@ import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
 import { Suspense, useEffect, useState } from 'react';
 
+import { DotLottie, LoadingTemplate } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
-import { DotLottie, LoadingTemplate } from '@/components';
 import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';

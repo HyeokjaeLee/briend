@@ -3,8 +3,8 @@ import CountUp from 'react-countup';
 import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
-import { useTranslation } from '@/configs/i18n/client';
 import { CustomLink, ProfileImage } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { MAX_FIREND_COUNT } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';

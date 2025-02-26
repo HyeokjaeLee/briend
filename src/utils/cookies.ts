@@ -9,7 +9,10 @@ import {
 
 class CustomCookies extends Cookies {
   get<TKey extends COOKIES>(key: TKey, options?: CookieGetOptions) {
-    const value: COOKIES_VALUE[TKey] | undefined = super.get(key, options);
+    const value: COOKIES_VALUE[TKey] | undefined = super.get(key, {
+      ...DEFAULT_COOKIES_OPTIONS,
+      ...options,
+    });
 
     return value;
   }
@@ -59,7 +62,10 @@ class CustomCookies extends Cookies {
   getAll(options?: CookieGetOptions): {
     [key in COOKIES]: COOKIES_VALUE[key];
   } {
-    return super.getAll(options);
+    return super.getAll({
+      ...DEFAULT_COOKIES_OPTIONS,
+      ...options,
+    });
   }
   remove(key: COOKIES, options?: CookieSetOptions) {
     super.remove(key, {

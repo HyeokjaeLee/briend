@@ -2,8 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { useTranslation } from '@/configs/i18n/client';
-import { trpc } from '@/configs/trpc';
 import {
   CustomButton,
   DotLottie,
@@ -12,6 +10,8 @@ import {
   Timer,
   ValidationMessage,
 } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
+import { trpc } from '@/configs/trpc';
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';

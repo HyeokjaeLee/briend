@@ -1,5 +1,5 @@
-import { useTranslation } from '@/configs/i18n/client';
 import { CustomButton, Modal } from '@/components';
+import { useTranslation } from '@/configs/i18n/client';
 import { assert } from '@/utils';
 
 interface ProfileImageChangeModalProps {

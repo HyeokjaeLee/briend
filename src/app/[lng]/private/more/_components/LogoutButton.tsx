@@ -2,12 +2,13 @@
 
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
-import { trpc } from '@/configs/trpc';
 import { CustomButton } from '@/components';
-import { SESSION_STORAGE } from '@/constants';
+import { trpc } from '@/configs/trpc';
+import { COOKIES, SESSION_STORAGE } from '@/constants';
 import { useLanguage, useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
+import { customCookies } from '@/utils';
 
 interface LogoutButtonProps {
   logoutToastMessage: string;
@@ -27,7 +28,10 @@ export const LogoutButton = ({
     onSuccess: () => {
       sessionStorage.setItem(SESSION_STORAGE.REPLACE_MARK, 'true');
       sessionStorage.setItem(SESSION_STORAGE.REFRESH_TOAST, logoutToastMessage);
+      customCookies.set(COOKIES.CHANGED_SESSION, 'logout');
+
       push(ROUTES.FRIEND_LIST.pathname);
+
       location.replace(`/${lng}${ROUTES.FRIEND_LIST.pathname}`);
     },
   });
