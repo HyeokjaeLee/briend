@@ -1,5 +1,5 @@
 export { createOnlyClientComponent } from './createOnlyClientComponent';
-export { createSuspensedComponent } from './createSuspensedComponent';
+export { createSuspendedComponent } from './createSuspendedComponent';
 export {
   getNavigationAnimationClasses,
   NAVIGATION_ANIMATION_DURATION,
