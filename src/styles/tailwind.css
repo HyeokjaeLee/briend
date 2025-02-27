@@ -31,11 +31,8 @@
   --color-primary: #f0c160;
 
   --font-pretendard: var(--font-pretendard);
-  --font-bmdohyeon: var(--font-bmdohyeon);
 
   --spacing-14_4: 3.6rem;
-  --spacing-cdvh: var(--viewport-height);
-  --spacing-cdch: var(--content-height);
 
   @keyframes shake-horizontal {
     0%,
@@ -88,7 +85,7 @@
     display: none;
   }
 
-  .overscroll-none {
-    overscroll-behavior: none;
+  .scrollbar-gutter-stable {
+    scrollbar-gutter: stable;
   }
 }
