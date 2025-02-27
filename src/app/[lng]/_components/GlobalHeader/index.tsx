@@ -25,7 +25,7 @@ export const GlobalHeader = () => {
       {topHeaderType !== 'none' ? (
         <header
           key={topHeaderType}
-          className="relative top-0 h-fit w-full max-w-(--breakpoint-sm)"
+          className="sticky top-0 h-fit w-full max-w-(--breakpoint-sm)"
           id={SELECTOR.TOP_HEADER}
         >
           {
