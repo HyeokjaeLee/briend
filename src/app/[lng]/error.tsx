@@ -15,7 +15,7 @@ import { useTranslation } from '../../configs/i18n/client';
 
 interface ErrorPageProps {
   error: Error;
-  reset: () => void;
+  reset?: () => void;
   isSidePanel?: boolean;
 }
 
