@@ -27,12 +27,8 @@
   --color-naver-green: #03c75a;
   --color-kakao-yellow: #fee500;
 
-  --color-sky-50: #e6edfb;
-  --color-sky-500: #0090ff;
-
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: #f0c160;
 
   --font-pretendard: var(--font-pretendard);
 
@@ -101,10 +97,10 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
+  --primary: var(--color-slate-800);
+  --primary-foreground: var(--color-slate-50);
+  --secondary: var(--color-slate-200);
+  --secondary-foreground: var(--color-slate-900);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
   --accent: oklch(0.968 0.007 247.896);

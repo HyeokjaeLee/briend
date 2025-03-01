@@ -13,9 +13,9 @@
   "aliases": {
     "components": "@/components",
     "utils": "@/utils",
-    "ui": "@/components/temp",
+    "ui": "@/app/[lng]/test",
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "iconLibrary": "lucide"
+  "iconLibrary": "react-icons"
 }
