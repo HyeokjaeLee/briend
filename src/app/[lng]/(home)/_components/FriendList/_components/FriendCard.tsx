@@ -25,7 +25,11 @@ export const FriendCard = ({
   const { t } = useTranslation('friend-list');
 
   return (
-    <button className="w-full px-5 py-3" type="button" onClick={onClick}>
+    <button
+      className="w-full cursor-pointer px-5 py-3"
+      type="button"
+      onClick={onClick}
+    >
       <article className="flex gap-3">
         <ProfileImage size="5" src={profileImage} />
         <div className="flex w-full items-center justify-between">

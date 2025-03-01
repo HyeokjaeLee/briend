@@ -46,7 +46,6 @@
     "i18next-resources-to-backend": "^1.2.1",
     "jose": "^5.10.0",
     "ky": "^1.7.5",
-    "lucide-react": "^0.475.0",
     "motion": "^11.18.2",
     "nanoid": "3.3.7",
     "next": "^15.2.0",

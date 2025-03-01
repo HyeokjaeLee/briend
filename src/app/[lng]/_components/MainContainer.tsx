@@ -57,7 +57,7 @@ export const MainContainer = ({ children }: PropsWithChildren) => {
   return (
     <main
       className={cn(
-        'scrollbar-gutter-stable flex size-full flex-col overflow-auto',
+        'flex size-full flex-col overflow-auto',
         isPendingRef.current
           ? 'invisible overflow-hidden'
           : getNavigationAnimationClasses({
