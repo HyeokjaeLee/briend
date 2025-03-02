@@ -24,8 +24,8 @@ const buttonVariants = cva(
 
     // Transition and outline
     'outline-none',
-    'transition-[color,box-shadow,scale] duration-75',
-    'focus-visible:ring-[3px]',
+    'transition-[color,box-shadow,scale] duration-150',
+    'focus-visible:ring-1',
 
     // Disabled state
     'disabled:pointer-events-none',
@@ -78,7 +78,11 @@ const buttonVariants = cva(
     },
     compoundVariants: [
       // Shape related variants
-      {},
+      {
+        shape: 'rounded',
+        size: '17',
+        className: 'rounded-xl',
+      },
       {
         shape: 'rounded',
         size: '14',

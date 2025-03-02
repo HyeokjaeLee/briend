@@ -1,11 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Select } from '@radix-ui/themes';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
 import { Button } from '@/components';
+import { Select } from '@/components/atoms/Select';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { LANGUAGE } from '@/constants';
@@ -13,7 +13,7 @@ import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { createInviteTokenSchema } from '@/schema/trpc/chat';
 import { useGlobalStore } from '@/stores';
-import { assert, assertEnum } from '@/utils';
+import { assert } from '@/utils';
 
 export interface QrInfo {
   userId: string;
@@ -50,6 +50,11 @@ export const InviteForm = () => {
       }),
   });
 
+  const languageOptions = Object.values(LANGUAGE).map((language) => ({
+    label: t(language),
+    value: language,
+  }));
+
   return (
     <>
       <form
@@ -66,29 +71,12 @@ export const InviteForm = () => {
             control={control}
             name="language"
             render={({ field }) => (
-              <Select.Root
-                size="3"
+              <Select
+                className="mt-2"
                 value={field.value}
-                onValueChange={(language) => {
-                  assertEnum(LANGUAGE, language);
-
-                  return field.onChange(language);
-                }}
-              >
-                <Select.Trigger
-                  className="mt-2 h-14 w-full rounded-xl"
-                  variant="soft"
-                />
-                <Select.Content>
-                  {Object.values(LANGUAGE).map((language) => {
-                    return (
-                      <Select.Item key={language} value={language}>
-                        {t(language)}
-                      </Select.Item>
-                    );
-                  })}
-                </Select.Content>
-              </Select.Root>
+                options={languageOptions}
+                onValueChange={(language) => field.onChange(language)}
+              />
             )}
           />
         </label>

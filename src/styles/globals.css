@@ -81,9 +81,7 @@
 
 :root {
   /* 라이트 모드 테마 */
-  --background: var(
-    --color-slate-50
-  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --background: var(--color-white); /* oklch(0.984 0.003 247.858) → slate-50 */
   --foreground: var(
     --color-slate-950
   ); /* oklch(0.129 0.042 264.695) → slate-950 */
@@ -109,7 +107,7 @@
   ); /* oklch(0.208 0.042 265.755) → slate-900 */
   --muted: var(--color-slate-100); /* oklch(0.968 0.007 247.896) → slate-100 */
   --muted-foreground: var(
-    --color-slate-500
+    --color-slate-300
   ); /* oklch(0.554 0.046 257.417) → slate-500 */
   --accent: var(--color-slate-100); /* oklch(0.968 0.007 247.896) → slate-100 */
   --accent-foreground: var(
@@ -121,8 +119,8 @@
   --destructive-foreground: var(
     --color-rose-500
   ); /* oklch(0.577 0.245 27.325) → rose-500 */
-  --border: var(--color-slate-200); /* oklch(0.929 0.013 255.508) → slate-200 */
-  --input: var(--color-slate-200); /* oklch(0.929 0.013 255.508) → slate-200 */
+  --border: var(--color-slate-300); /* oklch(0.929 0.013 255.508) → slate-200 */
+  --input: var(--color-slate-300); /* oklch(0.929 0.013 255.508) → slate-200 */
   --ring: var(--color-slate-400); /* oklch(0.704 0.04 256.788) → slate-400 */
   --chart-1: var(
     --color-amber-500
