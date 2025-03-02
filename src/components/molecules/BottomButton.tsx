@@ -1,9 +1,9 @@
 import { cn } from '@/utils';
 
-import { CustomButton, type CustomButtonProps } from '../atoms/CustomButton';
+import { Button, type ButtonProps } from '../atoms/Button';
 import { CustomBottomNav } from './CustomBottomNav';
 
-export type BottomButtonProps = Omit<CustomButtonProps, 'activeScaleDown'>;
+export type BottomButtonProps = Omit<ButtonProps, 'activeScaleDown'>;
 
 export const BottomButton = ({
   className,
@@ -11,7 +11,7 @@ export const BottomButton = ({
 }: BottomButtonProps) => {
   return (
     <CustomBottomNav className="h-17 border-t-0">
-      <CustomButton
+      <Button
         activeScaleDown={false}
         className={cn('size-full rounded-none text-xl', className)}
         {...restProps}

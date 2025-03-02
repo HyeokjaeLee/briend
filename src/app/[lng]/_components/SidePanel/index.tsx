@@ -5,7 +5,7 @@ import { memo, useEffect } from 'react';
 import { RiCloseLine } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
-import { CustomIconButton } from '@/components';
+import { Button } from '@/components';
 import { useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useSidePanelStore } from '@/stores';
@@ -83,16 +83,16 @@ const SidePanelContainer = () => {
       )}
     >
       {routeName !== 'FRIEND_LIST' ? (
-        <nav className="flex h-14 items-center justify-end px-5">
-          <CustomIconButton
-            size="3"
+        <nav className="flex h-14 items-center justify-end px-1">
+          <Button
             variant="ghost"
+            onlyIcon
             onClick={() => {
               push(ROUTES.FRIEND_LIST.pathname, { withAnimation: 'FROM_TOP' });
             }}
           >
-            <RiCloseLine className="size-8 text-slate-900" />
-          </CustomIconButton>
+            <RiCloseLine />
+          </Button>
         </nav>
       ) : null}
       <section className="flex flex-1 flex-col overflow-auto">

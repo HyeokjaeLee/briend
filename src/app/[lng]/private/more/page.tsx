@@ -1,6 +1,6 @@
 import { FaChevronRight } from 'react-icons/fa6';
 
-import { CustomButton, CustomLink } from '@/components';
+import { Button, CustomLink } from '@/components';
 import { getTranslation } from '@/configs/i18n/server';
 import type { LANGUAGE } from '@/constants';
 import type { RouteObject } from '@/routes/client';
@@ -42,7 +42,7 @@ const MorePage = async (props: MorePageProps) => {
       <ul className="mt-8">
         {MENU_ITEMS.map(({ title, route }) => (
           <li key={title} className="p-5">
-            <CustomButton
+            <Button
               asChild
               className="flex items-center justify-between text-slate-900"
               variant="ghost"
@@ -51,7 +51,7 @@ const MorePage = async (props: MorePageProps) => {
                 {t(title)}
                 <FaChevronRight className="size-5" />
               </CustomLink>
-            </CustomButton>
+            </Button>
           </li>
         ))}
         <li className="p-5">

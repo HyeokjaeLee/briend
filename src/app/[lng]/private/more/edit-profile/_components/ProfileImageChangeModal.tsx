@@ -1,4 +1,4 @@
-import { CustomButton, Modal } from '@/components';
+import { Button, Modal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { assert } from '@/utils';
 
@@ -26,7 +26,7 @@ export const ProfileImageChangeModal = ({
       onClose={onClose}
     >
       <footer className="mt-auto flex w-full gap-2">
-        <CustomButton
+        <Button
           className="flex-1"
           size="4"
           variant="outline"
@@ -35,8 +35,8 @@ export const ProfileImageChangeModal = ({
           }}
         >
           {t('use-default-image')}
-        </CustomButton>
-        <CustomButton asChild className="flex-1" size="4">
+        </Button>
+        <Button asChild className="flex-1" size="4">
           <label>
             {t('select-on-gallery')}
             <input
@@ -53,7 +53,7 @@ export const ProfileImageChangeModal = ({
               }}
             />
           </label>
-        </CustomButton>
+        </Button>
       </footer>
     </Modal>
   );

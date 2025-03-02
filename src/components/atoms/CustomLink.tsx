@@ -15,6 +15,7 @@ export interface CustomLinkProps extends LinkProps {
   withLoading?: boolean;
   withAnimation?: NAVIGATION_ANIMATION;
   toSidePanel?: boolean;
+  disabled?: boolean;
 }
 
 export const CustomLink = ({
@@ -26,6 +27,7 @@ export const CustomLink = ({
   withLoading = false,
   withAnimation: forceAnimation,
   toSidePanel,
+  disabled,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
@@ -47,6 +49,8 @@ export const CustomLink = ({
       href={customHref}
       replace={replace}
       onClick={(e) => {
+        if (disabled) return e.preventDefault();
+
         try {
           if (toSidePanel) {
             e.preventDefault();

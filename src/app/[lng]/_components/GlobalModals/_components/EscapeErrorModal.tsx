@@ -2,7 +2,7 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { ConfirmModal, CustomButton } from '@/components';
+import { ConfirmModal, Button } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
@@ -20,7 +20,7 @@ export const EscapeErrorModal = () => {
   return (
     <ConfirmModal
       footer={
-        <CustomButton
+        <Button
           className="w-full"
           size="4"
           onClick={() => {
@@ -29,7 +29,7 @@ export const EscapeErrorModal = () => {
           }}
         >
           {t('escape-modal-button')}
-        </CustomButton>
+        </Button>
       }
       message={t('escape-modal-message')}
       opened={isEscapeErrorModalOpen}

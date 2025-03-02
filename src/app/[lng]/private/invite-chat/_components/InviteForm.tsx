@@ -5,7 +5,7 @@ import { Select } from '@radix-ui/themes';
 import { Controller, useForm } from 'react-hook-form';
 import type { z } from 'zod';
 
-import { CustomButton } from '@/components';
+import { Button } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { LANGUAGE } from '@/constants';
@@ -92,7 +92,7 @@ export const InviteForm = () => {
             )}
           />
         </label>
-        <CustomButton
+        <Button
           className="w-full"
           loading={
             formState.isSubmitting || createInviteTokenMutation.isPending
@@ -100,7 +100,7 @@ export const InviteForm = () => {
           type="submit"
         >
           {t('invite-button')}
-        </CustomButton>
+        </Button>
       </form>
     </>
   );

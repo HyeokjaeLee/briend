@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { RiHome3Fill, RiMessage2Line } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
-import { CustomButton, DotLottie } from '@/components';
+import { Button, DotLottie } from '@/components';
 import { SESSION_STORAGE } from '@/constants';
 import { useSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -87,18 +87,22 @@ export default function ErrorPage({
   return (
     <article className="flex-center relative size-full flex-1 flex-col gap-8">
       <section className="flex-center flex-1 flex-col">
-        <DotLottie loop className="h-1/2 w-full" src={dynamicInfo.lottie} />
+        <DotLottie
+          loop
+          className="aspect-square w-4/5"
+          src={dynamicInfo.lottie}
+        />
         <strong className="mb-2 text-center text-xl font-semibold">
           {errorStatus}
         </strong>
-        <p className="text-center whitespace-pre-line text-zinc-600">
+        <p className="whitespace-pre-line text-center text-zinc-600">
           {dynamicInfo.text}
         </p>
       </section>
       {isSidePanel ? null : (
-        <CustomButton
+        <Button
           activeScaleDown={false}
-          className="mt-auto h-17 w-full rounded-none"
+          className="h-17 mt-auto w-full rounded-none"
           onClick={() => {
             if (isSidePanel) return sidePanel.push(ROUTES.FRIEND_LIST.pathname);
 
@@ -107,7 +111,7 @@ export default function ErrorPage({
         >
           <div className="mt-1">{dynamicInfo.buttonIcon}</div>
           {dynamicInfo.buttonText}
-        </CustomButton>
+        </Button>
       )}
     </article>
   );

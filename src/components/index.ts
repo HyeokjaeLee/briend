@@ -1,12 +1,8 @@
 /**
  * @package atoms 컴포넌트
  */
+export { Button, type ButtonProps } from './atoms/Button';
 export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
-export { CustomButton, type CustomButtonProps } from './atoms/CustomButton';
-export {
-  CustomIconButton,
-  type CustomIconButtonProps,
-} from './atoms/CustomIconButton';
 export { CustomImage, type CustomImageProps } from './atoms/CustomImage';
 export { CustomLink, type CustomLinkProps } from './atoms/CustomLink';
 export {
@@ -53,6 +49,10 @@ export { ConfirmModal, type ConfirmModalProps } from './organisms/ConfirmModal';
  * @package templates 컴포넌트
  */
 export {
-  LoadingTemplate,
-  type LoadingTemplateProps,
-} from './templates/LoadingTemplate';
+  GlobalLoadingTemplate as LoadingTemplate,
+  type GlobalLoadingTemplateProps as LoadingTemplateProps,
+} from './templates/GlobalLoadingTemplate';
+export {
+  PageLoadingTemplate,
+  type PageLoadingTemplateProps,
+} from './templates/PageLoadingTemplate';

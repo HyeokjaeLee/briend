@@ -2,6 +2,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
+import { DotLottie } from '@/components';
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { cn } from '@/utils';
 
@@ -16,7 +17,7 @@ const buttonVariants = cva(
     'inline-flex shrink-0',
     'cursor-pointer select-none',
     'items-center justify-center',
-    'whitespace-nowrap',
+    'overflow-hidden whitespace-nowrap',
 
     // Typography
     'font-pretendard font-semibold',
@@ -27,7 +28,7 @@ const buttonVariants = cva(
     'focus-visible:ring-[3px]',
 
     // Disabled state
-    'disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50',
+    'disabled:pointer-events-none',
 
     // SVG related
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
@@ -37,12 +38,13 @@ const buttonVariants = cva(
       variant: {
         // Main style variant
         primary:
-          'bg-primary text-primary-foreground shadow-xs active:bg-primary/85',
+          'bg-primary text-primary-foreground shadow-xs active:bg-primary/85 disabled:bg-primary/10',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-xs active:bg-secondary/60',
+          'bg-secondary text-secondary-foreground shadow-xs active:bg-secondary/60 disabled:bg-primary/10 disabled:text-primary-foreground',
         outline:
-          'border-primary shadow-xs active:border-primary/30 border bg-transparent',
-        ghost: 'active:bg-primary/10 bg-transparent',
+          'border-primary text-primary shadow-xs active:border-primary/30 disabled:border-primary/10 disabled:text-primary/10 border bg-transparent',
+        ghost:
+          'active:bg-primary/10 text-primary disabled:text-primary/10 bg-transparent',
       },
       size: {
         // Size variant
@@ -60,7 +62,7 @@ const buttonVariants = cva(
         ],
       },
       activeScaleDown: {
-        true: 'not-[disabled]:active:scale-90',
+        true: 'active:scale-96',
       },
       isTouch: {
         false: '',
@@ -107,7 +109,7 @@ const buttonVariants = cva(
       {
         variant: 'ghost',
         isTouch: false,
-        className: 'hover:bg-primary/5',
+        className: 'hover:bg-primary/10',
       },
 
       // Icon size related variants
@@ -132,7 +134,7 @@ const buttonVariants = cva(
   },
 );
 
-interface ButtonProps
+export interface ButtonProps
   extends React.ComponentProps<'button'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
@@ -141,7 +143,7 @@ interface ButtonProps
   loading?: boolean;
 }
 
-const Button = ({
+export const Button = ({
   className,
   variant,
   size,
@@ -173,9 +175,17 @@ const Button = ({
         }),
       )}
     >
-      {loading ? <></> : children}
+      {loading && !asChild ? (
+        <>
+          <DotLottie
+            src="/assets/lottie/loading.lottie"
+            className="animate-fade absolute z-10 mx-auto size-full scale-150"
+          />
+          <span className="invisible contents">{children}</span>
+        </>
+      ) : (
+        children
+      )}
     </Comp>
   );
 };
-
-export { Button, buttonVariants };

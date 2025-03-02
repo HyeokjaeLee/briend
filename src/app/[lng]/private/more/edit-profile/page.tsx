@@ -10,7 +10,7 @@ import type { z } from 'zod';
 
 import {
   BottomButton,
-  CustomButton,
+  Button,
   Input,
   ProfileImage,
   ValidationMessage,
@@ -149,12 +149,12 @@ const EditProfilePage = (props: ProfilePageProps) => {
             onClick={() => setIsProfileImageModalOpen(true)}
           >
             <ProfileImage src={form.getValues('photoURL')} />
-            <div className="absolute right-0 bottom-0 rounded-full border-2 border-white bg-slate-200 p-2">
+            <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>
           </button>
         </section>
-        <CustomButton asChild className="w-full" variant="outline" />
+        <Button asChild className="w-full" variant="outline" />
         <label className="w-full font-semibold">
           {t('my-nickname')}
           <Input
