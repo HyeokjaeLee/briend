@@ -1,4 +1,3 @@
-import '@/styles/tailwind.css';
 import '@/styles/globals.css';
 import '@/styles/radix.css';
 
@@ -105,7 +104,7 @@ export default async function RootLayout({
             <GlobalListener />
             <MountAction />
             <div
-              className="relative flex size-full w-fit max-w-(--breakpoint-xl) flex-2"
+              className="max-w-(--breakpoint-xl) flex-2 relative flex size-full w-fit"
               id={SELECTOR.DYNAMIC_CONTAINER}
             >
               <CenterContainer>

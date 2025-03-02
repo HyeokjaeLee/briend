@@ -2,7 +2,7 @@
 
 import { Ri24HoursFill } from 'react-icons/ri';
 
-import { CustomButton } from '@/components';
+import { CustomButton, CustomLink } from '@/components';
 import { toast } from '@/utils/client';
 
 import { Button } from './button';
@@ -35,9 +35,11 @@ export default function TestPage() {
         <Button size="14" variant="outline">
           Test
         </Button>
-        <Button size="14" variant="secondary">
+        <Button size="14" variant="secondary" onlyIcon>
           <Ri24HoursFill />
-          fqwfq
+        </Button>
+        <Button asChild>
+          <CustomLink href="/">test</CustomLink>
         </Button>
       </div>
       ss

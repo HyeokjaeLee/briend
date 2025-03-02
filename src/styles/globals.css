@@ -1,11 +1,294 @@
-html {
-  font-size: 14px;
+@import 'tailwindcss';
+
+@custom-variant dark (&:is(.dark *));
+
+@import 'tailwindcss-animated';
+
+@theme {
+  --breakpoint-xs: 30rem;
+
+  --animate-shake: shake-horizontal var(--tw-animate-duration, 1s)
+    cubic-bezier(0.455, 0.03, 0.515, 0.955) var(--tw-animate-delay, 0s) both;
+
+  --backdrop-blur-xs: 1px;
+
+  --shadow-lg-x:
+    10px 0 15px -3px rgba(0, 0, 0, 0.03), -10px 0 15px -3px rgba(0, 0, 0, 0.03);
+  --shadow-lg-left:
+    -10px 0 15px -3px rgb(0 0 0 / 0.03), -4px 0 6px -4px rgb(0 0 0 / 0.03);
+  --shadow-lg-right:
+    10px 0 15px -3px rgb(0 0 0 / 0.03), 4px 0 6px -4px rgb(0 0 0 / 0.03);
+  --shadow-lg-top:
+    0 -10px 15px -3px rgb(0 0 0 / 0.03), 0 -4px 6px -4px rgb(0 0 0 / 0.02);
+
+  --z-index-global-loading: 35;
+
+  --color-naver-green: #03c75a;
+  --color-kakao-yellow: #fee500;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-pretendard: var(--font-pretendard);
+
+  --spacing-14_4: 3.6rem;
+
+  @keyframes shake-horizontal {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70% {
+      transform: translateX(-10px);
+    }
+    20%,
+    40%,
+    60% {
+      transform: translateX(10px);
+    }
+    80% {
+      transform: translateX(8px);
+    }
+    90% {
+      transform: translateX(-8px);
+    }
+  }
 }
 
-* {
-  @apply break-keep whitespace-pre-line;
+@layer utilities {
+  .flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 :root {
-  --viewport-height: 100dvh;
+  /* 라이트 모드 테마 */
+  --background: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --foreground: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --card: var(--color-slate-50); /* oklch(1 0 0) → slate-50 */
+  --card-foreground: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --popover: var(--color-slate-50); /* oklch(1 0 0) → slate-50 */
+  --popover-foreground: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --primary: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --primary-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --secondary: var(
+    --color-slate-200
+  ); /* oklch(0.968 0.007 247.896) → slate-100 */
+  --secondary-foreground: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --muted: var(--color-slate-100); /* oklch(0.968 0.007 247.896) → slate-100 */
+  --muted-foreground: var(
+    --color-slate-500
+  ); /* oklch(0.554 0.046 257.417) → slate-500 */
+  --accent: var(--color-slate-100); /* oklch(0.968 0.007 247.896) → slate-100 */
+  --accent-foreground: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --destructive: var(
+    --color-rose-500
+  ); /* oklch(0.577 0.245 27.325) → rose-500 */
+  --destructive-foreground: var(
+    --color-rose-500
+  ); /* oklch(0.577 0.245 27.325) → rose-500 */
+  --border: var(--color-slate-200); /* oklch(0.929 0.013 255.508) → slate-200 */
+  --input: var(--color-slate-200); /* oklch(0.929 0.013 255.508) → slate-200 */
+  --ring: var(--color-slate-400); /* oklch(0.704 0.04 256.788) → slate-400 */
+  --chart-1: var(
+    --color-amber-500
+  ); /* oklch(0.646 0.222 41.116) → amber-500 (근사값) */
+  --chart-2: var(--color-teal-600); /* oklch(0.6 0.118 184.704) → teal-600 */
+  --chart-3: var(--color-cyan-900); /* oklch(0.398 0.07 227.392) → cyan-900 */
+  --chart-4: var(
+    --color-yellow-300
+  ); /* oklch(0.828 0.189 84.429) → yellow-300 (근사값) */
+  --chart-5: var(
+    --color-rose-500
+  ); /* oklch(0.769 0.188 70.08) → rose-500 (근사값) */
+  --radius: 0.625rem;
+  --sidebar: var(--color-slate-50); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --sidebar-foreground: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --sidebar-primary: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --sidebar-primary-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --sidebar-accent: var(
+    --color-slate-100
+  ); /* oklch(0.968 0.007 247.896) → slate-100 */
+  --sidebar-accent-foreground: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --sidebar-border: var(
+    --color-slate-200
+  ); /* oklch(0.929 0.013 255.508) → slate-200 */
+  --sidebar-ring: var(
+    --color-slate-400
+  ); /* oklch(0.704 0.04 256.788) → slate-400 */
+}
+
+.dark {
+  /* 다크 모드 테마 */
+  --background: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --card: var(--color-slate-950); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --card-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --popover: var(
+    --color-slate-950
+  ); /* oklch(0.129 0.042 264.695) → slate-950 */
+  --popover-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --primary: var(--color-slate-50); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --primary-foreground: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --secondary: var(
+    --color-slate-700
+  ); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --secondary-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --muted: var(--color-slate-800); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --muted-foreground: var(
+    --color-slate-400
+  ); /* oklch(0.704 0.04 256.788) → slate-400 */
+  --accent: var(--color-slate-800); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --accent-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --destructive: var(
+    --color-red-700
+  ); /* oklch(0.396 0.141 25.723) → red-700 (근사값) */
+  --destructive-foreground: var(
+    --color-red-500
+  ); /* oklch(0.637 0.237 25.331) → red-500 (근사값) */
+  --border: var(--color-slate-800); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --input: var(--color-slate-800); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --ring: var(--color-slate-600); /* oklch(0.446 0.043 257.281) → slate-600 */
+  --chart-1: var(--color-blue-700); /* oklch(0.488 0.243 264.376) → blue-700 */
+  --chart-2: var(
+    --color-emerald-500
+  ); /* oklch(0.696 0.17 162.48) → emerald-500 */
+  --chart-3: var(
+    --color-rose-500
+  ); /* oklch(0.769 0.188 70.08) → rose-500 (근사값) */
+  --chart-4: var(
+    --color-purple-500
+  ); /* oklch(0.627 0.265 303.9) → purple-500 */
+  --chart-5: var(
+    --color-rose-600
+  ); /* oklch(0.645 0.246 16.439) → rose-600 (근사값) */
+  --sidebar: var(
+    --color-slate-900
+  ); /* oklch(0.208 0.042 265.755) → slate-900 */
+  --sidebar-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --sidebar-primary: var(
+    --color-blue-700
+  ); /* oklch(0.488 0.243 264.376) → blue-700 */
+  --sidebar-primary-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --sidebar-accent: var(
+    --color-slate-800
+  ); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --sidebar-accent-foreground: var(
+    --color-slate-50
+  ); /* oklch(0.984 0.003 247.858) → slate-50 */
+  --sidebar-border: var(
+    --color-slate-800
+  ); /* oklch(0.279 0.041 260.031) → slate-800 */
+  --sidebar-ring: var(
+    --color-slate-600
+  ); /* oklch(0.446 0.043 257.281) → slate-600 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  html {
+    @apply text-[14px];
+  }
+
+  * {
+    @apply border-border outline-ring/50;
+    @apply whitespace-pre-line break-keep;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
