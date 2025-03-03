@@ -1,36 +1,35 @@
 import { IoIosWarning } from 'react-icons/io';
 
+import type { ModalProps } from '../molecules/Modal';
 import { Modal } from '../molecules/Modal';
 
-export interface ConfirmModalProps {
-  opened: boolean;
-  onClose?: () => void;
+export interface ConfirmModalProps
+  extends Pick<
+    ModalProps,
+    'open' | 'footer' | 'onOpenChange' | 'rootClassName'
+  > {
   title: string;
   message: string;
   footer?: React.ReactNode;
-  rootClassName?: string;
 }
 
 export const ConfirmModal = ({
-  opened,
-  onClose,
   title,
   message,
-  footer,
-  rootClassName,
+  ...dialogProps
 }: ConfirmModalProps) => (
-  <Modal
-    hasCloseButton
-    className="flex flex-col gap-4"
-    open={opened}
-    rootClassName={rootClassName}
-    onClose={onClose}
-  >
-    <div className="rounded-full bg-zinc-100 p-5 flex-center">
-      <IoIosWarning className="size-10 text-red-500" />
+  <Modal className="flex flex-col gap-4" {...dialogProps}>
+    <div className="flex-center mx-auto size-fit rounded-full bg-zinc-100 p-5">
+      <IoIosWarning className="size-8 text-red-500" />
     </div>
-    <strong className="text-center text-xl font-semibold">{title}</strong>
-    <p className="mx-10 mb-8 text-center text-zinc-600">{message}</p>
-    {footer}
+    <h2 className="text-center text-xl font-semibold" data-slot="dialog-title">
+      {title}
+    </h2>
+    <p
+      data-slot="dialog-description"
+      className="text-primary/50 text-center text-sm"
+    >
+      {message}
+    </p>
   </Modal>
 );

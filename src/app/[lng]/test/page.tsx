@@ -1,21 +1,26 @@
 'use client';
 
-import { Modal } from '@/components';
-
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from './dialog';
+import { Button, Modal } from '@/components';
 
 export default function TestPage() {
   return (
     <article className="p-4">
-      <Modal>modal</Modal>
-      <Dialog modal>
+      <Modal
+        header="Are you absolutely sure?"
+        description="This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+        trigger={<Button>Test</Button>}
+        footer={<Button>Test</Button>}
+      >
+        테스트
+      </Modal>
+    </article>
+  );
+}
+
+export const dynamic = 'force-static';
+
+/**
+ </Dialog>
         <DialogTrigger>test</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -27,9 +32,4 @@ export default function TestPage() {
           </DialogHeader>
           ss
         </DialogContent>
-      </Dialog>
-    </article>
-  );
-}
-
-export const dynamic = 'force-static';
+      </Dialog> */

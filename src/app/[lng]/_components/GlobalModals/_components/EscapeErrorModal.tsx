@@ -31,10 +31,10 @@ export const EscapeErrorModal = () => {
         </Button>
       }
       message={t('escape-modal-message')}
-      opened={isEscapeErrorModalOpen}
+      open={isEscapeErrorModalOpen}
       rootClassName="z-40"
       title={t('escape-modal-title')}
-      onClose={() => setIsEscapeErrorModalOpen(false)}
+      onOpenChange={setIsEscapeErrorModalOpen}
     />
   );
 };
