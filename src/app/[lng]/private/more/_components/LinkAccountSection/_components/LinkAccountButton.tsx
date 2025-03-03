@@ -1,10 +1,10 @@
 'use client';
 
-import { Badge, Spinner } from '@radix-ui/themes';
+import { Badge } from '@radix-ui/themes';
 import { pick } from 'es-toolkit';
 import Image from 'next/image';
 
-import { Skeleton } from '@/components';
+import { Skeleton, Spinner } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { LOGIN_PROVIDERS } from '@/constants';
@@ -55,7 +55,7 @@ export const LinkAccountButton = ({
 
   return (
     <button
-      className="flex-center flex-col gap-2 break-keep"
+      className="flex-center cursor-pointer flex-col gap-2 break-keep"
       type="button"
       onClick={() => {
         if (isLastOne)

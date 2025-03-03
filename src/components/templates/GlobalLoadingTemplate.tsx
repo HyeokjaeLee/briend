@@ -1,6 +1,6 @@
 import { cn } from '@/utils';
 
-import { DotLottie } from '../atoms/DotLottie';
+import { Spinner } from '../atoms/Spinner';
 
 export interface GlobalLoadingTemplateProps {
   className?: string;
@@ -13,10 +13,7 @@ export const GlobalLoadingTemplate = ({
 }: GlobalLoadingTemplateProps) => {
   return (
     <div className={cn('flex-center size-full flex-1 cursor-wait', className)}>
-      <DotLottie
-        className={cn('animate-fade -z-10 h-40', spinnerClassName)}
-        src="/assets/lottie/spinner.lottie"
-      />
+      <Spinner className={cn('size-40', spinnerClassName)} />
     </div>
   );
 };
