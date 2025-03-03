@@ -1,6 +1,6 @@
-import { Spinner } from '@radix-ui/themes';
 import type { Dayjs } from 'dayjs';
 
+import { Spinner } from '@/components';
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { MESSAGE_STATE } from '@/database/indexed';
 import { useLanguage, useLongPress } from '@/hooks';
@@ -48,12 +48,12 @@ export const SenderMessageItem = ({
         </time>
       )}
       <div className="flex items-end gap-2">
-        {state === MESSAGE_STATE.SENT ? <Spinner size="1" /> : null}
+        {state === MESSAGE_STATE.SENT ? <Spinner /> : null}
         <pre
           className={cn(
-            'whitespace-pre-wrap break-all font-pretendard cursor-pointer transition-colors',
-            'py-2 px-4 rounded-xl rounded-tr-none w-fit',
-            'bg-slate-100 active:bg-slate-300 duration-75',
+            'font-pretendard cursor-pointer whitespace-pre-wrap break-all transition-colors',
+            'w-fit rounded-xl rounded-tr-none px-4 py-2',
+            'bg-slate-100 duration-75 active:bg-slate-300',
             {
               'hover:bg-slate-200': !IS_TOUCH_DEVICE,
               'bg-slate-200': isPressing,
