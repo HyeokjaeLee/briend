@@ -2,7 +2,7 @@
 
 import { useShallow } from 'zustand/shallow';
 
-import { ConfirmModal, Button } from '@/components';
+import { Button, ConfirmModal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { ROUTES } from '@/routes/client';
 import { useGlobalModalStore } from '@/stores';
@@ -22,7 +22,6 @@ export const EscapeErrorModal = () => {
       footer={
         <Button
           className="w-full"
-          size="4"
           onClick={() => {
             location.replace(ROUTES.FRIEND_LIST.pathname);
             setIsEscapeErrorModalOpen(false);

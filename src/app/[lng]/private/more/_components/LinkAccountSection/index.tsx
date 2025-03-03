@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { ConfirmModal, Button } from '@/components';
+import { Button, ConfirmModal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { LOGIN_PROVIDERS, SESSION_STORAGE } from '@/constants';
 import { useUserData } from '@/hooks';

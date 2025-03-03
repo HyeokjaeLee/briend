@@ -1,12 +1,9 @@
 'use client';
 
-import { Avatar } from '@radix-ui/themes';
-
 import { Modal } from '@/components';
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,

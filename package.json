@@ -10,7 +10,7 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "tsc --noEmit && next lint",
+    "lint": "tsc --noEmit && next lint --fix",
     "update:env": "vercel env pull"
   },
   "dependencies": {
@@ -53,6 +53,7 @@
     "nanoid": "3.3.7",
     "next": "^15.2.0",
     "next-auth": "^5.0.0-beta.25",
+    "peerjs": "^1.5.4",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",

@@ -28,7 +28,6 @@ export const ProfileImageChangeModal = ({
       <footer className="mt-auto flex w-full gap-2">
         <Button
           className="flex-1"
-          size="4"
           variant="outline"
           onClick={() => {
             onChangeProfileImage?.(null);
@@ -36,7 +35,7 @@ export const ProfileImageChangeModal = ({
         >
           {t('use-default-image')}
         </Button>
-        <Button asChild className="flex-1" size="4">
+        <Button asChild className="flex-1">
           <label>
             {t('select-on-gallery')}
             <input
