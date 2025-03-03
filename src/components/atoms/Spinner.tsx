@@ -9,8 +9,9 @@ export interface SpinnerProps {
 export const Spinner = ({ className }: SpinnerProps) => {
   return (
     <DotLottie
+      aria-label="loading"
       src="/assets/lottie/loading.lottie"
-      className={cn('animate-fade size-full', className)}
+      className={cn('animate-fade size-full cursor-wait', className)}
     />
   );
 };
