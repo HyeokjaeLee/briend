@@ -3,7 +3,7 @@
 import { useLayoutEffect } from 'react';
 import { useShallow } from 'zustand/shallow';
 
-import { LoadingTemplate } from '@/components';
+import { Spinner } from '@/components';
 import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
@@ -25,9 +25,10 @@ export const GlobalLoading = createOnlyClientComponent(() => {
   }, [url, setGlobalLoading]);
 
   return isLoading ? (
-    <LoadingTemplate
+    <div
       className={cn(
-        'animate-fade animate-duration-150 z-global-loading fixed bg-black/80 backdrop-blur-sm',
+        'flex-center z-global-loading fixed size-full flex-1 cursor-wait bg-black/80 backdrop-blur-sm',
+        'animate-fade animate-duration-150',
         {
           0: 'animate-delay-0',
           100: 'animate-delay-100',
@@ -35,6 +36,8 @@ export const GlobalLoading = createOnlyClientComponent(() => {
           300: 'animate-delay-300',
         }[delay],
       )}
-    />
+    >
+      <Spinner className="size-40" />
+    </div>
   ) : null;
 });
