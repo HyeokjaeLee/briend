@@ -36,15 +36,17 @@ const MorePage = async (props: MorePageProps) => {
   const { t } = await getTranslation('more', lng);
 
   return (
-    <article className="mx-4 mt-8 flex flex-col">
+    <article className="mt-8 flex flex-col">
       <ProfileSection className="p-4" />
       <LinkAccountSection />
-      <ul className="mt-8">
+      <ul className="mt-8 flex flex-col gap-2">
         {MENU_ITEMS.map(({ title, route }) => (
-          <li key={title} className="p-5">
+          <li key={title}>
             <Button
+              shape="square"
+              size="17"
               asChild
-              className="flex items-center justify-between text-slate-900"
+              className="flex items-center justify-between px-8 text-slate-900"
               variant="ghost"
             >
               <CustomLink href={route.pathname}>
@@ -54,7 +56,7 @@ const MorePage = async (props: MorePageProps) => {
             </Button>
           </li>
         ))}
-        <li className="p-5">
+        <li>
           <LogoutButton logoutToastMessage={t('logout-toast-message')}>
             {t('logout')}
           </LogoutButton>
