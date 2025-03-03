@@ -38,8 +38,10 @@ export const LogoutButton = ({
 
   return (
     <Button
-      className="flex w-full items-center justify-between text-slate-900"
+      className="flex w-full items-center justify-between px-8 text-slate-900"
       loading={logoutMutation.isPending}
+      size="17"
+      shape="square"
       variant="ghost"
       onClick={() => logoutMutation.mutate()}
     >

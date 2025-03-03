@@ -50,15 +50,15 @@ const buttonVariants = cva(
         // Size variant
         '17': [
           'h-17 gap-2 px-4 text-lg',
-          "has-[>svg]:px-3.5 [&_svg:not([class*='size-'])]:size-5",
+          "[&_svg:not([class*='size-'])]:size-5",
         ],
         '14': [
           'h-14 gap-2 px-4 text-lg',
-          "has-[>svg]:px-3.5 [&_svg:not([class*='size-'])]:size-5",
+          "[&_svg:not([class*='size-'])]:size-5",
         ],
         '8': [
           'h-8 gap-1.5 px-3 text-sm',
-          "has-[>svg]:px-2.5 [&_svg:not([class*='size-'])]:size-4",
+          "[&_svg:not([class*='size-'])]:size-4",
         ],
       },
       activeScaleDown: {
@@ -158,6 +158,7 @@ export const Button = ({
   type = 'button',
   disabled,
   loading,
+  shape,
   ...restProps
 }: ButtonProps) => {
   const Comp = asChild ? Slot : 'button';
@@ -175,8 +176,9 @@ export const Button = ({
           activeScaleDown,
           isTouch: IS_TOUCH_DEVICE,
           onlyIcon,
-          className,
+          shape,
         }),
+        className,
       )}
     >
       {loading && !asChild ? (
