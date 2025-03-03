@@ -6,6 +6,6 @@ module.exports = {
   trailingComma: 'all',
   printWidth: 80,
   plugins: ['prettier-plugin-tailwindcss'],
-  tailwindStylesheet: './src/styles/globals.css',
-  tailwindFunctions: ['cn'],
+  tailwindStylesheet: './src/styles/tailwind.css',
+  tailwindFunctions: ['tw', 'cn', 'cva', 'twMerge', 'clsx'],
 };

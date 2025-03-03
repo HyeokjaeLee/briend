@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import {
-  CustomButton,
+  Button,
   DotLottie,
   Input,
   Modal,
@@ -122,13 +122,13 @@ export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
         <ValidationMessage
           message={t(form.formState.errors.nickname?.message ?? '')}
         />
-        <CustomButton
+        <Button
           className={cn('mt-8 w-full')}
           loading={joinChatMutation.isPending || joinChatMutation.isSuccess}
           type="submit"
         >
           {t('start-chatting-button')}
-        </CustomButton>
+        </Button>
       </form>
     </Modal>
   );

@@ -2,7 +2,7 @@
 
 import { RiLogoutBoxRLine } from 'react-icons/ri';
 
-import { CustomButton } from '@/components';
+import { Button } from '@/components';
 import { trpc } from '@/configs/trpc';
 import { COOKIES, SESSION_STORAGE } from '@/constants';
 import { useLanguage, useSidePanel } from '@/hooks';
@@ -37,7 +37,7 @@ export const LogoutButton = ({
   });
 
   return (
-    <CustomButton
+    <Button
       className="flex w-full items-center justify-between text-slate-900"
       loading={logoutMutation.isPending}
       variant="ghost"
@@ -45,6 +45,6 @@ export const LogoutButton = ({
     >
       {children}
       <RiLogoutBoxRLine className="size-6" />
-    </CustomButton>
+    </Button>
   );
 };

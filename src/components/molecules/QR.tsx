@@ -1,7 +1,7 @@
-import { Skeleton } from '@radix-ui/themes';
-import type { DetailedHTMLProps,ImgHTMLAttributes } from 'react';
+import type { DetailedHTMLProps, ImgHTMLAttributes } from 'react';
 
 import { CustomImage } from '../atoms/CustomImage';
+import { Skeleton } from '../atoms/Skeleton';
 
 const QR_API = 'https://api.qrserver.com/v1/create-qr-code';
 
@@ -28,10 +28,12 @@ export const QR = ({
 
   return (
     <Skeleton
-      height={`${size}px`}
       //! loading 상태과 관계없이 이미지 로딩을 기다리기 위해 false 대신 undefined 사용
       loading={loading || undefined}
-      width={`${size}px`}
+      style={{
+        height: `${size}px`,
+        width: `${size}px`,
+      }}
     >
       {loading ? null : (
         <CustomImage

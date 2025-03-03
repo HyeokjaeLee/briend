@@ -6,7 +6,7 @@ import type * as JwtPayload from '@/types/jwt';
 import { CustomError } from '@/utils';
 import { jwtAuthSecret } from '@/utils/server';
 
-export const verfiyInviteToken = publicProcedure
+export const verifyInviteToken = publicProcedure
   .input(
     z.object({
       inviteToken: z.string(),

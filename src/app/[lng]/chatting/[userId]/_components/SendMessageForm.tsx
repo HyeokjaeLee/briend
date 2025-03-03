@@ -8,7 +8,7 @@ import { RiSendPlane2Line } from 'react-icons/ri';
 import TextareaAutosize from 'react-textarea-autosize';
 import type { z } from 'zod';
 
-import { CustomIconButton } from '@/components';
+import { Button } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
@@ -101,20 +101,20 @@ export const SendMessageForm = ({ receiverId }: SendMessageFormProps) => {
               if (e) e.focus();
             }}
             cacheMeasurements
-            className="hide-scrollbar w-full resize-none bg-transparent outline-hidden"
+            className="hide-scrollbar outline-hidden w-full resize-none bg-transparent"
             maxRows={4}
             placeholder={t('send-form-placeholder')}
             title="message-input"
           />
         </div>
-        <CustomIconButton
-          className="mb-[6.5px] rounded-full"
-          size="3"
+        <Button
+          className="mb-[6.5px]"
+          shape="pill"
           title="send-message"
           type="submit"
         >
           <RiSendPlane2Line className="animate-jump-in animate-duration-300 ml-1 size-6" />
-        </CustomIconButton>
+        </Button>
       </section>
     </form>
   );

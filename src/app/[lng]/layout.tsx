@@ -7,6 +7,7 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import { type ReactElement, Suspense } from 'react';
 
+import { PageLoadingTemplate } from '@/components';
 import { pretendard } from '@/configs/font';
 import { LANGUAGE, SELECTOR } from '@/constants';
 import { cn } from '@/utils';
@@ -104,13 +105,13 @@ export default async function RootLayout({
             <GlobalListener />
             <MountAction />
             <div
-              className="max-w-(--breakpoint-xl) flex-2 relative flex size-full w-fit"
+              className="flex-2 relative flex size-full w-fit max-w-screen-xl"
               id={SELECTOR.DYNAMIC_CONTAINER}
             >
               <CenterContainer>
                 <GlobalHeader />
                 <ToastProvider />
-                <Suspense fallback={<div className="size-full flex-1" />}>
+                <Suspense fallback={<PageLoadingTemplate />}>
                   <GlobalModals />
                   <MainContainer>{children}</MainContainer>
                 </Suspense>

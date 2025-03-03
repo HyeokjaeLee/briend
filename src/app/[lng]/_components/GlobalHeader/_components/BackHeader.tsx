@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { RiArrowGoBackFill, RiCloseLine } from 'react-icons/ri';
 
-import { CustomIconButton } from '@/components';
+import { Button } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { useCustomRouter } from '@/hooks';
 import { ROUTES } from '@/routes/client';
@@ -24,15 +24,13 @@ export const BackHeader = () => {
 
   return (
     <nav
-      className={cn('flex h-14 items-center justify-between px-5', {
+      className={cn('flex h-14 items-center justify-between px-1', {
         'justify-end': isLoginPage,
       })}
     >
-      <CustomIconButton size="3" variant="ghost" onClick={() => router.back()}>
-        <BackIcon
-          className={cn('text-slate-900', isLoginPage ? 'size-8' : 'size-6')}
-        />
-      </CustomIconButton>
+      <Button variant="ghost" onClick={() => router.back()} onlyIcon>
+        <BackIcon />
+      </Button>
       {topHeaderTitle ? (
         <h1 className="text-lg font-semibold text-gray-700">
           {t(topHeaderTitle)}
