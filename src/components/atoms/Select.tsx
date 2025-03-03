@@ -16,24 +16,21 @@ const SelectRoot = ({
 const SelectTrigger = ({
   className,
   children,
+  value,
+  'aria-invalid': ariaInvalid,
   ...restProps
 }: React.ComponentProps<typeof SelectPrimitive.Trigger>) => {
   return (
     <SelectPrimitive.Trigger
       {...restProps}
       data-slot="select-trigger"
+      aria-invalid={ariaInvalid ? 'true' : 'false'}
       className={cn(
         // Base
-        'flex',
-        'h-14',
-        'w-full',
+        'inline-flex items-center justify-between gap-2',
+        'h-14 w-full px-4 py-2',
         'rounded-xl',
-        // Layout & Spacing
-        'items-center',
-        'justify-between',
-        'gap-2',
-        'px-4',
-        'py-2',
+
         // Typography
         'text-lg',
         'whitespace-nowrap',
@@ -50,16 +47,14 @@ const SelectTrigger = ({
         'data-[state=open]:border-primary',
         {
           'not-[&[data-disabled]]:hover:border-primary/50': !IS_TOUCH_DEVICE,
+          'data-[placeholder]:text-muted-foreground': !value,
         },
         'transition-[color,box-shadow,border]',
         'duration-150',
         'disabled:cursor-not-allowed',
         'disabled:opacity-50',
         // Data attributes
-        'data-[placeholder]:text-muted-foreground',
         'aria-invalid:border-destructive',
-        'aria-invalid:ring-destructive/20',
-        'dark:aria-invalid:ring-destructive/40',
         // Child elements
         '*:data-[slot=select-value]:line-clamp-1',
         '*:data-[slot=select-value]:flex',
@@ -274,7 +269,7 @@ export const Select = <T extends string>({
 
   return (
     <SelectRoot disabled={disabled} onValueChange={onValueChange}>
-      <SelectTrigger {...restProps}>
+      <SelectTrigger {...restProps} value={value}>
         {selectedOption?.label || placeholder}
       </SelectTrigger>
       {options ? (

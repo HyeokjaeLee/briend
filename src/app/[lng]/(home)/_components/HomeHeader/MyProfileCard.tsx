@@ -1,11 +1,10 @@
-import { Skeleton } from '@radix-ui/themes';
 import CountUp from 'react-countup';
 import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
-import { CustomLink, ProfileImage } from '@/components';
+import { CustomLink, ProfileImage, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
-import { MAX_FIREND_COUNT } from '@/constants';
+import { MAX_FRIEND_COUNT } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useFriendStore } from '@/stores';
@@ -17,8 +16,8 @@ interface MyProfileCardProps {
 export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
   const { t } = useTranslation('friend-list');
 
-  const [firendCount, isLimitedAddFriend] = useFriendStore(
-    useShallow((state) => [state.friendList.length, state.isLinimtedAddFriend]),
+  const [friendCount, isLimitedAddFriend] = useFriendStore(
+    useShallow((state) => [state.friendList.length, state.isLimitedAddFriend]),
   );
 
   const { user } = useUserData();
@@ -39,7 +38,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
           <ul className="mt-auto flex flex-col">
             <li className="flex items-center gap-2">
               <RiMessage2Line />
-              <CountUp className="text-sm" duration={0.3} end={firendCount} />
+              <CountUp className="text-sm" duration={0.3} end={friendCount} />
             </li>
             <li className="flex items-center gap-2">
               {isLimitedAddFriend ? (
@@ -54,9 +53,9 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
                   }
                   delay={0.1}
                   duration={0.3}
-                  end={firendCount}
+                  end={friendCount}
                 />{' '}
-                / <span>{MAX_FIREND_COUNT}</span>
+                / <span>{MAX_FRIEND_COUNT}</span>
               </small>
             </li>
           </ul>

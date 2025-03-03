@@ -1,9 +1,10 @@
 'use client';
 
-import { Badge, Skeleton, Spinner } from '@radix-ui/themes';
+import { Badge, Spinner } from '@radix-ui/themes';
 import { pick } from 'es-toolkit';
 import Image from 'next/image';
 
+import { Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { LOGIN_PROVIDERS } from '@/constants';

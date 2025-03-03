@@ -12,7 +12,7 @@ import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
 import { EmptyTemplate } from './_components/EmptyTemplate';
 import { MessageModal } from './_components/MessageModal';
-import { RecieverMessageItem } from './_components/RecieverMessageItem';
+import { ReceiverMessageItem } from './_components/RecieverMessageItem';
 import type { CommonMessageItemProps } from './_components/SenderMessageItem';
 import { SenderMessageItem } from './_components/SenderMessageItem';
 import { useMessageSync } from './_hooks/useMessageSync';
@@ -101,7 +101,7 @@ export const ChattingList = ({
               {isSameDate ? null : (
                 <div
                   className={cn(
-                    'flex-center mx-2 mt-5 mb-1 w-fit min-w-24 gap-1',
+                    'flex-center mx-2 mb-1 mt-5 w-fit min-w-24 gap-1',
                     'mx-auto rounded-full text-xs font-semibold',
                     'text-slate-500',
                     {
@@ -139,7 +139,7 @@ export const ChattingList = ({
                   {isMine ? (
                     <SenderMessageItem {...commonProps} state={state} />
                   ) : (
-                    <RecieverMessageItem
+                    <ReceiverMessageItem
                       {...commonProps}
                       isLoading={isLoading}
                       nickname={receiverNickname}

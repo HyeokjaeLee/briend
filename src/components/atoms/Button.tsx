@@ -24,7 +24,7 @@ const buttonVariants = cva(
 
     // Transition and outline
     'outline-none',
-    'transition-[color,box-shadow,scale] duration-150',
+    'transition-[color,box-shadow,scale,background-color] duration-150',
     'focus-visible:ring-1',
 
     // Disabled state
@@ -113,7 +113,7 @@ const buttonVariants = cva(
       {
         variant: 'ghost',
         isTouch: false,
-        className: 'hover:bg-primary/10',
+        className: 'hover:bg-primary/5',
       },
 
       // Icon size related variants
@@ -193,3 +193,5 @@ export const Button = ({
     </Comp>
   );
 };
+
+Button.displayName = 'Button';

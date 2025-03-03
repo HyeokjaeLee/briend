@@ -13,6 +13,7 @@ export {
 export { Input, type InputProps } from './atoms/Input';
 export { Logo, type LogoProps } from './atoms/Logo';
 export { Select, type SelectProps } from './atoms/Select';
+export { Skeleton, type SkeletonProps } from './atoms/Skeleton';
 
 /**
  * @package molecules 컴포넌트
