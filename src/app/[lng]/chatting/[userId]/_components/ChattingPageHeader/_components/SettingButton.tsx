@@ -1,11 +1,11 @@
 import { RiSettings2Line } from 'react-icons/ri';
 
-import { CustomIconButton } from '@/components';
+import { Button } from '@/components';
 
 export const SettingButton = () => {
   return (
-    <CustomIconButton size="3" variant="ghost">
+    <Button variant="ghost" onlyIcon>
       <RiSettings2Line className="size-6 text-slate-900" />
-    </CustomIconButton>
+    </Button>
   );
 };

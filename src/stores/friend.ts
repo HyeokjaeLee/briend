@@ -3,7 +3,7 @@
 import type { JWTPayload } from 'jose';
 import { create } from 'zustand';
 
-import { MAX_FIREND_COUNT } from '@/constants/etc';
+import { MAX_FRIEND_COUNT } from '@/constants/etc';
 import type * as JwtPayload from '@/types/jwt';
 
 interface FriendStore {
@@ -11,7 +11,7 @@ interface FriendStore {
   mount: () => void;
   friendList: (JwtPayload.FriendToken & JWTPayload)[];
   setFriendList: (friendList: (JwtPayload.FriendToken & JWTPayload)[]) => void;
-  isLinimtedAddFriend: boolean;
+  isLimitedAddFriend: boolean;
 }
 
 export const useFriendStore = create<FriendStore>((set) => ({
@@ -19,8 +19,8 @@ export const useFriendStore = create<FriendStore>((set) => ({
   mount: () => set({ isMounted: true }),
   friendList: [],
   setFriendList: (friendList) => {
-    const isLinimtedAddFriend = MAX_FIREND_COUNT <= friendList.length;
-    set({ friendList, isLinimtedAddFriend });
+    const isLimitedAddFriend = MAX_FRIEND_COUNT <= friendList.length;
+    set({ friendList, isLimitedAddFriend });
   },
-  isLinimtedAddFriend: false,
+  isLimitedAddFriend: false,
 }));

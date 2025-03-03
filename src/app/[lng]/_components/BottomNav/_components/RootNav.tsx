@@ -95,10 +95,14 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                         : 'FROM_RIGHT'
                       : 'FROM_BOTTOM'
                   }
-                  onClick={() => setActiveIndex(index)}
+                  onClick={(e) => {
+                    if (activeIndex === index) return e.preventDefault();
+
+                    setActiveIndex(index);
+                  }}
                 >
                   <Icon
-                    className={cn('animate-duration-300 size-6', {
+                    className={cn('size-6 animate-duration-300', {
                       'animate-jump': isActive,
                     })}
                   />

@@ -22,7 +22,7 @@ export const BottomNav = () => {
   return bottomNavType !== 'none' ? (
     <footer
       key={bottomNavType}
-      className="w-full max-w-(--breakpoint-sm)"
+      className="w-full max-w-screen-sm"
       id={SELECTOR.BOTTOM_NAV}
     >
       {

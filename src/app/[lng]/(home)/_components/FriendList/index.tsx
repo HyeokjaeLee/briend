@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { CustomButton, CustomLink, DotLottie } from '@/components';
+import { Button, CustomLink, DotLottie } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { useUserData } from '@/hooks';
@@ -37,7 +37,7 @@ export const FriendList = createSuspendedComponent(
             {t('empty-friend-list')}
           </h3>
           {isLogin ? (
-            <CustomButton asChild>
+            <Button asChild>
               <CustomLink
                 replace
                 href={ROUTES.INVITE_CHAT.pathname}
@@ -45,7 +45,7 @@ export const FriendList = createSuspendedComponent(
               >
                 {t('add-friend-button')}
               </CustomLink>
-            </CustomButton>
+            </Button>
           ) : null}
         </section>
       );

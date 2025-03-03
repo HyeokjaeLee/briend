@@ -3,7 +3,7 @@ import { RiCloseLine } from 'react-icons/ri';
 
 import { cn } from '@/utils';
 
-import { CustomIconButton } from '../atoms/CustomIconButton';
+import { Button } from '../atoms/Button';
 
 export interface ModalProps {
   children: React.ReactNode;
@@ -51,11 +51,11 @@ export const Modal = ({
         }}
       >
         <Kbd className="absolute right-2 top-2">ESC</Kbd>
-        <div className="size-full flex-center">
+        <div className="flex-center size-full">
           <article
             className={cn(
-              'shadow-lg rounded-lg bg-white relative',
-              'max-w-[calc(100%-1rem)] max-h-[calc(100%-1rem)]',
+              'relative rounded-lg bg-white shadow-lg',
+              'max-h-[calc(100%-1rem)] max-w-[calc(100%-1rem)]',
             )}
             onClick={(e) => {
               e.stopPropagation();
@@ -65,7 +65,7 @@ export const Modal = ({
               className="z-10 size-full rounded-lg bg-white/90"
               open={loading}
             >
-              <div className="h-full flex-center">
+              <div className="flex-center h-full">
                 <Spinner className="my-auto" size="3" />
               </div>
             </dialog>
@@ -77,21 +77,15 @@ export const Modal = ({
                   </h3>
                 ) : null}
                 {hasCloseButton ? (
-                  <CustomIconButton
-                    color="gray"
-                    radius="large"
-                    size="3"
-                    variant="ghost"
-                    onClick={handleClose}
-                  >
-                    <RiCloseLine className="size-8" />
-                  </CustomIconButton>
+                  <Button onClick={handleClose}>
+                    <RiCloseLine />
+                  </Button>
                 ) : null}
               </header>
             ) : null}
             <section
               className={cn(
-                'relative m-5 flex flex-col items-center h-full min-h-28 min-w-0 xs:min-w-96',
+                'xs:min-w-96 relative m-5 flex h-full min-h-28 min-w-0 flex-col items-center',
                 className,
               )}
             >

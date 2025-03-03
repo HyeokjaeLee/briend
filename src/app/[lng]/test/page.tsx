@@ -1,23 +1,33 @@
 'use client';
 
-import { Ri24HoursFill } from 'react-icons/ri';
+import { Modal } from '@/components';
 
-import { CustomButton } from '@/components';
-import { toast } from '@/utils/client';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './dialog';
 
 export default function TestPage() {
   return (
-    <article>
-      <CustomButton
-        onClick={() =>
-          toast({
-            message: 'Toast message',
-          })
-        }
-      >
-        <Ri24HoursFill />
-        Toast
-      </CustomButton>
+    <article className="p-4">
+      <Modal>modal</Modal>
+      <Dialog modal>
+        <DialogTrigger>test</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+          ss
+        </DialogContent>
+      </Dialog>
     </article>
   );
 }

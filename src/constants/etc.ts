@@ -14,7 +14,7 @@ export enum QUERY_KEYS {
 }
 
 export const PEER_PREFIX = 'briend_';
-export const MAX_FIREND_COUNT = 10;
+export const MAX_FRIEND_COUNT = 10;
 
 export enum HEADERS {
   PURE_PATH = 'pure-path',

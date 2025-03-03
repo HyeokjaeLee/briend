@@ -2,14 +2,7 @@
 
 import { RiDeleteBinLine, RiLinkM, RiShieldCheckFill } from 'react-icons/ri';
 
-import {
-  CustomButton,
-  CustomIconButton,
-  CustomLink,
-  Drawer,
-  ProfileImage,
-  Timer,
-} from '@/components';
+import { Button, CustomLink, Drawer, ProfileImage, Timer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { ROUTES } from '@/routes/client';
@@ -69,11 +62,11 @@ export const FriendInfoDrawer = ({
           <Timer expires={new Date('2025-05-01')} />
           <footer className="mt-auto flex w-full gap-2">
             {isUnlinked ? (
-              <CustomIconButton variant="outline">
-                <RiLinkM className="size-6" />
-              </CustomIconButton>
+              <Button variant="outline" onlyIcon>
+                <RiLinkM />
+              </Button>
             ) : null}
-            <CustomButton asChild className="flex-1">
+            <Button asChild className="flex-1">
               <CustomLink
                 href={ROUTES.CHATTING_ROOM.pathname({
                   userId: friendId!,
@@ -85,13 +78,14 @@ export const FriendInfoDrawer = ({
                   ? t('unlinked-chatting-button')
                   : t('chatting-button')}
               </CustomLink>
-            </CustomButton>
-            <CustomIconButton
+            </Button>
+            <Button
               variant="outline"
+              onlyIcon
               onClick={onClickDeleteFriendButton}
             >
-              <RiDeleteBinLine className="size-6" />
-            </CustomIconButton>
+              <RiDeleteBinLine />
+            </Button>
           </footer>
         </>
       ) : null}

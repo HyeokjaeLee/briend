@@ -6,7 +6,7 @@ import { FcAdvertising, FcCollaboration } from 'react-icons/fc';
 import { RiShareFill } from 'react-icons/ri';
 
 import { UtilsQueryOptions } from '@/app/query-options/utils';
-import { BottomButton, CustomButton, DotLottie, QR, Timer } from '@/components';
+import { BottomButton, Button, DotLottie, QR, Timer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { useRealtimeDatabase } from '@/database/firebase/client';
@@ -29,7 +29,7 @@ interface InviteChatTemplateProps {
 
 export const InviteChatTemplate = createOnlyClientComponent(
   ({ inviteToken, isSidePanel }: InviteChatTemplateProps) => {
-    const [inviteTokenPayload] = trpc.chat.verfiyInviteToken.useSuspenseQuery(
+    const [inviteTokenPayload] = trpc.chat.verifyInviteToken.useSuspenseQuery(
       {
         inviteToken,
       },
@@ -115,10 +115,10 @@ export const InviteChatTemplate = createOnlyClientComponent(
       >
         <div className="flex flex-1 flex-col">
           <section className="flex-center flex-1 rotate-180 flex-col gap-2">
-            <h1 className="text-center text-xl font-bold break-keep">
+            <h1 className="break-keep text-center text-xl font-bold">
               <FcCollaboration
                 aria-hidden
-                className="mr-2 mb-1 inline size-6"
+                className="mb-1 mr-2 inline size-6"
               />
               {title}
             </h1>
@@ -160,7 +160,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
           )}
           <section className="flex-center flex-1 flex-col gap-2">
             <h2 className="text-center text-xl font-bold text-slate-900">
-              <FcAdvertising aria-hidden className="mr-2 mb-1 inline size-6" />
+              <FcAdvertising aria-hidden className="mb-1 mr-2 inline size-6" />
               {t('warning-message')}
             </h2>
             <p className="text-center text-slate-500">{t('notice-message')}</p>
@@ -173,7 +173,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
           onTimeout={handleExpiredToken}
         />
         {isSidePanel ? (
-          <CustomButton
+          <Button
             className={cn(
               'mt-3',
               connectedGuestId && 'animate-fade-up animate-reverse',
@@ -181,7 +181,7 @@ export const InviteChatTemplate = createOnlyClientComponent(
             onClick={handleShare}
           >
             <RiShareFill className="size-7" /> {t('share-button-text')}
-          </CustomButton>
+          </Button>
         ) : (
           <BottomButton loading={!!connectedGuestId} onClick={handleShare}>
             <RiShareFill className="size-7" /> {t('share-button-text')}

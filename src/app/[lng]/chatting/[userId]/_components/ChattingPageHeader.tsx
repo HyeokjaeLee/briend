@@ -1,12 +1,6 @@
 'use client';
 
-import { RiSettings2Line } from 'react-icons/ri';
-
-import {
-  BackHeader,
-  ConnectionIndicator,
-  CustomIconButton,
-} from '@/components';
+import { BackHeader, ConnectionIndicator } from '@/components';
 import { useFriendStore, usePeerStore } from '@/stores';
 
 interface ChattingPageHeaderProps {
@@ -25,14 +19,10 @@ export const ChattingPageHeader = ({ userId }: ChattingPageHeaderProps) => {
 
   return (
     <BackHeader className="justify-between">
-      <div className="w-fit gap-3 flex-center">
+      <div className="flex-center w-fit gap-3">
         <h1 className="truncate text-nowrap font-semibold">{nickname}</h1>
         <ConnectionIndicator friendPeer={friendPeer} />
       </div>
-      {/**TODO: 분리 */}
-      <CustomIconButton size="3" variant="ghost">
-        <RiSettings2Line className="size-6 text-slate-900" />
-      </CustomIconButton>
     </BackHeader>
   );
 };

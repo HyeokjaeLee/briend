@@ -1,6 +1,4 @@
-import { Skeleton } from '@radix-ui/themes';
-
-import { ProfileImage } from '@/components';
+import { ProfileImage, Skeleton } from '@/components';
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { useLanguage, useLongPress } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
@@ -13,7 +11,7 @@ interface MessageItemProps extends CommonMessageItemProps {
   isLoading: boolean;
 }
 
-export const RecieverMessageItem = ({
+export const ReceiverMessageItem = ({
   profileImageSrc,
   nickname,
   isSameUser,
@@ -37,7 +35,7 @@ export const RecieverMessageItem = ({
   const hasUnderTimeText = isSameUser && !isSameTime;
 
   return (
-    <article className={cn('flex mx-4 my-1', isSameUser ? 'gap-2' : 'gap-4')}>
+    <article className={cn('mx-4 my-1 flex', isSameUser ? 'gap-2' : 'gap-4')}>
       {isSameUser ? (
         <div className="flex h-5 w-14 items-center justify-end" />
       ) : (
@@ -50,8 +48,8 @@ export const RecieverMessageItem = ({
           <header className="flex w-full flex-wrap items-center gap-2">
             <strong>{nickname}</strong>
             {isSameTime ? null : (
-              <div className="h-fit flex-1 gap-2 flex-center">
-                <hr className="ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none bg-linear-to-r from-transparent to-slate-300" />
+              <div className="flex-center h-fit flex-1 gap-2">
+                <hr className="bg-linear-to-r ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none from-transparent to-slate-300" />
                 <time
                   className="text-nowrap rounded-full text-xs text-slate-500"
                   dateTime={isoDate}
@@ -67,8 +65,8 @@ export const RecieverMessageItem = ({
         <pre
           {...register}
           className={cn(
-            'w-fit cursor-pointer whitespace-pre-wrap break-all font-pretendard',
-            'active:bg-slate-200 duration-75 rounded-md',
+            'font-pretendard w-fit cursor-pointer whitespace-pre-wrap break-all',
+            'rounded-md duration-75 active:bg-slate-200',
             {
               'hover:bg-slate-100': !IS_TOUCH_DEVICE,
               'bg-slate-100': isPressing,
@@ -81,8 +79,8 @@ export const RecieverMessageItem = ({
         </pre>
       </section>
       {hasUnderTimeText ? (
-        <div className="mt-auto h-fit flex-1 gap-2 flex-center">
-          <hr className="ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none bg-linear-to-r from-transparent to-slate-300" />
+        <div className="flex-center mt-auto h-fit flex-1 gap-2">
+          <hr className="bg-linear-to-r ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none from-transparent to-slate-300" />
           <time
             className="text-nowrap rounded-full text-xs text-slate-500"
             dateTime={isoDate}

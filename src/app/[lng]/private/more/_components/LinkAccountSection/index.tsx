@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { ConfirmModal, CustomButton } from '@/components';
+import { Button, ConfirmModal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { LOGIN_PROVIDERS, SESSION_STORAGE } from '@/constants';
 import { useUserData } from '@/hooks';
@@ -54,7 +54,7 @@ export const LinkAccountSection = () => {
       ))}
       <ConfirmModal
         footer={
-          <CustomButton
+          <Button
             className="w-full"
             loading={isLoading}
             onClick={() => {
@@ -71,7 +71,7 @@ export const LinkAccountSection = () => {
             }}
           >
             {t('link-confirm-button')}
-          </CustomButton>
+          </Button>
         }
         message={t('link-confirm-message')}
         opened={!!openedProvider}

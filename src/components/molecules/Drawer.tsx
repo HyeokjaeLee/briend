@@ -17,7 +17,7 @@ import { MEDIA_QUERY_BREAK_POINT, useGlobalStore } from '@/stores';
 import { assert, cn } from '@/utils';
 import { createOnlyClientComponent } from '@/utils/client';
 
-import { CustomIconButton } from '../atoms/CustomIconButton';
+import { Button } from '../atoms/Button';
 
 export interface DrawerProps {
   open: boolean;
@@ -113,7 +113,7 @@ export const Drawer = createOnlyClientComponent(
                 setHeight(e?.offsetHeight ?? 0);
               }}
               animate={{ y: '0%' }}
-              className="relative w-full overflow-hidden rounded-t-3xl bg-white shadow-lg-top"
+              className="shadow-lg-top relative w-full overflow-hidden rounded-t-xl bg-white"
               exit={{ y: '100%' }}
               initial={{ y: '100%' }}
               style={{ y }}
@@ -129,22 +129,27 @@ export const Drawer = createOnlyClientComponent(
                 className={cn(
                   'flex h-14 w-full items-center bg-white',
                   isSmallScreen
-                    ? 'cursor-grab active:cursor-grabbing justify-center'
-                    : 'justify-end pr-7',
+                    ? 'cursor-grab justify-center active:cursor-grabbing'
+                    : 'justify-end',
                 )}
               >
                 {isSmallScreen ? (
-                  <div className="h-1.5 w-17 rounded-md bg-zinc-100" />
+                  <div className="w-17 h-1.5 rounded-md bg-zinc-100" />
                 ) : (
-                  <CustomIconButton size="3" variant="ghost" onClick={onClose}>
-                    <RiCloseLargeLine className="size-5 text-slate-900" />
-                  </CustomIconButton>
+                  <Button
+                    variant="ghost"
+                    onClick={onClose}
+                    onlyIcon
+                    className="mr-2 size-10"
+                  >
+                    <RiCloseLargeLine />
+                  </Button>
                 )}
               </header>
               <div className="relative max-h-[calc(100dvh-5rem)] overflow-auto">
                 <motion.article
                   className={cn(
-                    'relative mx-auto max-w-(--breakpoint-sm) px-4 pb-4',
+                    'relative mx-auto max-w-screen-sm px-4 pb-4',
                     className,
                   )}
                   style={{ opacity }}

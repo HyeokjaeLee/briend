@@ -1,6 +1,6 @@
 'use client';
 
-import { ConfirmModal, CustomButton } from '@/components';
+import { Button,ConfirmModal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { useSidePanel } from '@/hooks';
@@ -58,7 +58,7 @@ export const FriendDeleteModal = ({
     <ConfirmModal
       footer={
         <footer className="flex w-full gap-2">
-          <CustomButton
+          <Button
             className="flex-1"
             disabled={isUnlinked || deleteFriendMutation.isPending}
             onClick={() => {
@@ -71,8 +71,8 @@ export const FriendDeleteModal = ({
             }}
           >
             {t('unlink-button')}
-          </CustomButton>
-          <CustomButton
+          </Button>
+          <Button
             className="flex-1"
             variant="outline"
             loading={deleteFriendMutation.isPending}
@@ -86,7 +86,7 @@ export const FriendDeleteModal = ({
             }}
           >
             {t('delete-button')}
-          </CustomButton>
+          </Button>
         </footer>
       }
       message={

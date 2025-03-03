@@ -1,4 +1,4 @@
-import { CustomButton, Modal } from '@/components';
+import { Button, Modal } from '@/components';
 
 interface MessageModalProps {
   selectedMessageId?: string;
@@ -15,7 +15,7 @@ export const MessageModal = ({
     <Modal hasCloseButton open={!!selectedMessageId} onClose={onClose}>
       <section>ss</section>
       <footer className="mt-8 w-full">
-        <CustomButton
+        <Button
           className="w-full"
           color="red"
           onClick={() => {
@@ -24,7 +24,7 @@ export const MessageModal = ({
           }}
         >
           삭제
-        </CustomButton>
+        </Button>
       </footer>
     </Modal>
   );

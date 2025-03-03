@@ -36,6 +36,4 @@ yarn-error.log*
 next-env.d.ts
 .env*.local
 
-
-/src/components/_shadcn
 .github
