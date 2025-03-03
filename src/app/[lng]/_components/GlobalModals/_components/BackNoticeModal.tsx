@@ -20,7 +20,6 @@ export const BackNoticeModal = () => {
     ]),
   );
 
-  const handleClose = () => setIsBackNoticeModalOpen(false);
   const router = useCustomRouter();
   const { t } = useTranslation('global-modal');
 
@@ -28,14 +27,17 @@ export const BackNoticeModal = () => {
     <ConfirmModal
       footer={
         <footer className="mt-auto flex w-full justify-end gap-2">
-          <Button className="flex-1" onClick={handleClose}>
+          <Button
+            className="flex-1"
+            onClick={() => setIsBackNoticeModalOpen(false)}
+          >
             {t('back-notice-close-button')}
           </Button>
           <Button
             className="flex-1"
             variant="outline"
             onClick={() => {
-              handleClose();
+              setIsBackNoticeModalOpen(false);
               setBackNoticeInfo(null);
 
               router.back();
@@ -46,9 +48,9 @@ export const BackNoticeModal = () => {
         </footer>
       }
       message={backNoticeInfo?.message || ''}
-      opened={isBackNoticeModalOpen}
+      open={isBackNoticeModalOpen}
       title={backNoticeInfo?.title || ''}
-      onClose={handleClose}
+      onOpenChange={setIsBackNoticeModalOpen}
     />
   );
 };

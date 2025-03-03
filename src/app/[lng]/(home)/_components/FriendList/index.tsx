@@ -65,7 +65,7 @@ export const FriendList = createSuspendedComponent(
         />
         <FriendDeleteModal
           friendId={openedFriendId}
-          opened={isDeleteModalOpened}
+          open={isDeleteModalOpened}
           onClose={() => setIsDeleteModalOpened(false)}
           onSuccess={handleClose}
         />

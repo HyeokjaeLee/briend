@@ -74,9 +74,13 @@ export const LinkAccountSection = () => {
           </Button>
         }
         message={t('link-confirm-message')}
-        opened={!!openedProvider}
+        open={!!openedProvider}
         title={t('link-confirm-title')}
-        onClose={() => setOpenedProvider(undefined)}
+        onOpenChange={(open) => {
+          if (!open) {
+            setOpenedProvider(undefined);
+          }
+        }}
       />
     </section>
   );

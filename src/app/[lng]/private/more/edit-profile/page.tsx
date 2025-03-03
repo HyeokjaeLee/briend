@@ -11,6 +11,7 @@ import {
   BottomButton,
   Button,
   Input,
+  Modal,
   ProfileImage,
   Select,
   ValidationMessage,
@@ -24,8 +25,6 @@ import { editProfileSchema } from '@/schema/trpc/user';
 import { useGlobalModalStore } from '@/stores';
 import { assert } from '@/utils';
 import { toast, uploadFirebaseStorage } from '@/utils/client';
-
-import { ProfileImageChangeModal } from './_components/ProfileImageChangeModal';
 
 interface ProfilePageProps {
   params: Promise<{
@@ -140,6 +139,27 @@ const EditProfilePage = (props: ProfilePageProps) => {
     value: language,
   }));
 
+  const handleChangeProfileImage = async (file: File | null) => {
+    if (!file) {
+      tempProfileImage.reset();
+      setIsProfileImageModalOpen(false);
+
+      return form.setValue('photoURL', null, {
+        shouldDirty: true,
+      });
+    }
+
+    const { objectUrl } = await tempProfileImage.mutateAsync(file, {
+      onSuccess: () => {
+        setIsProfileImageModalOpen(false);
+      },
+    });
+
+    form.setValue('photoURL', objectUrl, {
+      shouldDirty: true,
+    });
+  };
+
   return (
     <article className="p-4">
       <form
@@ -190,30 +210,41 @@ const EditProfilePage = (props: ProfilePageProps) => {
           />
         </label>
       </form>
-      <ProfileImageChangeModal
+      <Modal
         loading={tempProfileImage.isPending}
         open={isProfileImageModalOpen}
-        onChangeProfileImage={async (file) => {
-          if (!file) {
-            tempProfileImage.reset();
-            setIsProfileImageModalOpen(false);
+        header={t('profile-image-change')}
+        onOpenChange={setIsProfileImageModalOpen}
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={() => {
+                handleChangeProfileImage(null);
+              }}
+            >
+              {t('use-default-image')}
+            </Button>
+            <Button asChild>
+              <label>
+                {t('select-on-gallery')}
+                <input
+                  accept="image/*"
+                  className="hidden"
+                  id="image-upload"
+                  type="file"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
 
-            return form.setValue('photoURL', null, {
-              shouldDirty: true,
-            });
-          }
+                    assert(file);
 
-          const { objectUrl } = await tempProfileImage.mutateAsync(file, {
-            onSuccess: () => {
-              setIsProfileImageModalOpen(false);
-            },
-          });
-
-          form.setValue('photoURL', objectUrl, {
-            shouldDirty: true,
-          });
-        }}
-        onClose={() => setIsProfileImageModalOpen(false)}
+                    handleChangeProfileImage(file);
+                  }}
+                />
+              </label>
+            </Button>
+          </>
+        }
       />
       <BottomButton
         disabled={isNoChanged || form.formState.isLoading}
@@ -226,30 +257,5 @@ const EditProfilePage = (props: ProfilePageProps) => {
     </article>
   );
 };
-/**
- *    <Select.Root
-                size="3"
-                value={field.value}
-                onValueChange={(language) => {
-                  assertEnum(LANGUAGE, language);
 
-                  return field.onChange(language);
-                }}
-              >
-                
-                <Select.Trigger
-                  className="mt-2 h-14 w-full rounded-xl"
-                  variant="soft"
-                />
-                <Select.Content>
-                  {Object.values(LANGUAGE).map((language) => {
-                    return (
-                      <Select.Item key={language} value={language}>
-                        {LANGUAGE_NAME[language]}
-                      </Select.Item>
-                    );
-                  })}
-                </Select.Content>
-              </Select.Root>
- */
 export default EditProfilePage;

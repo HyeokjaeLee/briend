@@ -109,6 +109,7 @@ const SelectContent = ({
           'data-[side=right]:animate-fade-right',
           'data-[side=top]:animate-fade-up',
           'data-[state=open]:animate-duration-150',
+          'data-[state=closed]:animate-fade data-[state=closed]:animate-reverse data-[state=closed]:animate-duration-75',
 
           // Popper positioning
           position === 'popper' &&

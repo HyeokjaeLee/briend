@@ -12,7 +12,7 @@ export const MessageModal = ({
   onClickDeleteModeButton,
 }: MessageModalProps) => {
   return (
-    <Modal hasCloseButton open={!!selectedMessageId} onClose={onClose}>
+    <Modal open={!!selectedMessageId} onOpenChange={onClose}>
       <section>ss</section>
       <footer className="mt-8 w-full">
         <Button

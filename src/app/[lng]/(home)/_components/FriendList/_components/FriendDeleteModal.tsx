@@ -1,6 +1,6 @@
 'use client';
 
-import { Button,ConfirmModal } from '@/components';
+import { Button, ConfirmModal } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { useSidePanel } from '@/hooks';
@@ -11,14 +11,14 @@ import { toast } from '@/utils/client';
 
 interface FriendDeleteModalProps {
   friendId: string | null;
-  opened: boolean;
+  open: boolean;
   onClose: () => void;
   onSuccess: () => void;
 }
 
 export const FriendDeleteModal = ({
   friendId,
-  opened,
+  open,
   onClose,
   onSuccess,
 }: FriendDeleteModalProps) => {
@@ -94,9 +94,9 @@ export const FriendDeleteModal = ({
           ? t('delete-friend-sub-message2')
           : t('delete-friend-sub-message')
       }
-      opened={opened}
+      open={open}
       title={t('delete-friend-message')}
-      onClose={onClose}
+      onOpenChange={onClose}
     />
   );
 };
