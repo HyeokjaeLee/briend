@@ -75,7 +75,7 @@ const SidePanelContainer = () => {
   return (
     <aside
       className={cn(
-        'hidden flex-1 bg-white sm:flex sm:flex-col',
+        'bg-background hidden flex-1 sm:flex sm:flex-col',
         getNavigationAnimationClasses({
           animationType,
           navigationAnimation,
@@ -108,7 +108,7 @@ const SidePanelContainer = () => {
 
 export const SidePanel = memo(
   createOnlyClientComponent(SidePanelContainer, () => (
-    <aside className="hidden flex-1 bg-white sm:flex sm:flex-col">
+    <aside className="bg-background hidden flex-1 sm:flex sm:flex-col">
       <EmptyTemplate />
     </aside>
   )),

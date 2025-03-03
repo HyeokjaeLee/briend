@@ -97,7 +97,7 @@ export default async function RootLayout({
     >
       <Theme asChild className="flex h-dvh w-full overflow-hidden">
         <body>
-          <aside className="hidden flex-1 bg-slate-100 xl:block">
+          <aside className="hidden flex-1 bg-slate-50 xl:block">
             FOR RENDING
           </aside>
           <GlobalLoading />

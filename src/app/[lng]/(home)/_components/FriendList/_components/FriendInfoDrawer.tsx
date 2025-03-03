@@ -36,7 +36,11 @@ export const FriendInfoDrawer = ({
     <Drawer
       className="flex-center flex-col gap-4"
       open={!!friendId}
-      onClose={onClose}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+        }
+      }}
     >
       {friendInfo ? (
         <>

@@ -10,6 +10,7 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 
   --animate-shake: shake-horizontal var(--tw-animate-duration, 1s)
     cubic-bezier(0.455, 0.03, 0.515, 0.955) var(--tw-animate-delay, 0s) both;

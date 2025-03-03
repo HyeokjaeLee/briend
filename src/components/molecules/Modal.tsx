@@ -54,7 +54,7 @@ export const Modal = ({
         <DialogPrimitive.Overlay
           data-slot="dialog-overlay"
           className={cn(
-            'animate-fade animate-duration-150 fixed inset-0 z-30 bg-black/80',
+            'animate-fade animate-duration-150 z-25 fixed inset-0 bg-black/80',
             rootClassName,
           )}
         />
@@ -62,7 +62,7 @@ export const Modal = ({
           data-slot="dialog-content"
           asChild
           className={cn(
-            'bg-background text-primary fixed left-[50%] top-[50%] z-50 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-xl border shadow-lg duration-200 sm:max-w-lg',
+            'bg-background text-primary fixed left-[50%] top-[50%] z-30 grid w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-xl border shadow-lg duration-200 sm:max-w-lg',
             'p-6',
             'data-[state=open]:animate-fade-down data-[state=open]:animate-duration-300',
             className,
@@ -116,12 +116,14 @@ export const Modal = ({
               )}
             </header>
             {children}
-            <footer
-              data-slot="dialog-footer"
-              className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
-            >
-              {footer}
-            </footer>
+            {footer ? (
+              <footer
+                data-slot="dialog-footer"
+                className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end"
+              >
+                {footer}
+              </footer>
+            ) : null}
           </article>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

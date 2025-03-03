@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { decodeJwt } from 'jose';
 import { Suspense, useEffect, useState } from 'react';
 
-import { DotLottie, LoadingTemplate } from '@/components';
+import { DotLottie, PageLoadingTemplate } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { useCustomRouter, useLanguage, useUserData } from '@/hooks';
@@ -109,7 +109,7 @@ export const JoinTemplate = createOnlyClientComponent(
             }}
           />
         ) : (
-          <LoadingTemplate />
+          <PageLoadingTemplate />
         )}
         {isLanguageChecked && isAnonymous ? (
           <Suspense>

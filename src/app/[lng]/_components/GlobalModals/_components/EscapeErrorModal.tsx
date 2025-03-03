@@ -30,6 +30,7 @@ export const EscapeErrorModal = () => {
           {t('escape-modal-button')}
         </Button>
       }
+      className="z-45"
       message={t('escape-modal-message')}
       open={isEscapeErrorModalOpen}
       rootClassName="z-40"

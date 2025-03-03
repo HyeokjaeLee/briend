@@ -52,10 +52,6 @@ export { ConfirmModal, type ConfirmModalProps } from './organisms/ConfirmModal';
  * @package templates 컴포넌트
  */
 export {
-  GlobalLoadingTemplate as LoadingTemplate,
-  type GlobalLoadingTemplateProps as LoadingTemplateProps,
-} from './templates/GlobalLoadingTemplate';
-export {
   PageLoadingTemplate,
   type PageLoadingTemplateProps,
 } from './templates/PageLoadingTemplate';

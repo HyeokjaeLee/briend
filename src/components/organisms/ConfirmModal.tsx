@@ -6,7 +6,7 @@ import { Modal } from '../molecules/Modal';
 export interface ConfirmModalProps
   extends Pick<
     ModalProps,
-    'open' | 'footer' | 'onOpenChange' | 'rootClassName'
+    'open' | 'footer' | 'onOpenChange' | 'rootClassName' | 'className'
   > {
   title: string;
   message: string;
