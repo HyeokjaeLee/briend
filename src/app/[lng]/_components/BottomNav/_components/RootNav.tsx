@@ -13,6 +13,7 @@ import {
 
 import { CustomLink } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
+import { IS_TOUCH_DEVICE } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { cn, findRoute } from '@/utils';
@@ -81,9 +82,14 @@ export const RootNav = ({ pathname }: RootNavProps) => {
               <li key={route.index} className="flex-1">
                 <CustomLink
                   className={cn(
-                    'flex-center group flex-col gap-1 rounded-md py-3 text-xs',
-                    'transition-all duration-75 ease-out active:scale-90',
-                    isActive ? 'font-bold text-sky-500' : 'text-slate-400',
+                    'flex-center group flex-col gap-1 py-3 text-xs',
+                    {
+                      'hover:text-primary/50 hover:bg-primary/5':
+                        !IS_TOUCH_DEVICE && !isActive,
+                    },
+                    isActive
+                      ? 'text-primary font-bold'
+                      : 'text-primary/30 active:text-primary active:font-bold',
                   )}
                   href={route.pathname}
                   //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
@@ -102,9 +108,10 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   }}
                 >
                   <Icon
-                    className={cn('size-6 animate-duration-300', {
-                      'animate-jump': isActive,
-                    })}
+                    className={cn(
+                      'animate-duration-300 size-6',
+                      isActive ? 'animate-jump' : 'group-active:animate-jump',
+                    )}
                   />
                   {t(translationKey)}
                 </CustomLink>
