@@ -36,11 +36,37 @@ export const FriendInfoDrawer = ({
     <Drawer
       className="flex-center flex-col gap-4"
       open={!!friendId}
-      onOpenChange={(open) => {
-        if (!open) {
-          onClose();
-        }
-      }}
+      onClose={onClose}
+      loading
+      footer={
+        <div>
+          {isUnlinked ? (
+            <Button variant="outline" onlyIcon>
+              <RiLinkM />
+            </Button>
+          ) : null}
+          <Button asChild>
+            <CustomLink
+              href={ROUTES.CHATTING_ROOM.pathname({
+                userId: friendId!,
+              })}
+              toSidePanel={hasSidePanel}
+              onClick={onClose}
+            >
+              {isUnlinked
+                ? t('unlinked-chatting-button')
+                : t('chatting-button')}
+            </CustomLink>
+          </Button>
+          <Button
+            variant="outline"
+            onlyIcon
+            onClick={onClickDeleteFriendButton}
+          >
+            <RiDeleteBinLine />
+          </Button>
+        </div>
+      }
     >
       {friendInfo ? (
         <>
@@ -64,33 +90,6 @@ export const FriendInfoDrawer = ({
             </div>
           </header>
           <Timer expires={new Date('2025-05-01')} />
-          <footer className="mt-auto flex w-full gap-2">
-            {isUnlinked ? (
-              <Button variant="outline" onlyIcon>
-                <RiLinkM />
-              </Button>
-            ) : null}
-            <Button asChild className="flex-1">
-              <CustomLink
-                href={ROUTES.CHATTING_ROOM.pathname({
-                  userId: friendId!,
-                })}
-                toSidePanel={hasSidePanel}
-                onClick={onClose}
-              >
-                {isUnlinked
-                  ? t('unlinked-chatting-button')
-                  : t('chatting-button')}
-              </CustomLink>
-            </Button>
-            <Button
-              variant="outline"
-              onlyIcon
-              onClick={onClickDeleteFriendButton}
-            >
-              <RiDeleteBinLine />
-            </Button>
-          </footer>
         </>
       ) : null}
     </Drawer>

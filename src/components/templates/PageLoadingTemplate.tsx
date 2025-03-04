@@ -1,6 +1,6 @@
 import { cn } from '@/utils';
 
-import { DotLottie } from '../atoms/DotLottie';
+import { CommonSkeleton } from '../atoms/CommonSkeleton';
 
 export interface PageLoadingTemplateProps {
   className?: string;
@@ -11,10 +11,7 @@ export const PageLoadingTemplate = ({
 }: PageLoadingTemplateProps) => {
   return (
     <div className={cn('flex-center size-full flex-1 cursor-wait', className)}>
-      <DotLottie
-        src="/assets/lottie/common-skeleton.lottie"
-        className="animate-fade size-full"
-      />
+      <CommonSkeleton />
     </div>
   );
 };

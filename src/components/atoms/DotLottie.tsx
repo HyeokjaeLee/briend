@@ -10,6 +10,7 @@ import { memo, useCallback } from 'react';
 export interface DotLottieProps
   extends Omit<DotLottieReactProps, 'role' | 'aria-hidden'> {
   onCompleted?: () => void;
+  ariaLabel?: string;
 }
 
 const MemorizedDotLottie = memo(DotLottieReact);
@@ -19,6 +20,7 @@ export const DotLottie = ({
   dotLottieRefCallback,
   autoplay = true,
   loop = true,
+  ariaLabel,
   ...props
 }: DotLottieProps) => {
   const callbackRef = useCallback(
@@ -39,11 +41,12 @@ export const DotLottie = ({
   return (
     <MemorizedDotLottie
       {...props}
-      aria-hidden="true"
       autoplay={autoplay}
       dotLottieRefCallback={callbackRef}
       loop={loop}
       role="presentation"
+      aria-label={ariaLabel}
+      aria-hidden={!ariaLabel}
     />
   );
 };

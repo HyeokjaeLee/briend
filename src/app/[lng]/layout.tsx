@@ -104,10 +104,7 @@ export default async function RootLayout({
           <GlobalProvider>
             <GlobalListener />
             <MountAction />
-            <div
-              className="flex-2 relative flex size-full w-fit max-w-screen-xl"
-              id={SELECTOR.DYNAMIC_CONTAINER}
-            >
+            <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
               <CenterContainer>
                 <GlobalHeader />
                 <ToastProvider />
