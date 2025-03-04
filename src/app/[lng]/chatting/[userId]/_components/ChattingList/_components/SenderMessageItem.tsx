@@ -1,9 +1,9 @@
 import type { Dayjs } from 'dayjs';
 
 import { Spinner } from '@/components';
-import { IS_TOUCH_DEVICE } from '@/constants';
 import { MESSAGE_STATE } from '@/database/indexed';
 import { useLanguage, useLongPress } from '@/hooks';
+import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
 export interface CommonMessageItemProps {
@@ -35,6 +35,8 @@ export const SenderMessageItem = ({
     enable: onLongPress === onClick,
   });
 
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
   return (
     <article className="mx-4 my-1 flex flex-col items-end gap-1">
       {isSameTime ? null : (
@@ -55,7 +57,7 @@ export const SenderMessageItem = ({
             'w-fit rounded-xl rounded-tr-none px-4 py-2',
             'bg-slate-100 duration-75 active:bg-slate-300',
             {
-              'hover:bg-slate-200': !IS_TOUCH_DEVICE,
+              'hover:bg-slate-200': !isTouchDevice,
               'bg-slate-200': isPressing,
               'bg-slate-300': isSelected,
             },

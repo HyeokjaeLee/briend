@@ -1,6 +1,6 @@
 'use client';
 
-import { RiDeleteBinLine, RiLinkM, RiShieldCheckFill } from 'react-icons/ri';
+import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
 
 import { Button, CustomLink, Drawer, ProfileImage, Timer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
@@ -37,34 +37,30 @@ export const FriendInfoDrawer = ({
       className="flex-center flex-col gap-4"
       open={!!friendId}
       onClose={onClose}
-      loading
       footer={
-        <div>
-          {isUnlinked ? (
-            <Button variant="outline" onlyIcon>
-              <RiLinkM />
+        <div className="flex flex-col gap-2">
+          <div className="flex w-full gap-2">
+            <Button asChild className="flex-2">
+              <CustomLink
+                href={ROUTES.CHATTING_ROOM.pathname({
+                  userId: friendId!,
+                })}
+                toSidePanel={hasSidePanel}
+                onClick={onClose}
+              >
+                {isUnlinked
+                  ? t('unlinked-chatting-button')
+                  : t('chatting-button')}
+              </CustomLink>
             </Button>
-          ) : null}
-          <Button asChild>
-            <CustomLink
-              href={ROUTES.CHATTING_ROOM.pathname({
-                userId: friendId!,
-              })}
-              toSidePanel={hasSidePanel}
-              onClick={onClose}
+            <Button
+              variant="outline"
+              onlyIcon
+              onClick={onClickDeleteFriendButton}
             >
-              {isUnlinked
-                ? t('unlinked-chatting-button')
-                : t('chatting-button')}
-            </CustomLink>
-          </Button>
-          <Button
-            variant="outline"
-            onlyIcon
-            onClick={onClickDeleteFriendButton}
-          >
-            <RiDeleteBinLine />
-          </Button>
+              <RiDeleteBinLine />
+            </Button>
+          </div>
         </div>
       }
     >
@@ -74,7 +70,7 @@ export const FriendInfoDrawer = ({
             <ProfileImage size="7" src={friendInfo.profileImage} />
             <div className="flex items-center gap-2">
               <h2
-                className={cn('text-lg font-semibold', {
+                className={cn('text-xl font-semibold', {
                   'font-medium text-slate-400': friendInfo.isUnsubscribed,
                 })}
               >
@@ -89,7 +85,13 @@ export const FriendInfoDrawer = ({
               />
             </div>
           </header>
-          <Timer expires={new Date('2025-05-01')} />
+          {isUnlinked ? (
+            <Button variant="ghost" className="mx-auto">
+              연결 요청
+            </Button>
+          ) : (
+            <Timer expires={new Date('2025-05-01')} />
+          )}
         </>
       ) : null}
     </Drawer>

@@ -1,14 +1,20 @@
 import { throttle } from 'es-toolkit';
 import { useLayoutEffect } from 'react';
+import { useShallow } from 'zustand/shallow';
 
 import { useGlobalStore } from '@/stores';
 
 export const useViewportListener = () => {
-  const resetMediaQuery = useGlobalStore((state) => state.resetMediaQuery);
+  const [resetMediaQuery, setIsTouchDevice] = useGlobalStore(
+    useShallow((state) => [state.resetMediaQuery, state.setIsTouchDevice]),
+  );
 
   useLayoutEffect(() => {
     const resizeHandler = () => {
       resetMediaQuery();
+      setIsTouchDevice(
+        'ontouchstart' in window || 0 < navigator.maxTouchPoints,
+      );
     };
 
     const debouncedResizeHandler = throttle(resizeHandler, 33);
@@ -37,5 +43,5 @@ export const useViewportListener = () => {
         debouncedResizeHandler,
       );
     };
-  }, [resetMediaQuery]);
+  }, [resetMediaQuery, setIsTouchDevice]);
 };
