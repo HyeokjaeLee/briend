@@ -1,6 +1,7 @@
 /**
  * @package atoms 컴포넌트
  */
+export { Badge, type BadgeProps } from './atoms/Badge';
 export { Button, type ButtonProps } from './atoms/Button';
 export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
 export {

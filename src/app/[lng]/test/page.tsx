@@ -2,7 +2,7 @@
 
 import { Ri24HoursFill } from 'react-icons/ri';
 
-import { Button } from '@/components';
+import { Badge, Button } from '@/components';
 import { toast } from '@/utils/client';
 
 export default function TestPage() {
@@ -20,6 +20,7 @@ export default function TestPage() {
       >
         Toast
       </Button>
+      <Badge>badge</Badge>
     </article>
   );
 }
