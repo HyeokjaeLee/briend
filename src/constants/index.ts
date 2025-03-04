@@ -7,7 +7,6 @@ export {
 export {
   HEADERS,
   IS_CLIENT,
-  IS_TOUCH_DEVICE,
   LOGIN_PROVIDERS,
   MAX_FRIEND_COUNT,
   PATH,

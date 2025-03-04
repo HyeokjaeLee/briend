@@ -4,7 +4,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import * as React from 'react';
 import { LuCheck, LuChevronDown, LuChevronUp } from 'react-icons/lu';
 
-import { IS_TOUCH_DEVICE } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
 const SelectRoot = ({
@@ -20,6 +20,8 @@ const SelectTrigger = ({
   'aria-invalid': ariaInvalid,
   ...restProps
 }: React.ComponentProps<typeof SelectPrimitive.Trigger>) => {
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
   return (
     <SelectPrimitive.Trigger
       {...restProps}
@@ -46,7 +48,7 @@ const SelectTrigger = ({
         'cursor-pointer',
         'data-[state=open]:border-primary',
         {
-          'not-[&[data-disabled]]:hover:border-primary/50': !IS_TOUCH_DEVICE,
+          'not-[&[data-disabled]]:hover:border-primary/50': !isTouchDevice,
           'data-[placeholder]:text-muted-foreground': !value,
         },
         'transition-[color,box-shadow,border]',

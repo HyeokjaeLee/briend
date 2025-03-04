@@ -284,7 +284,8 @@
 
 @layer base {
   html {
-    @apply text-[14px];
+    @apply text-[12px];
+    @apply sm:text-[14px];
   }
 
   * {

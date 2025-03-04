@@ -7,17 +7,17 @@ import {
   useMotionValue,
   useTransform,
 } from 'motion/react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { RiCloseLargeLine } from 'react-icons/ri';
 import { useSwipeable } from 'react-swipeable';
 
-import { IS_TOUCH_DEVICE } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 import { createOnlyClientComponent } from '@/utils/client';
 
 import { Button } from '../atoms/Button';
-import { DotLottie } from '../atoms/DotLottie';
+import { CommonSkeleton } from '../atoms/CommonSkeleton';
 
 export interface DrawerProps {
   open: boolean;
@@ -41,9 +41,7 @@ export const Drawer = createOnlyClientComponent(
 
     const opacity = useTransform(y, (y) => `opacity(${1 - parseInt(y) / 100})`);
 
-    const ref = useRef<HTMLDivElement>(null);
-
-    const height = ref.current?.offsetHeight ?? 0;
+    const [height, setHeight] = useState(0);
 
     const lastY = useRef(0);
     const lastYResetTimer = useRef<NodeJS.Timeout | null>(null);
@@ -87,19 +85,24 @@ export const Drawer = createOnlyClientComponent(
       },
     });
 
+    const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
+    useEffect(() => {
+      return () => {
+        if (lastYResetTimer.current) {
+          clearTimeout(lastYResetTimer.current);
+        }
+      };
+    }, []);
+
     return createPortal(
       <AnimatePresence>
         {open ? (
           <motion.div
             data-slot="drawer-overlay"
-            className={cn(
-              'z-25 fixed inset-0',
-              'bg-black/80',
-              'flex size-full items-end bg-zinc-300/10',
-              {
-                'pointer-events-none': loading,
-              },
-            )}
+            className={cn('z-25 fixed inset-0', 'flex size-full items-end', {
+              'pointer-events-none': loading,
+            })}
             exit={{ opacity: 0 }}
             style={{
               backgroundColor: overlayColor,
@@ -110,12 +113,14 @@ export const Drawer = createOnlyClientComponent(
             }}
           >
             <motion.div
-              ref={ref}
+              ref={(el) => {
+                setHeight(el?.offsetHeight ?? 0);
+              }}
               animate={{ y: '0%' }}
               className="shadow-lg-top relative w-full overflow-hidden rounded-t-xl bg-white"
               exit={{ y: '100%' }}
               initial={{ y: '100%' }}
-              style={{ y }}
+              style={{ y, opacity }}
               transition={{
                 type: 'spring',
                 damping: 100,
@@ -125,10 +130,7 @@ export const Drawer = createOnlyClientComponent(
             >
               {loading ? (
                 <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white">
-                  <DotLottie
-                    src="/assets/lottie/common-skeleton.lottie"
-                    className="animate-fade size-full"
-                  />
+                  <CommonSkeleton />
                 </div>
               ) : null}
               <div
@@ -136,7 +138,7 @@ export const Drawer = createOnlyClientComponent(
                 data-slot="drawer-handle"
                 className={cn(
                   'flex h-16 w-full items-center bg-white',
-                  IS_TOUCH_DEVICE
+                  isTouchDevice
                     ? 'cursor-grab justify-center active:cursor-grabbing'
                     : 'justify-end',
                   {
@@ -144,7 +146,7 @@ export const Drawer = createOnlyClientComponent(
                   },
                 )}
               >
-                {IS_TOUCH_DEVICE ? (
+                {isTouchDevice ? (
                   <div className="w-25 bg-muted h-2 rounded-md" />
                 ) : (
                   <Button
@@ -159,18 +161,23 @@ export const Drawer = createOnlyClientComponent(
                 )}
               </div>
               <div className="relative max-h-[calc(100dvh-5rem)] overflow-auto">
-                <motion.article
+                <article
                   data-slot="drawer-content"
                   className={cn(
-                    'relative mx-auto max-w-screen-sm px-4 pb-4',
+                    'max-w-screen-xs relative mx-auto px-4 pb-4',
                     className,
                   )}
-                  style={{ opacity }}
                 >
                   {children}
-
-                  {footer ? <footer className="my-4">{footer}</footer> : null}
-                </motion.article>
+                  {footer ? (
+                    <footer
+                      className="mt-4 flex w-full flex-col gap-2 [&>*]:w-full"
+                      data-slot="drawer-footer"
+                    >
+                      {footer}
+                    </footer>
+                  ) : null}
+                </article>
               </div>
             </motion.div>
           </motion.div>

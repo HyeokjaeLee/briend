@@ -1,6 +1,6 @@
 import { ProfileImage, Skeleton } from '@/components';
-import { IS_TOUCH_DEVICE } from '@/constants';
 import { useLanguage, useLongPress } from '@/hooks';
+import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
 import type { CommonMessageItemProps } from './SenderMessageItem';
@@ -33,6 +33,8 @@ export const ReceiverMessageItem = ({
   });
 
   const hasUnderTimeText = isSameUser && !isSameTime;
+
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
 
   return (
     <article className={cn('mx-4 my-1 flex', isSameUser ? 'gap-2' : 'gap-4')}>
@@ -68,7 +70,7 @@ export const ReceiverMessageItem = ({
             'font-pretendard w-fit cursor-pointer whitespace-pre-wrap break-all',
             'rounded-md duration-75 active:bg-slate-200',
             {
-              'hover:bg-slate-100': !IS_TOUCH_DEVICE,
+              'hover:bg-slate-100': !isTouchDevice,
               'bg-slate-100': isPressing,
               'bg-slate-200': isSelected,
             },

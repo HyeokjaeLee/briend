@@ -1,9 +1,11 @@
+'use client';
+
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
 import { DotLottie } from '@/components';
-import { IS_TOUCH_DEVICE } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
 const buttonVariants = cva(
@@ -64,7 +66,7 @@ const buttonVariants = cva(
       activeScaleDown: {
         true: 'active:scale-96',
       },
-      isTouch: {
+      isTouchDevice: {
         false: '',
       },
       onlyIcon: {
@@ -97,22 +99,22 @@ const buttonVariants = cva(
       // Hover effect related variants
       {
         variant: 'primary',
-        isTouch: false,
+        isTouchDevice: false,
         className: 'hover:bg-primary/90',
       },
       {
         variant: 'secondary',
-        isTouch: false,
+        isTouchDevice: false,
         className: 'hover:bg-secondary/70',
       },
       {
         variant: 'outline',
-        isTouch: false,
+        isTouchDevice: false,
         className: 'hover:border-primary/50',
       },
       {
         variant: 'ghost',
-        isTouch: false,
+        isTouchDevice: false,
         className: 'hover:bg-primary/5',
       },
 
@@ -163,6 +165,8 @@ export const Button = ({
 }: ButtonProps) => {
   const Comp = asChild ? Slot : 'button';
 
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
   return (
     <Comp
       {...restProps}
@@ -174,7 +178,7 @@ export const Button = ({
           variant,
           size,
           activeScaleDown,
-          isTouch: IS_TOUCH_DEVICE,
+          isTouchDevice,
           onlyIcon,
           shape,
         }),

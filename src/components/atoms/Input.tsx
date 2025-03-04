@@ -1,6 +1,8 @@
+'use client';
+
 import type { RefAttributes } from 'react';
 
-import { IS_TOUCH_DEVICE } from '@/constants';
+import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
 export interface InputProps
@@ -18,6 +20,8 @@ export const Input = ({
   disabled,
   ...restProps
 }: InputProps) => {
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
   return (
     <label
       aria-label="input-container"
@@ -46,7 +50,7 @@ export const Input = ({
         {
           'pl-3': leftContent,
           'pr-3': rightContent,
-          'not-has-[input:disabled]:hover:border-primary/50': !IS_TOUCH_DEVICE,
+          'not-has-[input:disabled]:hover:border-primary/50': !isTouchDevice,
         },
 
         // Custom class

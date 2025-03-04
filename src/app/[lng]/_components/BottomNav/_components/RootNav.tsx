@@ -13,9 +13,9 @@ import {
 
 import { CustomLink } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
-import { IS_TOUCH_DEVICE } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
+import { useGlobalStore } from '@/stores';
 import { cn, findRoute } from '@/utils';
 
 interface RootNavProps {
@@ -67,6 +67,8 @@ export const RootNav = ({ pathname }: RootNavProps) => {
     setActiveIndex(currentRouteIndex);
   }, [currentRouteIndex]);
 
+  const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
   return (
     <nav className="flex justify-center border-t border-t-slate-100">
       <ul className="flex w-full justify-between">
@@ -85,7 +87,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                     'flex-center group flex-col gap-1 py-3 text-xs',
                     {
                       'hover:text-primary/50 hover:bg-primary/5':
-                        !IS_TOUCH_DEVICE && !isActive,
+                        !isTouchDevice && !isActive,
                     },
                     isActive
                       ? 'text-primary font-bold'
