@@ -73,8 +73,8 @@ export const Modal = ({
             {loading ? (
               <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white">
                 <DotLottie
-                  className={cn('animate-fade z-10 h-40')}
-                  src="/assets/lottie/spinner.lottie"
+                  src="/assets/lottie/common-skeleton.lottie"
+                  className="animate-fade size-full"
                 />
               </div>
             ) : null}
@@ -82,16 +82,13 @@ export const Modal = ({
               data-slot="dialog-header"
               className="relative flex flex-col gap-2 text-left"
             >
-              {typeof header === 'string' ? (
-                <DialogPrimitive.Title
-                  data-slot="dialog-title"
-                  className="text-xl font-semibold leading-none"
-                >
-                  {header}
-                </DialogPrimitive.Title>
-              ) : (
-                header
-              )}
+              <DialogPrimitive.Title
+                data-slot="dialog-title"
+                className="text-xl font-semibold leading-none"
+                asChild={typeof header !== 'string' && !!header}
+              >
+                {header}
+              </DialogPrimitive.Title>
               {closeButton ? (
                 <DialogPrimitive.Close asChild>
                   <Button

@@ -3,6 +3,10 @@
  */
 export { Button, type ButtonProps } from './atoms/Button';
 export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
+export {
+  CommonSkeleton,
+  type CommonSkeletonProps,
+} from './atoms/CommonSkeleton';
 export { CustomImage, type CustomImageProps } from './atoms/CustomImage';
 export { CustomLink, type CustomLinkProps } from './atoms/CustomLink';
 export {

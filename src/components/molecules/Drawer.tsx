@@ -1,127 +1,182 @@
 'use client';
 
-import * as React from 'react';
-import { RiCloseLine } from 'react-icons/ri';
-import { Drawer as DrawerPrimitive } from 'vaul';
+import {
+  animate,
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useTransform,
+} from 'motion/react';
+import { useRef } from 'react';
+import { createPortal } from 'react-dom';
+import { RiCloseLargeLine } from 'react-icons/ri';
+import { useSwipeable } from 'react-swipeable';
 
-import { Button } from '@/components';
 import { IS_TOUCH_DEVICE } from '@/constants';
 import { cn } from '@/utils';
+import { createOnlyClientComponent } from '@/utils/client';
 
-export interface DrawerProps
-  extends React.ComponentProps<typeof DrawerPrimitive.Content>,
-    Pick<
-      React.ComponentProps<typeof DrawerPrimitive.Root>,
-      'handleOnly' | 'open' | 'onOpenChange' | 'direction'
-    > {
-  trigger?: React.ReactNode;
-  header?: React.ReactNode;
+import { Button } from '../atoms/Button';
+import { DotLottie } from '../atoms/DotLottie';
+
+export interface DrawerProps {
+  open: boolean;
+  onClose?: () => void;
+  children?: React.ReactNode;
+  className?: string;
+  loading?: boolean;
   footer?: React.ReactNode;
-  description?: React.ReactNode;
 }
 
-export const Drawer = ({
-  children,
-  className,
-  open,
-  onOpenChange,
-  header,
-  footer,
-  description,
-  trigger,
-  direction = 'bottom',
-  ...restProps
-}: DrawerProps) => (
-  <DrawerPrimitive.Root
-    data-slot="drawer"
-    direction={direction}
-    open={open}
-    onOpenChange={onOpenChange}
-  >
-    {trigger ? (
-      <DrawerPrimitive.Trigger data-slot="drawer-trigger" asChild>
-        {trigger}
-      </DrawerPrimitive.Trigger>
-    ) : null}
-    <DrawerPrimitive.Portal data-slot="drawer-portal">
-      <DrawerPrimitive.Overlay
-        data-slot="drawer-overlay"
-        className={cn(
-          'z-25 fixed inset-0',
-          'data-[state=open]:animate-fade data-[state=open]:animate-duration-150 bg-black/80',
-        )}
-      />
-      <DrawerPrimitive.Content
-        data-slot="drawer-content"
-        className={cn(
-          'group/drawer-content bg-background fixed z-30 h-auto',
+const TRANSITION = { type: 'spring', damping: 100, stiffness: 1000 } as const;
 
-          'data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80dvh] data-[vaul-drawer-direction=top]:rounded-b-xl',
+export const Drawer = createOnlyClientComponent(
+  ({ open, onClose, children, className, loading, footer }: DrawerProps) => {
+    const y = useMotionValue('100%');
 
-          'data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80dvh] data-[vaul-drawer-direction=bottom]:rounded-t-xl',
+    const overlayColor = useTransform(
+      y,
+      (y) => `rgba(0, 0, 0, ${(1 - parseInt(y) / 100) * 0.8})`,
+    );
 
-          'data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:sm:max-w-sm',
+    const opacity = useTransform(y, (y) => `opacity(${1 - parseInt(y) / 100})`);
 
-          'data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:sm:max-w-sm',
-          className,
-        )}
-        {...restProps}
-      >
-        {IS_TOUCH_DEVICE ? (
-          <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-md group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
-        ) : (
-          <DrawerPrimitive.Close data-slot="drawer-close" asChild>
-            <Button
-              variant="ghost"
-              onlyIcon
-              aria-label="close"
-              className="absolute right-1 top-1"
-            >
-              <RiCloseLine className="size-7" />
-            </Button>
-          </DrawerPrimitive.Close>
-        )}
-        <article
-          className={cn('mx-auto h-auto max-w-screen-lg overflow-auto', {
-            'mt-6': !IS_TOUCH_DEVICE,
-          })}
-        >
-          <header
-            data-slot="drawer-header"
-            className="flex flex-col gap-1.5 p-4"
+    const ref = useRef<HTMLDivElement>(null);
+
+    const height = ref.current?.offsetHeight ?? 0;
+
+    const lastY = useRef(0);
+    const lastYResetTimer = useRef<NodeJS.Timeout | null>(null);
+
+    const swipeHandlers = useSwipeable({
+      onSwiping: (e) => {
+        if (lastYResetTimer.current) clearTimeout(lastYResetTimer.current);
+
+        const percentDeltaY = (e.deltaY / height) * 100;
+        const percentCurrentY = lastY.current + percentDeltaY;
+
+        if (percentCurrentY < 0) return;
+
+        y.set(percentCurrentY + '%');
+      },
+      onSwiped: (e) => {
+        const percentDeltaY =
+          lastY.current + (e.deltaY / height) * 100 + 10 * e.velocity ** 2;
+
+        if (percentDeltaY < 0) return;
+
+        lastY.current = percentDeltaY;
+
+        animate(y, percentDeltaY + '%', TRANSITION);
+
+        const isClose =
+          50 < percentDeltaY ||
+          (e.dir === 'Down' && 250 < e.deltaY && 1.5 < e.velocity);
+
+        if (isClose) {
+          lastY.current = 0;
+
+          return onClose?.();
+        }
+
+        lastYResetTimer.current = setTimeout(() => {
+          animate(y, '0%', TRANSITION);
+          lastY.current = 0;
+          lastYResetTimer.current = null;
+        }, 300);
+      },
+    });
+
+    return createPortal(
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            data-slot="drawer-overlay"
+            className={cn(
+              'z-25 fixed inset-0',
+              'bg-black/80',
+              'flex size-full items-end bg-zinc-300/10',
+              {
+                'pointer-events-none': loading,
+              },
+            )}
+            exit={{ opacity: 0 }}
+            style={{
+              backgroundColor: overlayColor,
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              onClose?.();
+            }}
           >
-            {typeof header === 'string' ? (
-              <DrawerPrimitive.Title
-                data-slot="drawer-title"
-                className="text-xl font-semibold leading-none"
-              >
-                {header}
-              </DrawerPrimitive.Title>
-            ) : (
-              header
-            )}
-            {typeof description === 'string' ? (
-              <DrawerPrimitive.Description
-                data-slot="drawer-description"
-                className="text-primary/50 text-sm"
-              >
-                {description}
-              </DrawerPrimitive.Description>
-            ) : (
-              description
-            )}
-          </header>
-          {children}
-          {footer ? (
-            <footer
-              data-slot="drawer-footer"
-              className={cn('mt-auto flex flex-col gap-2 p-4')}
+            <motion.div
+              ref={ref}
+              animate={{ y: '0%' }}
+              className="shadow-lg-top relative w-full overflow-hidden rounded-t-xl bg-white"
+              exit={{ y: '100%' }}
+              initial={{ y: '100%' }}
+              style={{ y }}
+              transition={{
+                type: 'spring',
+                damping: 100,
+                stiffness: 1000,
+              }}
+              onClick={(e) => e.stopPropagation()}
             >
-              {footer}
-            </footer>
-          ) : null}
-        </article>
-      </DrawerPrimitive.Content>
-    </DrawerPrimitive.Portal>
-  </DrawerPrimitive.Root>
+              {loading ? (
+                <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white">
+                  <DotLottie
+                    src="/assets/lottie/common-skeleton.lottie"
+                    className="animate-fade size-full"
+                  />
+                </div>
+              ) : null}
+              <div
+                {...swipeHandlers}
+                data-slot="drawer-handle"
+                className={cn(
+                  'flex h-16 w-full items-center bg-white',
+                  IS_TOUCH_DEVICE
+                    ? 'cursor-grab justify-center active:cursor-grabbing'
+                    : 'justify-end',
+                  {
+                    'pointer-events-none invisible': loading,
+                  },
+                )}
+              >
+                {IS_TOUCH_DEVICE ? (
+                  <div className="w-25 bg-muted h-2 rounded-md" />
+                ) : (
+                  <Button
+                    variant="ghost"
+                    onClick={onClose}
+                    onlyIcon
+                    className="mr-2 mt-2"
+                    aria-label="close"
+                  >
+                    <RiCloseLargeLine className="size-7" />
+                  </Button>
+                )}
+              </div>
+              <div className="relative max-h-[calc(100dvh-5rem)] overflow-auto">
+                <motion.article
+                  data-slot="drawer-content"
+                  className={cn(
+                    'relative mx-auto max-w-screen-sm px-4 pb-4',
+                    className,
+                  )}
+                  style={{ opacity }}
+                >
+                  {children}
+
+                  {footer ? <footer className="my-4">{footer}</footer> : null}
+                </motion.article>
+              </div>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>,
+      document.body,
+    );
+  },
 );
