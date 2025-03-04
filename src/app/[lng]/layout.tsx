@@ -9,7 +9,7 @@ import { type ReactElement, Suspense } from 'react';
 
 import { PageLoadingTemplate } from '@/components';
 import { pretendard } from '@/configs/font';
-import { LANGUAGE, SELECTOR } from '@/constants';
+import { LANGUAGE } from '@/constants';
 import { cn } from '@/utils';
 
 import { languages } from '../../configs/i18n/settings';
