@@ -6,7 +6,7 @@ import { Button, DotLottie } from '@/components';
 
 export const RightSide = () => {
   return (
-    <aside className="flex h-dvh flex-1 flex-col">
+    <aside className="hidden h-dvh flex-1 flex-col xl:flex">
       <div className="flex-center flex-1 flex-col gap-2">
         <DotLottie src="/assets/lottie/translate.lottie" className="size-100" />
         <div className="container px-4 text-center">
