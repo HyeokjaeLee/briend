@@ -11,7 +11,7 @@ export interface AvatarProps
     React.ComponentProps<typeof AvatarPrimitive.Root>,
     'size' | 'children'
   > {
-  size?: [6, 8, 10, 12, 14, 18, 20][number];
+  size?: [6, 8, 10, 12, 14, 16, 18, 20][number];
   src?: string | null;
 }
 
@@ -31,6 +31,7 @@ export const Avatar = ({
         10: 'size-10',
         12: 'size-12',
         14: 'size-14',
+        16: 'size-16',
         18: 'size-18',
         20: 'size-20',
       }[size],

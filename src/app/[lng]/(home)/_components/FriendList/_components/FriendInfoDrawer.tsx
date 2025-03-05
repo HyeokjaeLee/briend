@@ -2,7 +2,7 @@
 
 import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
 
-import { Avatar, Button, CustomLink, Drawer, Timer } from '@/components';
+import { Avatar, Button, CustomLink, Drawer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { ROUTES } from '@/routes/client';
@@ -89,9 +89,7 @@ export const FriendInfoDrawer = ({
             <Button variant="ghost" className="mx-auto">
               연결 요청
             </Button>
-          ) : (
-            <Timer expires={new Date('2025-05-01')} />
-          )}
+          ) : null}
         </>
       ) : null}
     </Drawer>
