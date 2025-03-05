@@ -1,6 +1,7 @@
 /**
  * @package atoms 컴포넌트
  */
+export { Avatar, type AvatarProps } from './atoms/Avatar';
 export { Badge, type BadgeProps } from './atoms/Badge';
 export { Button, type ButtonProps } from './atoms/Button';
 export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
@@ -39,7 +40,6 @@ export {
 } from './molecules/CustomTopHeader';
 export { Drawer, type DrawerProps } from './molecules/Drawer';
 export { Modal, type ModalProps } from './molecules/Modal';
-export { ProfileImage, type ProfileImageProps } from './molecules/ProfileImage';
 export { QR, type QRProps } from './molecules/QR';
 export { Timer, type TimerProps } from './molecules/Timer';
 export {

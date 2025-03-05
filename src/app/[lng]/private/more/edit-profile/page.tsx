@@ -8,11 +8,11 @@ import { FaCamera } from 'react-icons/fa';
 import type { z } from 'zod';
 
 import {
+  Avatar,
   BottomButton,
   Button,
   Input,
   Modal,
-  ProfileImage,
   Select,
   ValidationMessage,
 } from '@/components';
@@ -173,7 +173,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
-            <ProfileImage src={form.getValues('photoURL')} />
+            <Avatar src={form.getValues('photoURL')} />
             <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>

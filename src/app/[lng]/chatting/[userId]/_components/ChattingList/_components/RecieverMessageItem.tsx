@@ -1,4 +1,4 @@
-import { ProfileImage, Skeleton } from '@/components';
+import { Avatar, Skeleton } from '@/components';
 import { useLanguage, useLongPress } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
@@ -42,7 +42,7 @@ export const ReceiverMessageItem = ({
         <div className="flex h-5 w-14 items-center justify-end" />
       ) : (
         <Skeleton loading={isLoading}>
-          <ProfileImage size="4" src={profileImageSrc} />
+          <Avatar size={18} src={profileImageSrc} />
         </Skeleton>
       )}
       <section className={cn(!hasUnderTimeText && 'flex-1')}>

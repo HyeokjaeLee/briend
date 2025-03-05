@@ -2,7 +2,7 @@
 
 import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
 
-import { Button, CustomLink, Drawer, ProfileImage, Timer } from '@/components';
+import { Avatar, Button, CustomLink, Drawer, Timer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { ROUTES } from '@/routes/client';
@@ -67,7 +67,7 @@ export const FriendInfoDrawer = ({
       {friendInfo ? (
         <>
           <header className="flex flex-col items-center gap-2">
-            <ProfileImage size="7" src={friendInfo.profileImage} />
+            <Avatar size={18} src={friendInfo.profileImage} />
             <div className="flex items-center gap-2">
               <h2
                 className={cn('text-xl font-semibold', {

@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge, ProfileImage, Skeleton } from '@/components';
+import { Avatar, Badge, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { LANGUAGE_NAME } from '@/constants';
 import { useUserData } from '@/hooks';
@@ -23,7 +23,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton loading={!user}>
-        <ProfileImage size="7" src={user?.profileImage} />
+        <Avatar size={18} src={user?.profileImage} />
       </Skeleton>
       <div className="mt-4 flex items-center justify-center gap-2">
         <Skeleton className="h-7 w-28" loading={!user}>
