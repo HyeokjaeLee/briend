@@ -20,6 +20,7 @@ import { GlobalModals } from './_components/GlobalModals';
 import { GlobalProvider } from './_components/GlobalProvider';
 import { MainContainer } from './_components/MainContainer';
 import { MountAction } from './_components/MountAction';
+import { RightSide } from './_components/RightSide';
 import { SidePanel } from './_components/SidePanel';
 import { ToastProvider } from './_components/ToastProvider';
 
@@ -94,9 +95,7 @@ export default async function RootLayout({
       lang={lng}
     >
       <body className="flex h-dvh w-full overflow-hidden">
-        <aside className="hidden flex-1 bg-slate-50 xl:block">
-          FOR RENDING
-        </aside>
+        <RightSide />
         <GlobalLoading />
         <GlobalProvider>
           <GlobalListener />

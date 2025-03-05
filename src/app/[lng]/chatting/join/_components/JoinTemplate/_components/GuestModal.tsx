@@ -6,9 +6,9 @@ import {
   Button,
   DotLottie,
   Input,
+  InputDecorator,
   Modal,
   Timer,
-  ValidationMessage,
 } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
@@ -114,14 +114,15 @@ export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
           });
         })}
       >
-        <Input
-          {...form.register('nickname')}
-          disabled={isSuccess || joinChatMutation.isPending}
-          placeholder={t('nickname')}
-        />
-        <ValidationMessage
+        <InputDecorator
           message={t(form.formState.errors.nickname?.message ?? '')}
-        />
+        >
+          <Input
+            {...form.register('nickname')}
+            disabled={isSuccess || joinChatMutation.isPending}
+            placeholder={t('nickname')}
+          />
+        </InputDecorator>
         <Button
           className={cn('mt-8 w-full')}
           loading={joinChatMutation.isPending || joinChatMutation.isSuccess}

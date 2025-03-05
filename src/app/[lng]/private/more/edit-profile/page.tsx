@@ -12,9 +12,9 @@ import {
   BottomButton,
   Button,
   Input,
+  InputDecorator,
   Modal,
   Select,
-  ValidationMessage,
 } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
@@ -173,27 +173,26 @@ const EditProfilePage = (props: ProfilePageProps) => {
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
-            <Avatar src={form.getValues('photoURL')} />
+            <Avatar src={form.getValues('photoURL')} size={20} />
             <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>
           </button>
         </section>
         <Button asChild className="w-full" variant="outline" />
-        <label className="w-full font-semibold">
-          {t('my-nickname')}
+        <InputDecorator
+          label={t('my-nickname')}
+          className="w-full"
+          message={t(form.formState.errors.displayName?.message ?? '')}
+        >
           <Input
             {...form.register('displayName')}
             className="mt-2"
             placeholder={t('my-nickname')}
             aria-invalid={!!form.formState.errors.displayName}
           />
-          <ValidationMessage
-            message={t(form.formState.errors.displayName?.message ?? '')}
-          />
-        </label>
-        <label className="w-full font-semibold">
-          {t('friend-language')}
+        </InputDecorator>
+        <InputDecorator label={t('friend-language')}>
           <Controller
             control={form.control}
             name="language"
@@ -208,7 +207,7 @@ const EditProfilePage = (props: ProfilePageProps) => {
               />
             )}
           />
-        </label>
+        </InputDecorator>
       </form>
       <Modal
         loading={tempProfileImage.isPending}

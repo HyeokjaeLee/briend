@@ -17,7 +17,7 @@ export interface AvatarProps
 
 export const Avatar = ({
   className,
-  size = 12,
+  size = 18,
   src,
   ...props
 }: AvatarProps) => (
