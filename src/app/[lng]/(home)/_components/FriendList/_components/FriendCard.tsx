@@ -1,6 +1,6 @@
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
-import { ProfileImage, Skeleton } from '@/components';
+import { Avatar, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
 import { cn } from '@/utils';
@@ -30,7 +30,7 @@ export const FriendCard = ({
       onClick={onClick}
     >
       <article className="flex gap-3">
-        <ProfileImage size="5" src={profileImage} />
+        <Avatar size={18} src={profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong

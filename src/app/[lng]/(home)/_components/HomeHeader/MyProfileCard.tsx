@@ -2,7 +2,7 @@ import CountUp from 'react-countup';
 import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
-import { CustomLink, ProfileImage, Skeleton } from '@/components';
+import { Avatar, CustomLink, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { MAX_FRIEND_COUNT } from '@/constants';
 import { useUserData } from '@/hooks';
@@ -28,7 +28,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
       href={ROUTES.EDIT_PROFILE.pathname}
     >
       <article className="flex gap-3">
-        <ProfileImage size="6" src={user?.profileImage} />
+        <Avatar size={14} src={user?.profileImage} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong>{userName}</strong>

@@ -1,7 +1,5 @@
 import '@/styles/globals.css';
-import '@/styles/radix.css';
 
-import { Theme } from '@radix-ui/themes';
 import { dir } from 'i18next';
 import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
@@ -95,30 +93,28 @@ export default async function RootLayout({
       dir={dir(lng)}
       lang={lng}
     >
-      <Theme asChild className="flex h-dvh w-full overflow-hidden">
-        <body>
-          <aside className="hidden flex-1 bg-slate-50 xl:block">
-            FOR RENDING
-          </aside>
-          <GlobalLoading />
-          <GlobalProvider>
-            <GlobalListener />
-            <MountAction />
-            <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
-              <CenterContainer>
-                <GlobalHeader />
-                <ToastProvider />
-                <Suspense fallback={<PageLoadingTemplate />}>
-                  <GlobalModals />
-                  <MainContainer>{children}</MainContainer>
-                </Suspense>
-                <BottomNav />
-              </CenterContainer>
-              <SidePanel />
-            </div>
-          </GlobalProvider>
-        </body>
-      </Theme>
+      <body>
+        <aside className="hidden flex-1 bg-slate-50 xl:block">
+          FOR RENDING
+        </aside>
+        <GlobalLoading />
+        <GlobalProvider>
+          <GlobalListener />
+          <MountAction />
+          <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
+            <CenterContainer>
+              <GlobalHeader />
+              <ToastProvider />
+              <Suspense fallback={<PageLoadingTemplate />}>
+                <GlobalModals />
+                <MainContainer>{children}</MainContainer>
+              </Suspense>
+              <BottomNav />
+            </CenterContainer>
+            <SidePanel />
+          </div>
+        </GlobalProvider>
+      </body>
     </html>
   );
 }
