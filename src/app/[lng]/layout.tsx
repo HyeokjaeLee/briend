@@ -93,7 +93,7 @@ export default async function RootLayout({
       dir={dir(lng)}
       lang={lng}
     >
-      <body>
+      <body className="flex h-dvh w-full overflow-hidden">
         <aside className="hidden flex-1 bg-slate-50 xl:block">
           FOR RENDING
         </aside>
