@@ -2,8 +2,10 @@
 
 import { Ri24HoursFill } from 'react-icons/ri';
 
-import { Badge, Button } from '@/components';
+import { Button, Input, InputDecorator } from '@/components';
 import { toast } from '@/utils/client';
+
+import { Checkbox } from './checkbox';
 
 export default function TestPage() {
   return (
@@ -20,7 +22,12 @@ export default function TestPage() {
       >
         Toast
       </Button>
-      <Badge>badge</Badge>
+      <InputDecorator label="Checkbox" type="checkbox">
+        <Checkbox />
+      </InputDecorator>
+      <InputDecorator label="Input" type="input">
+        <Input />
+      </InputDecorator>
     </article>
   );
 }

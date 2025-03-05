@@ -39,13 +39,13 @@ export {
   type CustomTopHeaderProps,
 } from './molecules/CustomTopHeader';
 export { Drawer, type DrawerProps } from './molecules/Drawer';
+export {
+  InputDecorator,
+  type InputDecoratorProps,
+} from './molecules/InputDecorator';
 export { Modal, type ModalProps } from './molecules/Modal';
 export { QR, type QRProps } from './molecules/QR';
 export { Timer, type TimerProps } from './molecules/Timer';
-export {
-  ValidationMessage,
-  type ValidationMessageProps,
-} from './molecules/ValidationMessage';
 
 /**
  * @package organisms 컴포넌트

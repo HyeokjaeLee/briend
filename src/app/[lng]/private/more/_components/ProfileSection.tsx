@@ -23,7 +23,7 @@ export const ProfileSection = ({ className }: ProfileSectionProps) => {
       )}
     >
       <Skeleton loading={!user}>
-        <Avatar size={18} src={user?.profileImage} />
+        <Avatar size={20} src={user?.profileImage} />
       </Skeleton>
       <div className="mt-4 flex items-center justify-center gap-2">
         <Skeleton className="h-7 w-28" loading={!user}>
