@@ -1,12 +1,10 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { LuGlobe } from 'react-icons/lu';
 
 import { Button, DotLottie } from '@/components';
 
 export const RightSide = () => {
   return (
-    <aside className="hidden h-dvh flex-1 flex-col xl:flex">
+    <aside className="hidden h-dvh flex-1 flex-col overflow-auto xl:flex">
       <div className="flex-center flex-1 flex-col gap-2">
         <DotLottie src="/assets/lottie/translate.lottie" className="size-100" />
         <div className="container px-4 text-center">
@@ -40,37 +38,6 @@ export const RightSide = () => {
           </div>
         </div>
       </div>
-      <footer className="border-t py-6 md:py-8">
-        <div className="container flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
-          <div className="flex items-center gap-2">
-            <LuGlobe className="text-primary h-5 w-5" />
-            <span className="font-bold">BRIEND</span>
-          </div>
-          <div className="flex gap-6">
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground text-sm"
-            >
-              개인정보처리방침
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground text-sm"
-            >
-              이용약관
-            </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground text-sm"
-            >
-              고객지원
-            </Link>
-          </div>
-          <div className="text-muted-foreground text-sm">
-            &copy; {new Date().getFullYear()} BRIEND. All rights reserved.
-          </div>
-        </div>
-      </footer>
     </aside>
   );
 };
