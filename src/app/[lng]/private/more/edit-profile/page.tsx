@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { getSession } from 'next-auth/react';
 import { use, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { FaCamera } from 'react-icons/fa';
@@ -47,14 +46,10 @@ const EditProfilePage = (props: ProfilePageProps) => {
     resolver: zodResolver(editProfileSchema),
     mode: 'onChange',
     defaultValues: async () => {
-      const session = await getSession();
-
-      const user = session?.user;
-
       assert(user);
 
       return {
-        language: lng,
+        language: user.language,
         displayName: user.name ?? 'Unknown',
         photoURL: user.profileImage,
       };

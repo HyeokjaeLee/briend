@@ -1,8 +1,12 @@
+'use client';
+
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
 import { Avatar, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
+import { chattingDB } from '@/database/indexed';
+import { useIndexedDB } from '@/hooks';
 import { cn } from '@/utils';
 
 type FriendCardProps =
@@ -21,6 +25,15 @@ export const FriendCard = ({
 }: FriendCardProps) => {
   const { t } = useTranslation('friend-list');
 
+  const lastMessage = useIndexedDB(chattingDB.messages, async (table) => {
+    const messageList = await table
+      .where('userId')
+      .equals(id)
+      .sortBy('timestamp');
+
+    return messageList[messageList.length - 1]?.message;
+  });
+
   return (
     <button
       className="w-full cursor-pointer px-5 py-3"
@@ -38,7 +51,11 @@ export const FriendCard = ({
             >
               {isUnsubscribed ? t('unsubscribed-user') : name}
             </strong>
-            <p className="text-sm text-slate-500">마지막 메시지</p>
+            {lastMessage ? (
+              <p className="text-start text-sm text-slate-500">{lastMessage}</p>
+            ) : (
+              <div className="h-4 w-full" />
+            )}
           </div>
           <div className="flex gap-1">
             <RiLinkUnlinkM

@@ -4,7 +4,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-import { DotLottie } from '@/components';
+import { DotLottie, Spinner } from '@/components';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
 
@@ -187,10 +187,7 @@ export const Button = ({
     >
       {loading && !asChild ? (
         <>
-          <DotLottie
-            src="/assets/lottie/loading.lottie"
-            className="animate-fade absolute z-10 mx-auto size-full scale-150"
-          />
+          <Spinner className="animate-fade absolute size-[1.2em] scale-150" />
           <span className="invisible contents">{children}</span>
         </>
       ) : (

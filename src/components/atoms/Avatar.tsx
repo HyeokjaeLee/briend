@@ -61,6 +61,7 @@ export const Avatar = ({
       {imageUrl ? (
         <AvatarPrimitive.Fallback
           data-slot="avatar-fallback"
+          delayMs={300}
           className={cn(
             'flex size-full items-center justify-center rounded-full',
           )}
