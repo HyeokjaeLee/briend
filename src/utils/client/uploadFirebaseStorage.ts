@@ -1,4 +1,4 @@
-import { getDownloadURL,getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 
 import { CustomError } from '../customError';
 
@@ -22,7 +22,10 @@ export const uploadFirebaseStorage = async ({
   try {
     const storageRef = ref(storage, fullPath);
 
-    await uploadBytes(storageRef, file);
+    await uploadBytes(storageRef, file, {
+      contentType: file.type,
+      cacheControl: 'public, max-age=3600',
+    });
 
     const downloadUrl = await getDownloadURL(storageRef);
 
