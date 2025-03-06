@@ -28,7 +28,7 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
       href={ROUTES.EDIT_PROFILE.pathname}
     >
       <article className="flex gap-3">
-        <Avatar size={20} src={user?.profileImage} />
+        <Avatar size={18} src={user?.profileImage} userId={user?.id} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong>{userName}</strong>

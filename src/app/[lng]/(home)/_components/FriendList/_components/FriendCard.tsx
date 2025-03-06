@@ -5,15 +5,13 @@ import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
 import { cn } from '@/utils';
 
-interface FriendCardProps
-  extends Omit<
-    RouterOutputs['friend']['getFriendList']['friendList'][number],
-    'id'
-  > {
-  onClick: () => void;
-}
+type FriendCardProps =
+  RouterOutputs['friend']['getFriendList']['friendList'][number] & {
+    onClick: () => void;
+  };
 
 export const FriendCard = ({
+  id,
   name,
   profileImage,
   isAnonymous,
@@ -30,7 +28,7 @@ export const FriendCard = ({
       onClick={onClick}
     >
       <article className="flex gap-3">
-        <Avatar size={18} src={profileImage} />
+        <Avatar size={18} src={profileImage} userId={id} />
         <div className="flex w-full items-center justify-between">
           <div className="flex flex-col">
             <strong

@@ -1,6 +1,6 @@
-import { cn } from '@/utils';
+import { RiLoader3Fill } from 'react-icons/ri';
 
-import { DotLottie } from './DotLottie';
+import { cn } from '@/utils';
 
 export interface SpinnerProps {
   className?: string;
@@ -8,10 +8,9 @@ export interface SpinnerProps {
 
 export const Spinner = ({ className }: SpinnerProps) => {
   return (
-    <DotLottie
+    <RiLoader3Fill
       aria-label="loading"
-      src="/assets/lottie/loading.lottie"
-      className={cn('animate-fade size-full cursor-wait', className)}
+      className={cn('text-primary size-16 animate-spin cursor-wait', className)}
     />
   );
 };
