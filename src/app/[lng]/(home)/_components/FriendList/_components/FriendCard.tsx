@@ -1,13 +1,14 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 
 import { Avatar, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
 import { chattingDB } from '@/database/indexed';
-import { useIndexedDB } from '@/hooks';
-import { cn } from '@/utils';
+import { useIndexedDB, useLanguage } from '@/hooks';
+import { cn, formatLocalizedDate } from '@/utils';
 
 type FriendCardProps =
   RouterOutputs['friend']['getFriendList']['friendList'][number] & {
@@ -31,8 +32,14 @@ export const FriendCard = ({
       .equals(id)
       .sortBy('timestamp');
 
-    return messageList[messageList.length - 1]?.message;
+    return messageList[messageList.length - 1];
   });
+
+  const { lng } = useLanguage();
+
+  const lastMessageDate = lastMessage ? dayjs(lastMessage.timestamp) : null;
+
+  const isThisYear = lastMessageDate?.isSame(dayjs(), 'year');
 
   return (
     <button
@@ -42,32 +49,47 @@ export const FriendCard = ({
     >
       <article className="flex gap-3">
         <Avatar size={18} src={profileImage} userId={id} />
-        <div className="flex w-full items-center justify-between">
-          <div className="flex flex-col">
-            <strong
-              className={cn('text-start font-semibold', {
-                'font-medium text-slate-400': isUnsubscribed,
-              })}
-            >
-              {isUnsubscribed ? t('unsubscribed-user') : name}
-            </strong>
+        <div className="flex w-full max-w-full flex-col overflow-hidden">
+          <header className="flex flex-wrap items-center justify-between">
+            <div className="flex items-center gap-1">
+              <strong
+                className={cn('text-start font-semibold', {
+                  'font-medium text-slate-400': isUnsubscribed,
+                })}
+              >
+                {isUnsubscribed ? t('unsubscribed-user') : name}
+              </strong>
+              <RiShieldCheckFill
+                className={cn('size-4 text-green-500', {
+                  hidden: isAnonymous,
+                })}
+              />
+            </div>
+            <div className="flex items-center gap-1 text-slate-500">
+              {lastMessageDate ? (
+                <time className="text-xs">
+                  {formatLocalizedDate(lastMessageDate, lng, {
+                    day: isThisYear,
+                    time: isThisYear,
+                    year: !isThisYear,
+                  })}
+                </time>
+              ) : null}
+              <RiLinkUnlinkM
+                className={cn('size-3', {
+                  hidden: isLinked,
+                })}
+              />
+            </div>
+          </header>
+          <div className="flex items-center justify-between">
             {lastMessage ? (
-              <p className="text-start text-sm text-slate-500">{lastMessage}</p>
+              <p className="max-w-full overflow-hidden text-ellipsis text-nowrap text-start text-sm text-slate-500">
+                {lastMessage?.message}
+              </p>
             ) : (
               <div className="h-4 w-full" />
             )}
-          </div>
-          <div className="flex gap-1">
-            <RiLinkUnlinkM
-              className={cn('mb-auto size-4 text-red-500', {
-                hidden: isLinked,
-              })}
-            />
-            <RiShieldCheckFill
-              className={cn('mb-auto size-4 text-green-500', {
-                hidden: isAnonymous,
-              })}
-            />
           </div>
         </div>
       </article>

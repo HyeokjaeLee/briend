@@ -64,14 +64,14 @@ const realtimeDatabaseDispatcher = <T>(
 
 export const realtimeDatabase = getDatabase(app);
 
-type LinstenerType =
+type ListenerType =
   | 'onValue'
   | 'onChildChanged'
   | 'onChildAdded'
   | 'onChildMoved'
   | 'onChildRemoved';
 
-export const useRealtimeDatabase = <T>(type: LinstenerType, path: string) => {
+export const useRealtimeDatabase = <T>(type: ListenerType, path: string) => {
   const [state, dispatch] = useReducer(realtimeDatabaseDispatcher<T>, {
     data: null,
     loading: true,
