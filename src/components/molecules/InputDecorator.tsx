@@ -38,7 +38,7 @@ export const InputDecorator = ({
         })}
       >
         <span
-          className={cn('text-base font-medium leading-none', {
+          className={cn('text-base font-medium leading-none text-slate-500', {
             'after:ml-1 after:text-red-500 after:content-["*"]': required,
           })}
         >

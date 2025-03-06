@@ -46,6 +46,7 @@ const MorePage = async (props: MorePageProps) => {
               shape="square"
               size="17"
               asChild
+              activeScaleDown={false}
               className="flex items-center justify-between px-8 text-slate-900"
               variant="ghost"
             >
