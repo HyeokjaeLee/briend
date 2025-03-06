@@ -43,6 +43,9 @@ export const API_ROUTES = {
     });
   },
 
+  GET_ACCOUNT_RANDOM_IMAGE_URL: (userId: string) =>
+    `/api/account/random-image?userId=${userId}`,
+
   GET_FIREBASE_CUSTOM_TOKEN: () =>
     apiInstance.get<GetFirebaseCustomTokenResponse>('firebase-custom-token'),
 };

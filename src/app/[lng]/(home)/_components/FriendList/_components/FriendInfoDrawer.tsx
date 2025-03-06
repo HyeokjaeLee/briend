@@ -67,7 +67,11 @@ export const FriendInfoDrawer = ({
       {friendInfo ? (
         <>
           <header className="flex flex-col items-center gap-2">
-            <Avatar size={18} src={friendInfo.profileImage} />
+            <Avatar
+              size={18}
+              src={friendInfo.profileImage}
+              userId={friendInfo.id}
+            />
             <div className="flex items-center gap-2">
               <h2
                 className={cn('text-xl font-semibold', {

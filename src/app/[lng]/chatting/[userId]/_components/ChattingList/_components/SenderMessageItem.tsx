@@ -50,7 +50,7 @@ export const SenderMessageItem = ({
         </time>
       )}
       <div className="flex items-end gap-2">
-        {state === MESSAGE_STATE.SENT ? <Spinner /> : null}
+        {state === MESSAGE_STATE.SENT ? <Spinner className="size-16" /> : null}
         <pre
           className={cn(
             'font-pretendard cursor-pointer whitespace-pre-wrap break-all transition-colors',

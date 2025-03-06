@@ -54,10 +54,13 @@ export const FriendList = createSuspendedComponent(
       <ul>
         {friendList.map(({ id, ...restInfo }) => (
           <li key={id}>
-            <FriendCard {...restInfo} onClick={() => setOpenedFriendId(id)} />
+            <FriendCard
+              {...restInfo}
+              id={id}
+              onClick={() => setOpenedFriendId(id)}
+            />
           </li>
         ))}
-
         <FriendInfoDrawer
           friendId={openedFriendId}
           onClickDeleteFriendButton={() => setIsDeleteModalOpened(true)}

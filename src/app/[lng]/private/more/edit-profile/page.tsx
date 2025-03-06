@@ -173,7 +173,11 @@ const EditProfilePage = (props: ProfilePageProps) => {
             type="button"
             onClick={() => setIsProfileImageModalOpen(true)}
           >
-            <Avatar src={form.getValues('photoURL')} size={20} />
+            <Avatar
+              src={form.getValues('photoURL')}
+              size={26}
+              userId={user?.id}
+            />
             <div className="absolute bottom-0 right-0 rounded-full border-2 border-white bg-slate-200 p-2">
               <FaCamera className="size-4 text-slate-700" />
             </div>

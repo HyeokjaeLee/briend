@@ -8,8 +8,13 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'avatar.iran.liara.run',
+        pathname: '/public*',
+      },
+      {
+        protocol: 'https',
         hostname: 'api.qrserver.com',
-        pathname: '/v1/create-qr-code',
+        pathname: '/v1/create-qr-code*',
       },
     ],
   },
