@@ -41,6 +41,7 @@ export const LogoutButton = ({
       className="flex w-full items-center justify-between px-8 text-slate-900"
       loading={logoutMutation.isPending}
       size="17"
+      activeScaleDown={false}
       shape="square"
       variant="ghost"
       onClick={() => logoutMutation.mutate()}
