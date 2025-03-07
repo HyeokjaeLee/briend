@@ -52,59 +52,66 @@ export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
   const hasSidePanel = useGlobalStore((state) => state.hasSidePanel);
 
   return (
-    <Modal open className="max-w-96">
-      <Timer
-        className={cn(isSuccess && 'animate-fade-down animate-reverse')}
-        expires={expToDate(exp)}
-        onTimeout={() => {
-          throw new CustomError({
-            code: 'EXPIRED_CHAT',
-          });
-        }}
-      />
-      {isSuccess ? (
-        <DotLottie
-          key="send-nickname"
-          className="size-44"
-          loop={false}
-          src="/assets/lottie/send-nickname.lottie"
-          onCompleted={() => {
-            router.replace(
-              ROUTES.CHATTING_ROOM.pathname({
-                userId: joinChatMutation.data.inviterId,
-              }),
-              {
-                toSidePanel: hasSidePanel,
-              },
-            );
-
-            if (hasSidePanel) {
-              router.replace(ROUTES.FRIEND_LIST.pathname);
-            }
-
-            toast({
-              message: t('start-chatting-toast-message'),
+    <Modal
+      open
+      className="max-w-96"
+      header={
+        <Timer
+          className={cn(isSuccess && 'animate-fade-down animate-reverse')}
+          expires={expToDate(exp)}
+          onTimeout={() => {
+            throw new CustomError({
+              code: 'EXPIRED_CHAT',
             });
           }}
         />
-      ) : (
-        <DotLottie
-          key="write"
-          className="size-44"
-          src="/assets/lottie/write.lottie"
-        />
-      )}
-      <strong className="text-center text-xl font-semibold">
-        {isSuccess ? t('join-soon') : t('chatting-invite')}
-      </strong>
-      <p
-        className={cn(
-          'mx-10 mb-8 text-center text-zinc-600',
-          isSuccess && 'invisible',
+      }
+    >
+      <section className="flex-center flex-col">
+        {isSuccess ? (
+          <DotLottie
+            key="send-nickname"
+            className="size-44"
+            loop={false}
+            src="/assets/lottie/send-nickname.lottie"
+            onCompleted={() => {
+              router.replace(
+                ROUTES.CHATTING_ROOM.pathname({
+                  userId: joinChatMutation.data.inviterId,
+                }),
+                {
+                  toSidePanel: hasSidePanel,
+                },
+              );
+
+              if (hasSidePanel) {
+                router.replace(ROUTES.FRIEND_LIST.pathname);
+              }
+
+              toast({
+                message: t('start-chatting-toast-message'),
+              });
+            }}
+          />
+        ) : (
+          <DotLottie
+            key="write"
+            className="size-44"
+            src="/assets/lottie/write.lottie"
+          />
         )}
-      >
-        {t('friend-nickname')}
-      </p>
+        <strong className="text-center text-xl font-semibold">
+          {isSuccess ? t('join-soon') : t('chatting-invite')}
+        </strong>
+        <p
+          className={cn(
+            'mx-10 mb-8 text-center text-zinc-600',
+            isSuccess && 'invisible',
+          )}
+        >
+          {t('friend-nickname')}
+        </p>
+      </section>
       <form
         className="w-full"
         onSubmit={form.handleSubmit(({ nickname }) => {

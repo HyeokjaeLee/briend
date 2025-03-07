@@ -40,6 +40,7 @@ export const FriendCard = ({
   const lastMessageDate = lastMessage ? dayjs(lastMessage.timestamp) : null;
 
   const isThisYear = lastMessageDate?.isSame(dayjs(), 'year');
+  const isToday = lastMessageDate?.isSame(dayjs(), 'date');
 
   return (
     <button
@@ -47,8 +48,15 @@ export const FriendCard = ({
       type="button"
       onClick={onClick}
     >
-      <article className="flex gap-3">
-        <Avatar size={18} src={profileImage} userId={id} />
+      <article className="flex items-center gap-3">
+        <div className="relative">
+          <Avatar size={18} src={profileImage} userId={id} />
+          {isLinked ? null : (
+            <div className="flex-center bg-background/50 absolute left-0 top-0 size-full">
+              <RiLinkUnlinkM className="text-primary/50 size-8" />
+            </div>
+          )}
+        </div>
         <div className="flex w-full max-w-full flex-col overflow-hidden">
           <header className="flex flex-wrap items-center justify-between">
             <div className="flex items-center gap-1">
@@ -69,27 +77,18 @@ export const FriendCard = ({
               {lastMessageDate ? (
                 <time className="text-xs">
                   {formatLocalizedDate(lastMessageDate, lng, {
-                    day: isThisYear,
-                    time: isThisYear,
+                    day: !isToday,
+                    time: isToday,
                     year: !isThisYear,
                   })}
                 </time>
               ) : null}
-              <RiLinkUnlinkM
-                className={cn('size-3', {
-                  hidden: isLinked,
-                })}
-              />
             </div>
           </header>
           <div className="flex items-center justify-between">
-            {lastMessage ? (
-              <p className="max-w-full overflow-hidden text-ellipsis text-nowrap text-start text-sm text-slate-500">
-                {lastMessage?.message}
-              </p>
-            ) : (
-              <div className="h-4 w-full" />
-            )}
+            <p className="max-w-full overflow-hidden text-ellipsis text-nowrap text-start text-sm text-slate-500">
+              {lastMessage?.message.replace(/\n/g, ' ') || '\u00A0'}
+            </p>
           </div>
         </div>
       </article>
@@ -97,16 +96,17 @@ export const FriendCard = ({
   );
 };
 
-export const FriendCardSkeleton = () => {
-  return (
-    <div className="flex gap-3 px-5 py-3">
-      <Skeleton className="size-14 shrink-0 rounded-full" />
-      <div className="flex w-full items-center justify-between">
-        <div className="flex flex-col">
-          <Skeleton className="mb-1 h-5 w-32" />
-          <Skeleton className="h-4 w-64" />
+export const FriendCardSkeleton = () => (
+  <div className="flex w-full gap-3 px-5 py-3">
+    <Skeleton className="size-18 shrink-0 rounded-full" />
+    <div className="flex w-full items-center justify-between">
+      <div className="flex w-full flex-col gap-1">
+        <div className="flex w-full items-center justify-between">
+          <Skeleton className="h-4.5 w-32" />
+          <Skeleton className="h-3 w-16" />
         </div>
+        <Skeleton className="h-4.5 w-64" />
       </div>
     </div>
-  );
-};
+  </div>
+);

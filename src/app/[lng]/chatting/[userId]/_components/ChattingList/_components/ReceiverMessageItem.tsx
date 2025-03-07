@@ -1,5 +1,5 @@
 import { Avatar, Skeleton } from '@/components';
-import { useLanguage, useLongPress } from '@/hooks';
+import { useLanguage } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
@@ -9,6 +9,7 @@ interface MessageItemProps extends CommonMessageItemProps {
   profileImageSrc?: string;
   nickname: string;
   isLoading: boolean;
+  userId: string;
 }
 
 export const ReceiverMessageItem = ({
@@ -19,18 +20,11 @@ export const ReceiverMessageItem = ({
   isSameTime,
   message,
   isLoading,
-  isSelected,
-  onClick,
-  onLongPress,
+  userId,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
 
   const isoDate = formatISODate(date);
-
-  const { isPressing, register } = useLongPress({
-    onLongPress,
-    enable: onLongPress === onClick,
-  });
 
   const hasUnderTimeText = isSameUser && !isSameTime;
 
@@ -42,7 +36,7 @@ export const ReceiverMessageItem = ({
         <div className="flex h-5 w-14 items-center justify-end" />
       ) : (
         <Skeleton loading={isLoading}>
-          <Avatar size={18} src={profileImageSrc} />
+          <Avatar size={14} src={profileImageSrc} userId={userId} />
         </Skeleton>
       )}
       <section className={cn(!hasUnderTimeText && 'flex-1')}>
@@ -65,17 +59,13 @@ export const ReceiverMessageItem = ({
           </header>
         )}
         <pre
-          {...register}
           className={cn(
             'font-pretendard w-fit cursor-pointer whitespace-pre-wrap break-all',
             'rounded-md duration-75 active:bg-slate-200',
             {
               'hover:bg-slate-100': !isTouchDevice,
-              'bg-slate-100': isPressing,
-              'bg-slate-200': isSelected,
             },
           )}
-          onClick={onClick}
         >
           {message}
         </pre>

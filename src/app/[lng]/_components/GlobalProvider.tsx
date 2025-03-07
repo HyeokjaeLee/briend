@@ -29,7 +29,7 @@ export const GlobalProvider = createSuspendedComponent(
         >
           <trpc.Provider client={trpcClient} queryClient={queryClient}>
             {children}
-            <ReactQueryDevtools buttonPosition="top-right" />
+            <ReactQueryDevtools buttonPosition="top-left" />
           </trpc.Provider>
         </PersistQueryClientProvider>
       </SessionProvider>

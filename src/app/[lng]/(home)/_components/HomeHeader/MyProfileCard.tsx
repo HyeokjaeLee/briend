@@ -1,13 +1,7 @@
-import CountUp from 'react-countup';
-import { RiLink, RiLinkUnlinkM, RiMessage2Line } from 'react-icons/ri';
-import { useShallow } from 'zustand/shallow';
-
 import { Avatar, CustomLink, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
-import { MAX_FRIEND_COUNT } from '@/constants';
 import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
-import { useFriendStore } from '@/stores';
 
 interface MyProfileCardProps {
   userName?: string;
@@ -15,10 +9,6 @@ interface MyProfileCardProps {
 
 export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
   const { t } = useTranslation('friend-list');
-
-  const [friendCount, isLimitedAddFriend] = useFriendStore(
-    useShallow((state) => [state.friendList.length, state.isLimitedAddFriend]),
-  );
 
   const { user } = useUserData();
 
@@ -35,30 +25,6 @@ export const MyProfileCard = ({ userName = 'Unknown' }: MyProfileCardProps) => {
             <p className="text-zinc-500">{t('edit-profile')}</p>
           </div>
           <div />
-          <ul className="mt-auto flex flex-col">
-            <li className="flex items-center gap-2">
-              <RiMessage2Line />
-              <CountUp className="text-sm" duration={0.3} end={friendCount} />
-            </li>
-            <li className="flex items-center gap-2">
-              {isLimitedAddFriend ? (
-                <RiLinkUnlinkM className="text-red-500" />
-              ) : (
-                <RiLink className="text-green-500" />
-              )}
-              <small className="min-w-11 text-sm">
-                <CountUp
-                  className={
-                    isLimitedAddFriend ? 'text-red-500' : 'text-green-500'
-                  }
-                  delay={0.1}
-                  duration={0.3}
-                  end={friendCount}
-                />{' '}
-                / <span>{MAX_FRIEND_COUNT}</span>
-              </small>
-            </li>
-          </ul>
         </div>
       </article>
     </CustomLink>
