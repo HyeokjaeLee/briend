@@ -17,7 +17,7 @@ import {
 } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
-import { LANGUAGE, LANGUAGE_NAME } from '@/constants';
+import { LANGUAGE, LANGUAGE_NAME, SESSION_STORAGE } from '@/constants';
 import { useCustomRouter, useTempImage, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { editProfileSchema } from '@/schema/trpc/user';
@@ -86,18 +86,19 @@ const EditProfilePage = (props: ProfilePageProps) => {
         data: updatedSession,
       });
 
-      toast({
-        message: t('save-profile'),
-      });
-
       const isSameLanguage = updatedSession.language === lng;
 
       const moreMenuPathname = `/${updatedSession.language}${ROUTES.MORE_MENUS.pathname}`;
+      const message = t('save-profile');
 
       if (isSameLanguage) {
         router.push(moreMenuPathname);
+        toast({
+          message,
+        });
       } else {
         location.href = moreMenuPathname;
+        sessionStorage.setItem(SESSION_STORAGE.REFRESH_TOAST, message);
       }
     },
     onError: () => {

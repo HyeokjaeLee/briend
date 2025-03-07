@@ -129,7 +129,7 @@ export const Drawer = createOnlyClientComponent(
               onClick={(e) => e.stopPropagation()}
             >
               {loading ? (
-                <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white">
+                <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white/80">
                   <CommonSkeleton />
                 </div>
               ) : null}

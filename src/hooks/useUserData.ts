@@ -7,9 +7,9 @@ export const useUserData = () => {
   const session = useSession();
   const { update } = session;
 
-  const sessionUpdate = update as (
-    input: SessionUpdateInput,
-  ) => Promise<Session | null>;
+  //! 실제로 매번 사용하는 update 함수가 바뀜
+  const sessionUpdate: (input: SessionUpdateInput) => Promise<Session | null> =
+    update;
 
   const user = session.data?.user;
 

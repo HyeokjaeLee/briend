@@ -7,6 +7,7 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/th';
 import 'dayjs/locale/vi';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { SessionProvider } from 'next-auth/react';
 import { type PropsWithChildren, use } from 'react';
@@ -28,6 +29,7 @@ export const GlobalProvider = createSuspendedComponent(
         >
           <trpc.Provider client={trpcClient} queryClient={queryClient}>
             {children}
+            <ReactQueryDevtools buttonPosition="top-right" />
           </trpc.Provider>
         </PersistQueryClientProvider>
       </SessionProvider>

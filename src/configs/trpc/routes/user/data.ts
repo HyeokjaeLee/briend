@@ -5,7 +5,7 @@ import type { UserSession } from '@/types/next-auth';
 
 import { privateProcedure } from '../../settings';
 
-export const data = privateProcedure.query(
+export const data = privateProcedure.mutation(
   async ({
     ctx: {
       session: { user },
@@ -22,7 +22,7 @@ export const data = privateProcedure.query(
     return {
       id: userAuth.uid,
       name: userAuth.displayName,
-      profileImage: userAuth.photoURL,
+      profileImage: userAuth.photoURL || null,
       email: userAuth.email,
       ...userData,
     } satisfies UserSession;
