@@ -27,10 +27,6 @@ export { Spinner, type SpinnerProps } from './atoms/Spinner';
  */
 export { BottomButton, type BottomButtonProps } from './molecules/BottomButton';
 export {
-  ConnectionIndicator,
-  type ConnectionIndicatorProps,
-} from './molecules/ConnectionIndicator';
-export {
   CustomBottomNav,
   type CustomBottomNavProps,
 } from './molecules/CustomBottomNav';

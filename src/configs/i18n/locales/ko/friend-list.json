@@ -18,7 +18,5 @@
   "delete-button": "삭제하기",
   "unlink-button": "연결끊기",
   "delete-friend-toast-message": "친구를 삭제했어요.",
-  "unlink-friend-toast-message": "친구와의 연결이 끊겼어요.",
-  "unlinked-icon": "연결이 끊긴 친구",
-  "identified-icon": "인증된 친구"
+  "unlink-friend-toast-message": "친구와의 연결이 끊겼어요."
 }

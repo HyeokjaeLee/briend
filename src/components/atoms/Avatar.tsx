@@ -15,7 +15,7 @@ export interface AvatarProps
     React.ComponentProps<typeof AvatarPrimitive.Root>,
     'size' | 'children'
   > {
-  size?: [18, 20, 26][number];
+  size?: [14, 18, 20, 26][number];
   src?: string | null;
   userId?: string;
 }
@@ -36,6 +36,7 @@ export const Avatar = ({
       className={cn(
         'relative flex shrink-0 overflow-hidden rounded-full',
         {
+          14: 'size-14',
           18: 'size-18',
           20: 'size-20',
           26: 'size-26',

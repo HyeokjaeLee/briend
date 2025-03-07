@@ -9,7 +9,6 @@ export const IS_CLIENT = typeof window !== 'undefined';
 export enum QUERY_KEYS {}
 
 export const PEER_PREFIX = 'briend_';
-export const MAX_FRIEND_COUNT = 10;
 
 export enum HEADERS {
   PURE_PATH = 'pure-path',

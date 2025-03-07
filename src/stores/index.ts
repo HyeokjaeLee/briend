@@ -1,4 +1,3 @@
-export { useFriendStore } from './friend';
 export {
   MEDIA_QUERY_BREAK_POINT,
   type NAVIGATION_ANIMATION,
