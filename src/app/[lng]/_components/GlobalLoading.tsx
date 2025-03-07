@@ -37,7 +37,7 @@ export const GlobalLoading = createOnlyClientComponent(() => {
         }[delay],
       )}
     >
-      <Spinner className="size-40" />
+      <Spinner className="size-20 text-white" />
     </div>
   ) : null;
 });

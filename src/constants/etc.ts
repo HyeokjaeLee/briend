@@ -6,9 +6,7 @@ export enum LOGIN_PROVIDERS {
 
 export const IS_CLIENT = typeof window !== 'undefined';
 
-export enum QUERY_KEYS {
-  NOT_SESSION = 'not-save-to-session',
-}
+export enum QUERY_KEYS {}
 
 export const PEER_PREFIX = 'briend_';
 export const MAX_FRIEND_COUNT = 10;

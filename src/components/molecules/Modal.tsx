@@ -7,7 +7,7 @@ import { RiCloseLine } from 'react-icons/ri';
 import { cn } from '@/utils';
 
 import { Button } from '../atoms/Button';
-import { DotLottie } from '../atoms/DotLottie';
+import { Spinner } from '../atoms/Spinner';
 
 export interface ModalProps
   extends React.ComponentProps<typeof DialogPrimitive.Content>,
@@ -71,11 +71,8 @@ export const Modal = ({
         >
           <article>
             {loading ? (
-              <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white">
-                <DotLottie
-                  src="/assets/lottie/common-skeleton.lottie"
-                  className="animate-fade size-full"
-                />
+              <div className="flex-center animate-fade absolute z-10 size-full cursor-wait rounded-xl bg-white/80">
+                <Spinner />
               </div>
             ) : null}
             <header
