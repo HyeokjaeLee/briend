@@ -9,7 +9,11 @@ import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { useFirebaseStore } from '@/stores/firebase';
 import { assert } from '@/utils';
 
-const updateMessage = async (receiverId: string, snapshot: DataSnapshot) => {
+const updateMessage = async (
+  receiverId: string,
+  snapshot: DataSnapshot,
+  isMine: boolean,
+) => {
   const [createdAt, message, translatedMessage = ''] = snapshot.val();
   const messageId = snapshot.key;
 
@@ -34,7 +38,7 @@ const updateMessage = async (receiverId: string, snapshot: DataSnapshot) => {
       message,
       translatedMessage,
       timestamp: createdAt,
-      isMine: false,
+      isMine,
       userId: receiverId,
     });
   }
@@ -59,27 +63,38 @@ export const useChattingListener = () => {
     const unsubscribeList = friendList.map(async (friend) => {
       if (!friend.isLinked) return;
 
-      const messageRef = ref(
+      const myMessageRef = ref(
         realtimeDatabase,
         `${currentUser.uid}/chat/${friend.id}/msg`,
       );
 
-      const messageListSnapshot = await get(messageRef);
+      const receiverMessageRef = ref(
+        realtimeDatabase,
+        `${friend.id}/chat/${currentUser.uid}/msg`,
+      );
+
+      const promises: Promise<void>[] = [];
+      const messageListSnapshot = await get(myMessageRef);
+      const receiverMessageListSnapshot = await get(receiverMessageRef);
 
       if (messageListSnapshot.exists()) {
-        // 각 메시지를 순회하면서 처리
-        const promises: Promise<void>[] = [];
         messageListSnapshot.forEach((snapshot) => {
-          promises.push(updateMessage(friend.id, snapshot));
+          promises.push(updateMessage(friend.id, snapshot, true));
         });
-
-        // 모든 Promise가 완료될 때까지 대기
-        await Promise.all(promises);
       }
 
+      if (receiverMessageListSnapshot.exists()) {
+        receiverMessageListSnapshot.forEach((snapshot) => {
+          promises.push(updateMessage(friend.id, snapshot, false));
+        });
+      }
+
+      // 모든 Promise가 완료될 때까지 대기
+      await Promise.all(promises);
+
       // onChildAdded 이벤트 리스너 설정
-      const unsubscribe = onChildAdded(messageRef, async (snapshot) => {
-        await updateMessage(friend.id, snapshot);
+      const unsubscribe = onChildAdded(myMessageRef, async (snapshot) => {
+        await updateMessage(friend.id, snapshot, false);
       });
 
       return unsubscribe;
