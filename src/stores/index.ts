@@ -5,5 +5,4 @@ export {
 } from './global';
 export { useGlobalModalStore } from './global-modal';
 export { useHistoryStore } from './history';
-export { usePeerStore } from './peer';
 export { useSidePanelStore } from './side-panel';

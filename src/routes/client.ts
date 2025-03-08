@@ -4,18 +4,15 @@ export const ROUTES = {
   FRIEND_LIST: createRoute('/', {
     bottomNavType: 'root',
     topHeaderType: 'root',
-    topHeaderTitle: 'chat-title',
   }),
   CHATTING_ROOM: createRoute<'userId'>(({ userId }) => `/chatting/${userId}`),
   MORE_MENUS: createRoute('/private/more', {
     bottomNavType: 'root',
     topHeaderType: 'root',
-    topHeaderTitle: 'more-title',
   }),
   INVITE_CHAT: createRoute('/private/invite-chat', {
     bottomNavType: 'root',
     topHeaderType: 'root',
-    topHeaderTitle: 'invite-chat-title',
   }),
   INVITE_CHAT_QR: createRoute<'inviteToken'>(
     ({ inviteToken }) => `/private/invite-chat/${inviteToken}`,

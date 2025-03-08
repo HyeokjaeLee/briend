@@ -1,5 +1,8 @@
 import { publicProcedure } from '@/configs/trpc/settings';
-import { realtimeDatabase } from '@/database/firebase/server';
+import { LANGUAGE } from '@/constants';
+import { firestore, realtimeDatabase } from '@/database/firebase/server';
+import { COLLECTIONS } from '@/database/firebase/type';
+import { assert, assertEnum } from '@/utils';
 import { onlyClientRequest } from '@/utils/server';
 
 export const list = publicProcedure.query(async ({ ctx }) => {
@@ -41,6 +44,7 @@ export const list = publicProcedure.query(async ({ ctx }) => {
           isAnonymous: true,
           isUnsubscribed: true,
           isLinked: false,
+          language: undefined,
         };
 
       let name = user.displayName;
@@ -60,6 +64,20 @@ export const list = publicProcedure.query(async ({ ctx }) => {
         name = nicknameSnapshot.val();
       }
 
+      const userData = await firestore
+        .collection(COLLECTIONS.USERS)
+        .doc(user.uid)
+        .get();
+
+      let language = userData.data()?.language;
+
+      if (!language) {
+        language = (await chattingItemRef.child('inviteeLanguage').get()).val();
+      }
+
+      assertEnum(LANGUAGE, language);
+      assert(name);
+
       return {
         id: user.uid,
         name,
@@ -67,6 +85,7 @@ export const list = publicProcedure.query(async ({ ctx }) => {
         isAnonymous: user.customClaims?.isAnonymous ?? true,
         isUnsubscribed: false,
         isLinked: inviteIdSnapshot.exists(),
+        language,
       };
     }),
   );

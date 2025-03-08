@@ -1,4 +1,7 @@
+import { CommonSkeleton } from '@/components';
+
 import { ChattingList } from './_components/ChattingList';
+import { ChattingPageHeader } from './_components/ChattingPageHeader';
 import { SendMessageForm } from './_components/SendMessageForm';
 import { useReceiverData } from './_hooks/useReceiverData';
 
@@ -9,17 +12,18 @@ interface ChattingSideProps {
 export const ChattingSide = ({ userId }: ChattingSideProps) => {
   const receiverData = useReceiverData(userId);
 
-  if (!receiverData) return null;
+  if (!receiverData)
+    return (
+      <div className="size-full">
+        <CommonSkeleton />
+      </div>
+    );
 
   const { name, profileImage } = receiverData;
 
   return (
     <article className="flex size-full flex-col bg-white">
-      <nav className="flex h-14 items-center justify-between gap-5 px-5">
-        <div className="flex-center w-fit gap-3">
-          <h1 className="truncate text-nowrap font-semibold">{name}</h1>
-        </div>
-      </nav>
+      <ChattingPageHeader sidePanel name={name} />
       <ChattingList
         receiverId={userId}
         receiverNickname={name}

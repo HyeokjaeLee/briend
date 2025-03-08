@@ -1,7 +1,8 @@
+import { LANGUAGE } from '@/constants';
 import { realtimeDatabase } from '@/database/firebase/server';
 import type { Message } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
-import { assert, CustomError } from '@/utils';
+import { assert, assertEnum, CustomError } from '@/utils';
 import { onlyClientRequest } from '@/utils/server';
 
 import { publicProcedure } from '../../settings';
@@ -35,6 +36,16 @@ export const sendMessage = publicProcedure
 
     // 먼저 메시지 목록을 가져와서 처리
     const msgRef = toUserChattingRef.child('msg');
+
+    let senderLanguage = ctx.session?.user.language;
+
+    if (!senderLanguage) {
+      senderLanguage = (
+        await toUserChattingRef.child('inviteeLanguage').get()
+      ).val();
+
+      assertEnum(LANGUAGE, senderLanguage);
+    }
 
     // 트랜잭션으로 오래된 메시지 제거 (20개 제한)
     await msgRef.transaction((currentMsgs) => {

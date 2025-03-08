@@ -7,7 +7,6 @@ interface RouteOptions {
   disableI18n?: boolean;
   bottomNavType?: 'none' | 'root' | 'empty';
   topHeaderType?: 'none' | 'root' | 'empty' | 'back';
-  topHeaderTitle?: string;
 }
 
 let routeIndex = 0;
@@ -78,6 +77,5 @@ export const createRoute = <
     },
     bottomNavType: options?.bottomNavType ?? 'empty',
     topHeaderType: options?.topHeaderType ?? 'empty',
-    topHeaderTitle: options?.topHeaderTitle,
   });
 };

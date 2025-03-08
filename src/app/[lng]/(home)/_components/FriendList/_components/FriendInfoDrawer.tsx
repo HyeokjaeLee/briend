@@ -5,6 +5,7 @@ import { RiDeleteBinLine, RiShieldCheckFill } from 'react-icons/ri';
 import { Avatar, Button, CustomLink, Drawer } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
+import { LANGUAGE_FLAG } from '@/constants';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
@@ -67,11 +68,18 @@ export const FriendInfoDrawer = ({
       {friendInfo ? (
         <>
           <header className="flex flex-col items-center gap-2">
-            <Avatar
-              size={18}
-              src={friendInfo.profileImage}
-              userId={friendInfo.id}
-            />
+            <div className="relative">
+              <Avatar
+                size={18}
+                src={friendInfo.profileImage}
+                userId={friendInfo.id}
+              />
+              {friendInfo.language ? (
+                <div className="flex-center absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
+                  {LANGUAGE_FLAG[friendInfo.language]}
+                </div>
+              ) : null}
+            </div>
             <div className="flex items-center gap-2">
               <h2
                 className={cn('text-xl font-semibold', {

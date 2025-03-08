@@ -40,6 +40,7 @@ export {
 } from './molecules/InputDecorator';
 export { Modal, type ModalProps } from './molecules/Modal';
 export { QR, type QRProps } from './molecules/QR';
+export { Tabs } from './molecules/Tabs';
 export { Timer, type TimerProps } from './molecules/Timer';
 
 /**
