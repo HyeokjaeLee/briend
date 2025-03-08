@@ -11,7 +11,6 @@ export { expToDate } from './expToDate';
 export { findRoute } from './findRoute';
 export { formatISODate } from './formatISODate';
 export { formatLocalizedDate } from './formatLocalizedDate';
-export { getConnectionStatus } from './getConnectionStatus';
 export { hasObjectKey } from './hasObjectKey';
 export { isArrayItem } from './isArrayItem';
 export { isCurrentHref } from './isCurrentHref';
