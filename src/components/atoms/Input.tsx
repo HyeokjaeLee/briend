@@ -33,7 +33,7 @@ export const Input = ({
         'justify-center',
         'overflow-hidden',
         'gap-2',
-        'transition-[color,box-shadow,border] duration-150',
+        'transition-[color,border] duration-150',
         'rounded-xl',
         'h-14 w-full px-4',
         'bg-transparent',
