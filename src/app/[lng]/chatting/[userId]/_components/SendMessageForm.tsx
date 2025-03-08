@@ -13,6 +13,7 @@ import { useTranslation } from '@/configs/i18n/client';
 import { trpc } from '@/configs/trpc';
 import { chattingDB, MESSAGE_STATE } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
+import { useGlobalStore } from '@/stores';
 import { assert, cn } from '@/utils';
 import { createOnlyClientComponent } from '@/utils/client';
 
@@ -23,6 +24,8 @@ interface SendMessageFormProps {
 export const SendMessageForm = createOnlyClientComponent(
   ({ receiverId }: SendMessageFormProps) => {
     const { t } = useTranslation('chatting');
+
+    const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
 
     const form = useForm<z.infer<typeof sendMessageSchema>>({
       resolver: zodResolver(sendMessageSchema),
@@ -108,6 +111,14 @@ export const SendMessageForm = createOnlyClientComponent(
             className="hide-scrollbar outline-hidden placeholder:text-muted-foreground w-full resize-none bg-transparent"
             maxRows={4}
             placeholder={t('send-form-placeholder')}
+            onKeyDown={(e) => {
+              if (isTouchDevice) return;
+
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
             title="message-input"
           />
         </div>

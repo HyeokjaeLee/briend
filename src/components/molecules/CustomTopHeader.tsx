@@ -6,27 +6,34 @@ import { createPortal } from 'react-dom';
 import { SELECTOR } from '@/constants';
 import { cn } from '@/utils';
 
-export type CustomTopHeaderProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CustomTopHeaderProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  sidePanel?: boolean;
+}
 
 export const CustomTopHeader = ({
   className,
-  ...props
+  sidePanel,
+  ...restProps
 }: CustomTopHeaderProps) => {
   const [headerContainerElement, setHeaderContainerElement] =
     useState<HTMLElement | null>(null);
 
   useLayoutEffect(() => {
-    const topHeader = document.getElementById(SELECTOR.TOP_HEADER);
+    const topHeader = document.getElementById(
+      sidePanel ? SELECTOR.SIDE_TOP_HEADER : SELECTOR.TOP_HEADER,
+    );
+
     setHeaderContainerElement(topHeader);
-  }, []);
+  }, [sidePanel]);
 
   const contents = (
     <div
-      {...props}
+      {...restProps}
       className={cn(
         'px-5 py-3',
         {
-          'invisible fixed top-0 left-0': !headerContainerElement,
+          'invisible fixed left-0 top-0': !headerContainerElement,
           'animate-fade-down animate-duration-100': headerContainerElement,
         },
         className,

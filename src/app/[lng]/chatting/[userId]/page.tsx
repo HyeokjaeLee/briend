@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 
-import { CustomBottomNav } from '@/components';
+import { CommonSkeleton, CustomBottomNav } from '@/components';
 import { CustomError } from '@/utils';
 
 import { ChattingList } from './_components/ChattingList';
@@ -17,13 +17,18 @@ export default function ChattingPage() {
 
   const receiverData = useReceiverData(userId);
 
-  if (!receiverData) return null;
+  if (!receiverData)
+    return (
+      <div className="size-full">
+        <CommonSkeleton />
+      </div>
+    );
 
   const { name, profileImage } = receiverData;
 
   return (
     <article className="size-full">
-      <ChattingPageHeader userId={userId} />
+      <ChattingPageHeader userId={userId} name={name} />
       <ChattingList
         receiverId={userId}
         receiverNickname={name}

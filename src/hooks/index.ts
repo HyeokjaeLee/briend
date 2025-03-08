@@ -1,7 +1,6 @@
 'use client';
 
 export { useAsyncError } from './useAsyncError';
-export { useCheckIndividualPeer } from './useCheckIndividualPeer';
 export { useCustomHref } from './useCustomHref';
 export { useCustomRouter } from './useCustomRouter';
 export { useDeleteFriend } from './useDeleteFriend';

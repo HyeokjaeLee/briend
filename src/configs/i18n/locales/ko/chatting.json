@@ -3,5 +3,7 @@
   "empty-title": "아직 친구와 나눈 대화가 없네요.",
   "empty-description": "먼저 인사를 건내보세요!",
   "message-too-long": "메시지가 너무 길어요! 2,000자 이하로 입력해주세요.",
-  "message-required": "메시지를 입력해주세요."
+  "message-required": "메시지를 입력해주세요.",
+  "original": "원본",
+  "translated": "번역"
 }

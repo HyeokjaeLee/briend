@@ -23,7 +23,7 @@ export const SideContents = ({
         return <EmptyTemplate />;
 
       case 'CHATTING_ROOM': {
-        const userId = sidePanelUrl.split('/')[3];
+        const userId = sidePanelUrl.split('/')[3]?.split('?')[0];
 
         assert(userId);
 

@@ -6,10 +6,11 @@ import { RiCloseLine } from 'react-icons/ri';
 import { useShallow } from 'zustand/shallow';
 
 import { Button } from '@/components';
+import { SELECTOR } from '@/constants';
 import { useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useSidePanelStore } from '@/stores';
-import { cn, findRoute } from '@/utils';
+import { assert, cn, findRoute } from '@/utils';
 import {
   createOnlyClientComponent,
   getNavigationAnimationClasses,
@@ -42,7 +43,11 @@ const SidePanelContainer = () => {
     ]),
   );
 
-  const route = findRoute(sidePanelUrl);
+  const [pathname] = sidePanelUrl.split('?');
+
+  assert(pathname);
+
+  const route = findRoute(pathname);
 
   const routeName = route.name;
 
@@ -82,19 +87,33 @@ const SidePanelContainer = () => {
         }),
       )}
     >
-      {routeName !== 'FRIEND_LIST' ? (
-        <nav className="flex h-14 items-center justify-end px-1">
-          <Button
-            variant="ghost"
-            onlyIcon
-            onClick={() => {
-              push(ROUTES.FRIEND_LIST.pathname, { withAnimation: 'FROM_TOP' });
-            }}
-          >
-            <RiCloseLine />
-          </Button>
-        </nav>
-      ) : null}
+      {
+        {
+          none: null,
+          back: (
+            <nav className="flex h-14 items-center justify-end px-1">
+              <Button
+                variant="ghost"
+                onlyIcon
+                onClick={() => {
+                  push(ROUTES.FRIEND_LIST.pathname, {
+                    withAnimation: 'FROM_TOP',
+                  });
+                }}
+              >
+                <RiCloseLine />
+              </Button>
+            </nav>
+          ),
+          empty: (
+            <header
+              id={SELECTOR.SIDE_TOP_HEADER}
+              className="sticky top-0 h-fit w-full"
+            />
+          ),
+          root: null,
+        }[route.topHeaderType]
+      }
       <section className="flex flex-1 flex-col overflow-auto">
         <ErrorBoundary
           errorComponent={(error) => <ErrorPage {...error} isSidePanel />}

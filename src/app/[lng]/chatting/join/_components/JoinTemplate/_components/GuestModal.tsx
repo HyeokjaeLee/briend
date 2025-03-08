@@ -56,15 +56,17 @@ export const GuestModal = ({ exp, inviteToken }: NoNickNameModalProps) => {
       open
       className="max-w-96"
       header={
-        <Timer
-          className={cn(isSuccess && 'animate-fade-down animate-reverse')}
-          expires={expToDate(exp)}
-          onTimeout={() => {
-            throw new CustomError({
-              code: 'EXPIRED_CHAT',
-            });
-          }}
-        />
+        <div>
+          <Timer
+            className={cn(isSuccess && 'animate-fade-down animate-reverse')}
+            expires={expToDate(exp)}
+            onTimeout={() => {
+              throw new CustomError({
+                code: 'EXPIRED_CHAT',
+              });
+            }}
+          />
+        </div>
       }
     >
       <section className="flex-center flex-col">

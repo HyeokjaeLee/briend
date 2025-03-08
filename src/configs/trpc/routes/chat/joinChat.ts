@@ -24,7 +24,7 @@ export const joinChat = publicProcedure
     assert(inviteeId);
 
     const {
-      payload: { inviterId, inviteId },
+      payload: { inviterId, inviteId, inviteeLanguage },
     } = await jwtAuthSecret.verify<JwtPayload.InviteToken>(inviteToken);
 
     const connectedAt = Date.now();
@@ -38,6 +38,7 @@ export const joinChat = publicProcedure
         connectedAt,
         nickname,
         inviteId,
+        inviteeLanguage,
       }) satisfies Update,
     });
 

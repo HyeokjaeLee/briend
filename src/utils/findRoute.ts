@@ -13,10 +13,10 @@ export const findRoute = (pathname: string) => {
     point: 0,
   };
 
-  const splitedCurrentPathname = pathname.split('/');
+  const splittedCurrentPathname = pathname.split('/');
 
-  //! i18n을 위한 dynmic route 정보 제거
-  splitedCurrentPathname.splice(1, 1);
+  //! i18n을 위한 dynamic route 정보 제거
+  splittedCurrentPathname.splice(1, 1);
 
   for (const key in allRoutes) {
     const routeName = key as keyof typeof allRoutes;
@@ -25,8 +25,8 @@ export const findRoute = (pathname: string) => {
 
     if (typeof route.pathname === 'string') {
       if (
-        route.pathname === splitedCurrentPathname.join('/') ||
-        (route.pathname === '/' && splitedCurrentPathname.length === 1)
+        route.pathname === splittedCurrentPathname.join('/') ||
+        (route.pathname === '/' && splittedCurrentPathname.length === 1)
       ) {
         return {
           name: routeName,
@@ -36,12 +36,12 @@ export const findRoute = (pathname: string) => {
     } else if (typeof route.pathname === 'function') {
       const splitedRoutePathname = route.pathname({} as any).split('/');
 
-      if (splitedRoutePathname.length !== splitedCurrentPathname.length)
+      if (splitedRoutePathname.length !== splittedCurrentPathname.length)
         continue;
 
       let matchPoint = 0;
 
-      const isAllSame = splitedCurrentPathname.every((path, index) => {
+      const isAllSame = splittedCurrentPathname.every((path, index) => {
         const partOfRoutePathname = splitedRoutePathname[index];
 
         //! 동적 경로인 경우 더 일치도가 높은 라우트를 설정

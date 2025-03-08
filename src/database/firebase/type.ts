@@ -33,6 +33,7 @@ export interface ChatItem {
   connectedAt: number;
   nickname?: string;
   inviteId?: string;
+  inviteeLanguage?: LANGUAGE;
   /**
    * @description [created at, original message, translated message][]
    */
