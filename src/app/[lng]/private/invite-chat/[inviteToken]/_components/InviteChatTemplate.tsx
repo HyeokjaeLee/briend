@@ -65,9 +65,11 @@ export const InviteChatTemplate = createOnlyClientComponent(
 
       for (const [inviteeId, chat] of Object.entries(data)) {
         if (chat.inviteId === inviteTokenPayload.inviteId) {
-          utils.friend.list.invalidate();
+          utils.friend.list.invalidate().then(() => {
+            setConnectedGuestId(inviteeId);
+          });
 
-          return setConnectedGuestId(inviteeId);
+          return;
         }
       }
     }, [data, inviteTokenPayload.inviteId, utils]);

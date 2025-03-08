@@ -28,7 +28,11 @@ export default function ChattingPage() {
 
   return (
     <article className="size-full">
-      <ChattingPageHeader userId={userId} name={name} />
+      <ChattingPageHeader
+        userId={userId}
+        name={name}
+        profileImage={profileImage}
+      />
       <ChattingList
         receiverId={userId}
         receiverNickname={name}

@@ -5,16 +5,14 @@ import { useShallow } from 'zustand/shallow';
 import { useGlobalStore } from '@/stores';
 
 export const useViewportListener = () => {
-  const [resetMediaQuery, setIsTouchDevice] = useGlobalStore(
-    useShallow((state) => [state.resetMediaQuery, state.setIsTouchDevice]),
+  const [resetMediaQuery, resetIsTouchDevice] = useGlobalStore(
+    useShallow((state) => [state.resetMediaQuery, state.resetIsTouchDevice]),
   );
 
   useLayoutEffect(() => {
     const resizeHandler = () => {
       resetMediaQuery();
-      setIsTouchDevice(
-        'ontouchstart' in window || 0 < navigator.maxTouchPoints,
-      );
+      resetIsTouchDevice();
     };
 
     const debouncedResizeHandler = throttle(resizeHandler, 33);
@@ -43,5 +41,5 @@ export const useViewportListener = () => {
         debouncedResizeHandler,
       );
     };
-  }, [resetMediaQuery, setIsTouchDevice]);
+  }, [resetMediaQuery, resetIsTouchDevice]);
 };

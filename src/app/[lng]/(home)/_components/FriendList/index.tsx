@@ -52,12 +52,11 @@ export const FriendList = createSuspendedComponent(
 
     return (
       <ul>
-        {friendList.map(({ id, ...restInfo }) => (
-          <li key={id}>
+        {friendList.map((friendData) => (
+          <li key={friendData.id}>
             <FriendCard
-              {...restInfo}
-              id={id}
-              onClick={() => setOpenedFriendId(id)}
+              friendData={friendData}
+              onClick={() => setOpenedFriendId(friendData.id)}
             />
           </li>
         ))}
