@@ -29,10 +29,7 @@ export {
   CustomBottomNav,
   type CustomBottomNavProps,
 } from './molecules/CustomBottomNav';
-export {
-  CustomTopHeader,
-  type CustomTopHeaderProps,
-} from './molecules/CustomTopHeader';
+export { CustomTopHeader } from './molecules/CustomTopHeader';
 export { Drawer, type DrawerProps } from './molecules/Drawer';
 export {
   InputDecorator,

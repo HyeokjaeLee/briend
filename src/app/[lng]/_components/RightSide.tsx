@@ -1,4 +1,5 @@
-import Image from 'next/image';
+import { FaGithub } from 'react-icons/fa';
+import { RiMobileDownloadFill } from 'react-icons/ri';
 
 import { Button, DotLottie } from '@/components';
 import { getTranslation } from '@/configs/i18n/server';
@@ -26,22 +27,12 @@ export const RightSide = async ({ lng }: RightSideProps) => {
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button className="gap-2">
-              <Image
-                src="/assets/login/apple.png"
-                width={30}
-                height={30}
-                alt="Google Play"
-              />
-              App Store
+              <FaGithub className="size-7" />
+              Github
             </Button>
             <Button variant="outline" className="gap-2">
-              <Image
-                src="/assets/login/google.png"
-                width={30}
-                height={30}
-                alt="Google Play"
-              />
-              Google Play
+              <RiMobileDownloadFill className="size-7" />
+              Download
             </Button>
           </div>
         </div>
