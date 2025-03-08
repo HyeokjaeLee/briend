@@ -19,24 +19,15 @@ export const ChattingSide = ({ userId }: ChattingSideProps) => {
       </div>
     );
 
-  const { name, profileImage } = receiverData;
-
   return (
     <article className="flex size-full flex-col bg-white">
-      <ChattingPageHeader
-        sidePanel
-        name={name}
-        profileImage={profileImage}
-        userId={userId}
-      />
-      <ChattingList
-        receiverId={userId}
-        receiverNickname={name}
-        receiverProfileImage={profileImage}
-      />
-      <footer className="p-3">
-        <SendMessageForm receiverId={userId} />
-      </footer>
+      <ChattingPageHeader receiverData={receiverData} />
+      <ChattingList receiverData={receiverData} />
+      {receiverData.isLinked ? (
+        <footer className="p-3">
+          <SendMessageForm receiverData={receiverData} key={receiverData.id} />
+        </footer>
+      ) : null}
     </article>
   );
 };

@@ -8,6 +8,7 @@ import { useTranslation } from '@/configs/i18n/client';
 import { useLanguage } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
+import type { ReceiverData } from '../../_hooks/useReceiverData';
 import { EmptyTemplate } from './_components/EmptyTemplate';
 import { ReceiverMessageItem } from './_components/ReceiverMessageItem';
 import type { CommonMessageItemProps } from './_components/SenderMessageItem';
@@ -15,23 +16,17 @@ import { SenderMessageItem } from './_components/SenderMessageItem';
 import { useMessageSync } from './_hooks/useMessageSync';
 
 interface ChattingListProps {
-  receiverId: string;
-  receiverProfileImage?: string;
-  receiverNickname: string;
+  receiverData: ReceiverData;
 }
 
-export const ChattingList = ({
-  receiverId,
-  receiverProfileImage,
-  receiverNickname,
-}: ChattingListProps) => {
-  const { messageList } = useMessageSync(receiverId);
+export const ChattingList = ({ receiverData }: ChattingListProps) => {
+  const { messageList } = useMessageSync(receiverData.id);
 
   const { t } = useTranslation('global');
 
   const { lng } = useLanguage();
 
-  if (!messageList) return null;
+  if (!messageList) return <div className="size-full" />;
 
   if (!messageList.length) return <EmptyTemplate />;
 
@@ -43,7 +38,10 @@ export const ChattingList = ({
       data={messageList}
       followOutput="smooth"
       initialTopMostItemIndex={messageList.length - 1}
-      itemContent={(index, { isMine, message, timestamp, state, id }) => {
+      itemContent={(
+        index,
+        { isMine, message, timestamp, state, id, translatedMessage },
+      ) => {
         const prevMessage = index ? messageList[index - 1] : null;
 
         const isSameUser = prevMessage ? isMine === prevMessage.isMine : false;
@@ -61,8 +59,8 @@ export const ChattingList = ({
         const commonProps: CommonMessageItemProps = {
           date,
           isSameTime,
-          isSameUser,
           message,
+          translatedMessage,
         };
 
         return (
@@ -103,9 +101,8 @@ export const ChattingList = ({
                 ) : (
                   <ReceiverMessageItem
                     {...commonProps}
-                    nickname={receiverNickname}
-                    profileImageSrc={receiverProfileImage}
-                    userId={receiverId}
+                    isSameUser={isSameUser}
+                    receiverData={receiverData}
                   />
                 )}
               </div>

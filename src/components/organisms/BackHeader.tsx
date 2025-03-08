@@ -22,7 +22,7 @@ export const BackHeader = ({
   const { push } = useSidePanel();
 
   return (
-    <CustomTopHeader className="p-0" sidePanel={sidePanel}>
+    <CustomTopHeader className="p-0">
       <nav
         className={cn(
           'flex h-14 items-center gap-5',

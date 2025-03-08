@@ -35,6 +35,12 @@ export const FriendCard = ({ friendData, onClick }: FriendCardProps) => {
   const isThisYear = lastMessageDate?.isSame(dayjs(), 'year');
   const isToday = lastMessageDate?.isSame(dayjs(), 'date');
 
+  const lastMessageContent =
+    (lastMessage?.isMine
+      ? lastMessage.message
+      : lastMessage?.translatedMessage
+    )?.replace(/\n/g, ' ') ?? '\u00A0';
+
   return (
     <button
       className="w-full cursor-pointer px-5 py-3"
@@ -50,13 +56,13 @@ export const FriendCard = ({ friendData, onClick }: FriendCardProps) => {
               userId={friendData.id}
             />
             {friendData.language ? (
-              <div className="flex-center absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
+              <div className="flex-center z-1 absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
                 {LANGUAGE_FLAG[friendData.language]}
               </div>
             ) : null}
           </div>
           {friendData.isLinked ? null : (
-            <div className="flex-center bg-background/50 absolute left-0 top-0 size-full">
+            <div className="flex-center bg-background/50 absolute left-0 top-0 size-full rounded-full">
               <RiLinkUnlinkM className="text-primary/50 size-8" />
             </div>
           )}
@@ -93,7 +99,7 @@ export const FriendCard = ({ friendData, onClick }: FriendCardProps) => {
           </header>
           <div className="flex items-center justify-between">
             <p className="max-w-full overflow-hidden text-ellipsis text-nowrap text-start text-sm text-slate-500">
-              {lastMessage?.message.replace(/\n/g, ' ') || '\u00A0'}
+              {lastMessageContent}
             </p>
           </div>
         </div>

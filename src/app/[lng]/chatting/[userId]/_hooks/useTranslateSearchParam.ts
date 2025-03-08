@@ -1,18 +1,14 @@
 import { useSearchParams } from 'next/navigation';
 
-import { useCustomRouter, useSidePanel } from '@/hooks';
+import { useCustomRouter, useSidePanel, useThisSidePanel } from '@/hooks';
 import { useSidePanelStore } from '@/stores';
 
-interface TranslateSearchParamProps {
-  sidePanel?: boolean;
-}
+const RECEIVER_LANGUAGE_SEARCH_PARAM = 'receiver-language';
 
-const ORIGINAL_SEARCH_PARAM = 'original';
-
-export const useTranslateSearchParam = ({
-  sidePanel,
-}: TranslateSearchParamProps) => {
+export const useTranslateSearchParam = () => {
   const searchParams = useSearchParams();
+
+  const { isSidePanel } = useThisSidePanel();
 
   const { push } = useSidePanel();
 
@@ -20,18 +16,18 @@ export const useTranslateSearchParam = ({
 
   const sidePanelUrl = useSidePanelStore((state) => state.sidePanelUrl);
 
-  const isOriginal = sidePanel
-    ? sidePanelUrl.includes(ORIGINAL_SEARCH_PARAM)
-    : !!searchParams.get(ORIGINAL_SEARCH_PARAM);
+  const isReceiverLanguage = isSidePanel
+    ? sidePanelUrl.includes(RECEIVER_LANGUAGE_SEARCH_PARAM)
+    : !!searchParams.get(RECEIVER_LANGUAGE_SEARCH_PARAM);
 
   const handleTranslate = (original: boolean) => {
-    if (sidePanel) {
+    if (isSidePanel) {
       const url = new URL(sidePanelUrl, location.origin);
 
       if (original) {
-        url.searchParams.set(ORIGINAL_SEARCH_PARAM, 'true');
+        url.searchParams.set(RECEIVER_LANGUAGE_SEARCH_PARAM, 'true');
       } else {
-        url.searchParams.delete(ORIGINAL_SEARCH_PARAM);
+        url.searchParams.delete(RECEIVER_LANGUAGE_SEARCH_PARAM);
       }
 
       return push(url.pathname + url.search);
@@ -39,13 +35,13 @@ export const useTranslateSearchParam = ({
     const url = new URL(location.href);
 
     if (original) {
-      url.searchParams.set(ORIGINAL_SEARCH_PARAM, 'true');
+      url.searchParams.set(RECEIVER_LANGUAGE_SEARCH_PARAM, 'true');
     } else {
-      url.searchParams.delete(ORIGINAL_SEARCH_PARAM);
+      url.searchParams.delete(RECEIVER_LANGUAGE_SEARCH_PARAM);
     }
 
     return router.replace(url.pathname + url.search);
   };
 
-  return { isOriginal, handleTranslate };
+  return { isReceiverLanguage, handleTranslate };
 };

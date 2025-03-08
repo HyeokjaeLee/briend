@@ -6,7 +6,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Button, DotLottie } from '@/components';
 import { SESSION_STORAGE } from '@/constants';
-import { useSidePanel, useUserData } from '@/hooks';
+import { useSidePanel, useThisSidePanel, useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore, useSidePanelStore } from '@/stores';
 import { ERROR_CODE } from '@/utils';
@@ -16,14 +16,9 @@ import { useTranslation } from '../../configs/i18n/client';
 interface ErrorPageProps {
   error: Error;
   reset?: () => void;
-  isSidePanel?: boolean;
 }
 
-export default function ErrorPage({
-  error,
-  reset,
-  isSidePanel,
-}: ErrorPageProps) {
+export default function ErrorPage({ error, reset }: ErrorPageProps) {
   const [errorStatus] = error.message.match(/<[^>]+>/g) ?? [];
   const [setIsErrorSideRoute, setResetError] = useSidePanelStore(
     useShallow((state) => [state.setIsErrorRoute, state.setResetError]),
@@ -37,6 +32,8 @@ export default function ErrorPage({
   const { t } = useTranslation('error');
 
   const { isLogin } = useUserData();
+
+  const { isSidePanel } = useThisSidePanel();
 
   const dynamicInfo = {
     lottie: '/assets/lottie/404.lottie',

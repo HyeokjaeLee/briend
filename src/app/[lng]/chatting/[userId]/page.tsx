@@ -24,23 +24,15 @@ export default function ChattingPage() {
       </div>
     );
 
-  const { name, profileImage } = receiverData;
-
   return (
     <article className="size-full">
-      <ChattingPageHeader
-        userId={userId}
-        name={name}
-        profileImage={profileImage}
-      />
-      <ChattingList
-        receiverId={userId}
-        receiverNickname={name}
-        receiverProfileImage={profileImage}
-      />
-      <CustomBottomNav className="border-t-0 bg-white p-3">
-        <SendMessageForm receiverId={userId} />
-      </CustomBottomNav>
+      <ChattingPageHeader receiverData={receiverData} />
+      <ChattingList receiverData={receiverData} />
+      {receiverData.isLinked ? (
+        <CustomBottomNav className="border-t-0 bg-white p-3">
+          <SendMessageForm receiverData={receiverData} />
+        </CustomBottomNav>
+      ) : null}
     </article>
   );
 }

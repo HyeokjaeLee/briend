@@ -1,96 +1,91 @@
+import { publicProcedure } from '@/configs/trpc/settings';
 import { LANGUAGE } from '@/constants';
 import { realtimeDatabase } from '@/database/firebase/server';
 import type { Message } from '@/database/indexed';
 import { sendMessageSchema } from '@/schema/trpc/chat';
-import { assert, assertEnum, CustomError } from '@/utils';
+import { assertEnum, CustomError } from '@/utils';
 import { onlyClientRequest } from '@/utils/server';
-
-import { publicProcedure } from '../../settings';
+import { translate } from '@/utils/server/node';
 
 export const sendMessage = publicProcedure
   .input(sendMessageSchema)
-  .mutation(async ({ input: { message, receiverId }, ctx }) => {
-    onlyClientRequest(ctx);
+  .mutation(
+    async ({ input: { message, receiverId, receiverLanguage }, ctx }) => {
+      onlyClientRequest(ctx);
 
-    const senderId = ctx.firebaseSession.uid;
+      const senderId = ctx.firebaseSession.uid;
 
-    const myInviteId = await realtimeDatabase
-      .ref(`${senderId}/chat/${receiverId}/inviteId`)
-      .get();
+      const myInviteId = await realtimeDatabase
+        .ref(`${senderId}/chat/${receiverId}/inviteId`)
+        .get();
 
-    const toUserChattingRef = realtimeDatabase.ref(
-      `${receiverId}/chat/${senderId}`,
-    );
+      const toUserChattingRef = realtimeDatabase.ref(
+        `${receiverId}/chat/${senderId}`,
+      );
 
-    const toUserInviteId = await toUserChattingRef.child('inviteId').get();
+      const toUserInviteId = await toUserChattingRef.child('inviteId').get();
 
-    if (
-      !myInviteId.exists ||
-      !toUserInviteId.exists ||
-      myInviteId.val() !== toUserInviteId.val()
-    )
-      throw new CustomError({ code: 'UNAUTHORIZED' });
+      if (
+        !myInviteId.exists ||
+        !toUserInviteId.exists ||
+        myInviteId.val() !== toUserInviteId.val()
+      )
+        throw new CustomError({ code: 'UNAUTHORIZED' });
 
-    const now = Date.now();
-    const messageData = [now, message];
-
-    // 먼저 메시지 목록을 가져와서 처리
-    const msgRef = toUserChattingRef.child('msg');
-
-    let senderLanguage = ctx.session?.user.language;
-
-    if (!senderLanguage) {
-      senderLanguage = (
-        await toUserChattingRef.child('inviteeLanguage').get()
-      ).val();
+      const senderLanguage =
+        ctx.session?.user.language ??
+        (await toUserChattingRef.child('inviteeLanguage').get()).val();
 
       assertEnum(LANGUAGE, senderLanguage);
-    }
 
-    // 트랜잭션으로 오래된 메시지 제거 (20개 제한)
-    await msgRef.transaction((currentMsgs) => {
-      if (currentMsgs === null) {
-        // 메시지가 없으면 트랜잭션에서 아무 작업도 하지 않음
-        return null;
-      }
+      const translatedMessage =
+        receiverLanguage === senderLanguage
+          ? ''
+          : await translate({
+              message,
+              sourceLanguage: senderLanguage,
+              targetLanguage: receiverLanguage,
+            });
 
-      // 객체 형태의 메시지 목록을 배열로 변환하여 타임스탬프 기준 정렬
-      const msgArray = Object.entries(currentMsgs).map(([key, value]) => ({
-        key,
-        value,
-        timestamp: Array.isArray(value) ? value[0] : 0,
-      }));
+      const now = Date.now();
+      const messageData = [now, message, translatedMessage];
 
-      // 메시지가 19개 이하면 삭제할 필요 없음 (새 메시지가 추가되어도 20개 이하)
-      if (msgArray.length < 20) {
-        return currentMsgs;
-      }
+      // 메시지 참조 설정
+      const msgRef = toUserChattingRef.child('msg');
 
-      // 타임스탬프 오름차순 정렬 (가장 오래된 것이 앞에 오도록)
-      msgArray.sort((a, b) => a.timestamp - b.timestamp);
+      // 1. 먼저 메시지 갯수만 확인
+      const msgSnapshot = await msgRef.once('value');
+      const messages = msgSnapshot.val() || {};
+      const messageCount = Object.keys(messages).length;
 
-      // 메시지가 20개 이상이면 가장 오래된 것들을 삭제하여 19개로 유지
-      // (새 메시지가 추가되면 딱 20개가 됨)
+      // 2. 메시지가 20개 이상이면 가장 오래된 메시지 하나만 삭제
+      if (20 <= messageCount) {
+        // 가장 먼저 추가된(가장 오래된) 메시지의 키를 찾음
 
-      while (msgArray.length >= 20) {
-        const oldest = msgArray.shift();
-        if (oldest) {
-          delete currentMsgs[oldest.key];
+        // Firebase 푸시 ID는 시간순으로 정렬되므로 단순히 알파벳 순 정렬해도 됨
+        const keys = Object.keys(messages);
+        if (keys.length > 0) {
+          const oldestKey = keys.sort()[0];
+
+          if (oldestKey) {
+            await msgRef.child(oldestKey).remove();
+          }
         }
       }
 
-      return currentMsgs;
-    });
+      // 3. 새 메시지 추가
+      const ref = await msgRef.push(messageData);
+      const id = ref.key;
 
-    // 트랜잭션 이후에 새 메시지 추가 (Firebase가 자동으로 키 생성)
-    const ref = await msgRef.push(messageData);
-    const id = ref.key;
+      // null 체크
+      if (!id) {
+        throw new Error('Failed to generate message ID');
+      }
 
-    assert(id);
-
-    return {
-      id,
-      timestamp: now,
-      translatedMessage: '',
-    } satisfies Pick<Message, 'id' | 'timestamp' | 'translatedMessage'>;
-  });
+      return {
+        id,
+        timestamp: now,
+        translatedMessage,
+      } satisfies Pick<Message, 'id' | 'timestamp' | 'translatedMessage'>;
+    },
+  );
