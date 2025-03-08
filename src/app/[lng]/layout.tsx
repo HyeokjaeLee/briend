@@ -95,24 +95,26 @@ export default async function RootLayout({
       lang={lng}
     >
       <body className="flex h-dvh w-full overflow-hidden">
-        <RightSide lng={lng} />
-        <GlobalLoading />
-        <GlobalProvider>
-          <GlobalListener />
-          <MountAction />
-          <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
-            <CenterContainer>
-              <GlobalHeader />
-              <ToastProvider />
-              <Suspense fallback={<PageLoadingTemplate />}>
-                <GlobalModals />
-                <MainContainer>{children}</MainContainer>
-              </Suspense>
-              <BottomNav />
-            </CenterContainer>
-            <SidePanel />
-          </div>
-        </GlobalProvider>
+        <Suspense>
+          <RightSide lng={lng} />
+          <GlobalLoading />
+          <GlobalProvider>
+            <GlobalListener />
+            <MountAction />
+            <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
+              <CenterContainer>
+                <GlobalHeader />
+                <ToastProvider />
+                <Suspense fallback={<PageLoadingTemplate />}>
+                  <GlobalModals />
+                  <MainContainer>{children}</MainContainer>
+                </Suspense>
+                <BottomNav />
+              </CenterContainer>
+              <SidePanel />
+            </div>
+          </GlobalProvider>
+        </Suspense>
       </body>
     </html>
   );
