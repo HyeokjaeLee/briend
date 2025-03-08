@@ -1,27 +1,32 @@
-'use client';
+import { InstallPWAButton } from '@/components/InstallPWAButton';
 
-import { Ri24HoursFill } from 'react-icons/ri';
+export const metadata = {
+  title: 'Briend',
+  description: '언어 친구를 만나 서로의 언어를 배우는 앱',
+  manifest: '/manifest.json',
+  themeColor: '#3b82f6',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'Briend',
+  },
+  applicationName: 'Briend',
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: '/icons/icon-192x192.png',
+    shortcut: '/icons/icon-192x192.png',
+    apple: '/icons/icon-192x192.png',
+  },
+};
 
-import { Button } from '@/components';
-import { toast } from '@/utils/client';
-
-export default function TestPage() {
+export default function Home() {
   return (
-    <article className="p-4">
-      <Button size="8" onlyIcon>
-        <Ri24HoursFill />
-      </Button>
-      <Button
-        onClick={() =>
-          toast({
-            message: Math.random().toString(),
-          })
-        }
-      >
-        Toast
-      </Button>
-    </article>
+    <main>
+      <section className="mt-8 flex justify-center">
+        <InstallPWAButton />
+      </section>
+    </main>
   );
 }
-
-export const dynamic = 'force-static';
