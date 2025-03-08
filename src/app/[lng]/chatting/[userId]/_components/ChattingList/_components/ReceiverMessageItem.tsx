@@ -1,4 +1,4 @@
-import { Avatar, Skeleton } from '@/components';
+import { Avatar } from '@/components';
 import { useLanguage } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
@@ -8,7 +8,6 @@ import type { CommonMessageItemProps } from './SenderMessageItem';
 interface MessageItemProps extends CommonMessageItemProps {
   profileImageSrc?: string;
   nickname: string;
-  isLoading: boolean;
   userId: string;
 }
 
@@ -19,7 +18,6 @@ export const ReceiverMessageItem = ({
   date,
   isSameTime,
   message,
-  isLoading,
   userId,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
@@ -35,9 +33,7 @@ export const ReceiverMessageItem = ({
       {isSameUser ? (
         <div className="flex h-5 w-14 items-center justify-end" />
       ) : (
-        <Skeleton loading={isLoading}>
-          <Avatar size={14} src={profileImageSrc} userId={userId} />
-        </Skeleton>
+        <Avatar size={14} src={profileImageSrc} userId={userId} />
       )}
       <section className={cn(!hasUnderTimeText && 'flex-1')}>
         {isSameUser ? null : (

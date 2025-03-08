@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import { RiCalendarCheckFill, RiSunFill } from 'react-icons/ri';
 import { Virtuoso } from 'react-virtuoso';
 
-import { Checkbox } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import { useLanguage } from '@/hooks';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
@@ -19,20 +18,12 @@ interface ChattingListProps {
   receiverId: string;
   receiverProfileImage?: string;
   receiverNickname: string;
-  isLoading: boolean;
-  messageIdsForDelete: string[];
-  onAddMessageIdForDelete: (messageId: string) => void;
-  onRemoveMessageIdForDelete: (messageId: string) => void;
 }
 
 export const ChattingList = ({
   receiverId,
   receiverProfileImage,
   receiverNickname,
-  isLoading,
-  messageIdsForDelete,
-  onAddMessageIdForDelete,
-  onRemoveMessageIdForDelete,
 }: ChattingListProps) => {
   const { messageList } = useMessageSync(receiverId);
 
@@ -43,8 +34,6 @@ export const ChattingList = ({
   if (!messageList) return null;
 
   if (!messageList.length) return <EmptyTemplate />;
-
-  const isDeleteMode = !!messageIdsForDelete.length;
 
   const today = dayjs();
 
@@ -66,13 +55,6 @@ export const ChattingList = ({
         const isSameTime =
           isSameDate && prevDate ? date.isSame(prevDate, 'minute') : false;
 
-        const isCheckedForDelete = messageIdsForDelete.includes(id);
-
-        const handleCheckForDelete = () => {
-          if (isCheckedForDelete) onRemoveMessageIdForDelete(id);
-          else onAddMessageIdForDelete(id);
-        };
-
         const isToday = date.isSame(today, 'date');
         const isThisYear = date.isSame(today, 'year');
 
@@ -80,12 +62,11 @@ export const ChattingList = ({
           date,
           isSameTime,
           isSameUser,
-
           message,
         };
 
         return (
-          <div className="w-full flex-col">
+          <div className="w-full flex-col" key={id}>
             {isSameDate ? null : (
               <div
                 className={cn(
@@ -116,20 +97,12 @@ export const ChattingList = ({
               </div>
             )}
             <div className="flex w-full items-center gap-2">
-              {isDeleteMode ? (
-                <Checkbox
-                  checked={isCheckedForDelete}
-                  className="animate-fade-right animate-duration-100 ml-2"
-                  onChange={handleCheckForDelete}
-                />
-              ) : null}
               <div className="flex-1">
                 {isMine ? (
                   <SenderMessageItem {...commonProps} state={state} />
                 ) : (
                   <ReceiverMessageItem
                     {...commonProps}
-                    isLoading={isLoading}
                     nickname={receiverNickname}
                     profileImageSrc={receiverProfileImage}
                     userId={receiverId}

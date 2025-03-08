@@ -4,7 +4,6 @@
 export { Avatar, type AvatarProps } from './atoms/Avatar';
 export { Badge, type BadgeProps } from './atoms/Badge';
 export { Button, type ButtonProps } from './atoms/Button';
-export { Checkbox, type CheckboxProps } from './atoms/Checkbox';
 export {
   CommonSkeleton,
   type CommonSkeletonProps,

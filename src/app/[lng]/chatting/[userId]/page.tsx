@@ -6,7 +6,6 @@ import { CustomBottomNav } from '@/components';
 import { CustomError } from '@/utils';
 
 import { ChattingList } from './_components/ChattingList';
-import { useDeleteMessage } from './_components/ChattingList/_hooks/useDeleteMessage';
 import { ChattingPageHeader } from './_components/ChattingPageHeader';
 import { SendMessageForm } from './_components/SendMessageForm';
 import { useReceiverData } from './_hooks/useReceiverData';
@@ -16,22 +15,19 @@ export default function ChattingPage() {
 
   if (typeof userId !== 'string') throw new CustomError();
 
-  const { isLoading, receiver, receiverName } = useReceiverData(userId);
+  const receiverData = useReceiverData(userId);
 
-  const deleteMessage = useDeleteMessage();
+  if (!receiverData) return null;
+
+  const { name, profileImage } = receiverData;
 
   return (
     <article className="size-full">
       <ChattingPageHeader userId={userId} />
-
       <ChattingList
-        isLoading={isLoading}
-        messageIdsForDelete={deleteMessage.ids}
         receiverId={userId}
-        receiverNickname={receiverName}
-        receiverProfileImage={receiver.profileImage}
-        onAddMessageIdForDelete={deleteMessage.add}
-        onRemoveMessageIdForDelete={deleteMessage.remove}
+        receiverNickname={name}
+        receiverProfileImage={profileImage}
       />
       <CustomBottomNav className="border-t-0 bg-white p-3">
         <SendMessageForm receiverId={userId} />

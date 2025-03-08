@@ -86,38 +86,34 @@ export const SendMessageForm = createOnlyClientComponent(
     );
 
     return (
-      <form onSubmit={handleSubmit}>
-        <section className="flex items-end gap-2">
-          <div
-            className={cn(
-              'flex-center flex-1 rounded-md border bg-gray-50 px-3.5 py-[12.5px]',
-              'border-zinc-50 transition-colors duration-75 focus-within:border-zinc-200',
-            )}
-          >
-            <TextareaAutosize
-              {...form.register('message')}
-              ref={(e) => {
-                form.register('message').ref(e);
-                textareaRef.current = e;
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center justify-center gap-2"
+      >
+        <div
+          className={cn(
+            'flex-center flex-1 rounded-md border bg-gray-50 px-3.5 py-[12.5px]',
+            'border-input focus-within:border-primary transition-colors duration-150',
+          )}
+        >
+          <TextareaAutosize
+            {...form.register('message')}
+            ref={(e) => {
+              form.register('message').ref(e);
+              textareaRef.current = e;
 
-                if (e) e.focus();
-              }}
-              cacheMeasurements
-              className="hide-scrollbar outline-hidden w-full resize-none bg-transparent"
-              maxRows={4}
-              placeholder={t('send-form-placeholder')}
-              title="message-input"
-            />
-          </div>
-          <Button
-            className="mb-[6.5px]"
-            shape="pill"
-            title="send-message"
-            type="submit"
-          >
-            <RiSendPlane2Line className="animate-jump-in animate-duration-300 ml-1 size-6" />
-          </Button>
-        </section>
+              if (e) e.focus();
+            }}
+            cacheMeasurements
+            className="hide-scrollbar outline-hidden placeholder:text-muted-foreground w-full resize-none bg-transparent"
+            maxRows={4}
+            placeholder={t('send-form-placeholder')}
+            title="message-input"
+          />
+        </div>
+        <Button shape="pill" title="send-message" onlyIcon type="submit">
+          <RiSendPlane2Line className="animate-jump-in animate-duration-300 ml-1 size-6" />
+        </Button>
       </form>
     );
   },
