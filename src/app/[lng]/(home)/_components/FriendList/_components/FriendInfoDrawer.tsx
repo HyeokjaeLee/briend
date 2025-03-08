@@ -66,43 +66,36 @@ export const FriendInfoDrawer = ({
       }
     >
       {friendInfo ? (
-        <>
-          <header className="flex flex-col items-center gap-2">
-            <div className="relative">
-              <Avatar
-                size={18}
-                src={friendInfo.profileImage}
-                userId={friendInfo.id}
-              />
-              {friendInfo.language ? (
-                <div className="flex-center absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
-                  {LANGUAGE_FLAG[friendInfo.language]}
-                </div>
-              ) : null}
-            </div>
-            <div className="flex items-center gap-2">
-              <h2
-                className={cn('text-xl font-semibold', {
-                  'font-medium text-slate-400': friendInfo.isUnsubscribed,
-                })}
-              >
-                {friendInfo.isUnsubscribed
-                  ? t('unsubscribed-user')
-                  : friendInfo.name}
-              </h2>
-              <RiShieldCheckFill
-                className={cn('size-5 text-green-500', {
-                  hidden: friendInfo.isAnonymous,
-                })}
-              />
-            </div>
-          </header>
-          {isUnlinked ? (
-            <Button variant="ghost" className="mx-auto">
-              연결 요청
-            </Button>
-          ) : null}
-        </>
+        <header className="flex flex-col items-center gap-2">
+          <div className="relative">
+            <Avatar
+              size={18}
+              src={friendInfo.profileImage}
+              userId={friendInfo.id}
+            />
+            {friendInfo.language ? (
+              <div className="flex-center absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
+                {LANGUAGE_FLAG[friendInfo.language]}
+              </div>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-2">
+            <h2
+              className={cn('text-xl font-semibold', {
+                'font-medium text-slate-400': friendInfo.isUnsubscribed,
+              })}
+            >
+              {friendInfo.isUnsubscribed
+                ? t('unsubscribed-user')
+                : friendInfo.name}
+            </h2>
+            <RiShieldCheckFill
+              className={cn('size-5 text-green-500', {
+                hidden: friendInfo.isAnonymous,
+              })}
+            />
+          </div>
+        </header>
       ) : null}
     </Drawer>
   );

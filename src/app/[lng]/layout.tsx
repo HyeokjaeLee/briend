@@ -95,7 +95,7 @@ export default async function RootLayout({
       lang={lng}
     >
       <body className="flex h-dvh w-full overflow-hidden">
-        <RightSide />
+        <RightSide lng={lng} />
         <GlobalLoading />
         <GlobalProvider>
           <GlobalListener />

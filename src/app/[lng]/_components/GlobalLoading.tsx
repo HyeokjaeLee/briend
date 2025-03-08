@@ -7,9 +7,8 @@ import { Spinner } from '@/components';
 import { useUrl } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn } from '@/utils';
-import { createOnlyClientComponent } from '@/utils/client';
 
-export const GlobalLoading = createOnlyClientComponent(() => {
+export const GlobalLoading = () => {
   const [globalLoading, setGlobalLoading] = useGlobalStore(
     useShallow((state) => [state.globalLoading, state.setGlobalLoading]),
   );
@@ -40,4 +39,4 @@ export const GlobalLoading = createOnlyClientComponent(() => {
       <Spinner className="size-20 text-white" />
     </div>
   ) : null;
-});
+};

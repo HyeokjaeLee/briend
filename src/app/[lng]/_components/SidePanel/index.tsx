@@ -7,7 +7,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { Button } from '@/components';
 import { SELECTOR } from '@/constants';
-import { useSidePanel } from '@/hooks';
+import { sidePanelContext, useSidePanel } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useSidePanelStore } from '@/stores';
 import { assert, cn, findRoute } from '@/utils';
@@ -87,40 +87,40 @@ const SidePanelContainer = () => {
         }),
       )}
     >
-      {
+      <sidePanelContext.Provider value={{ isSidePanel: true }}>
         {
-          none: null,
-          back: (
-            <nav className="flex h-14 items-center justify-end px-1">
-              <Button
-                variant="ghost"
-                onlyIcon
-                onClick={() => {
-                  push(ROUTES.FRIEND_LIST.pathname, {
-                    withAnimation: 'FROM_TOP',
-                  });
-                }}
-              >
-                <RiCloseLine />
-              </Button>
-            </nav>
-          ),
-          empty: (
-            <header
-              id={SELECTOR.SIDE_TOP_HEADER}
-              className="sticky top-0 h-fit w-full"
-            />
-          ),
-          root: null,
-        }[route.topHeaderType]
-      }
-      <section className="flex flex-1 flex-col overflow-auto">
-        <ErrorBoundary
-          errorComponent={(error) => <ErrorPage {...error} isSidePanel />}
-        >
-          <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
-        </ErrorBoundary>
-      </section>
+          {
+            none: null,
+            back: (
+              <nav className="flex h-14 items-center justify-end px-1">
+                <Button
+                  variant="ghost"
+                  onlyIcon
+                  onClick={() => {
+                    push(ROUTES.FRIEND_LIST.pathname, {
+                      withAnimation: 'FROM_TOP',
+                    });
+                  }}
+                >
+                  <RiCloseLine />
+                </Button>
+              </nav>
+            ),
+            empty: (
+              <header
+                id={SELECTOR.SIDE_TOP_HEADER}
+                className="sticky top-0 h-fit w-full"
+              />
+            ),
+            root: null,
+          }[route.topHeaderType]
+        }
+        <section className="flex flex-1 flex-col overflow-auto">
+          <ErrorBoundary errorComponent={(error) => <ErrorPage {...error} />}>
+            <SideContents routeName={routeName} sidePanelUrl={sidePanelUrl} />
+          </ErrorBoundary>
+        </section>
+      </sidePanelContext.Provider>
     </aside>
   );
 };

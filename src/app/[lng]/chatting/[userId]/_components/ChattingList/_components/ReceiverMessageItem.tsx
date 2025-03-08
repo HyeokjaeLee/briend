@@ -3,22 +3,22 @@ import { useLanguage } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
+import type { ReceiverData } from '../../../_hooks/useReceiverData';
+import { useTranslateSearchParam } from '../../../_hooks/useTranslateSearchParam';
 import type { CommonMessageItemProps } from './SenderMessageItem';
 
 interface MessageItemProps extends CommonMessageItemProps {
-  profileImageSrc?: string;
-  nickname: string;
-  userId: string;
+  receiverData: ReceiverData;
+  isSameUser: boolean;
 }
 
 export const ReceiverMessageItem = ({
-  profileImageSrc,
-  nickname,
   isSameUser,
   date,
   isSameTime,
   message,
-  userId,
+  receiverData,
+  translatedMessage,
 }: MessageItemProps) => {
   const { lng } = useLanguage();
 
@@ -28,17 +28,23 @@ export const ReceiverMessageItem = ({
 
   const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
 
+  const { isReceiverLanguage } = useTranslateSearchParam();
+
   return (
-    <article className={cn('mx-4 my-1 flex', isSameUser ? 'gap-2' : 'gap-4')}>
+    <article className={cn('mx-4 my-1 flex gap-4')}>
       {isSameUser ? (
         <div className="flex h-5 w-14 items-center justify-end" />
       ) : (
-        <Avatar size={14} src={profileImageSrc} userId={userId} />
+        <Avatar
+          size={14}
+          src={receiverData.profileImage}
+          userId={receiverData.id}
+        />
       )}
       <section className={cn(!hasUnderTimeText && 'flex-1')}>
         {isSameUser ? null : (
           <header className="flex w-full flex-wrap items-center gap-2">
-            <strong>{nickname}</strong>
+            <strong>{receiverData.name}</strong>
             {isSameTime ? null : (
               <div className="flex-center h-fit flex-1 gap-2">
                 <hr className="bg-linear-to-r ml-auto h-px w-full min-w-1 flex-1 rounded-r-full border-none from-transparent to-slate-300" />
@@ -63,7 +69,7 @@ export const ReceiverMessageItem = ({
             },
           )}
         >
-          {message}
+          {isReceiverLanguage ? message : translatedMessage || message}
         </pre>
       </section>
       {hasUnderTimeText ? (

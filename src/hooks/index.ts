@@ -10,5 +10,6 @@ export { useLanguage } from './useLanguage';
 export { useLongPress } from './useLongPress';
 export { useSidePanel } from './useSidePanel';
 export { useTempImage } from './useTempImage';
+export { sidePanelContext, useThisSidePanel } from './useThisSidePanel';
 export { useUrl } from './useUrl';
 export { useUserData } from './useUserData';

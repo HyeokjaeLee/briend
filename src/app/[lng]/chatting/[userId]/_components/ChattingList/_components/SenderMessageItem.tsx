@@ -6,9 +6,11 @@ import { useLanguage } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, formatISODate, formatLocalizedDate } from '@/utils';
 
+import { useTranslateSearchParam } from '../../../_hooks/useTranslateSearchParam';
+
 export interface CommonMessageItemProps {
   message: string;
-  isSameUser: boolean;
+  translatedMessage: string;
   isSameTime: boolean;
   date: Dayjs;
 }
@@ -21,10 +23,13 @@ export const SenderMessageItem = ({
   date,
   isSameTime,
   state,
+  translatedMessage,
 }: SenderMessageItemProps) => {
   const { lng } = useLanguage();
 
   const isTouchDevice = useGlobalStore((state) => state.isTouchDevice);
+
+  const { isReceiverLanguage } = useTranslateSearchParam();
 
   return (
     <article className="mx-4 my-1 flex flex-col items-end gap-1">
@@ -52,7 +57,7 @@ export const SenderMessageItem = ({
             },
           )}
         >
-          {message}
+          {isReceiverLanguage ? translatedMessage || message : message}
         </pre>
       </div>
     </article>

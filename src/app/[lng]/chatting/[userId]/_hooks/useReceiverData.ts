@@ -11,5 +11,10 @@ export const useReceiverData = (userId: string) => {
 
   assert(data?.name);
 
-  return { name: data.name, profileImage: data.profileImage };
+  return data;
 };
+
+export type ReceiverData = Exclude<
+  Awaited<ReturnType<typeof useReceiverData>>,
+  null
+>;

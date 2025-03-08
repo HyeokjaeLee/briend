@@ -57,6 +57,8 @@ export const useChattingListener = () => {
     assert(currentUser);
 
     const unsubscribeList = friendList.map(async (friend) => {
+      if (!friend.isLinked) return;
+
       const messageRef = ref(
         realtimeDatabase,
         `${currentUser.uid}/chat/${friend.id}/msg`,
@@ -85,7 +87,7 @@ export const useChattingListener = () => {
 
     return () => {
       unsubscribeList.forEach((promise) =>
-        promise.then((unsubscribe) => unsubscribe()),
+        promise.then((unsubscribe) => unsubscribe?.()),
       );
     };
   }, [setRealtimeChattingData, friendList]);

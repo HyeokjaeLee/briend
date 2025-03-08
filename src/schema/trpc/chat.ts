@@ -13,4 +13,6 @@ export const sendMessageSchema = z.object({
     .max(2_000, 'message-too-long')
     .trim(),
   receiverId: z.string(),
+  receiverLanguage: z.nativeEnum(LANGUAGE),
+  senderLanguage: z.nativeEnum(LANGUAGE),
 });

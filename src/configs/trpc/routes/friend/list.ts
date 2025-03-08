@@ -82,7 +82,7 @@ export const list = publicProcedure.query(async ({ ctx }) => {
         id: user.uid,
         name,
         profileImage: user.photoURL,
-        isAnonymous: user.customClaims?.isAnonymous ?? true,
+        isAnonymous: (user.customClaims?.isAnonymous ?? true) as boolean,
         isUnsubscribed: false,
         isLinked: inviteIdSnapshot.exists(),
         language,
