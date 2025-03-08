@@ -23,7 +23,12 @@ export const ChattingSide = ({ userId }: ChattingSideProps) => {
 
   return (
     <article className="flex size-full flex-col bg-white">
-      <ChattingPageHeader sidePanel name={name} />
+      <ChattingPageHeader
+        sidePanel
+        name={name}
+        profileImage={profileImage}
+        userId={userId}
+      />
       <ChattingList
         receiverId={userId}
         receiverNickname={name}

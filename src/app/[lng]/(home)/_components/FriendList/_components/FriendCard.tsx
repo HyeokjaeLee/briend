@@ -6,30 +6,23 @@ import { RiLinkUnlinkM, RiShieldCheckFill } from 'react-icons/ri';
 import { Avatar, Skeleton } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 import type { RouterOutputs } from '@/configs/trpc/type';
+import { LANGUAGE_FLAG } from '@/constants';
 import { chattingDB } from '@/database/indexed';
 import { useIndexedDB, useLanguage } from '@/hooks';
 import { cn, formatLocalizedDate } from '@/utils';
 
-type FriendCardProps =
-  RouterOutputs['friend']['getFriendList']['friendList'][number] & {
-    onClick: () => void;
-  };
+interface FriendCardProps {
+  friendData: RouterOutputs['friend']['list']['friendList'][number];
+  onClick: () => void;
+}
 
-export const FriendCard = ({
-  id,
-  name,
-  profileImage,
-  isAnonymous,
-  isUnsubscribed,
-  isLinked,
-  onClick,
-}: FriendCardProps) => {
+export const FriendCard = ({ friendData, onClick }: FriendCardProps) => {
   const { t } = useTranslation('friend-list');
 
   const lastMessage = useIndexedDB(chattingDB.messages, async (table) => {
     const messageList = await table
       .where('userId')
-      .equals(id)
+      .equals(friendData.id)
       .sortBy('timestamp');
 
     return messageList[messageList.length - 1];
@@ -50,8 +43,19 @@ export const FriendCard = ({
     >
       <article className="flex items-center gap-3">
         <div className="relative">
-          <Avatar size={18} src={profileImage} userId={id} />
-          {isLinked ? null : (
+          <div className="relative">
+            <Avatar
+              size={18}
+              src={friendData.profileImage}
+              userId={friendData.id}
+            />
+            {friendData.language ? (
+              <div className="flex-center absolute -bottom-2 -right-2 size-8 rounded-full border-2 border-white bg-slate-200">
+                {LANGUAGE_FLAG[friendData.language]}
+              </div>
+            ) : null}
+          </div>
+          {friendData.isLinked ? null : (
             <div className="flex-center bg-background/50 absolute left-0 top-0 size-full">
               <RiLinkUnlinkM className="text-primary/50 size-8" />
             </div>
@@ -62,14 +66,16 @@ export const FriendCard = ({
             <div className="flex items-center gap-1">
               <strong
                 className={cn('text-start font-semibold', {
-                  'font-medium text-slate-400': isUnsubscribed,
+                  'font-medium text-slate-400': friendData.isUnsubscribed,
                 })}
               >
-                {isUnsubscribed ? t('unsubscribed-user') : name}
+                {friendData.isUnsubscribed
+                  ? t('unsubscribed-user')
+                  : friendData.name}
               </strong>
               <RiShieldCheckFill
                 className={cn('size-4 text-green-500', {
-                  hidden: isAnonymous,
+                  hidden: friendData.isAnonymous,
                 })}
               />
             </div>

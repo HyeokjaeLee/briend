@@ -38,7 +38,7 @@ interface GlobalStore {
   ) => void;
 
   isTouchDevice: boolean;
-  setIsTouchDevice: (isTouchDevice: boolean) => void;
+  resetIsTouchDevice: () => void;
 
   mediaQuery: MEDIA_QUERY;
   mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT;
@@ -75,6 +75,14 @@ export const useGlobalStore = create<GlobalStore>((set) => {
     return { mediaQuery, mediaQueryBreakPoint, hasSidePanel };
   };
 
+  const getIsTouchDevice = () => {
+    if (IS_CLIENT) {
+      return 'ontouchstart' in window || 0 < navigator.maxTouchPoints;
+    }
+
+    return true;
+  };
+
   return {
     globalLoading: {
       value: false,
@@ -88,7 +96,7 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       }),
 
     isTouchDevice: false,
-    setIsTouchDevice: (isTouchDevice) => set({ isTouchDevice }),
+    resetIsTouchDevice: () => set({ isTouchDevice: getIsTouchDevice() }),
 
     ...getMediaQuery(),
     resetMediaQuery: () => set(getMediaQuery()),

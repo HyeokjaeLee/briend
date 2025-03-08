@@ -1,6 +1,6 @@
 'use client';
 
-import { BackHeader, Tabs } from '@/components';
+import { Avatar, BackHeader, Tabs } from '@/components';
 import { useTranslation } from '@/configs/i18n/client';
 
 import { useTranslateSearchParam } from '../_hooks/useTranslateSearchParam';
@@ -8,11 +8,15 @@ import { useTranslateSearchParam } from '../_hooks/useTranslateSearchParam';
 interface ChattingPageHeaderProps {
   sidePanel?: boolean;
   name: string;
+  profileImage?: string;
+  userId: string;
 }
 
 export const ChattingPageHeader = ({
   sidePanel,
   name,
+  profileImage,
+  userId,
 }: ChattingPageHeaderProps) => {
   const { handleTranslate, isOriginal } = useTranslateSearchParam({
     sidePanel,
@@ -22,8 +26,9 @@ export const ChattingPageHeader = ({
 
   return (
     <BackHeader className="relative justify-between" sidePanel={sidePanel}>
-      <div className="flex-center w-fit gap-3">
-        <h1 className="truncate text-nowrap font-semibold">{name}</h1>
+      <div className="flex-center w-fit gap-2">
+        <Avatar size={6} src={profileImage} userId={userId} />
+        <h2 className="truncate text-nowrap text-lg font-medium">{name}</h2>
       </div>
       <Tabs
         value={isOriginal ? 'original' : 'translated'}
