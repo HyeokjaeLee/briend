@@ -51,7 +51,7 @@ export const generateMetadata = async ({ params }: PropsWithParams) => {
   });
 
   return {
-    title: `Briend - ${t('root.title')}`,
+    title: `BRIEND - ${t('root.title')}`,
     authors: [
       {
         name: 'Hyeokjae Lee',
@@ -63,7 +63,8 @@ export const generateMetadata = async ({ params }: PropsWithParams) => {
     alternates: {
       languages: alternatesLanguages,
     },
-    manifest: `/${lng}/manifest.json`,
+    manifest: `/manifest/${lng}.json`,
+    category: 'social',
   } satisfies Metadata;
 };
 
@@ -90,7 +91,7 @@ export default async function RootLayout({
       dir={dir(lng)}
       lang={lng}
     >
-      <body className="flex size-full overflow-hidden">
+      <body className="flex size-full overflow-hidden text-slate-900">
         <Suspense>
           <RightSide lng={lng} />
           <GlobalLoading />

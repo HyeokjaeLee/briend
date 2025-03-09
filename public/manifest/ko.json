@@ -1,0 +1,30 @@
+{
+  "name": "BRIEND - 간편 번역 채팅",
+  "short_name": "BRIEND",
+  "description": "스캔한번으로 새로만난 사람과 같은 언어로 대화해보세요.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "/ko",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172b",
+  "id": "/ko",
+  "icons": [
+    {
+      "src": "/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
