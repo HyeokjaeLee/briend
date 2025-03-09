@@ -1,0 +1,22 @@
+{
+  "edit-profile": "プロフィール編集",
+  "limited-friend-list": "友達リストがいっぱいです！\n新しい友達を追加するには、連絡していない友達との接続を切ってください",
+  "login-rending1": "30秒でできます！",
+  "login-rending2": "ログインして新しい友達を招待しましょう！",
+  "expired-badge": "期限切れ",
+  "online-badge": "オンライン",
+  "offline-badge": "オフライン",
+  "chatting-button": "会話する",
+  "unlinked-chatting-button": "会話を見る",
+  "unsubscribed-user": "退会したユーザー",
+  "delete-friend-message": "友達を削除すると\n会話も一緒に削除されます！",
+  "delete-friend-sub-message": "友達との接続を切るだけなら\n会話履歴は保持されます。",
+  "delete-friend-sub-message2": "招待を受けるか\n招待するまで再び会話することはできません。",
+  "empty-friend-list": "まだ友達がいません",
+  "add-friend-button": "招待する",
+  "request-link-button": "接続リクエスト",
+  "delete-button": "削除する",
+  "unlink-button": "接続を切る",
+  "delete-friend-toast-message": "友達を削除しました。",
+  "unlink-friend-toast-message": "友達との接続が切れました。"
+}

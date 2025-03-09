@@ -1,0 +1,19 @@
+{
+  "edit-profile": "แก้ไขโปรไฟล์",
+  "edit-invite-message": "แก้ไขข้อความเชิญ",
+  "logout": "ออกจากระบบ",
+  "empty-email": "กรุณาเชื่อมต่อบัญชี Google ของคุณ",
+  "logout-toast-message": "ออกจากระบบแล้ว",
+  "connected-account": "ยกเลิกการเชื่อมต่อ",
+  "need-connect-account": "เชื่อมต่อ",
+  "link-kakao": "เชื่อมต่อบัญชี Kakao แล้ว",
+  "link-naver": "เชื่อมต่อบัญชี Naver แล้ว",
+  "link-google": "เชื่อมต่อบัญชี Google แล้ว",
+  "unlink-kakao": "ยกเลิกการเชื่อมต่อบัญชี Kakao แล้ว",
+  "unlink-naver": "ยกเลิกการเชื่อมต่อบัญชี Naver แล้ว",
+  "unlink-google": "ยกเลิกการเชื่อมต่อบัญชี Google แล้ว",
+  "last-account": "ต้องเชื่อมต่อบัญชีอย่างน้อยหนึ่งบัญชี",
+  "link-confirm-title": "ข้อมูลของบัญชีที่เชื่อมต่อจะถูกลบ",
+  "link-confirm-message": "หากคุณมีข้อมูลหรือข้อความที่จำเป็น\nกรุณาบันทึกไว้ที่อื่น!",
+  "link-confirm-button": "เชื่อมต่อ"
+}

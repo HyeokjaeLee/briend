@@ -1,0 +1,19 @@
+{
+  "edit-profile": "Chỉnh sửa hồ sơ",
+  "edit-invite-message": "Chỉnh sửa tin nhắn mời",
+  "logout": "Đăng xuất",
+  "empty-email": "Vui lòng liên kết tài khoản Google của bạn",
+  "logout-toast-message": "Đã đăng xuất.",
+  "connected-account": "Hủy liên kết",
+  "need-connect-account": "Liên kết",
+  "link-kakao": "Tài khoản Kakao đã được liên kết",
+  "link-naver": "Tài khoản Naver đã được liên kết",
+  "link-google": "Tài khoản Google đã được liên kết",
+  "unlink-kakao": "Tài khoản Kakao đã được hủy liên kết",
+  "unlink-naver": "Tài khoản Naver đã được hủy liên kết",
+  "unlink-google": "Tài khoản Google đã được hủy liên kết",
+  "last-account": "Ít nhất một tài khoản phải được liên kết",
+  "link-confirm-title": "Thông tin của tài khoản liên kết sẽ bị xóa.",
+  "link-confirm-message": "Nếu bạn có bất kỳ thông tin hoặc tin nhắn cần thiết,\nvui lòng lưu chúng ở nơi khác!",
+  "link-confirm-button": "Liên kết"
+}

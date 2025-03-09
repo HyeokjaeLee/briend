@@ -1,0 +1,7 @@
+{
+  "send-form-placeholder": "Enter a message",
+  "empty-title": "No conversation with your friend yet.",
+  "empty-description": "Say hello first!",
+  "message-too-long": "Message is too long! Please enter less than 2,000 characters.",
+  "message-required": "Please enter a message."
+}

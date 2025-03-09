@@ -1,0 +1,22 @@
+{
+  "edit-profile": "แก้ไขโปรไฟล์",
+  "limited-friend-list": "รายชื่อเพื่อนของคุณเต็มแล้ว!\nโปรดยกเลิกการเชื่อมต่อกับเพื่อนที่คุณไม่ได้ติดต่อเพื่อเพิ่มเพื่อนใหม่",
+  "login-rending1": "ใช้เวลาเพียง 30 วินาที!",
+  "login-rending2": "เข้าสู่ระบบและเชิญเพื่อนใหม่!",
+  "expired-badge": "หมดอายุ",
+  "online-badge": "ออนไลน์",
+  "offline-badge": "ออฟไลน์",
+  "chatting-button": "สนทนา",
+  "unlinked-chatting-button": "ดูการสนทนา",
+  "unsubscribed-user": "ผู้ใช้ที่ยกเลิกการสมัคร",
+  "delete-friend-message": "หากคุณลบเพื่อน\nการสนทนาจะถูกลบด้วย!",
+  "delete-friend-sub-message": "หากคุณเพียงยกเลิกการเชื่อมต่อ\nประวัติการสนทนาจะยังคงอยู่",
+  "delete-friend-sub-message2": "คุณจะไม่สามารถสนทนาอีกครั้งได้จนกว่า\nคุณจะได้รับคำเชิญหรือเชิญพวกเขา",
+  "empty-friend-list": "คุณยังไม่มีเพื่อน",
+  "add-friend-button": "เชิญ",
+  "request-link-button": "ขอเชื่อมต่อ",
+  "delete-button": "ลบ",
+  "unlink-button": "ยกเลิกการเชื่อมต่อ",
+  "delete-friend-toast-message": "ลบเพื่อนแล้ว",
+  "unlink-friend-toast-message": "ยกเลิกการเชื่อมต่อกับเพื่อนแล้ว"
+}

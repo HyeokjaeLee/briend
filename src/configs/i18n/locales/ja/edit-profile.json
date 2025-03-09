@@ -1,0 +1,14 @@
+{
+  "my-nickname": "ニックネーム",
+  "nickname-max-length": "ニックネームは20文字以下に設定してください",
+  "nickname-required": "ニックネームは空にできません",
+  "friend-language": "言語",
+  "save-profile": "プロフィールが変更されました！",
+  "error-save-profile": "プロフィールの変更に失敗しました！",
+  "save": "保存する",
+  "back-notice-title": "プロフィール編集を終了",
+  "back-notice-message": "保存しないと変更は\n適用されません。",
+  "profile-image-change": "プロフィール画像を変更",
+  "select-on-gallery": "ギャラリーから選択",
+  "use-default-image": "デフォルト画像を適用"
+}

@@ -1,0 +1,7 @@
+{
+  "send-form-placeholder": "输入信息",
+  "empty-title": "您还没有与朋友的对话。",
+  "empty-description": "先打个招呼吧！",
+  "message-too-long": "信息太长了！请输入少于2,000个字符。",
+  "message-required": "请输入信息。"
+}

@@ -1,0 +1,14 @@
+{
+  "my-nickname": "Nickname",
+  "nickname-max-length": "Nickname must be 20 characters or less",
+  "nickname-required": "Nickname cannot be empty",
+  "friend-language": "Language",
+  "save-profile": "Profile has been changed!",
+  "error-save-profile": "Failed to change profile!",
+  "save": "Save",
+  "back-notice-title": "Exit Profile Edit",
+  "back-notice-message": "Changes will not be applied\nif you don't save.",
+  "profile-image-change": "Change Profile Image",
+  "select-on-gallery": "Select from Gallery",
+  "use-default-image": "Use Default Image"
+}

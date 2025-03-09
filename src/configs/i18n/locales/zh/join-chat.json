@@ -1,0 +1,10 @@
+{
+  "nickname-max-length": "昵称必须不超过20个字符",
+  "nickname-required": "昵称不能为空",
+  "join-soon": "即将加入聊天！",
+  "chatting-invite": "您被邀请参加聊天！",
+  "friend-nickname": "请告诉我们显示给您朋友的昵称！",
+  "start-chatting-button": "开始聊天",
+  "nickname": "昵称",
+  "start-chatting-toast-message": "已与朋友连接！"
+}

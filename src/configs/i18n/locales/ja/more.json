@@ -1,0 +1,19 @@
+{
+  "edit-profile": "プロフィール編集",
+  "edit-invite-message": "招待メッセージを編集",
+  "logout": "ログアウト",
+  "empty-email": "Googleアカウントを連携してください",
+  "logout-toast-message": "ログアウトしました。",
+  "connected-account": "連携解除",
+  "need-connect-account": "連携する",
+  "link-kakao": "カカオアカウントが連携されました",
+  "link-naver": "ネイバーアカウントが連携されました",
+  "link-google": "グーグルアカウントが連携されました",
+  "unlink-kakao": "カカオアカウントの連携が解除されました",
+  "unlink-naver": "ネイバーアカウントの連携が解除されました",
+  "unlink-google": "グーグルアカウントの連携が解除されました",
+  "last-account": "少なくとも1つのアカウントは連携されている必要があります",
+  "link-confirm-title": "連携されたアカウントの情報は削除されます。",
+  "link-confirm-message": "必要な情報やメッセージがある場合は、\n他の場所に保存してください！",
+  "link-confirm-button": "連携する"
+}

@@ -1,0 +1,22 @@
+{
+  "edit-profile": "编辑个人资料",
+  "limited-friend-list": "您的好友列表已满！\n请断开与不联系的朋友的连接，以添加新朋友",
+  "login-rending1": "只需30秒！",
+  "login-rending2": "登录并邀请新朋友！",
+  "expired-badge": "已过期",
+  "online-badge": "在线",
+  "offline-badge": "离线",
+  "chatting-button": "聊天",
+  "unlinked-chatting-button": "查看聊天",
+  "unsubscribed-user": "已注销用户",
+  "delete-friend-message": "如果删除好友，\n对话也会一起删除！",
+  "delete-friend-sub-message": "如果只是断开连接，\n对话记录将保留。",
+  "delete-friend-sub-message2": "除非收到邀请或邀请他们，\n否则无法再次聊天。",
+  "empty-friend-list": "您还没有朋友",
+  "add-friend-button": "邀请",
+  "request-link-button": "请求连接",
+  "delete-button": "删除",
+  "unlink-button": "断开连接",
+  "delete-friend-toast-message": "已删除好友。",
+  "unlink-friend-toast-message": "已断开与好友的连接。"
+}

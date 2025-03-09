@@ -1,6 +1,7 @@
 'use client';
 
 import Link, { type LinkProps } from 'next/link';
+import type { HTMLAttributeAnchorTarget } from 'react';
 
 import { SESSION_STORAGE } from '@/constants';
 import { useCustomHref, useSidePanel } from '@/hooks';
@@ -16,6 +17,7 @@ export interface CustomLinkProps extends LinkProps {
   withAnimation?: NAVIGATION_ANIMATION;
   toSidePanel?: boolean;
   disabled?: boolean;
+  target?: HTMLAttributeAnchorTarget;
 }
 
 export const CustomLink = ({
@@ -28,6 +30,7 @@ export const CustomLink = ({
   withAnimation: forceAnimation,
   toSidePanel,
   disabled,
+  target,
   ...restLinkProps
 }: CustomLinkProps) => {
   const getCustomHref = useCustomHref();
@@ -45,6 +48,7 @@ export const CustomLink = ({
   return (
     <Link
       {...restLinkProps}
+      target={target}
       shallow
       href={customHref}
       replace={replace}

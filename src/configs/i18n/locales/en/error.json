@@ -1,0 +1,7 @@
+{
+  "unknown-error": "Temporary error.\nPlease try again later.",
+  "expired-chat": "This chat has expired.\nPlease regenerate the invitation QR code.",
+  "not-allowed": "Invalid access.",
+  "home-button-text": "Return to Home",
+  "create-chat-button-text": "Create Chat"
+}

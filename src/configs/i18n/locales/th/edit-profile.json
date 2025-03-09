@@ -1,0 +1,14 @@
+{
+  "my-nickname": "ชื่อเล่น",
+  "nickname-max-length": "ชื่อเล่นต้องมีความยาวไม่เกิน 20 ตัวอักษร",
+  "nickname-required": "ชื่อเล่นไม่สามารถเว้นว่างได้",
+  "friend-language": "ภาษา",
+  "save-profile": "โปรไฟล์ถูกเปลี่ยนแล้ว!",
+  "error-save-profile": "การเปลี่ยนโปรไฟล์ล้มเหลว!",
+  "save": "บันทึก",
+  "back-notice-title": "ออกจากการแก้ไขโปรไฟล์",
+  "back-notice-message": "การเปลี่ยนแปลงจะไม่ถูกบันทึก\nหากคุณไม่กดบันทึก",
+  "profile-image-change": "เปลี่ยนรูปโปรไฟล์",
+  "select-on-gallery": "เลือกจากแกลเลอรี่",
+  "use-default-image": "ใช้รูปภาพเริ่มต้น"
+}

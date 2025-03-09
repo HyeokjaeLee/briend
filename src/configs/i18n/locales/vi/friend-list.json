@@ -1,0 +1,22 @@
+{
+  "edit-profile": "Chỉnh sửa hồ sơ",
+  "limited-friend-list": "Danh sách bạn bè của bạn đã đầy!\nVui lòng ngắt kết nối với những người bạn không liên lạc để thêm người mới",
+  "login-rending1": "Chỉ mất 30 giây!",
+  "login-rending2": "Đăng nhập và mời bạn bè mới!",
+  "expired-badge": "Hết hạn",
+  "online-badge": "Trực tuyến",
+  "offline-badge": "Ngoại tuyến",
+  "chatting-button": "Trò chuyện",
+  "unlinked-chatting-button": "Xem trò chuyện",
+  "unsubscribed-user": "Người dùng đã hủy đăng ký",
+  "delete-friend-message": "Nếu bạn xóa một người bạn,\ncuộc trò chuyện cũng sẽ bị xóa!",
+  "delete-friend-sub-message": "Nếu bạn chỉ ngắt kết nối,\nlịch sử trò chuyện sẽ được giữ lại.",
+  "delete-friend-sub-message2": "Bạn sẽ không thể trò chuyện lại cho đến khi\nbạn nhận được lời mời hoặc mời họ.",
+  "empty-friend-list": "Bạn chưa có bạn bè nào",
+  "add-friend-button": "Mời",
+  "request-link-button": "Yêu cầu kết nối",
+  "delete-button": "Xóa",
+  "unlink-button": "Ngắt kết nối",
+  "delete-friend-toast-message": "Đã xóa bạn bè.",
+  "unlink-friend-toast-message": "Đã ngắt kết nối với bạn bè."
+}
