@@ -10,7 +10,7 @@
   "unlinked-chatting-button": "대화보기",
   "unsubscribed-user": "탈퇴한 회원",
   "delete-friend-message": "친구를 삭제하면\n대화목록도 함께 삭제되요!",
-  "delete-friend-sub-message": "친구와의 연결만 끊으면\n원할때 언제든 다시 연결 요청을 보낼 수 있어요.",
+  "delete-friend-sub-message": "친구와의 연결만 끊으면\n대화 기록은 유지되요.",
   "delete-friend-sub-message2": "친구에게 초대를 받거나\n초대하기 전엔 다시 대화할 수 없어요.",
   "empty-friend-list": "아직 친구가 없네요",
   "add-friend-button": "초대하기",

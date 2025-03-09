@@ -38,7 +38,7 @@ interface GlobalStore {
   ) => void;
 
   isTouchDevice: boolean;
-  resetIsTouchDevice: () => void;
+  resetIsTouchDevice: () => boolean;
 
   mediaQuery: MEDIA_QUERY;
   mediaQueryBreakPoint: MEDIA_QUERY_BREAK_POINT;
@@ -96,7 +96,13 @@ export const useGlobalStore = create<GlobalStore>((set) => {
       }),
 
     isTouchDevice: false,
-    resetIsTouchDevice: () => set({ isTouchDevice: getIsTouchDevice() }),
+    resetIsTouchDevice: () => {
+      const isTouchDevice = getIsTouchDevice();
+
+      set({ isTouchDevice });
+
+      return isTouchDevice;
+    },
 
     ...getMediaQuery(),
     resetMediaQuery: () => set(getMediaQuery()),

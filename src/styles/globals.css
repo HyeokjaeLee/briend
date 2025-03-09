@@ -17,6 +17,8 @@
 
   --backdrop-blur-xs: 1px;
 
+  --spacing-cdvh: var(--viewport-height);
+
   --shadow-lg-x:
     10px 0 15px -3px rgba(0, 0, 0, 0.03), -10px 0 15px -3px rgba(0, 0, 0, 0.03);
   --shadow-lg-left:
@@ -81,6 +83,8 @@
 }
 
 :root {
+  --viewport-height: 100dvh;
+
   /* 라이트 모드 테마 */
   --background: var(--color-white); /* oklch(0.984 0.003 247.858) → slate-50 */
   --foreground: var(
