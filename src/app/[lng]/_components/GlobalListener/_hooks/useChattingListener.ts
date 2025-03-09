@@ -28,6 +28,7 @@ const updateMessage = async (
       message,
       translatedMessage,
       timestamp: createdAt,
+      isMine,
       // 다른 필드는 유지
     });
   } else {
@@ -79,13 +80,13 @@ export const useChattingListener = () => {
 
       if (messageListSnapshot.exists()) {
         messageListSnapshot.forEach((snapshot) => {
-          promises.push(updateMessage(friend.id, snapshot, true));
+          promises.push(updateMessage(friend.id, snapshot, false));
         });
       }
 
       if (receiverMessageListSnapshot.exists()) {
         receiverMessageListSnapshot.forEach((snapshot) => {
-          promises.push(updateMessage(friend.id, snapshot, false));
+          promises.push(updateMessage(friend.id, snapshot, true));
         });
       }
 
