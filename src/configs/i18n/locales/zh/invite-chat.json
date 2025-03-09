@@ -1,0 +1,13 @@
+{
+  "ko": "韩语",
+  "en": "英语",
+  "ja": "日语",
+  "zh": "中文",
+  "th": "泰语",
+  "vi": "越南语",
+  "friend-language": "语言",
+  "friend-nickname": "昵称",
+  "friend-setting-message": "设置您朋友使用的语言，\n然后当您的朋友扫描二维码时，您可以使用翻译内容聊天。",
+  "invite-button": "邀请",
+  "nickname-max-length": "昵称必须是10个字符或更少"
+}

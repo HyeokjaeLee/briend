@@ -1,0 +1,13 @@
+{
+  "ko": "Tiếng Hàn",
+  "en": "Tiếng Anh",
+  "ja": "Tiếng Nhật",
+  "zh": "Tiếng Trung",
+  "th": "Tiếng Thái",
+  "vi": "Tiếng Việt",
+  "friend-language": "Ngôn ngữ",
+  "friend-nickname": "Biệt danh",
+  "friend-setting-message": "Đặt ngôn ngữ bạn của bạn sử dụng,\nsau đó khi bạn của bạn quét mã QR, bạn có thể trò chuyện với nội dung đã được dịch.",
+  "invite-button": "Mời",
+  "nickname-max-length": "Biệt danh phải có 10 ký tự trở xuống"
+}

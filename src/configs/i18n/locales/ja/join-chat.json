@@ -1,0 +1,10 @@
+{
+  "nickname-max-length": "ニックネームは20文字以下に設定してください",
+  "nickname-required": "ニックネームは空にできません",
+  "join-soon": "すぐにチャットに参加します！",
+  "chatting-invite": "チャットに招待されました！",
+  "friend-nickname": "友達に表示するニックネームを教えてください！",
+  "start-chatting-button": "チャットを開始する",
+  "nickname": "ニックネーム",
+  "start-chatting-toast-message": "友達と接続しました！"
+}

@@ -1,0 +1,19 @@
+{
+  "edit-profile": "Edit Profile",
+  "edit-invite-message": "Edit Invitation Message",
+  "logout": "Logout",
+  "empty-email": "Please link your Google account",
+  "logout-toast-message": "Logged out.",
+  "connected-account": "Disconnect",
+  "need-connect-account": "Connect",
+  "link-kakao": "Kakao account has been linked",
+  "link-naver": "Naver account has been linked",
+  "link-google": "Google account has been linked",
+  "unlink-kakao": "Kakao account has been unlinked",
+  "unlink-naver": "Naver account has been unlinked",
+  "unlink-google": "Google account has been unlinked",
+  "last-account": "At least one account must remain linked",
+  "link-confirm-title": "Information of the linked account will be deleted.",
+  "link-confirm-message": "If you have any necessary information or messages,\nplease save them elsewhere!",
+  "link-confirm-button": "Link"
+}

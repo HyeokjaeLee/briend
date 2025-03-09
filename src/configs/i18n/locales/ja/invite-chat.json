@@ -1,0 +1,13 @@
+{
+  "ko": "韓国語",
+  "en": "英語",
+  "ja": "日本語",
+  "zh": "中国語",
+  "th": "タイ語",
+  "vi": "ベトナム語",
+  "friend-language": "言語",
+  "friend-nickname": "ニックネーム",
+  "friend-setting-message": "友達が使用する言語を設定した後、\n友達がQRコードをスキャンすると翻訳されたコンテンツでチャットできます。",
+  "invite-button": "招待する",
+  "nickname-max-length": "ニックネームは10文字以下に設定してください"
+}

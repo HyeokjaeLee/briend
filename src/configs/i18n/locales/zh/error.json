@@ -1,0 +1,7 @@
+{
+  "unknown-error": "临时错误。\n请稍后再试。",
+  "expired-chat": "此聊天已过期。\n请重新生成邀请二维码。",
+  "not-allowed": "无效访问。",
+  "home-button-text": "返回首页",
+  "create-chat-button-text": "创建聊天"
+}

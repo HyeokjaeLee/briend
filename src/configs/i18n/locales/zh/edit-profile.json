@@ -1,0 +1,14 @@
+{
+  "my-nickname": "昵称",
+  "nickname-max-length": "昵称必须不超过20个字符",
+  "nickname-required": "昵称不能为空",
+  "friend-language": "语言",
+  "save-profile": "个人资料已更改！",
+  "error-save-profile": "更改个人资料失败！",
+  "save": "保存",
+  "back-notice-title": "退出个人资料编辑",
+  "back-notice-message": "如果不保存，更改将不会被应用。",
+  "profile-image-change": "更改头像",
+  "select-on-gallery": "从相册选择",
+  "use-default-image": "使用默认图像"
+}

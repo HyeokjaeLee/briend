@@ -1,7 +1,6 @@
 import { FaGithub } from 'react-icons/fa';
-import { RiMobileDownloadFill } from 'react-icons/ri';
 
-import { Button, DotLottie } from '@/components';
+import { Button, CustomLink, DotLottie } from '@/components';
 import { getTranslation } from '@/configs/i18n/server';
 import type { LANGUAGE } from '@/constants';
 
@@ -22,17 +21,16 @@ export const RightSide = async ({ lng }: RightSideProps) => {
           </h2>
           <p className="text-muted-foreground mx-auto mb-8 max-w-[600px]">
             {t('start-chat-description')}
-            <br />
-            {t('download-app')}
           </p>
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <Button className="gap-2">
-              <FaGithub className="size-7" />
-              Github
-            </Button>
-            <Button variant="outline" className="gap-2">
-              <RiMobileDownloadFill className="size-7" />
-              Download
+            <Button className="gap-2" asChild>
+              <CustomLink
+                href="https://github.com/HyeokjaeLee/briend"
+                target="_blank"
+              >
+                <FaGithub className="size-7" />
+                Github
+              </CustomLink>
             </Button>
           </div>
         </div>

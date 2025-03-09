@@ -1,0 +1,7 @@
+{
+  "expired-toast-message": "QR code has expired",
+  "start-chatting-toast-message": "Connected with friend!",
+  "notice-message": "Show the QR code to the other person.\nThis page is rotated to match the other person's direction",
+  "warning-message": "Do not leave this page before your friend joins the chat!",
+  "share-button-text": "Share"
+}

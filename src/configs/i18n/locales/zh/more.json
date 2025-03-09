@@ -1,0 +1,19 @@
+{
+  "edit-profile": "编辑个人资料",
+  "edit-invite-message": "编辑邀请消息",
+  "logout": "退出登录",
+  "empty-email": "请链接您的Google账户",
+  "logout-toast-message": "已退出登录。",
+  "connected-account": "取消链接",
+  "need-connect-account": "链接",
+  "link-kakao": "Kakao账户已链接",
+  "link-naver": "Naver账户已链接",
+  "link-google": "Google账户已链接",
+  "unlink-kakao": "Kakao账户已取消链接",
+  "unlink-naver": "Naver账户已取消链接",
+  "unlink-google": "Google账户已取消链接",
+  "last-account": "至少需要保持一个账户的链接",
+  "link-confirm-title": "链接账户的信息将被删除。",
+  "link-confirm-message": "如果您有任何必要的信息或消息，\n请保存在其他地方！",
+  "link-confirm-button": "链接"
+}

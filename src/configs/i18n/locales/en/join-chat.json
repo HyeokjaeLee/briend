@@ -1,0 +1,10 @@
+{
+  "nickname-max-length": "Nickname must be 20 characters or less",
+  "nickname-required": "Nickname cannot be empty",
+  "join-soon": "Joining the chat soon!",
+  "chatting-invite": "You've been invited to chat!",
+  "friend-nickname": "Please tell us the nickname to display to your friend!",
+  "start-chatting-button": "Start Chatting",
+  "nickname": "Nickname",
+  "start-chatting-toast-message": "Connected with friend!"
+}

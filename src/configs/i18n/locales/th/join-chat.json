@@ -1,0 +1,10 @@
+{
+  "nickname-max-length": "ชื่อเล่นต้องมีความยาวไม่เกิน 20 ตัวอักษร",
+  "nickname-required": "ชื่อเล่นไม่สามารถเว้นว่างได้",
+  "join-soon": "กำลังจะเข้าร่วมแชทเร็วๆ นี้!",
+  "chatting-invite": "คุณได้รับเชิญให้แชท!",
+  "friend-nickname": "โปรดบอกชื่อเล่นที่จะแสดงให้เพื่อนของคุณ!",
+  "start-chatting-button": "เริ่มการสนทนา",
+  "nickname": "ชื่อเล่น",
+  "start-chatting-toast-message": "เชื่อมต่อกับเพื่อนแล้ว!"
+}

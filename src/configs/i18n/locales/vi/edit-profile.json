@@ -1,0 +1,14 @@
+{
+  "my-nickname": "Biệt danh",
+  "nickname-max-length": "Biệt danh phải có 20 ký tự trở xuống",
+  "nickname-required": "Biệt danh không thể để trống",
+  "friend-language": "Ngôn ngữ",
+  "save-profile": "Hồ sơ đã được thay đổi!",
+  "error-save-profile": "Không thể thay đổi hồ sơ!",
+  "save": "Lưu",
+  "back-notice-title": "Thoát chỉnh sửa hồ sơ",
+  "back-notice-message": "Các thay đổi sẽ không được áp dụng\nnếu bạn không lưu.",
+  "profile-image-change": "Thay đổi ảnh hồ sơ",
+  "select-on-gallery": "Chọn từ thư viện",
+  "use-default-image": "Sử dụng hình ảnh mặc định"
+}

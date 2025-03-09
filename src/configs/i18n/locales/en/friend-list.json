@@ -1,0 +1,22 @@
+{
+  "edit-profile": "Edit Profile",
+  "limited-friend-list": "Your friend list is full!\nPlease disconnect from friends you don't contact to add new ones",
+  "login-rending1": "It only takes 30 seconds!",
+  "login-rending2": "Login and invite new friends!",
+  "expired-badge": "Expired",
+  "online-badge": "Online",
+  "offline-badge": "Offline",
+  "chatting-button": "Chat",
+  "unlinked-chatting-button": "View Chat",
+  "unsubscribed-user": "Unsubscribed User",
+  "delete-friend-message": "If you delete a friend,\nthe conversation will also be deleted!",
+  "delete-friend-sub-message": "If you just disconnect,\nthe conversation history will be preserved.",
+  "delete-friend-sub-message2": "You won't be able to chat again until\nyou receive an invitation or invite them.",
+  "empty-friend-list": "You don't have any friends yet",
+  "add-friend-button": "Invite",
+  "request-link-button": "Request Connection",
+  "delete-button": "Delete",
+  "unlink-button": "Disconnect",
+  "delete-friend-toast-message": "Friend deleted.",
+  "unlink-friend-toast-message": "Disconnected from friend."
+}

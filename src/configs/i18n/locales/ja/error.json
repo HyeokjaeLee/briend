@@ -1,0 +1,7 @@
+{
+  "unknown-error": "一時的なエラーです。\n後ほど再度お試しください。",
+  "expired-chat": "このチャットは期限切れです。\n招待QRコードを再生成してください。",
+  "not-allowed": "不正なアクセスです。",
+  "home-button-text": "ホームに戻る",
+  "create-chat-button-text": "チャットを作成する"
+}

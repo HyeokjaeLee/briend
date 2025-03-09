@@ -1,0 +1,7 @@
+{
+  "expired-toast-message": "QRコードが期限切れになりました",
+  "start-chatting-toast-message": "友達と接続しました！",
+  "notice-message": "QRコードを相手に見せてください。\nこのページは相手の方向に合わせて回転しています",
+  "warning-message": "友達がチャットに参加する前にページを離れないでください！",
+  "share-button-text": "共有する"
+}
