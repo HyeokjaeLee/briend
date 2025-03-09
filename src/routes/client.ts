@@ -34,6 +34,9 @@ export const ROUTES = {
   TEST: createRoute('/test', {
     topHeaderType: 'back',
   }),
+  INSTALL_PWA: createRoute('/install-pwa', {
+    topHeaderType: 'back',
+  }),
 };
 
 export type RouteObject = (typeof ROUTES)[keyof typeof ROUTES];

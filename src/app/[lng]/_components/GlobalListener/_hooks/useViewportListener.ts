@@ -4,6 +4,8 @@ import { useShallow } from 'zustand/shallow';
 
 import { useGlobalStore } from '@/stores';
 
+const CDVH_PROPERTY = '--viewport-height';
+
 export const useViewportListener = () => {
   const [resetMediaQuery, resetIsTouchDevice] = useGlobalStore(
     useShallow((state) => [state.resetMediaQuery, state.resetIsTouchDevice]),
@@ -15,14 +17,17 @@ export const useViewportListener = () => {
 
       const isTouchDevice = resetIsTouchDevice();
 
-      if (!isTouchDevice) return;
+      const { style } = document.documentElement;
 
-      const height = window.visualViewport?.height || window.innerHeight;
+      const prevHeight = style.getPropertyValue(CDVH_PROPERTY);
 
-      document.documentElement.style.setProperty(
-        '--viewport-height',
-        `${height}px`,
-      );
+      const height = isTouchDevice
+        ? `${window.visualViewport?.height || window.innerHeight}px`
+        : '100dvh';
+
+      if (prevHeight === height) return;
+
+      document.documentElement.style.setProperty(CDVH_PROPERTY, height);
     };
 
     const debouncedResizeHandler = throttle(resizeHandler, 33);
