@@ -90,18 +90,18 @@ export default async function RootLayout({
 
   return (
     <html
-      className={cn(pretendard.className, pretendard.variable, 'h-dvh w-full')}
+      className={cn(pretendard.className, pretendard.variable, 'size-full')}
       dir={dir(lng)}
       lang={lng}
     >
-      <body className="flex h-dvh w-full overflow-hidden">
+      <body className="flex size-full overflow-hidden">
         <Suspense>
           <RightSide lng={lng} />
           <GlobalLoading />
           <GlobalProvider>
             <GlobalListener />
             <MountAction />
-            <div className="flex-2 relative flex size-full w-fit max-w-screen-xl">
+            <div className="flex-2 max-h-cdvh relative flex h-full w-fit max-w-screen-xl">
               <CenterContainer>
                 <GlobalHeader />
                 <ToastProvider />

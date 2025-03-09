@@ -12,7 +12,17 @@ export const useViewportListener = () => {
   useLayoutEffect(() => {
     const resizeHandler = () => {
       resetMediaQuery();
-      resetIsTouchDevice();
+
+      const isTouchDevice = resetIsTouchDevice();
+
+      if (!isTouchDevice) return;
+
+      const height = window.visualViewport?.height || window.innerHeight;
+
+      document.documentElement.style.setProperty(
+        '--viewport-height',
+        `${height}px`,
+      );
     };
 
     const debouncedResizeHandler = throttle(resizeHandler, 33);
