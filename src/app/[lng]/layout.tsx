@@ -63,7 +63,7 @@ export const generateMetadata = async ({ params }: PropsWithParams) => {
     alternates: {
       languages: alternatesLanguages,
     },
-    manifest: `/manifest/${lng}.json`,
+    manifest: `/${lng}/manifest.json`,
     category: 'social',
   } satisfies Metadata;
 };
