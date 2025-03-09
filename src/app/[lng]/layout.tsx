@@ -7,7 +7,8 @@ import { type ReactElement, Suspense } from 'react';
 
 import { PageLoadingTemplate } from '@/components';
 import { pretendard } from '@/configs/font';
-import { LANGUAGE } from '@/constants';
+import { getTranslation } from '@/configs/i18n/server';
+import type { LANGUAGE } from '@/constants';
 import { cn } from '@/utils';
 
 import { languages } from '../../configs/i18n/settings';
@@ -33,6 +34,7 @@ interface PropsWithParams {
 export const generateMetadata = async ({ params }: PropsWithParams) => {
   const { lng } = await params;
   const headersList = await headers();
+  const { t } = await getTranslation('meta', lng);
 
   const pathname = headersList.get('pure-path') || '';
 
@@ -44,30 +46,24 @@ export const generateMetadata = async ({ params }: PropsWithParams) => {
     {} as Record<LANGUAGE, string>,
   );
 
+  const keywords = new Array(9).fill(null).map((_, index) => {
+    return t(`root.keywords.${index}`);
+  });
+
   return {
-    title: `Briend - ${
+    title: `Briend - ${t('root.title')}`,
+    authors: [
       {
-        [LANGUAGE.KOREAN]: '간편 번역 채팅',
-        [LANGUAGE.ENGLISH]: 'Simple Translation Chat',
-        [LANGUAGE.JAPANESE]: '簡単翻訳チャット',
-        [LANGUAGE.CHINESE]: '简单翻译聊天',
-        [LANGUAGE.VIETNAMESE]: 'Chat dịch đơn giản',
-        [LANGUAGE.THAI]: 'การสนทนาของการแปลงง่าย',
-      }[lng]
-    }`,
-    description: {
-      [LANGUAGE.KOREAN]:
-        '스캔한번으로 새로만난 사람과 같은 언어로 대화해보세요.',
-      [LANGUAGE.ENGLISH]: 'Chat with new people in the same language as you.',
-      [LANGUAGE.JAPANESE]: '新しい人と同じ言語で話しましょう。',
-      [LANGUAGE.CHINESE]: '与新认识的人用同一种语言聊天。',
-      [LANGUAGE.VIETNAMESE]:
-        'Chat với người mới kết nối bằng cùng một ngôn ngữ.',
-      [LANGUAGE.THAI]: 'สนทนากับคนใหม่โดยใช้ภาษาเดียวกัน',
-    }[lng],
+        name: 'Hyeokjae Lee',
+        url: 'https://hyeokjaelee.github.io',
+      },
+    ],
+    keywords,
+    description: t('root.description'),
     alternates: {
       languages: alternatesLanguages,
     },
+    manifest: `/${lng}/manifest.json`,
   } satisfies Metadata;
 };
 
