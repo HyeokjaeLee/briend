@@ -10,7 +10,7 @@ import 'dayjs/locale/vi';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { SessionProvider } from 'next-auth/react';
-import { type PropsWithChildren, use } from 'react';
+import { type PropsWithChildren, use, useEffect } from 'react';
 
 import { firebase } from '@/configs/firebase';
 import { persistOptions, queryClient } from '@/configs/query-client';
@@ -20,6 +20,26 @@ import { createSuspendedComponent } from '@/utils/client';
 export const GlobalProvider = createSuspendedComponent(
   ({ children }: PropsWithChildren) => {
     use(firebase);
+
+    useEffect(() => {
+      if (
+        typeof window !== 'undefined' &&
+        'serviceWorker' in navigator &&
+        window.location.protocol === 'https:'
+      ) {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.info(
+              'Service Worker registered with scope:',
+              registration.scope,
+            );
+          })
+          .catch((error) => {
+            console.error('Service Worker registration failed:', error);
+          });
+      }
+    }, []);
 
     return (
       <SessionProvider>
