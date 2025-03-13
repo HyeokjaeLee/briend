@@ -55,7 +55,9 @@ export const LoginButton = ({
     >
       <div
         className={
-          fullSize ? 'flex w-full max-w-44 items-center gap-2' : 'size-fit'
+          fullSize
+            ? 'flex w-full max-w-44 items-center gap-2 text-nowrap'
+            : 'size-fit'
         }
       >
         <Image
