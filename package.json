@@ -6,13 +6,15 @@
   ],
   "scripts": {
     "dev:web": "bun run --cwd packages/web dev",
-    "dev:app": "bun run --cwd packages/web dev & bun run --cwd packages/container start",
-    "android:container": "bun run --cwd packages/container android",
-    "ios:container": "bun run --cwd packages/container ios",
-    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && bun install"
+    "dev:app": "bun run --cwd packages/container start",
+    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && bun install",
+    "update:env": "bun run --cwd packages/web update:env",
+    "kill:ports": "kill-port 3000 3001 3002 8081 || true"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "concurrently": "^9.1.2",
+    "kill-port": "^2.0.1"
   },
   "peerDependencies": {
     "typescript": "^5.8.2"
