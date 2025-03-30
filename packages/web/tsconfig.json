@@ -25,6 +25,7 @@
       "@api/*": ["./src/app/api/*"]
     }
   },
+  "types": ["bun-types"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

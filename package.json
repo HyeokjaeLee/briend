@@ -1,18 +1,15 @@
 {
   "name": "briend",
   "version": "1.0.0",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
     "dev:web": "bun run --cwd packages/web dev",
     "dev:app": "bun run --cwd packages/container start",
+    "install": "bun install --cwd packages/web && bun install --cwd packages/container",
     "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && bun install",
     "update:env": "bun run --cwd packages/web update:env",
     "kill:ports": "kill-port 3000 3001 3002 8081 || true"
   },
   "devDependencies": {
-    "@types/bun": "latest",
     "concurrently": "^9.1.2",
     "kill-port": "^2.0.1"
   },
