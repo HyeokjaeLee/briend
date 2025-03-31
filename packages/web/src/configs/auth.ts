@@ -28,7 +28,10 @@ export const {
   unstable_update: update,
 } = NextAuth({
   providers: [
-    Google,
+    Google({
+      clientId: PRIVATE_ENV.AUTH_GOOGLE_ID,
+      clientSecret: PRIVATE_ENV.AUTH_GOOGLE_SECRET,
+    }),
     Naver({
       clientId: PRIVATE_ENV.AUTH_NAVER_CLIENT_ID,
       clientSecret: PRIVATE_ENV.AUTH_NAVER_SECRET,

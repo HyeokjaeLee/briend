@@ -4,6 +4,7 @@ import { getAuth } from 'firebase/auth';
 import Image from 'next/image';
 
 import { COOKIES, LOGIN_PROVIDERS } from '@/constants';
+import { useCustomRouter } from '@/hooks';
 import { useGlobalStore } from '@/stores';
 import { cn, customCookies, CustomError } from '@/utils';
 
@@ -21,6 +22,8 @@ export const LoginButton = ({
   name,
 }: LoginButtonProps) => {
   const setLoading = useGlobalStore((state) => state.setGlobalLoading);
+
+  const customRouter = useCustomRouter();
 
   return (
     <button
@@ -51,6 +54,8 @@ export const LoginButton = ({
         }
 
         customCookies.set(COOKIES.ANONYMOUS_ID, currentUser.uid);
+
+        location.href = '/api/auth/external';
       }}
     >
       <div

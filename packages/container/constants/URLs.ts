@@ -23,6 +23,9 @@ const DEV_WEB_PORT = "3000"; // Next.js 기본 포트
 // 배포된 URL을 기본값으로 사용하여 웹뷰가 항상 내용을 표시하도록 함
 const FALLBACK_URL = "https://briend.vercel.app";
 
+// 앱 스킴 상수
+export const APP_SCHEME = "briend";
+
 // URL 상수
 export const URLS = {
   // 웹앱 URL - 개발 환경에서 로컬 URL에 접근할 수 없으면 배포된 URL을 사용
@@ -37,7 +40,11 @@ export const URL_PATTERNS = {
   EXTERNAL: [
     "https://accounts.google.com", // 구글 로그인
     "https://appleid.apple.com", // 애플 로그인
+    "http://localhost:3000/api/auth/external",
   ],
+
+  // 앱 스킴 처리
+  APP_SCHEME: [`${APP_SCHEME}://`],
 };
 
 // 개발 환경에서의 URL이 잘못되었을 때 쉽게 문제를 파악할 수 있도록 디버그 정보 추가
