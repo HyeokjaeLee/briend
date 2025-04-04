@@ -228,7 +228,7 @@ export default function WebViewContainer() {
             if (DEBUG) console.log("웹뷰 로딩 시작:", webViewUrl);
           }}
           onLoadEnd={() => {
-            //setIsLoading(false);
+            setIsLoading(false);
             // 웹뷰 로딩 완료 시 앱 상태 업데이트
             setIsWebViewLoaded(true);
             if (DEBUG) console.log("웹뷰 로딩 완료");
