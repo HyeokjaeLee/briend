@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "Briend",
+    "slug": "briend",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "briend",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.hyeokjae.briend",
+      "buildNumber": "1"
+    },
+    "android": {
+      "package": "com.hyeokjae.briend",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "2fc6358b-30f6-4735-b99a-2592ff1b34dd"
+      }
+    },
+    "owner": "hyeokjae",
+    "description": "Briend web app in a native container",
+    "githubUrl": "https://github.com/HyeokjaeLee/briend"
+  }
+}
