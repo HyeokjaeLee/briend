@@ -2,14 +2,14 @@
   "name": "briend",
   "version": "1.0.0",
   "scripts": {
-    "dev:web": "turbo run --cwd packages/web dev",
+    "dev:web": "bun run --cwd packages/web dev",
     "dev:app": "bun run --cwd packages/container start",
     "install": "bun install --cwd packages/web && bun install --cwd packages/container",
-    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules",
+    "clean": "rm -rf node_modules & rm -rf packages/*/node_modules & rm -rf .turbo & rm -rf packages/*/.turbo",
     "update:env": "bun run --cwd packages/web update:env",
     "kill:ports": "kill-port 3000 3001 3002 8081 || true",
     "dev": "turbo run dev",
-    "build": "turbo run build",
+    "build:web": "turbo run build --cwd ./packages/web",
     "lint": "turbo run lint"
   },
   "devDependencies": {

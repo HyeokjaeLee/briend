@@ -1,12 +1,23 @@
 {
   "$schema": "https://turborepo.org/schema.json",
+  "globalDependencies": [".env*"],
+  "globalEnv": ["NODE_ENV", "NEXT_PUBLIC_*", "EXPO_PUBLIC_*"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**"]
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**",
+        ".expo/**",
+        ".expo-shared/**",
+        "web-build/**"
+      ],
+      "env": ["NEXT_PUBLIC_*", "VERCEL_*", "EXPO_PUBLIC_*"]
     },
-    "dev:web": {
-      "cache": false
+    "dev": {
+      "cache": false,
+      "persistent": true
     },
     "lint": {
       "outputs": []
