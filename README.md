@@ -2,6 +2,8 @@
 
 # 🚧 재미있어 보이는 기술 스택들로 재개발중!
 
+- expo react 19 버전 대기중
+
 ![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=Bun&logoColor=white) ![Next.js v15](https://img.shields.io/badge/Next.js%20v15-000000?style=flat-square&logo=Next.js&logoColor=white) ![ShadcnUI](https://img.shields.io/badge/ShadcnUI-000000?style=flat-square&logo=ShadcnUI&logoColor=white) ![tRPC](https://img.shields.io/badge/tRPC-2596BE?style=flat-square&logo=tRPC&logoColor=white) ![Tailwind v4](https://img.shields.io/badge/Tailwind%20v4-06B6D4?style=flat-square&logo=TailwindCSS&logoColor=white) ![Firebase](https://img.shields.io/badge/Firebase-DD2C00?style=flat-square&logo=Firebase&logoColor=white) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=TypeScript&logoColor=white) ![Zustand](https://img.shields.io/badge/Zustand-423E39?style=flat-square&logo=React&logoColor=white) ![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=PWA&logoColor=white)
 
 - [한국어](https://briend.vercel.app/ko)
