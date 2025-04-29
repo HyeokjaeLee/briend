@@ -18,14 +18,12 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    turbo: {
-      rules: {
-        // Turbopack에서 SVG 처리를 위한 설정
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  turbopack: {
+    rules: {
+      // Turbopack에서 SVG 처리를 위한 설정
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
