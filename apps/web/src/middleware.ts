@@ -22,8 +22,6 @@ export const middleware = auth(async (req: RequestWithAuth) => {
 
   const isAuthenticated = !!auth?.user.id;
 
-  console.log(isAuthenticated);
-
   switch (accessSlug) {
     case 'private':
       if (!isAuthenticated) {
