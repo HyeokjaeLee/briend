@@ -17,6 +17,7 @@ import { useUserData } from '@/hooks';
 import { ROUTES } from '@/routes/client';
 import { useGlobalStore } from '@/stores';
 import { cn, findRoute } from '@/utils';
+import { isPrivateRoute } from '@/utils/isPrivateRoute';
 
 interface RootNavProps {
   pathname: string;
@@ -76,11 +77,19 @@ export const RootNav = ({ pathname }: RootNavProps) => {
           ({ icon, fillIcon, routeName, translationKey }, index) => {
             const route = ROUTES[routeName];
 
+            if (typeof route.pathname !== 'string') return null;
+
             const isActive = activeIndex === index;
 
             const Icon = isActive ? fillIcon : icon;
 
-            return typeof route.pathname === 'string' ? (
+            const href = isLogin
+              ? route.pathname
+              : isPrivateRoute(route.pathname)
+                ? ROUTES.LOGIN.pathname
+                : route.pathname;
+
+            return (
               <li key={route.index} className="flex-1">
                 <CustomLink
                   className={cn(
@@ -93,8 +102,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                       ? 'text-primary font-bold'
                       : 'text-primary/30 active:text-primary active:font-bold',
                   )}
-                  href={route.pathname}
-                  //! 로그인 하지 않았을때 로그인 창으로 미들웨어가 리다이렉팅함, 뒤로 가기 시 앱 밖으로 나가는것을 방지
+                  href={href}
                   replace={isLogin}
                   withAnimation={
                     isLogin
@@ -118,7 +126,7 @@ export const RootNav = ({ pathname }: RootNavProps) => {
                   {t(translationKey)}
                 </CustomLink>
               </li>
-            ) : null;
+            );
           },
         )}
       </ul>

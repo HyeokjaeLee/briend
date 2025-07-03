@@ -3,18 +3,18 @@
   "version": "1.0.0",
   "scripts": {
     "dev:web": "turbo run dev --filter=briend-web",
-    "dev:app": "bun run --cwd packages/container start",
-    "clean": "rm -rf node_modules & rm -rf packages/*/node_modules & rm -rf .turbo & rm -rf packages/*/.turbo",
-    "update:env": "bun run --cwd packages/web update:env",
+    "dev:app": "bun run --cwd apps/container start",
+    "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo",
+    "update:env": "bun run --cwd apps/web update:env",
     "kill:ports": "kill-port 3000 3001 3002 8081 || true",
     "dev": "turbo run dev",
-    "build:web": "turbo run build --cwd ./packages/web",
+    "build:web": "turbo run build --cwd ./apps/web",
     "lint": "turbo run lint"
   },
   "devDependencies": {
-    "concurrently": "^9.1.2",
+    "concurrently": "^9.2.0",
     "kill-port": "^2.0.1",
-    "turbo": "^2.5.3"
+    "turbo": "^2.5.4"
   },
   "peerDependencies": {
     "typescript": "^5.8.3"

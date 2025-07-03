@@ -5,7 +5,6 @@ export {
   DEFAULT_COOKIES_OPTIONS,
 } from './cookies';
 export {
-  HEADERS,
   IS_CLIENT,
   LOGIN_PROVIDERS,
   PATH,

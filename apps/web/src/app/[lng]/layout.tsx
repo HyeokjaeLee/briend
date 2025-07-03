@@ -2,7 +2,6 @@ import '@/styles/globals.css';
 
 import { dir } from 'i18next';
 import type { Metadata, Viewport } from 'next';
-import { headers } from 'next/headers';
 import { type ReactElement, Suspense } from 'react';
 
 import { PageLoadingTemplate } from '@/components';
@@ -33,18 +32,7 @@ interface PropsWithParams {
 
 export const generateMetadata = async ({ params }: PropsWithParams) => {
   const { lng } = await params;
-  const headersList = await headers();
   const { t } = await getTranslation('meta', lng);
-
-  const pathname = headersList.get('pure-path') || '';
-
-  const alternatesLanguages = languages.reduce(
-    (acc, lang) => ({
-      ...acc,
-      [lang]: `/${lang}${pathname}`,
-    }),
-    {} as Record<LANGUAGE, string>,
-  );
 
   const keywords = new Array(9).fill(null).map((_, index) => {
     return t(`root.keywords.${index}`);
@@ -60,9 +48,6 @@ export const generateMetadata = async ({ params }: PropsWithParams) => {
     ],
     keywords,
     description: t('root.description'),
-    alternates: {
-      languages: alternatesLanguages,
-    },
     manifest: `/manifest/${lng}.json`,
     category: 'social',
   } satisfies Metadata;

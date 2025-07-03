@@ -1,7 +1,9 @@
+import { LANGUAGE } from '@/constants';
 import { ROUTES } from '@/routes/client';
 
 import { assert } from './assert';
 import { CustomError } from './customError';
+import { isEnumValue } from './isEnumValue';
 
 export const findRoute = (pathname: string) => {
   const allRoutes = { ...ROUTES };
@@ -15,8 +17,11 @@ export const findRoute = (pathname: string) => {
 
   const splittedCurrentPathname = pathname.split('/');
 
-  //! i18n을 위한 dynamic route 정보 제거
-  splittedCurrentPathname.splice(1, 1);
+  //! i18n 언어 경로가 있다면 제거 (미들웨어 리다이렉트는 없지만 findRoute에서는 처리 필요)
+  const secondSegment = splittedCurrentPathname[1];
+  if (isEnumValue(LANGUAGE, secondSegment)) {
+    splittedCurrentPathname.splice(1, 1);
+  }
 
   for (const key in allRoutes) {
     const routeName = key as keyof typeof allRoutes;

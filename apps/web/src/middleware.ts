@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server';
 
 import { auth } from './configs/auth';
-import { fallbackLng, languages } from './configs/i18n/settings';
-import { COOKIES, HEADERS, LANGUAGE } from './constants';
+import { COOKIES } from './constants';
 import { ROUTES } from './routes/client';
 import type { RequestWithAuth } from './types/next-auth';
-import { isEnumValue } from './utils';
 
 export const config = {
   matcher: [
@@ -19,62 +17,12 @@ export const middleware = auth(async (req: RequestWithAuth) => {
   const originalUrl = req.nextUrl.href;
   const responseCallbackList: ((res: NextResponse) => void)[] = [];
 
-  //* 🌍 i18n
-  let lng: string | undefined;
-  let hasLngPath = false;
-  const i18nCookie = cookies.get(COOKIES.I18N)?.value;
-
-  for (const language of languages) {
-    const langPath = `/${language}`;
-
-    if (
-      nextUrl.pathname.startsWith(langPath + '/') ||
-      nextUrl.pathname === langPath
-    ) {
-      lng = language;
-      hasLngPath = true;
-
-      break;
-    }
-  }
-
-  if (!lng) {
-    const acceptLanguage = req.headers.get('Accept-Language');
-
-    const i18nFromAcceptLanguage = acceptLanguage?.split(',')[0];
-
-    lng = auth?.user.language || i18nCookie || i18nFromAcceptLanguage;
-
-    if (!isEnumValue(LANGUAGE, lng)) {
-      lng = fallbackLng;
-    }
-  }
-
-  if (!hasLngPath) {
-    nextUrl.pathname = `/${lng}${nextUrl.pathname}`;
-    hasLngPath = true;
-  }
-
-  if (hasLngPath) {
-    const purePath = nextUrl.pathname.replace(`/${lng}`, '');
-
-    responseCallbackList.push((res) => {
-      res.headers.set(HEADERS.PURE_PATH, purePath);
-    });
-  }
-
-  if (lng !== i18nCookie) {
-    responseCallbackList.push((res) => {
-      res.cookies.set(COOKIES.I18N, lng, {
-        httpOnly: true,
-      });
-    });
-  }
-
   //* 🚦 access controller
-  const accessSlug = nextUrl.pathname.split('/')[2];
+  const accessSlug = nextUrl.pathname.split('/')[1];
 
   const isAuthenticated = !!auth?.user.id;
+
+  console.log(isAuthenticated);
 
   switch (accessSlug) {
     case 'private':
