@@ -1,7 +1,7 @@
 import { createRoute } from '@/utils';
 
 export const ROUTES = {
-  FRIEND_LIST: createRoute('/', {
+  FRIEND_LIST: createRoute('/friends', {
     bottomNavType: 'root',
     topHeaderType: 'root',
   }),

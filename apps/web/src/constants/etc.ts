@@ -10,9 +10,7 @@ export enum QUERY_KEYS {}
 
 export const PEER_PREFIX = 'briend_';
 
-export enum HEADERS {
-  PURE_PATH = 'pure-path',
-}
+
 
 export enum PATH {
   TRPC = '/api/trpc',
