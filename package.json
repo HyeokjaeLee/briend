@@ -3,12 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "dev:web": "turbo run dev --filter=briend-web",
-    "dev:app": "bun run --cwd apps/container start",
-    "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo",
+    "dev:native": "bun run --cwd apps/native start",
+    "dev:socket": "turbo run dev --filter=briend-socket-server",
+    "dev:common": "turbo run dev --filter=@briend/common",
+    "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf packages/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo & rm -rf packages/*/.turbo",
     "update:env": "bun run --cwd apps/web update:env",
-    "kill:ports": "kill-port 3000 3001 3002 8081 || true",
+    "kill:ports": "kill-port 3000 3001 3002 3030 8081 || true",
     "dev": "turbo run dev",
-    "build:web": "turbo run build --cwd ./apps/web",
+    "build": "turbo run build",
+    "build:common": "turbo run build --filter=@briend/common",
+    "build:web": "turbo run build --filter=briend-web",
+    "build:socket": "turbo run build --filter=briend-socket-server",
     "lint": "turbo run lint"
   },
   "devDependencies": {
@@ -20,7 +25,20 @@
     "typescript": "^5.8.3"
   },
   "packageManager": "bun@1.2.10",
-  "workspaces": [
-    "apps/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/react",
+      "**/react-dom", 
+      "**/next",
+      "**/expo",
+      "**/react-native",
+      "**/@types/*",
+      "**/typescript",
+      "**/eslint*"
+    ]
+  }
 }

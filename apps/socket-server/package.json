@@ -1,0 +1,19 @@
+{
+  "name": "briend-socket-server",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "build": "bun build src/index.ts --target=bun --outdir=dist",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@briend/common": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-types": "latest"
+  },
+  "private": true
+}
