@@ -7,12 +7,23 @@
   },
   "scripts": {
     "predev": "bun update:env && bun --cwd ../../packages/config run db:types",
-    "dev": "next dev --turbo",
-    "build": "next build",
-    "start": "next start",
+    "dev": "doppler run --config development -- next dev --turbo",
+    "dev:local": "next dev --turbo",
+    "dev:prod": "doppler run --config production -- next dev --turbo",
+    "build": "doppler run --config development -- next build",
+    "build:prod": "doppler run --config production -- next build",
+    "start": "doppler run -- next start",
     "lint": "tsc --noEmit && next lint --fix",
     "update:env": "vercel env pull",
-    "gen:types": "bun --cwd ../../packages/config run db:types"
+    "gen:types": "bun --cwd ../../packages/config run db:types",
+    "doppler:setup": "doppler setup --project briend --config dev",
+    "doppler:login": "doppler login",
+    "doppler:secrets": "doppler secrets --config dev",
+    "doppler:upload": "doppler secrets upload .env.development",
+    "doppler:download": "doppler secrets download --no-file --format env > .env.local",
+    "env:push": "doppler secrets upload .env.development --config dev",
+    "env:pull": "doppler secrets download --no-file --format env --config dev > .env.local",
+    "env:sync": "bun run env:push && bun run env:pull"
   },
   "dependencies": {
     "@briend/common": "workspace:*",
