@@ -8,6 +8,7 @@ import { LANGUAGE } from '@/constants';
 import { COOKIES } from '@/constants/cookies';
 import { LOGIN_PROVIDERS } from '@/constants/etc';
 import { PRIVATE_ENV } from '@/constants/private-env';
+import { createClient } from '@/database/supabase/server';
 import { API_ROUTES } from '@/routes/api';
 import type * as JwtPayload from '@/types/jwt';
 import { assert, assertEnum, customCookies } from '@/utils';
@@ -71,6 +72,44 @@ export const {
 
       //* 단순 세션 연장
       if (!user) return token;
+
+      // Supabase 연동 - 사용자 정보 동기화
+      try {
+        const supabase = await createClient();
+        
+        // Supabase에 사용자 정보 저장/업데이트
+        const userData = {
+          id: user.id || token.sub || '',
+          email: user.email || '',
+          username: user.name || 'Anonymous',
+          avatar: user.image || null,
+        };
+
+        const { error: dbError } = await supabase
+          .from('users')
+          .upsert(userData, { onConflict: 'id' });
+
+        if (dbError) {
+          console.error('Supabase user sync error:', dbError);
+        }
+
+        // provider_accounts 테이블에 OAuth 정보 저장
+        if (account) {
+          const { error: providerError } = await supabase
+            .from('provider_accounts')
+            .upsert({
+              user_id: userData.id,
+              provider: account.provider,
+              provider_account_id: account.providerAccountId || '',
+            }, { onConflict: 'provider,provider_account_id' });
+
+          if (providerError) {
+            console.error('Supabase provider sync error:', providerError);
+          }
+        }
+      } catch (error) {
+        console.error('Supabase sync error:', error);
+      }
 
       const linkBaseAccountToken = serverCookies.get(
         COOKIES.LINK_BASE_ACCOUNT_TOKEN,

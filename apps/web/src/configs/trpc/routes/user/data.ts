@@ -1,6 +1,4 @@
-import { adminAuth, firestore } from '@/database/firebase/server';
-import type { UserInfo } from '@/database/firebase/type';
-import { COLLECTIONS } from '@/database/firebase/type';
+import { createClient } from '@/database/supabase/server';
 import type { UserSession } from '@/types/next-auth';
 
 import { privateProcedure } from '../../settings';
@@ -12,18 +10,31 @@ export const data = privateProcedure.mutation(
     },
   }) => {
     const userId = user.id;
+    const supabase = await createClient();
 
-    const userAuth = await adminAuth.getUser(userId);
+    // Get user from Supabase Auth
+    const { data: authUser, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !authUser.user) {
+      throw new Error('User not authenticated');
+    }
 
-    const usersRef = firestore.collection(COLLECTIONS.USERS);
+    // Get additional user data from users table
+    const { data: userData, error: userError } = await supabase
+      .from('users')
+      .select('*')
+      .eq('id', userId)
+      .single();
 
-    const userData = (await usersRef.doc(userId).get()).data() as UserInfo;
+    if (userError && userError.code !== 'PGRST116') { // PGRST116 = no rows returned
+      throw new Error('Failed to fetch user data');
+    }
 
     return {
-      id: userAuth.uid,
-      name: userAuth.displayName,
-      profileImage: userAuth.photoURL || null,
-      email: userAuth.email,
+      id: authUser.user.id,
+      name: userData?.username || authUser.user.user_metadata?.name || null,
+      profileImage: userData?.avatar || authUser.user.user_metadata?.avatar_url || null,
+      email: authUser.user.email,
       ...userData,
     } satisfies UserSession;
   },

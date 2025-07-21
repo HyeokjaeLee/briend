@@ -7,3 +7,4 @@ export {
 export { setExitNavigationAnimation } from './setExitNavigationAnimation';
 export { toast, type ToastOptions } from './toast';
 export { uploadFirebaseStorage } from './uploadFirebaseStorage';
+export { uploadSupabaseStorage } from './uploadSupabaseStorage';

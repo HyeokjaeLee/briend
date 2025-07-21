@@ -3,6 +3,10 @@ import { CustomError } from '@/utils';
 const publicEnv = {
   BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
   NODE_ENV: process.env.NODE_ENV,
+  // Supabase
+  SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
+  SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  // Firebase (will be removed gradually)
   FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -14,12 +18,14 @@ const publicEnv = {
   FIREBASE_DATABASE_URL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-const unsetKeys = Object.entries(publicEnv)
+// Skip validation for Supabase keys during migration
+const requiredKeys = Object.entries(publicEnv)
+  .filter(([key]) => !key.startsWith('SUPABASE_'))
   .filter(([, value]) => !value)
   .map(([key]) => `PUBLIC_ENV.${key}`);
 
-if (unsetKeys.length) {
-  throw new CustomError(`Not enough params: ${unsetKeys.join(', ')}`);
+if (requiredKeys.length) {
+  throw new CustomError(`Not enough params: ${requiredKeys.join(', ')}`);
 }
 
 export const PUBLIC_ENV = publicEnv as Record<keyof typeof publicEnv, string>;

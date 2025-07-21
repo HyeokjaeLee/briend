@@ -14,7 +14,9 @@
     "build:common": "turbo run build --filter=@briend/common",
     "build:web": "turbo run build --filter=briend-web",
     "build:socket": "turbo run build --filter=briend-socket-server",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "db:types": "bun run --cwd packages/config db:types",
+    "supabase:login": "bun run --cwd packages/config supabase login"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
@@ -32,7 +34,7 @@
     ],
     "nohoist": [
       "**/react",
-      "**/react-dom", 
+      "**/react-dom",
       "**/next",
       "**/expo",
       "**/react-native",

@@ -26,6 +26,10 @@ export interface SocketEvents {
     'message:received': {
         message: Message;
     };
+    'message:history': {
+        roomId: string;
+        messages: Message[];
+    };
     'room:join': {
         roomId: string;
     };

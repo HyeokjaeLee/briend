@@ -1,12 +1,19 @@
 import { DEFAULT_PORT, SOCKET_EVENTS } from '@briend/common';
 import type { SocketEvents, Message, User } from '@briend/common';
 import { createId } from '@briend/common';
+import { createClient } from '@supabase/supabase-js';
 
 interface ConnectedClient {
   ws: ServerWebSocket;
   userId?: string;
   rooms: Set<string>;
 }
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL || 'https://grawoqitzzxiwuylkwsw.supabase.co',
+  process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdyYXdvcWl0enp4aXd1eWxrd3N3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxMDcxMTEsImV4cCI6MjA2ODY4MzExMX0.c5jWQUYynE8_e2vZLc_aQAxC7LogHut9Jkg1xBmTwiM'
+);
 
 class SocketServer {
   private clients = new Map<string, ConnectedClient>();
@@ -62,14 +69,14 @@ class SocketServer {
     console.log(`Client connected: ${clientId}`);
   }
 
-  private handleMessage(ws: ServerWebSocket, message: string | Buffer) {
+  private async handleMessage(ws: ServerWebSocket, message: string | Buffer) {
     try {
       const data = JSON.parse(message.toString());
       const clientId = ws.data?.clientId;
       
       if (!clientId) return;
       
-      this.processMessage(clientId, data);
+      await this.processMessage(clientId, data);
     } catch (error) {
       console.error('Message parsing error:', error);
     }
@@ -91,16 +98,16 @@ class SocketServer {
     }
   }
 
-  private processMessage(clientId: string, data: any) {
+  private async processMessage(clientId: string, data: any) {
     const client = this.clients.get(clientId);
     if (!client) return;
 
     switch (data.type) {
       case SOCKET_EVENTS.MESSAGE_SEND:
-        this.handleMessageSend(clientId, data.payload);
+        await this.handleMessageSend(clientId, data.payload);
         break;
       case SOCKET_EVENTS.ROOM_JOIN:
-        this.joinRoom(clientId, data.payload.roomId);
+        await this.joinRoom(clientId, data.payload.roomId);
         break;
       case SOCKET_EVENTS.ROOM_LEAVE:
         this.leaveRoom(clientId, data.payload.roomId);
@@ -116,7 +123,7 @@ class SocketServer {
     }
   }
 
-  private handleMessageSend(clientId: string, payload: any) {
+  private async handleMessageSend(clientId: string, payload: any) {
     const { roomId, message } = payload;
     const newMessage: Message = {
       id: createId(),
@@ -126,14 +133,34 @@ class SocketServer {
       timestamp: Date.now(),
     };
 
-    // Broadcast to all clients in the room
-    this.broadcastToRoom(roomId, {
-      type: SOCKET_EVENTS.MESSAGE_RECEIVED,
-      payload: { message: newMessage },
-    });
+    try {
+      // Save message to Supabase
+      const { error } = await supabase
+        .from('messages')
+        .insert({
+          id: newMessage.id,
+          room_id: roomId,
+          user_id: newMessage.userId,
+          content: newMessage.content,
+          type: newMessage.type,
+        });
+
+      if (error) {
+        console.error('Failed to save message to database:', error);
+        // Continue with broadcasting even if DB save fails
+      }
+
+      // Broadcast to all clients in the room
+      this.broadcastToRoom(roomId, {
+        type: SOCKET_EVENTS.MESSAGE_RECEIVED,
+        payload: { message: newMessage },
+      });
+    } catch (error) {
+      console.error('Error handling message send:', error);
+    }
   }
 
-  private joinRoom(clientId: string, roomId: string) {
+  private async joinRoom(clientId: string, roomId: string) {
     const client = this.clients.get(clientId);
     if (!client) return;
 
@@ -145,6 +172,36 @@ class SocketServer {
     
     this.rooms.get(roomId)!.add(clientId);
     console.log(`Client ${clientId} joined room ${roomId}`);
+
+    // Load recent messages from database and send to the client
+    try {
+      const { data: messages, error } = await supabase
+        .from('messages')
+        .select('*')
+        .eq('room_id', roomId)
+        .order('created_at', { ascending: true })
+        .limit(50); // Load last 50 messages
+
+      if (error) {
+        console.error('Failed to load messages from database:', error);
+      } else if (messages && messages.length > 0) {
+        // Send message history to the joining client
+        const formattedMessages = messages.map(msg => ({
+          id: msg.id,
+          userId: msg.user_id,
+          content: msg.content,
+          type: msg.type,
+          timestamp: new Date(msg.created_at).getTime(),
+        }));
+
+        client.ws.send(JSON.stringify({
+          type: 'message:history',
+          payload: { roomId, messages: formattedMessages },
+        }));
+      }
+    } catch (error) {
+      console.error('Error loading message history:', error);
+    }
   }
 
   private leaveRoom(clientId: string, roomId: string) {

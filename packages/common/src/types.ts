@@ -26,6 +26,7 @@ export interface ChatRoom {
 export interface SocketEvents {
   'message:send': { roomId: string; message: Omit<Message, 'id' | 'timestamp'> };
   'message:received': { message: Message };
+  'message:history': { roomId: string; messages: Message[] };
   'room:join': { roomId: string };
   'room:leave': { roomId: string };
   'user:typing': { roomId: string; userId: string };
