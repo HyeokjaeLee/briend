@@ -6,8 +6,8 @@
     "bun": "1.2.10"
   },
   "scripts": {
-    "predev": "bun update:env",
     "dev": "next dev --turbo",
+    "dev:with-env": "bun update:env && next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "tsc --noEmit && next lint --fix",

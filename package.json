@@ -8,7 +8,16 @@
     "kill:ports": "kill-port 3000 3001 3002 8081 || true",
     "dev": "turbo run dev",
     "build:web": "turbo run build --cwd ./apps/web",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    
+    "docker:dev": "docker run --rm -p 3000:3000 -p 8080:8080 -v \"$(pwd)\":/app -v /app/node_modules -v /app/apps/web/node_modules --name briend-dev-container briend-dev:latest",
+    "docker:dev:build": "docker build -f Dockerfile.dev -t briend-dev:latest .",
+    "docker:dev:rebuild": "docker build --no-cache -f Dockerfile.dev -t briend-dev:latest .",
+    "docker:dev:stop": "docker stop briend-dev-container 2>/dev/null || true",
+    "docker:dev:clean": "docker stop briend-dev-container 2>/dev/null || true && docker rmi briend-dev:latest 2>/dev/null || true",
+    
+    "docker:prod:build": "docker build -f Dockerfile.prod -t briend:latest .",
+    "docker:prod:run": "docker run --rm -p 3000:3000 --name briend-prod-container briend:latest"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",

@@ -3,6 +3,7 @@ import type { NextConfig } from 'next';
 const IS_DEVELOPMENT = process.env.NODE_ENV === 'development';
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   images: {
     minimumCacheTTL: 3600,
     remotePatterns: [

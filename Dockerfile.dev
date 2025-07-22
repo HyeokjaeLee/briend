@@ -1,0 +1,30 @@
+# Development Dockerfile for hot reload
+FROM oven/bun:1.2.10
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Vercel CLI globally
+RUN bun add -g vercel@latest
+
+WORKDIR /app
+
+# Copy package files and install dependencies
+COPY package.json bun.lock ./
+COPY apps/web/package.json ./apps/web/
+COPY turbo.json ./
+
+# Install all dependencies (including dev dependencies)
+RUN bun install
+
+# Copy source code
+COPY . .
+
+# Expose ports
+EXPOSE 3000 8080
+
+# Default command for development
+CMD ["bun", "run", "dev:web"]

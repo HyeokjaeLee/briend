@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  briend-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+      - "8080:8080"  # Future socket server port
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    stdin_open: true
+    tty: true
+    command: bun run dev:web
+
+networks:
+  default:
+    driver: bridge
