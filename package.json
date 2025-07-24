@@ -5,10 +5,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "dev:server": "bun run server.ts",
-    "dev:full": "concurrently \"bun run dev\" \"bun run dev:server\"",
-    "start": "NODE_ENV=production concurrently \"react-router-serve ./build/server/index.js\" \"bun run server.ts\"",
-    "build:start": "bun run build",
+    "start": "NODE_ENV=production react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
