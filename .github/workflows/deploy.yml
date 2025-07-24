@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest-arm
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,7 +32,7 @@ jobs:
 
   build-and-push:
     needs: test
-    runs-on: ubuntu-latest-arm
+    runs-on: ubuntu-24.04-arm
     if: github.ref == 'refs/heads/feat/20250724'
     
     permissions:
@@ -85,7 +85,7 @@ jobs:
 
   deploy:
     needs: build-and-push
-    runs-on: ubuntu-latest-arm
+    runs-on: ubuntu-24.04-arm
     if: github.ref == 'refs/heads/feat/20250724'
     
     steps:
