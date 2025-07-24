@@ -76,18 +76,36 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
+            # Ensure Bun is installed
+            if ! command -v bun &> /dev/null; then
+              echo "Installing Bun..."
+              curl -fsSL https://bun.sh/install | bash
+              export PATH="$HOME/.bun/bin:$PATH"
+              echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.bashrc
+            fi
+            
+            # Add Bun to PATH for this session
+            export PATH="$HOME/.bun/bin:$PATH"
+            
             APP_DIR="/home/ubuntu/briend"
             
-            # Stop existing services
-            sudo systemctl stop briend-app || true
-            sudo systemctl stop briend-websocket || true
+            # Install required packages if not present
+            if ! command -v nginx &> /dev/null; then
+              echo "Installing required packages..."
+              sudo apt update
+              sudo apt install -y nginx curl
+            fi
+            
+            # Stop existing services (ignore errors if services don't exist)
+            sudo systemctl stop briend-app 2>/dev/null || true
+            sudo systemctl stop briend-websocket 2>/dev/null || true
             
             # Backup current version
             if [ -d "$APP_DIR" ]; then
               cp -r "$APP_DIR" "${APP_DIR}-backup-$(date +%Y%m%d-%H%M%S)" || true
             fi
             
-            # Create app directory if not exists
+            # Create app directory
             mkdir -p "$APP_DIR"
             
             # Extract new build
@@ -99,22 +117,147 @@ jobs:
             bun install --frozen-lockfile --production
             
             # Set permissions
-            chmod +x scripts/*.sh || true
+            chmod +x scripts/*.sh 2>/dev/null || true
             
-            # Start services
-            sudo systemctl start briend-websocket
-            sudo systemctl start briend-app
+            # Create systemd service files if they don't exist
+            if [ ! -f /etc/systemd/system/briend-app.service ]; then
+              echo "Creating systemd service files..."
+              
+              # React Router 앱 서비스
+              sudo tee /etc/systemd/system/briend-app.service > /dev/null <<EOF
+            [Unit]
+            Description=Briend React Router Application
+            After=network.target
+            Wants=briend-websocket.service
+            
+            [Service]
+            Type=simple
+            User=ubuntu
+            WorkingDirectory=$APP_DIR
+            Environment=NODE_ENV=production
+            Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
+            ExecStart=/home/ubuntu/.bun/bin/bun run start
+            Restart=always
+            RestartSec=10
+            StandardOutput=journal
+            StandardError=journal
+            SyslogIdentifier=briend-app
+            
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+              
+              # WebSocket 서버 서비스
+              sudo tee /etc/systemd/system/briend-websocket.service > /dev/null <<EOF
+            [Unit]
+            Description=Briend WebSocket Server
+            After=network.target
+            
+            [Service]
+            Type=simple
+            User=ubuntu
+            WorkingDirectory=$APP_DIR
+            Environment=NODE_ENV=production
+            Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
+            ExecStart=/home/ubuntu/.bun/bin/bun run server.ts
+            Restart=always
+            RestartSec=10
+            StandardOutput=journal
+            StandardError=journal
+            SyslogIdentifier=briend-websocket
+            
+            [Install]
+            WantedBy=multi-user.target
+            EOF
+              
+              sudo systemctl daemon-reload
+            fi
+            
+            # Configure nginx if not already configured
+            if [ ! -f /etc/nginx/sites-available/briend ]; then
+              echo "Configuring Nginx..."
+              sudo tee /etc/nginx/sites-available/briend > /dev/null <<EOF
+            server {
+                listen 80;
+                server_name _;
+            
+                location / {
+                    proxy_pass http://localhost:3000;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade \$http_upgrade;
+                    proxy_set_header Connection 'upgrade';
+                    proxy_set_header Host \$host;
+                    proxy_set_header X-Real-IP \$remote_addr;
+                    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto \$scheme;
+                    proxy_cache_bypass \$http_upgrade;
+                }
+            
+                location /ws {
+                    proxy_pass http://localhost:3001;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade \$http_upgrade;
+                    proxy_set_header Connection "upgrade";
+                    proxy_set_header Host \$host;
+                    proxy_set_header X-Real-IP \$remote_addr;
+                    proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto \$scheme;
+                }
+            }
+            EOF
+              
+              sudo ln -sf /etc/nginx/sites-available/briend /etc/nginx/sites-enabled/
+              sudo rm -f /etc/nginx/sites-enabled/default
+              sudo nginx -t && sudo systemctl restart nginx
+            fi
+            
+            # Configure firewall if not already configured
+            if ! sudo ufw status | grep -q "Status: active"; then
+              echo "Configuring firewall..."
+              sudo ufw allow 22/tcp
+              sudo ufw allow 80/tcp
+              sudo ufw allow 443/tcp
+              sudo ufw allow 3000/tcp
+              sudo ufw allow 3001/tcp
+              sudo ufw --force enable
+            fi
+            
+            # Start and enable services
             sudo systemctl enable briend-app
             sudo systemctl enable briend-websocket
+            sudo systemctl start briend-websocket
+            sudo systemctl start briend-app
             
             # Health check
-            sleep 10
-            curl -f http://localhost:3000/health || curl -f http://localhost:3000/ || {
-              echo "Health check failed. Checking service status:"
-              sudo systemctl status briend-app
-              sudo systemctl status briend-websocket
-              sudo journalctl -u briend-app --lines=20
-              exit 1
-            }
+            echo "Waiting for services to start..."
+            sleep 15
             
-            echo "Deployment successful!"
+            # Check if services are running
+            if sudo systemctl is-active --quiet briend-app && sudo systemctl is-active --quiet briend-websocket; then
+              echo "Services are running. Performing health check..."
+              
+              # Try health check multiple times
+              for i in {1..3}; do
+                if curl -f -s http://localhost:3000/ > /dev/null; then
+                  echo "✅ Health check passed!"
+                  echo "🎉 Deployment successful!"
+                  exit 0
+                fi
+                echo "Health check attempt $i failed, retrying in 5 seconds..."
+                sleep 5
+              done
+              
+              echo "❌ Health check failed after multiple attempts"
+            else
+              echo "❌ Services failed to start"
+            fi
+            
+            echo "Debugging information:"
+            echo "=== Service Status ==="
+            sudo systemctl status briend-app --no-pager -l
+            sudo systemctl status briend-websocket --no-pager -l
+            echo "=== Recent Logs ==="
+            sudo journalctl -u briend-app --lines=10 --no-pager
+            sudo journalctl -u briend-websocket --lines=10 --no-pager
+            
+            exit 1
