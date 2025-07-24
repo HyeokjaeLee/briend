@@ -43,5 +43,5 @@ EXPOSE 3000 3001
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/ || exit 1
 
-# Start both servers
+# Start both servers with Bun
 CMD ["sh", "-c", "bun run ./node_modules/.bin/react-router-serve ./build/server/index.js & NODE_ENV=production bun run server.ts & wait"]
