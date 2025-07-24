@@ -32,7 +32,7 @@ jobs:
 
   build-and-push:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-arm64
     if: github.ref == 'refs/heads/feat/20250724'
     
     permissions:
