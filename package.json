@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "scripts": {
     "dev:web": "turbo run dev --filter=briend-web",
+<<<<<<< HEAD
+=======
+    "dev:app": "bun run --cwd apps/container start",
+>>>>>>> release/20250704
     "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo",
     "update:env": "bun run --cwd apps/web update:env",
     "kill:ports": "kill-port 3000 3001 3002 8081 || true",
     "dev": "turbo run dev",
     "build:web": "turbo run build --cwd ./apps/web",
+<<<<<<< HEAD
     "lint": "turbo run lint",
     
     "docker:dev": "docker run --rm -p 3000:3000 -p 8080:8080 -v \"$(pwd)\":/app -v /app/node_modules -v /app/apps/web/node_modules --name briend-dev-container briend-dev:latest",
@@ -18,11 +23,18 @@
     
     "docker:prod:build": "docker build -f Dockerfile.prod -t briend:latest .",
     "docker:prod:run": "docker run --rm -p 3000:3000 --name briend-prod-container briend:latest"
+=======
+    "lint": "turbo run lint"
+>>>>>>> release/20250704
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
     "kill-port": "^2.0.1",
+<<<<<<< HEAD
     "turbo": "^2.5.5"
+=======
+    "turbo": "^2.5.4"
+>>>>>>> release/20250704
   },
   "peerDependencies": {
     "typescript": "^5.8.3"

@@ -26,6 +26,13 @@ export interface RECEIVE_MESSAGE {
   message: string;
 }
 
+<<<<<<< HEAD
+=======
+export interface AUTHENTICATE_PUSHER {
+  socketId: string;
+  userId: string;
+}
+>>>>>>> release/20250704
 
 export interface SyncUserData {
   syncUserToken: string;

@@ -1,6 +1,6 @@
 export const createQueryKeys = <TName extends string, TKeys extends string[]>(
   name: TName,
-  keys: TKeys,
+  keys: [...TKeys],
 ) => {
   const result = {} as Record<TKeys[number], `${TName}.${TKeys[number]}`>;
 

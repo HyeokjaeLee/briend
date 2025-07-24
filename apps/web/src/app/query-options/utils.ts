@@ -4,7 +4,11 @@ import { IS_DEV } from '@/constants';
 import { API_ROUTES } from '@/routes/api';
 import { assert, createQueryKeys } from '@/utils';
 
+<<<<<<< HEAD
 export const UtilsQueryKey = createQueryKeys('utils', ['shortUrl'] as const);
+=======
+export const UtilsQueryKey = createQueryKeys('utils', ['shortUrl']);
+>>>>>>> release/20250704
 
 export const UtilsQueryOptions = {
   shortUrl: (url: string) =>

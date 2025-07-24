@@ -22,8 +22,13 @@ export const ToastProvider = () => {
     <ToastContainer
       draggable={isTouchDevice}
       className={cn(
+<<<<<<< HEAD
         'h-0 p-0 relative w-[calc(100%-2rem)]',
         'sm:min-w-80 sm:fixed sm:w-fit xl:w-[calc(100%-2rem)] xl:relative',
+=======
+        'h-0! w-[calc(100%-2rem)]! p-0! relative!',
+        'sm:w-fit! sm:fixed! sm:min-w-80',
+>>>>>>> release/20250704
       )}
       draggableDirection="x"
       draggablePercent={50}
@@ -45,9 +50,15 @@ export const ToastProvider = () => {
       )}
       theme="colored"
       toastClassName={cn(
+<<<<<<< HEAD
         'flex justify-start w-full px-4',
         'rounded-lg backdrop-blur-sm cursor-grab font-pretendard whitespace-pre-line font-medium text-lg',
         'left-4 xs:left-0',
+=======
+        'flex! w-full! px-4! justify-start',
+        'rounded-lg! backdrop-blur-sm! font-pretendard! whitespace-pre-line! font-medium! text-lg!',
+        'left-4! xs:left-0! xl:right-0',
+>>>>>>> release/20250704
       )}
       transition={Slide}
     />

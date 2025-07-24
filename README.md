@@ -19,7 +19,12 @@
 
 # 🚧 이전 버전
 
+<<<<<<< HEAD
 ![Node.js](https://img.shields.io/badge/Node-339933?style=flat-square&logo=Node.js&logoColor=white) ![Pnpm](https://img.shields.io/badge/PNPM-F69220?style=flat-square&logo=pnpm&logoColor=white) ![Next_JS](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) ![Typescript](https://img.shields.io/badge/Typescript-3178c6?style=flat-square&logo=typescript&logoColor=white) ![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=flat-square&logo=sass&logoColor=white) ![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=pwa&logoColor=white)
+=======
+![Node.js](https://img.shields.io/badge/Node-339933?style=flat-square&logo=Node.js&logoColor=white) ![Pnpm](https://img.shields.io/badge/PNPM-F69220?style=flat-square&logo=pnpm&logoColor=white) ![Next_JS](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=next.js&logoColor=white) ![Typescript](https://img.shields.io/badge/Typescript-3178c6?style=flat-square&logo=typescript&logoColor=white) ![Tailwind](https://img.shields.io/badge/Tailwind-06B6D4?style=flat-square&logo=sass&logoColor=white)
+![Pusher](https://img.shields.io/badge/Pusher-300D4F?style=flat-square&logo=pusher&logoColor=white) ![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=pwa&logoColor=white)
+>>>>>>> release/20250704
 
 ## 👋 About
 
