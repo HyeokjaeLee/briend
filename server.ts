@@ -1,4 +1,5 @@
 import { serve } from "bun";
+import type {  ServerWebSocket } from "bun";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 
@@ -6,10 +7,10 @@ interface SocketData {
   id: string;
 }
 
-const clients = new Map<string, any>();
+const clients = new Map<string, ServerWebSocket<SocketData>>();
 let messageId = 0;
 
-const server = serve<SocketData>({
+const server = serve({
   port: process.env.PORT || 3001,
   fetch(req, server) {
     const url = new URL(req.url);
@@ -38,7 +39,7 @@ const server = serve<SocketData>({
   },
   
   websocket: {
-    open(ws) {
+    open(ws: ServerWebSocket<SocketData>) {
       const { id } = ws.data;
       clients.set(id, ws);
       console.log(`클라이언트 연결: ${id}`);
@@ -51,7 +52,7 @@ const server = serve<SocketData>({
       }));
     },
     
-    message(ws, message) {
+    message(ws: ServerWebSocket<SocketData>, message: string | Buffer) {
       const { id } = ws.data;
       let data;
       
@@ -114,7 +115,7 @@ const server = serve<SocketData>({
       }
     },
     
-    close(ws) {
+    close(ws: ServerWebSocket<SocketData>) {
       const { id } = ws.data;
       clients.delete(id);
       console.log(`클라이언트 연결 해제: ${id}`);
@@ -151,7 +152,7 @@ function handleApi(req: Request): Response {
 }
 
 // 정적 파일 서빙
-function serveStatic(pathname: string): Response {
+function serveStatic(pathname: string): Response | Promise<Response> {
   // 개발환경에서는 React Router dev 서버로 프록시
   if (process.env.NODE_ENV !== "production") {
     return fetch(`http://localhost:5173${pathname}`).catch(() => {
