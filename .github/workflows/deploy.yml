@@ -121,4 +121,4 @@ jobs:
             
             # Health check
             sleep 30
-            curl -f http://localhost:3000/health || curl -f http://localhost:3000/ || exit 1
+            curl -f http://localhost:3000/health || curl -f http://localhost:3000/ || (echo "Health check failed. Dumping container logs:" && docker logs briend-app && exit 1)
