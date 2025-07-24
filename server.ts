@@ -1,3 +1,5 @@
+import {renderToReadableStream} from 'react-dom/server.browser';
+
 import { serve } from "bun";
 import type {  ServerWebSocket } from "bun";
 import { readFileSync, existsSync } from "fs";
