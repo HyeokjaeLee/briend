@@ -8,6 +8,9 @@
     "start": "NODE_ENV=production react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
+  "overrides": {
+    "react-dom/server": "react-dom/server.node"
+  },
   "dependencies": {
     "@react-router/fs-routes": "^7.7.0",
     "@react-router/node": "^7.7.0",
