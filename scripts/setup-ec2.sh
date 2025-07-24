@@ -52,7 +52,9 @@ sudo ufw allow 3001/tcp  # WebSocket Server
 sudo ufw --force enable
 
 # 애플리케이션 디렉토리 생성
-APP_DIR="/home/ubuntu/briend"
+CURRENT_USER=$(whoami)
+USER_HOME="$HOME"
+APP_DIR="$USER_HOME/briend"
 print_status "애플리케이션 디렉토리 설정 중..."
 
 # 애플리케이션 디렉토리만 생성 (실제 배포는 GitHub Actions에서 처리)
@@ -72,11 +74,11 @@ Wants=briend-websocket.service
 
 [Service]
 Type=simple
-User=ubuntu
+User=$CURRENT_USER
 WorkingDirectory=$APP_DIR
 Environment=NODE_ENV=production
-Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/home/ubuntu/.bun/bin/bun run start
+Environment=PATH=$USER_HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=$USER_HOME/.bun/bin/bun run start
 Restart=always
 RestartSec=10
 StandardOutput=journal
@@ -95,11 +97,11 @@ After=network.target
 
 [Service]
 Type=simple
-User=ubuntu
+User=$CURRENT_USER
 WorkingDirectory=$APP_DIR
 Environment=NODE_ENV=production
-Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
-ExecStart=/home/ubuntu/.bun/bin/bun run server.ts
+Environment=PATH=$USER_HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=$USER_HOME/.bun/bin/bun run server.ts
 Restart=always
 RestartSec=10
 StandardOutput=journal

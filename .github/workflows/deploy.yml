@@ -115,14 +115,15 @@ jobs:
                 # Ubuntu/Debian (newer)
                 sudo apt update
                 sudo apt install -y nginx curl
-              elif command -v yum &> /dev/null; then
-                # CentOS/RHEL/Amazon Linux
-                sudo yum update -y
-                sudo yum install -y nginx curl
               elif command -v dnf &> /dev/null; then
-                # Fedora
+                # Amazon Linux 2023 / Fedora (dnf first for Amazon Linux 2023)
                 sudo dnf update -y
-                sudo dnf install -y nginx curl
+                # Skip curl to avoid conflicts, install nginx only
+                sudo dnf install -y nginx
+              elif command -v yum &> /dev/null; then
+                # CentOS/RHEL/Amazon Linux (older)
+                sudo yum update -y
+                sudo yum install -y nginx
               elif command -v apk &> /dev/null; then
                 # Alpine
                 sudo apk update
@@ -156,9 +157,8 @@ jobs:
             # Set permissions
             chmod +x scripts/*.sh 2>/dev/null || true
             
-            # Create systemd service files if they don't exist
-            if [ ! -f /etc/systemd/system/briend-app.service ]; then
-              echo "Creating systemd service files..."
+            # Create or update systemd service files
+            echo "Creating/updating systemd service files..."
               
               # React Router 앱 서비스
               sudo tee /etc/systemd/system/briend-app.service > /dev/null <<EOF
@@ -208,7 +208,6 @@ jobs:
             EOF
               
               sudo systemctl daemon-reload
-            fi
             
             # Configure nginx if not already configured
             if [ ! -f /etc/nginx/sites-available/briend ]; then

@@ -132,7 +132,7 @@ case "${1:-help}" in
         deploy
         ;;
     "backup")
-        APP_DIR="/home/ubuntu/briend"
+        APP_DIR="$HOME/briend"
         BACKUP_NAME="briend-backup-$(date +%Y%m%d-%H%M%S)"
         print_status "백업 생성 중: $BACKUP_NAME"
         cp -r "$APP_DIR" "../$BACKUP_NAME"

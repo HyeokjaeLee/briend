@@ -108,8 +108,8 @@ sudo pkill -f brun
 ### 권한 문제
 ```bash
 # 파일 권한 확인
-ls -la /home/ubuntu/briend
-sudo chown -R ubuntu:ubuntu /home/ubuntu/briend
+ls -la $HOME/briend
+sudo chown -R $USER:$USER $HOME/briend
 ```
 
 ## 🔧 성능 최적화
