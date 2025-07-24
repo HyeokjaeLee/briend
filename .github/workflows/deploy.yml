@@ -95,20 +95,20 @@ jobs:
             echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
             # Stop and remove existing containers
-            docker-compose -f /home/${{ secrets.EC2_USER }}/briend/docker-compose.yml down || true
+            docker stop briend-app briend-nginx 2>/dev/null || true
+            docker rm briend-app briend-nginx 2>/dev/null || true
             
             # Pull latest image
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             
-            # Update docker-compose.yml to use the new image
-            sed -i 's|build:|#build:|g' /home/${{ secrets.EC2_USER }}/briend/docker-compose.yml
-            sed -i 's|context: .|#context: .|g' /home/${{ secrets.EC2_USER }}/briend/docker-compose.yml
-            sed -i 's|dockerfile: Dockerfile|#dockerfile: Dockerfile|g' /home/${{ secrets.EC2_USER }}/briend/docker-compose.yml
-            sed -i '/briend-app:/a\    image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest' /home/${{ secrets.EC2_USER }}/briend/docker-compose.yml
-            
-            # Start services
-            cd /home/${{ secrets.EC2_USER }}/briend
-            docker-compose up -d
+            # Run application container
+            docker run -d \
+              --name briend-app \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              -p 3001:3001 \
+              -e NODE_ENV=production \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
             
             # Clean up unused images
             docker image prune -af
