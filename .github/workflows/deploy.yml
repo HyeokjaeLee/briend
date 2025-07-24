@@ -2,9 +2,9 @@ name: Build and Deploy to EC2
 
 on:
   push:
-    branches: [release/v3]
+    branches: [feat/20250724]
   pull_request:
-    branches: [release/v3]
+    branches: [feat/20250724]
 
 env:
   REGISTRY: ghcr.io
@@ -34,7 +34,7 @@ jobs:
   build-and-push:
     needs: test
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/release/v3'
+    if: github.ref == 'refs/heads/feat/20250724'
     
     permissions:
       contents: read
@@ -80,7 +80,7 @@ jobs:
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/release/v3'
+    if: github.ref == 'refs/heads/feat/20250724'
     
     steps:
       - name: Deploy to EC2
