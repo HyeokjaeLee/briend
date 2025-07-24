@@ -1,0 +1,14 @@
+# Doppler 프로젝트 설정
+project: briend
+environments:
+  development:
+    config: development
+  production:
+    config: production
+  local:
+    config: development
+
+# 기본 환경
+setup:
+  project: briend
+  config: development

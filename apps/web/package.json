@@ -7,6 +7,7 @@
   },
   "scripts": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "dev": "next dev --turbo",
     "dev:with-env": "bun update:env && next dev --turbo",
 =======
@@ -15,10 +16,30 @@
 >>>>>>> release/20250704
     "build": "next build",
     "start": "next start",
+=======
+    "predev": "bun update:env && bun --cwd ../../packages/config run db:types",
+    "dev": "doppler run --config development -- next dev --turbo",
+    "dev:local": "next dev --turbo",
+    "dev:prod": "doppler run --config production -- next dev --turbo",
+    "build": "doppler run --config development -- next build",
+    "build:prod": "doppler run --config production -- next build",
+    "start": "doppler run -- next start",
+>>>>>>> release/20250721
     "lint": "tsc --noEmit && next lint --fix",
-    "update:env": "vercel env pull"
+    "update:env": "vercel env pull",
+    "gen:types": "bun --cwd ../../packages/config run db:types",
+    "doppler:setup": "doppler setup --project briend --config dev",
+    "doppler:login": "doppler login",
+    "doppler:secrets": "doppler secrets --config dev",
+    "doppler:upload": "doppler secrets upload .env.development",
+    "doppler:download": "doppler secrets download --no-file --format env > .env.local",
+    "env:push": "doppler secrets upload .env.development --config dev",
+    "env:pull": "doppler secrets download --no-file --format env --config dev > .env.local",
+    "env:sync": "bun run env:push && bun run env:pull"
   },
   "dependencies": {
+    "@briend/common": "workspace:*",
+    "@briend/config": "workspace:*",
     "@google-cloud/translate": "^8.5.1",
     "@hookform/resolvers": "^3.10.0",
     "@lottiefiles/dotlottie-react": "^0.12.3",
@@ -47,6 +68,8 @@
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-slot": "^1.2.0",
     "@radix-ui/react-tabs": "^1.1.9",
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.52.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/query-sync-storage-persister": "^5.74.9",
     "@tanstack/react-query": "^5.74.9",
@@ -163,6 +186,7 @@
     "@types/react-scroll": "^1.8.10",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
+    "bun-types": "latest",
     "dotenv-cli": "^7.4.4",
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
@@ -185,8 +209,8 @@
 =======
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
+    "supabase": "^2.31.8",
     "tailwindcss": "^4.1.4",
-    "bun-types": "latest",
     "tailwindcss-animated": "^2.0.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1"

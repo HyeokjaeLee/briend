@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  # Web Application
+  web:
+    build: 
+      context: ./apps/web
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_SUPABASE_URL=http://db:8000
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+    depends_on:
+      - db
+    networks:
+      - app_network
+    restart: unless-stopped
+    
+  # Socket Server (실시간 통신용 - 클라이언트 직접 연결)
+  socket-server:
+    build:
+      context: ./apps/socket-server
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"  # WebSocket 연결용
+    environment:
+      - NODE_ENV=production
+      - SUPABASE_URL=http://db:8000
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_KEY}
+      - ALLOWED_ORIGINS=${WEB_URL},${MOBILE_APP_URL}  # CORS 제한
+      - JWT_SECRET=${JWT_SECRET}  # Socket 인증용
+    depends_on:
+      - db
+    networks:
+      - app_network
+    restart: unless-stopped
+    # 보안: WebSocket만 허용, HTTP API 최소화
+
+  # Supabase 스택 (단일 컨테이너로 단순화)
+  db:
+    image: supabase/postgres:15.1.0.147
+    ports:
+      - "54322:5432"  # DB 직접 접근 (개발시만)
+      - "54321:8000"  # API Gateway
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - ANON_KEY=${SUPABASE_ANON_KEY}
+      - SERVICE_ROLE_KEY=${SUPABASE_SERVICE_KEY}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./packages/config/supabase/migrations:/docker-entrypoint-initdb.d
+    networks:
+      - app_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge

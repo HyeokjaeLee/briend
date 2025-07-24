@@ -28,6 +28,10 @@ yarn-error.log*
 # env files (can opt-in for commiting if needed)
 .env*
 
+# Doppler CLI 관련 파일들
+.doppler.yaml
+.doppler.yml
+
 # vercel
 .vercel
 

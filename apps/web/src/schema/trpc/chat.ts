@@ -15,4 +15,5 @@ export const sendMessageSchema = z.object({
   receiverId: z.string(),
   receiverLanguage: z.nativeEnum(LANGUAGE),
   senderLanguage: z.nativeEnum(LANGUAGE),
+  roomId: z.string(),
 });

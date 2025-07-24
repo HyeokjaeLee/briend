@@ -4,13 +4,21 @@
   "scripts": {
     "dev:web": "turbo run dev --filter=briend-web",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     "dev:app": "bun run --cwd apps/container start",
 >>>>>>> release/20250704
     "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo",
+=======
+    "dev:native": "bun run --cwd apps/native start",
+    "dev:socket": "turbo run dev --filter=briend-socket-server",
+    "dev:common": "turbo run dev --filter=@briend/common",
+    "clean": "rm -rf node_modules & rm -rf apps/*/node_modules & rm -rf packages/*/node_modules & rm -rf .turbo & rm -rf apps/*/.turbo & rm -rf packages/*/.turbo",
+>>>>>>> release/20250721
     "update:env": "bun run --cwd apps/web update:env",
-    "kill:ports": "kill-port 3000 3001 3002 8081 || true",
+    "kill:ports": "kill-port 3000 3001 3002 3030 8081 || true",
     "dev": "turbo run dev",
+<<<<<<< HEAD
     "build:web": "turbo run build --cwd ./apps/web",
 <<<<<<< HEAD
     "lint": "turbo run lint",
@@ -26,6 +34,15 @@
 =======
     "lint": "turbo run lint"
 >>>>>>> release/20250704
+=======
+    "build": "turbo run build",
+    "build:common": "turbo run build --filter=@briend/common",
+    "build:web": "turbo run build --filter=briend-web",
+    "build:socket": "turbo run build --filter=briend-socket-server",
+    "lint": "turbo run lint",
+    "db:types": "bun run --cwd packages/config db:types",
+    "supabase:login": "bun run --cwd packages/config supabase login"
+>>>>>>> release/20250721
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
@@ -40,7 +57,20 @@
     "typescript": "^5.8.3"
   },
   "packageManager": "bun@1.2.10",
-  "workspaces": [
-    "apps/*"
-  ]
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/react",
+      "**/react-dom",
+      "**/next",
+      "**/expo",
+      "**/react-native",
+      "**/@types/*",
+      "**/typescript",
+      "**/eslint*"
+    ]
+  }
 }
