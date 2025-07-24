@@ -76,6 +76,23 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
+            # Debug system information
+            echo "=== System Information ==="
+            whoami
+            pwd
+            echo "HOME: $HOME"
+            cat /etc/os-release || true
+            which apt apt-get yum dnf || true
+            
+            # Set variables based on current user
+            CURRENT_USER=$(whoami)
+            USER_HOME="$HOME"
+            APP_DIR="$USER_HOME/briend"
+            
+            echo "Current user: $CURRENT_USER"
+            echo "Home directory: $USER_HOME"
+            echo "App directory: $APP_DIR"
+            
             # Ensure Bun is installed
             if ! command -v bun &> /dev/null; then
               echo "Installing Bun..."
@@ -87,13 +104,33 @@ jobs:
             # Add Bun to PATH for this session
             export PATH="$HOME/.bun/bin:$PATH"
             
-            APP_DIR="/home/ubuntu/briend"
-            
-            # Install required packages if not present
+            # Install required packages based on OS
             if ! command -v nginx &> /dev/null; then
               echo "Installing required packages..."
-              sudo apt update
-              sudo apt install -y nginx curl
+              if command -v apt-get &> /dev/null; then
+                # Ubuntu/Debian
+                sudo apt-get update
+                sudo apt-get install -y nginx curl
+              elif command -v apt &> /dev/null; then
+                # Ubuntu/Debian (newer)
+                sudo apt update
+                sudo apt install -y nginx curl
+              elif command -v yum &> /dev/null; then
+                # CentOS/RHEL/Amazon Linux
+                sudo yum update -y
+                sudo yum install -y nginx curl
+              elif command -v dnf &> /dev/null; then
+                # Fedora
+                sudo dnf update -y
+                sudo dnf install -y nginx curl
+              elif command -v apk &> /dev/null; then
+                # Alpine
+                sudo apk update
+                sudo apk add nginx curl
+              else
+                echo "Warning: No supported package manager found. Skipping nginx installation."
+                echo "Please install nginx manually if needed."
+              fi
             fi
             
             # Stop existing services (ignore errors if services don't exist)
@@ -132,11 +169,11 @@ jobs:
             
             [Service]
             Type=simple
-            User=ubuntu
+            User=$CURRENT_USER
             WorkingDirectory=$APP_DIR
             Environment=NODE_ENV=production
-            Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
-            ExecStart=/home/ubuntu/.bun/bin/bun run start
+            Environment=PATH=$USER_HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin
+            ExecStart=$USER_HOME/.bun/bin/bun run start
             Restart=always
             RestartSec=10
             StandardOutput=journal
@@ -155,11 +192,11 @@ jobs:
             
             [Service]
             Type=simple
-            User=ubuntu
+            User=$CURRENT_USER
             WorkingDirectory=$APP_DIR
             Environment=NODE_ENV=production
-            Environment=PATH=/home/ubuntu/.bun/bin:/usr/local/bin:/usr/bin:/bin
-            ExecStart=/home/ubuntu/.bun/bin/bun run server.ts
+            Environment=PATH=$USER_HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin
+            ExecStart=$USER_HOME/.bun/bin/bun run server.ts
             Restart=always
             RestartSec=10
             StandardOutput=journal
@@ -211,15 +248,19 @@ jobs:
               sudo nginx -t && sudo systemctl restart nginx
             fi
             
-            # Configure firewall if not already configured
-            if ! sudo ufw status | grep -q "Status: active"; then
-              echo "Configuring firewall..."
-              sudo ufw allow 22/tcp
-              sudo ufw allow 80/tcp
-              sudo ufw allow 443/tcp
-              sudo ufw allow 3000/tcp
-              sudo ufw allow 3001/tcp
-              sudo ufw --force enable
+            # Configure firewall if ufw is available
+            if command -v ufw &> /dev/null; then
+              if ! sudo ufw status | grep -q "Status: active"; then
+                echo "Configuring firewall..."
+                sudo ufw allow 22/tcp
+                sudo ufw allow 80/tcp
+                sudo ufw allow 443/tcp
+                sudo ufw allow 3000/tcp
+                sudo ufw allow 3001/tcp
+                sudo ufw --force enable
+              fi
+            else
+              echo "Warning: ufw not found. Firewall configuration skipped."
             fi
             
             # Start and enable services
