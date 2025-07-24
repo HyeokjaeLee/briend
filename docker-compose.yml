@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  briend-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"  # React Router server
+      - "3001:3001"  # Bun WebSocket server
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - briend-network
+
+  # Nginx reverse proxy (optional, for production)
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - briend-app
+    restart: unless-stopped
+    networks:
+      - briend-network
+    profiles:
+      - production
+
+networks:
+  briend-network:
+    driver: bridge
+
+volumes:
+  nginx-logs:
