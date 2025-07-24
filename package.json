@@ -5,18 +5,23 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "dev:server": "bun run server.ts",
+    "dev:full": "concurrently \"bun run dev\" \"bun run dev:server\"",
+    "start": "NODE_ENV=production concurrently \"react-router-serve ./build/server/index.js\" \"bun run server.ts\"",
+    "build:start": "bun run build",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
     "@react-router/fs-routes": "^7.7.0",
     "@react-router/node": "^7.7.0",
     "@react-router/serve": "^7.7.0",
+    "concurrently": "^9.2.0",
     "isbot": "^5.1.28",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.7.0"
   },
+  "packageManager": "bun@1.2.18",
   "devDependencies": {
     "@react-router/dev": "^7.7.0",
     "@tailwindcss/vite": "^4.1.11",
